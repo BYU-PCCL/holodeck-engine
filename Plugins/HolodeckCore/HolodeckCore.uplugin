@@ -1,0 +1,24 @@
+{
+    "FileVersion" : 3,
+    
+    "FriendlyName" : "Holodeck Core",
+    "Version" : 1,
+    "VersionName" : "0.1",
+    "CreatedBy" : "Brigham Young University's Perception, Control, and Cognition Computer Science Lab",
+    "CreatedByURL" : "",
+    "EngineVersion" : "4.10.0",
+    "Description" : "Holodeck server, agents and messages",
+    "Category" : "Holodeck",
+    "EnabledByDefault" : true,
+    
+    "Modules" :
+    [
+        {
+            "Name" : "HolodeckCore",
+            "Type" : "Runtime",
+            "WhitelistPlatforms" : [ "Win64", "Win32" ]
+        }
+    ],
+    
+    "CanContainContent" : true
+}

@@ -1,0 +1,4 @@
+[submodule "Plugins/HolodeckCore"]
+	path = Plugins/HolodeckCore
+	url = http://pccmdb.cs.byu.edu/holodeck/HolodeckCore.git
+	branch = master
