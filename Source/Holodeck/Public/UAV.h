@@ -26,6 +26,21 @@ public:
 	float UEUnitsToMeters(float ValueInUnrealUnits);
 	FVector RotatorToEulerInZYX(FRotator quat);
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
+		float DesiredAltitude;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
+		float DesiredYawRate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
+		float DesiredPitch;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
+		float DesiredRoll;
+
+	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
+		UStaticMeshComponent* RootMesh;
+
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
 
@@ -35,18 +50,11 @@ private:
 	SimplePID YawController;
 	SimplePID AltitudeController;
 
-	UStaticMeshComponent* RootMesh;
-
 	// TODO: move these out of the class and to arguments on ApplyForces, rename ApplyForces to ApplyTorquesAndForces
 	float ThrustToApply;
 	float RollTorqueToApply;
 	float PitchTorqueToApply;
 	float YawTorqueToApply;
-
-	float DesiredAltitude;
-	float DesiredYawRate;
-	float DesiredPitch;
-	float DesiredRoll;
 
 	// State
 	float CurrentThrust;
