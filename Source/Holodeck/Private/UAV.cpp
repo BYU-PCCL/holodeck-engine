@@ -128,6 +128,9 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime)
 	YawTorqueToApply = (1 - AlphaRoll) * YawTorqueToApply + AlphaYaw * YawTorqueToApply;
 	ThrustToApply = (1 - AlphaThrust) * ThrustToApply + AlphaThrust * ThrustToApply;
 
+	// Calculate Air Resistance
+	Wind = -UAV_MU * CurrentGlobalVelocity;
+
 	// Apply the discrete first order filter
 	RollTorqueToApply = FMath::Clamp(RollTorqueToApply, -UAV_MAX_ROLL_L, UAV_MAX_ROLL_L);
 	PitchTorqueToApply = FMath::Clamp(PitchTorqueToApply, -UAV_MAX_PITCH_M, UAV_MAX_PITCH_M);
@@ -155,10 +158,13 @@ void AUAV::ApplyForces()
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
+	RootMesh->AddForce(Wind / 16);
 
 	CurrentRollTorque = RollTorqueToApply;
 	CurrentPitchTorque = PitchTorqueToApply;
 	CurrentYawTorque = YawTorqueToApply;
 	CurrentThrust = ThrustToApply;
-}
 
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Wind.ToString());/*
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Wind: %f, Velocity: %f"), Wind.ToString(), GetVelocity().ToString()));*/
+}

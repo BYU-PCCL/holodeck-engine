@@ -41,6 +41,9 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		UStaticMeshComponent* RootMesh;
 
+	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
+		float ThrustToApply;
+
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
 
@@ -51,7 +54,6 @@ private:
 	SimplePID AltitudeController;
 
 	// TODO: move these out of the class and to arguments on ApplyForces, rename ApplyForces to ApplyTorquesAndForces
-	float ThrustToApply;
 	float RollTorqueToApply;
 	float PitchTorqueToApply;
 	float YawTorqueToApply;
@@ -72,6 +74,9 @@ private:
 	float CurrentGlobalVelocityZ;
 	
 	float CurrentYawRate;
+
+	// Wind
+	FVector Wind;
 
 	// Define global constants
 	// TODO: rename l, m, n, f to roll, pitch, yaw_rate, and force
