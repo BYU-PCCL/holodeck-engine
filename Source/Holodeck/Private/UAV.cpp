@@ -2,7 +2,6 @@
 #include "Holodeck.h"
 #include "UAV.h"
 #include <math.h>
-#include <ctime>
 
 AUAV::AUAV()
 {
@@ -13,26 +12,12 @@ AUAV::AUAV()
 	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.HolodeckUAVController"), NULL, LOAD_None, NULL);
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 
-	// TODO: the root mesh should be defined in blueprints
-	// TODO: the mass should be derived via a command (not hardcoded like this)
 	// TODO: the unreal unit conversion should be derived via global settings
 	// TODO: the physics substep doesn't seem to have updated velocity/position estimates - we likely need to access the physx body directly (e.g. https://github.com/EpicGames/UnrealEngine/pull/585)
 	// TODO: accept desired roll/pitch/yaw/altitude commands via HolodeckMessage
 	// TODO: add changes seen in https://answers.unrealengine.com/questions/7459/question-is-120-the-engine-max-frame-rate.html
 	// TODO: set deltaTick to 1/40th of a second
 
-	// Create a static mesh componenet and set it as the root component
-	RootMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("VisualRepresentation"));
-	RootComponent = RootMesh;
-	RootMesh->SetMassOverrideInKg(NAME_None, UAV_MASS);
-
-	// Sets the static mesh
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> CubeMesh(TEXT("StaticMesh'/Game/StarterContent/Shapes/Shape_Cube.Shape_Cube'"));
-	if (CubeMesh.Object)
-		RootMesh->SetStaticMesh(CubeMesh.Object);
-
-	// Set simulate physics
-	RootMesh->SetSimulatePhysics(true);
 	SetActorEnableCollision(true);
 	OnCalculateCustomPhysics.BindUObject(this, &AUAV::SubstepTick);
 }
@@ -41,24 +26,24 @@ AUAV::AUAV()
 void AUAV::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
+		
 	// Set up the PID Controllers TODO - WHAT TO USE FOR TAU?
 	RollController.setGains(UAV_ROLL_P, UAV_ROLL_I, UAV_ROLL_D, UAV_TAU_DOWN_ROLL_L);
 	PitchController.setGains(UAV_PITCH_P, UAV_PITCH_I, UAV_PITCH_D, UAV_TAU_DOWN_PITCH_M);
 	YawController.setGains(UAV_YAW_P, UAV_YAW_I, UAV_YAW_D, UAV_TAU_DOWN_YAW_RATE_N);
 	AltitudeController.setGains(UAV_ALT_P, UAV_ALT_I, UAV_ALT_D, UAV_TAU_DOWN_FORCE_F);
-
-	DesiredAltitude = 3;
-	DesiredYawRate = 0.2;
-	DesiredRoll = 0.2;
-	DesiredPitch = 0.2;
 }
 
 // Called every frame
 void AUAV::Tick( float DeltaTime )
 {
 	Super::Tick(DeltaTime);
-	RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
+
+	if(RootMesh){
+		RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
+	}
 }
 	
 void AUAV::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
@@ -110,7 +95,7 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime)
 	PitchTorqueToApply = PitchController.computePIDDirect(DesiredPitch, CurrentPitch, CurrentPitchRate, DeltaTime);
 	YawTorqueToApply = YawController.computePID(DesiredYawRate, CurrentYawRate, DeltaTime);
 
-	float HoverThrust = (UAV_MASS * -UEUnitsToMeters(GWorld->GetGravityZ())) / (cos(DesiredRoll) * cos(DesiredPitch));
+	float HoverThrust = (RootMesh->GetMass() * -UEUnitsToMeters(GWorld->GetGravityZ())) / (cos(DesiredRoll) * cos(DesiredPitch));
 	ThrustToApply = AltitudeController.computePIDDirect(DesiredAltitude, CurrentPositionZ, CurrentGlobalVelocityZ, DeltaTime) + HoverThrust;
 
 	// Calculate first-order filter
