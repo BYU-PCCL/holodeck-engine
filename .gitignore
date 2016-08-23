@@ -20,6 +20,9 @@
 *.suo
 *.opensdf
 *.sdf
+# Content folders we don't need
+Content/ForestCollection
+
 *.sln
 *.VC.opendb
 
