@@ -16,7 +16,7 @@ class HOLODECK_API UHolodeckIMUSensor : public UHolodeckSensor
 public:
 	// Sets default values for this component's properties
 	UHolodeckIMUSensor();
-	/*
+	
 	AHolodeckPawnController* Controller;
 
 	// Called when the game starts
@@ -24,6 +24,7 @@ public:
 
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void SubstepTick(float DeltaTime, FBodyInstance* BodyInstance);
 
 	void CalculateAccelerationVector(float DeltaTime);
 
@@ -34,6 +35,8 @@ public:
 	FVector GetAngularVelocityVector();
 
 	UPrimitiveComponent* Parent;
+
+	UStaticMeshComponent* RootMesh;
 
 	UWorld* World;
 	AWorldSettings* WorldSettings;
@@ -50,5 +53,7 @@ public:
 	FVector AngularVelocityVector;
 
 	void PublishSensorMessage();
-	*/
+	
+private:
+	FCalculateCustomPhysics OnCalculateCustomPhysics;
 };
