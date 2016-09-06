@@ -26,5 +26,9 @@ public:
 
 	bool Capture(TMap<FString, FString>& output);
 
+private:
+	TArray<USceneCaptureComponent2D*> AAttachedCameras;
+
+
 };
 

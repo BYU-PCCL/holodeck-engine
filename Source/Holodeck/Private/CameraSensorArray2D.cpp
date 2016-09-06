@@ -26,6 +26,13 @@ void UCameraSensorArray2D::BeginPlay()
 
 	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 
+	//get all the attached USceneCaptureComponent2D
+	for (USceneComponent* child : GetAttachChildren()) {
+		USceneCaptureComponent2D* camera = Cast<USceneCaptureComponent2D>(child);
+
+		if (camera)
+			AAttachedCameras.Add(camera);
+	}
 }
 
 
@@ -57,9 +64,8 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Attempting capture!"));
-	for (USceneComponent* child : GetAttachChildren()) {
-		USceneCaptureComponent2D* camera = Cast<USceneCaptureComponent2D>(child);
-		if (camera && camera->TextureTarget)
+	for (USceneCaptureComponent2D* camera :AAttachedCameras) {
+		if (camera->TextureTarget)
 		{
 			FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)camera->TextureTarget->Resource;
 			TArray<FColor> ColorBuffer;
@@ -77,7 +83,7 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 
 				FString base64data = FBase64::Encode(PNG_Compressed_ImageData);
 
-				output.Add(child->GetName(), base64data);
+				output.Add(camera->GetName(), base64data);
 
 				//Save png file to a file to observe it for debugging
 				//const TCHAR* PNGFileName = TEXT("C:\\path\\to\\file.png");
