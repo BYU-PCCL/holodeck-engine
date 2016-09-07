@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <ctime>
 #include "Components/SceneComponent.h"
 #include "HolodeckPawnController.h"
 #include "CameraSensorArray2D.generated.h"
@@ -26,8 +27,11 @@ public:
 
 	bool Capture(TMap<FString, FString>& output);
 
+	TArray<FColor> ColorBuffer;
+
 private:
-	TArray<USceneCaptureComponent2D*> AAttachedCameras;
+	TArray<USceneCaptureComponent2D*> AAttachedSceneCaptureComponents2D;
+	TArray<UCameraComponent*> AAttachedCameras;
 
 
 };

@@ -28,11 +28,26 @@ void UCameraSensorArray2D::BeginPlay()
 
 	//get all the attached USceneCaptureComponent2D
 	for (USceneComponent* child : GetAttachChildren()) {
-		USceneCaptureComponent2D* camera = Cast<USceneCaptureComponent2D>(child);
+		USceneCaptureComponent2D* SceneCaptureComponent = Cast<USceneCaptureComponent2D>(child);
+		UCameraComponent* Camera = Cast<UCameraComponent>(child);
 
-		if (camera)
-			AAttachedCameras.Add(camera);
+		if (SceneCaptureComponent)
+			AAttachedSceneCaptureComponents2D.Add(SceneCaptureComponent);
+		else if (Camera)
+			AAttachedCameras.Add(Camera);
 	}
+
+	FString displayAttachedComponents = FString(TEXT("SceneCaptureComponents: "));
+	int32 count = 0;
+	for (auto c : AAttachedSceneCaptureComponents2D)
+		count++;
+	displayAttachedComponents += FString::FromInt(count);
+	displayAttachedComponents += TEXT(", Cameras: ");
+	count = 0;
+	for (auto c : AAttachedCameras)
+		count++;
+	displayAttachedComponents += FString::FromInt(count);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, displayAttachedComponents);
 }
 
 
@@ -63,8 +78,88 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
+	//FlushRenderingCommands();
+
+	// Check the engine and viewports are valid
+	if (GEngine == NULL)
+		return false;
+	if (GEngine->GameViewport == NULL)
+		return false;
+	if (GEngine->GameViewport->Viewport == NULL)
+		return false;
+
+	// Get a pointer to the viewport
+	FViewport* Viewport = GEngine->GameViewport->Viewport;
+	TSharedPtr<SWindow> WindowPtr = GEngine->GameViewport->GetWindow();
+
+	// Keep track of whether a screenshot was taken
+	bool bScreenshotSuccessful = false;
+
+	// Get the viewport size
+	int32 SizeX = Viewport->GetSizeXY().X;
+	int32 SizeY = Viewport->GetSizeXY().Y;
+
+	// Prepare the screenshot holder
+	TArray<FColor> Bitmap;
+
+	// Get the screenshot
+	if (WindowPtr.IsValid() && FSlateApplication::IsInitialized())
+	{
+		FIntVector Size(SizeX, SizeY, 0);
+		TSharedRef<SWidget> WindowRef = WindowPtr.ToSharedRef();
+
+		// Benchmarking
+		static int32 count = 0;
+		static float total_time = 0.0f;
+		time_t start = time(NULL);
+		bScreenshotSuccessful = FSlateApplication::Get().TakeScreenshot(WindowRef, Bitmap, Size);
+		time_t end = time(NULL);
+		total_time += difftime(end, start);
+		if (count++ == 10)
+		{
+			float avg = total_time / 10.0f;
+			GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Blue, FString::SanitizeFloat(avg));
+			avg = 0;
+			count = 0;
+		}
+	}
+	else
+	{
+		FIntRect Rect(0, 0, SizeX, SizeY);
+		bScreenshotSuccessful = GetViewportScreenShot(Viewport, Bitmap, Rect);
+	}
+
+	// If the screenshot was successful
+	if (bScreenshotSuccessful)
+	{
+		TArray<uint8> PNG_Compressed_ImageData;
+		FImageUtils::CompressImageArray(
+			SizeX,
+			SizeY,
+			Bitmap,
+			PNG_Compressed_ImageData
+		);
+
+		//FString result = TEXT("7000: ") + Bitmap[7000].ToString() + TEXT("; 14000: ") + Bitmap[14000].ToString() + TEXT("; 21000: ") + Bitmap[21000].ToString();
+		//GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, result);
+
+		//Save png file to a file to observe it for debugging
+		//const TCHAR* PNGFileName = TEXT("C:\\Users\\robert.pottorff\\Desktop\\output.png");
+		//
+		//FFileHelper::SaveArrayToFile(
+		//	PNG_Compressed_ImageData,
+		//	PNGFileName
+		//);
+
+		FString base64data = FBase64::Encode(PNG_Compressed_ImageData);
+
+		// Add to the output
+		output.Add(FString(TEXT("Main Camera")), base64data);
+	}
+
+	/*
 	UE_LOG(LogTemp, Warning, TEXT("Attempting capture!"));
-	for (USceneCaptureComponent2D* camera :AAttachedCameras) {
+	for (USceneCaptureComponent2D* camera :AAttachedSceneCaptureComponents2D) {
 		if (camera->TextureTarget)
 		{
 			FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)camera->TextureTarget->Resource;
@@ -102,6 +197,6 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 				
 		}
 	}
-	
+	*/
 	return false;
 }
