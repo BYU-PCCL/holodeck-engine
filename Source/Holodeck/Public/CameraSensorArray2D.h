@@ -26,5 +26,8 @@ public:
 
 	bool Capture(TMap<FString, FString>& output);
 
+	// TEMP: should be removed and replaced with a composable "Sensor" class
+	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> MessageEndpoint;
+
 };
 

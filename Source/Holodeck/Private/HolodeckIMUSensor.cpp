@@ -12,16 +12,20 @@ UHolodeckIMUSensor::UHolodeckIMUSensor()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
+
+	OnCalculateCustomPhysics.BindUObject(this, &UHolodeckIMUSensor::SubstepTick);
 }
-/*
+
 // Called when the game starts
 void UHolodeckIMUSensor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+	//Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 
 	Parent = Cast<UPrimitiveComponent>(this->GetAttachParent());
+
+	RootMesh = Cast<UStaticMeshComponent>(this->GetAttachParent());
 
 	World = Parent->GetWorld();
 	WorldSettings = World->GetWorldSettings(false, false);
@@ -41,6 +45,25 @@ void UHolodeckIMUSensor::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	if (RootMesh) {
+		RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
+	}
+
+	/*
+	if (Parent != NULL) {
+		CalculateAccelerationVector(DeltaTime);
+		CalculateAngularVelocityVector();
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "ERROR: Failed to cast 'this->GetAttachParent()' to UPrimitiveComponent");
+	}
+
+	PublishSensorMessage();
+	*/
+}
+
+void UHolodeckIMUSensor::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
+{
 	if (Parent != NULL) {
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
@@ -98,10 +121,8 @@ void UHolodeckIMUSensor::PublishSensorMessage() {
 		"," + FString::SanitizeFloat(AngularVelocityVector.X) +    // roll_vel
 		"," + FString::SanitizeFloat(AngularVelocityVector.Y) +    // pitch_vel
 		"," + FString::SanitizeFloat(AngularVelocityVector.Z) + "]"; // yaw_vel
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, data.Data);
 
-	Controller->Publish(data);
+	//Controller->Publish(data);
 
 }
-
-
-*/

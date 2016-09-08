@@ -4,6 +4,8 @@
 #include "HolodeckPawnController.h"
 
 
+// TODO: Move publishing messages to a class that can be composed with actors who need additional controllers (like a PlayerController)
+
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer) : AAIController(ObjectInitializer) {
 	MessageEndpoint = FMessageEndpoint::Builder("FHolodeckPawnControllerMessageEndpoint")
 		.Handling<FHolodeckUAVCommand>(this, &AHolodeckPawnController::OnReceiveCommand)

@@ -24,7 +24,18 @@ void UCameraSensorArray2D::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+	AController* tmp = this->GetAttachmentRootActor()->GetInstigator()->Controller;
+	Controller = Cast<AHolodeckPawnController>(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+
+	UE_LOG(LogTemp, Warning, TEXT("%s"), tmp);
+
+	if (Controller == NULL) {
+		UE_LOG(LogTemp, Warning, TEXT("Invalid Controller: Agent is not being controlled by child of HolodeckPawnController"));
+	}
+
+
+	// TODO: should be moved to a composable sensor class instaed
+	MessageEndpoint = FMessageEndpoint::Builder("FHolodeckPawnControllerMessageEndpoint");
 
 }
 
@@ -34,29 +45,39 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	FHolodeckSensorData data = FHolodeckSensorData();
-	data.Type = "CameraSensorArray2D";
 
-	TMap < FString, FString> CaptureData;
-	Capture(CaptureData);
+	//if (Controller) {
+		FHolodeckSensorData data = FHolodeckSensorData();
+		data.Type = "CameraSensorArray2D";
+
+		TMap < FString, FString> CaptureData;
+		Capture(CaptureData);
 	
-	//Return base64 CaptureData as json object
-	FString DataString = "[";
-	for (auto& Item : CaptureData)
-	{
-		DataString += "{\"" + Item.Key + "\":\"" + Item.Value + "\"},";
-	}
-	DataString.RemoveAt(DataString.Len() - 1);
-	DataString += "]";
+		//Return base64 CaptureData as json object
+		FString DataString = "{";
+		for (auto& Item : CaptureData)
+		{
+			DataString += "\"" + Item.Key + "\":\"" + Item.Value + "\",";
+		}
+		DataString.RemoveAt(DataString.Len() - 1);
+		DataString += "}";
 
-	data.Data = DataString;
+		data.Data = DataString;
 
-	Controller->Publish(data);
+		FHolodeckResponse* response = new FHolodeckResponse();
+		response->Source = TEXT("UAV"); // this->GetAttachmentRootActor()->GetHumanReadableName(); //get tag 0 if it's there and use that instead of GetHumanReadableName()... otherwise just use GetHumanReadableName();
+
+		response->Type = data.Type;
+		response->Data = data.Data;
+
+		MessageEndpoint->Publish<FHolodeckResponse>(response);
+
+		//Controller->Publish(data);
+	//}
 }
 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Attempting capture!"));
 	for (USceneComponent* child : GetAttachChildren()) {
 		USceneCaptureComponent2D* camera = Cast<USceneCaptureComponent2D>(child);
 		if (camera && camera->TextureTarget)
@@ -68,9 +89,11 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 
 				TArray<uint8> PNG_Compressed_ImageData;
 
+				FIntPoint size = textureResource->GetSizeXY();
+
 				FImageUtils::CompressImageArray(
-					textureResource->GetSizeX(),
-					textureResource->GetSizeY(),
+					size.X,
+					size.Y,
 					ColorBuffer,
 					PNG_Compressed_ImageData
 				);
@@ -79,19 +102,10 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 
 				output.Add(child->GetName(), base64data);
 
-				//Save png file to a file to observe it for debugging
-				//const TCHAR* PNGFileName = TEXT("C:\\path\\to\\file.png");
-				//
-				//FFileHelper::SaveArrayToFile(
-				//	PNG_Compressed_ImageData,
-				//	PNGFileName
-				//);
-
-				//empty buffers
+				// TODO: Investigate if this is nessesary: empty the buffers
 				PNG_Compressed_ImageData.Empty();
 				ColorBuffer.Empty();
 
-				UE_LOG(LogTemp, Warning, TEXT("Successful capture with pixels!"));
 			}
 				
 		}

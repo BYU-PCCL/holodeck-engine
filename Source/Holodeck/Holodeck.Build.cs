@@ -6,7 +6,7 @@ public class Holodeck : ModuleRules
 {
 	public Holodeck(TargetInfo Target)
 	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HolodeckCore", "AIModule" });
+		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "HolodeckCore", "AIModule", "PhysX", "APEX" });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
 
