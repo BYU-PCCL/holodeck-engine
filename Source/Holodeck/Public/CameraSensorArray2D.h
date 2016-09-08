@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include <ctime>
+#include "Benchmarker.h"
 #include "Components/SceneComponent.h"
 #include "HolodeckPawnController.h"
 #include "CameraSensorArray2D.generated.h"

@@ -108,20 +108,18 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		FIntVector Size(SizeX, SizeY, 0);
 		TSharedRef<SWidget> WindowRef = WindowPtr.ToSharedRef();
 
-		// Benchmarking
+		static Benchmarker b;
 		static int32 count = 0;
-		static float total_time = 0.0f;
-		time_t start = time(NULL);
+		b.Start();
 		bScreenshotSuccessful = FSlateApplication::Get().TakeScreenshot(WindowRef, Bitmap, Size);
-		time_t end = time(NULL);
-		total_time += difftime(end, start);
+		b.End();
+		b.CalculateAvg();
 		if (count++ == 10)
 		{
-			float avg = total_time / 10.0f;
-			GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Blue, FString::SanitizeFloat(avg));
-			avg = 0;
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, b.Stat());
 			count = 0;
 		}
+
 	}
 	else
 	{
