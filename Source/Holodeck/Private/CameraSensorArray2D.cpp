@@ -78,6 +78,7 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
+	static bool FirstTime = true;
 	//FlushRenderingCommands();
 
 	// Check the engine and viewports are valid
@@ -103,7 +104,7 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 	TArray<FColor> Bitmap;
 
 	// Get the screenshot
-	if (WindowPtr.IsValid() && FSlateApplication::IsInitialized())
+	if (WindowPtr.IsValid() && FSlateApplication::IsInitialized() && FirstTime == false)
 	{
 		FIntVector Size(SizeX, SizeY, 0);
 		TSharedRef<SWidget> WindowRef = WindowPtr.ToSharedRef();
@@ -112,6 +113,7 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		static int32 count = 0;
 		b.Start();
 		bScreenshotSuccessful = FSlateApplication::Get().TakeScreenshot(WindowRef, Bitmap, Size);
+
 		b.End();
 		b.CalculateAvg();
 		if (count++ == 10)
@@ -124,11 +126,11 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 	else
 	{
 		FIntRect Rect(0, 0, SizeX, SizeY);
-		bScreenshotSuccessful = GetViewportScreenShot(Viewport, Bitmap, Rect);
+		//bScreenshotSuccessful = GetViewportScreenShot(Viewport, Bitmap, Rect);
 	}
 
 	// If the screenshot was successful
-	if (bScreenshotSuccessful)
+	/*if (bScreenshotSuccessful && !FirstTime)
 	{
 		TArray<uint8> PNG_Compressed_ImageData;
 		FImageUtils::CompressImageArray(
@@ -154,6 +156,7 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		// Add to the output
 		output.Add(FString(TEXT("Main Camera")), base64data);
 	}
+	*/
 
 	/*
 	UE_LOG(LogTemp, Warning, TEXT("Attempting capture!"));
@@ -196,5 +199,6 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		}
 	}
 	*/
+	FirstTime = false;
 	return false;
 }
