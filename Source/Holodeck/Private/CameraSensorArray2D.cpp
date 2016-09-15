@@ -112,13 +112,24 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		static Benchmarker b;
 		static int32 count = 0;
 		b.Start();
-		bScreenshotSuccessful = FSlateApplication::Get().TakeScreenshot(WindowRef, Bitmap, Size);
+		//for (USceneComponent* child : GetAttachChildren()) {/*
+		//	USceneCaptureComponent2D* SceneCaptureComponent = Cast<USceneCaptureComponent2D>(child);*/
+		//FSlateApplication::Get().GetGameViewport();
+		//if (viewport)
+		//	ColorBuffer = viewport->HolodeckColorBuffer;
+		UHolodeckViewportClient* viewport = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
+		//TArray<FColor> ColorBuffer;
+		//Viewport->ReadPixels(ColorBuffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, 500, 500));
+		//if (viewport)
+		//	ColorBuffer = viewport->HolodeckColorBuffer;
 
 		b.End();
 		b.CalculateAvg();
-		if (count++ == 10)
+		if (count++ == 30)
 		{
+			FString result = TEXT("7000: ") + ColorBuffer[7000].ToString() + TEXT("; 14000: ") + ColorBuffer[14000].ToString() + TEXT("; 21000: ") + ColorBuffer[21000].ToString();
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, b.Stat());
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, result ); /*FString::SanitizeFloat(ColorBuffer.Num())*/
 			count = 0;
 		}
 
@@ -144,7 +155,7 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		//GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, result);
 
 		//Save png file to a file to observe it for debugging
-		//const TCHAR* PNGFileName = TEXT("C:\\Users\\robert.pottorff\\Desktop\\output.png");
+		//const TCHAR* PNGFileName = TEXT("C:\Users\\robert.pottorff\\Desktop\\output.png");
 		//
 		//FFileHelper::SaveArrayToFile(
 		//	PNG_Compressed_ImageData,

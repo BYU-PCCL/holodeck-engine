@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "HolodeckViewportClient.h"
 #include "Benchmarker.h"
 #include "Components/SceneComponent.h"
 #include "HolodeckPawnController.h"
@@ -32,6 +33,7 @@ public:
 private:
 	TArray<USceneCaptureComponent2D*> AAttachedSceneCaptureComponents2D;
 	TArray<UCameraComponent*> AAttachedCameras;
+
 
 
 };
