@@ -78,96 +78,7 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
-	static bool FirstTime = true;
-	//FlushRenderingCommands();
-
-	// Check the engine and viewports are valid
-	if (GEngine == NULL)
-		return false;
-	if (GEngine->GameViewport == NULL)
-		return false;
-	if (GEngine->GameViewport->Viewport == NULL)
-		return false;
-
-	// Get a pointer to the viewport
-	FViewport* Viewport = GEngine->GameViewport->Viewport;
-	TSharedPtr<SWindow> WindowPtr = GEngine->GameViewport->GetWindow();
-
-	// Keep track of whether a screenshot was taken
-	bool bScreenshotSuccessful = false;
-
-	// Get the viewport size
-	int32 SizeX = Viewport->GetSizeXY().X;
-	int32 SizeY = Viewport->GetSizeXY().Y;
-
-	// Prepare the screenshot holder
-	TArray<FColor> Bitmap;
-
-	// Get the screenshot
-	if (WindowPtr.IsValid() && FSlateApplication::IsInitialized() && FirstTime == false)
-	{
-		FIntVector Size(SizeX, SizeY, 0);
-		TSharedRef<SWidget> WindowRef = WindowPtr.ToSharedRef();
-
-		static Benchmarker b;
-		static int32 count = 0;
-		b.Start();
-		//for (USceneComponent* child : GetAttachChildren()) {/*
-		//	USceneCaptureComponent2D* SceneCaptureComponent = Cast<USceneCaptureComponent2D>(child);*/
-		//FSlateApplication::Get().GetGameViewport();
-		//if (viewport)
-		//	ColorBuffer = viewport->HolodeckColorBuffer;
-		UHolodeckViewportClient* viewport = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-		//TArray<FColor> ColorBuffer;
-		//Viewport->ReadPixels(ColorBuffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, 500, 500));
-		//if (viewport)
-		//	ColorBuffer = viewport->HolodeckColorBuffer;
-
-		b.End();
-		b.CalculateAvg();
-		if (count++ == 30)
-		{
-			FString result = TEXT("7000: ") + ColorBuffer[7000].ToString() + TEXT("; 14000: ") + ColorBuffer[14000].ToString() + TEXT("; 21000: ") + ColorBuffer[21000].ToString();
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, b.Stat());
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, result ); /*FString::SanitizeFloat(ColorBuffer.Num())*/
-			count = 0;
-		}
-
-	}
-	else
-	{
-		FIntRect Rect(0, 0, SizeX, SizeY);
-		//bScreenshotSuccessful = GetViewportScreenShot(Viewport, Bitmap, Rect);
-	}
-
-	// If the screenshot was successful
-	/*if (bScreenshotSuccessful && !FirstTime)
-	{
-		TArray<uint8> PNG_Compressed_ImageData;
-		FImageUtils::CompressImageArray(
-			SizeX,
-			SizeY,
-			Bitmap,
-			PNG_Compressed_ImageData
-		);
-
-		//FString result = TEXT("7000: ") + Bitmap[7000].ToString() + TEXT("; 14000: ") + Bitmap[14000].ToString() + TEXT("; 21000: ") + Bitmap[21000].ToString();
-		//GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, result);
-
-		//Save png file to a file to observe it for debugging
-		//const TCHAR* PNGFileName = TEXT("C:\Users\\robert.pottorff\\Desktop\\output.png");
-		//
-		//FFileHelper::SaveArrayToFile(
-		//	PNG_Compressed_ImageData,
-		//	PNGFileName
-		//);
-
-		FString base64data = FBase64::Encode(PNG_Compressed_ImageData);
-
-		// Add to the output
-		output.Add(FString(TEXT("Main Camera")), base64data);
-	}
-	*/
+	
 
 	/*
 	UE_LOG(LogTemp, Warning, TEXT("Attempting capture!"));
@@ -210,6 +121,5 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 		}
 	}
 	*/
-	FirstTime = false;
 	return false;
 }

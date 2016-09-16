@@ -3,7 +3,6 @@
 #pragma once
 
 #include "HolodeckViewportClient.h"
-#include "Benchmarker.h"
 #include "Components/SceneComponent.h"
 #include "HolodeckPawnController.h"
 #include "CameraSensorArray2D.generated.h"
@@ -28,13 +27,9 @@ public:
 
 	bool Capture(TMap<FString, FString>& output);
 
-	TArray<FColor> ColorBuffer;
-
 private:
 	TArray<USceneCaptureComponent2D*> AAttachedSceneCaptureComponents2D;
 	TArray<UCameraComponent*> AAttachedCameras;
-
-
 
 };
 

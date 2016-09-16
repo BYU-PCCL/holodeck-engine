@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "Benchmarker.h"
 #include "EasyFileManager.h"
 #include "Engine/GameViewportClient.h"
 #include "HolodeckViewportClient.generated.h"
@@ -19,8 +20,6 @@ public:
 	bool bHolodeckDoScreenShot;
 	virtual void Draw(FViewport* Viewport, FCanvas* SceneCanvas) override;
 	TArray<FColor> HolodeckColorBuffer;
-	TArray<FFloat16Color> HolodeckFloat16ColorBuffer;
-
 private:
 	//Only run from draw()!
 	void HolodeckTakeScreenShot();

@@ -8,8 +8,8 @@ UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer&
 
 void UHolodeckViewportClient::HolodeckTakeScreenShot()
 {
-	// THIS MUST BE IN EdfaultEngine.ini
-	// GameViewportClientClassName = / Script / Holodeck.HolodeckViewportClient
+	// THIS MUST BE IN DefaultEngine.ini
+	// GameViewportClientClassName = /Script/Holodeck.HolodeckViewportClient
 
 	//Get the viewport size
 	FVector2D viewportSize;
@@ -27,9 +27,7 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 	//check the viewport size is valid
 	if (viewportSize.X <= 0 || viewportSize.Y <= 0) return;
 
-	viewportSize.X--;
-	viewportSize.Y--;
-
+	// First time setup
 	if (bFirstTime)
 	{
 		//Empty color buffer?
@@ -40,40 +38,57 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		bFirstTime = false;
 	}
 
-	if (!Viewport->ReadFloat16Pixels(HolodeckFloat16ColorBuffer))
+	static Benchmarker b;
+	static int32 count = 0;
+	b.Start();
+	bool bGotScreenshot = Viewport->ReadPixels(HolodeckColorBuffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, viewportSize.X, viewportSize.Y));
+	b.End();
+	b.CalculateAvg();
+
+	if (count++ == 30)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, b.Stat());
+		FString result = TEXT("Read successful! 256000: ") + HolodeckColorBuffer[256000].ToString() + TEXT("; 14000: ") + HolodeckColorBuffer[14000].ToString() + TEXT("; 21000: ") + HolodeckColorBuffer[21000].ToString();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, result);
+		count = 0;
+	}
+
 	//Get Screen Shot!
-	//if (!Viewport->ReadPixels(
-	//	HolodeckColorBuffer,
-	//	FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX),
-	//	FIntRect(1, 1, viewportSize.X, viewportSize.Y)
-	//	)) 
+	if (!bGotScreenshot) 
 	{
 		//This was here: VictoryPC->Optimize("Failed to ReadPixels");
 		GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Black, TEXT("Couldn't read pixels!"));
 		return;
 	}
-	else
+
+	// If the screenshot was successful
+	/*if (bScreenshotSuccessful && !FirstTime)
 	{
-		static EasyFileManager m;
-		FString result = TEXT("");
+	TArray<uint8> PNG_Compressed_ImageData;
+	FImageUtils::CompressImageArray(
+	SizeX,
+	SizeY,
+	Bitmap,
+	PNG_Compressed_ImageData
+	);
 
+	//FString result = TEXT("7000: ") + Bitmap[7000].ToString() + TEXT("; 14000: ") + Bitmap[14000].ToString() + TEXT("; 21000: ") + Bitmap[21000].ToString();
+	//GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, result);
 
-		for (FFloat16Color& c : HolodeckFloat16ColorBuffer)
-		{
-			result += FString::SanitizeFloat(c.R) + FString::SanitizeFloat(c.G) + FString::SanitizeFloat(c.B);
-		}
+	//Save png file to a file to observe it for debugging
+	//const TCHAR* PNGFileName = TEXT("C:\Users\\robert.pottorff\\Desktop\\output.png");
+	//
+	//FFileHelper::SaveArrayToFile(
+	//	PNG_Compressed_ImageData,
+	//	PNGFileName
+	//);
 
-		//for (FColor& c : HolodeckColorBuffer)
-		//{
-		//	result += FString::FromInt(c.ToPackedRGBA());
-		//	//result += c.ToString() + ", ";
-		//}
+	FString base64data = FBase64::Encode(PNG_Compressed_ImageData);
 
-
-		m.SaveToFile(result, "test.txt");
-		//result = TEXT("Read successful! 1,024,000: ") + HolodeckColorBuffer[256000].ToString() + TEXT("; 14000: ") + HolodeckColorBuffer[14000].ToString() + TEXT("; 21000: ") + HolodeckColorBuffer[21000].ToString();
-		GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Black, result);
+	// Add to the output
+	output.Add(FString(TEXT("Main Camera")), base64data);
 	}
+	*/
 }
 
 
