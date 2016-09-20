@@ -30,9 +30,9 @@ void AHolodeckAndroidController::SetJointConstraint(FName joint, float swing1, f
 	Constraint->SetAngularDriveParams(100000 * force, 10000, 100000);
 
 	Constraint->SetAngularOrientationTarget(
-						FRotator(Constraint->Swing2LimitAngle*swing2, // Blue fan in Unreal Editor
-								 Constraint->Swing1LimitAngle*swing1, // Red fan
-								 Constraint->TwistLimitAngle*twist)  // Green fan
+						FRotator(Constraint->Swing2LimitAngle * swing2, // Blue fan in Unreal Editor
+								 Constraint->Swing1LimitAngle * swing1, // Red fan
+								 Constraint->TwistLimitAngle * twist)  // Green fan
 								.Quaternion());
 }
 
