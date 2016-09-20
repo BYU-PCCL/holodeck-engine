@@ -30,6 +30,5 @@ public:
 private:
 	TArray<USceneCaptureComponent2D*> AAttachedSceneCaptureComponents2D;
 	TArray<UCameraComponent*> AAttachedCameras;
-
 };
 
