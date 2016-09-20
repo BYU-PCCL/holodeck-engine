@@ -38,20 +38,7 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		bFirstTime = false;
 	}
 
-	static Benchmarker b;
-	static int32 count = 0;
-	b.Start();
 	bool bGotScreenshot = Viewport->ReadPixels(HolodeckColorBuffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, viewportSize.X, viewportSize.Y));
-	b.End();
-	b.CalculateAvg();
-
-	if (count++ == 30)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, b.Stat());
-		FString result = TEXT("Read successful! 256000: ") + HolodeckColorBuffer[256000].ToString() + TEXT("; 14000: ") + HolodeckColorBuffer[14000].ToString() + TEXT("; 21000: ") + HolodeckColorBuffer[21000].ToString();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, result);
-		count = 0;
-	}
 
 	//Get Screen Shot!
 	if (!bGotScreenshot) 
@@ -89,6 +76,7 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 	output.Add(FString(TEXT("Main Camera")), base64data);
 	}
 	*/
+	return;
 }
 
 
@@ -107,12 +95,4 @@ void UHolodeckViewportClient::Draw(FViewport * Viewport, FCanvas * SceneCanvas)
 
 	//UE_LOG(Victory,Warning,TEXT("VICTORY GAME VIEWPORT Ticking!"));
 	HolodeckTakeScreenShot();
-	/*
-	//Take Screen shot?
-	if (bHolodeckDoScreenShot)
-	{
-		//bHolodeckDoScreenShot = false;
-		HolodeckTakeScreenShot();
-	}
-	*/
 }

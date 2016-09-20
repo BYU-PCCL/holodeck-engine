@@ -20,12 +20,10 @@ public:
 	bool bHolodeckDoScreenShot;
 	virtual void Draw(FViewport* Viewport, FCanvas* SceneCanvas) override;
 	TArray<FColor> HolodeckColorBuffer;
+
 private:
 	//Only run from draw()!
 	void HolodeckTakeScreenShot();
 	bool bFirstTime;
-
-	
-	
 
 };

@@ -24,18 +24,7 @@ void UCameraSensorArray2D::BeginPlay()
 {
 	Super::BeginPlay();
 
-	AController* tmp = this->GetAttachmentRootActor()->GetInstigator()->Controller;
-	Controller = Cast<AHolodeckPawnController>(this->GetAttachmentRootActor()->GetInstigator()->Controller);
-
-	UE_LOG(LogTemp, Warning, TEXT("%s"), tmp);
-
-	if (Controller == NULL) {
-		UE_LOG(LogTemp, Warning, TEXT("Invalid Controller: Agent is not being controlled by child of HolodeckPawnController"));
-	}
-
-
-	// TODO: should be moved to a composable sensor class instaed
-	MessageEndpoint = FMessageEndpoint::Builder("FHolodeckPawnControllerMessageEndpoint");
+	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 
 	//get all the attached USceneCaptureComponent2D
 	for (USceneComponent* child : GetAttachChildren()) {
@@ -65,37 +54,26 @@ void UCameraSensorArray2D::BeginPlay()
 // Called every frame
 void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	FHolodeckSensorData data = FHolodeckSensorData();
+	data.Type = "CameraSensorArray2D";
 
-	//if (Controller) {
-		FHolodeckSensorData data = FHolodeckSensorData();
-		data.Type = "CameraSensorArray2D";
+	TMap < FString, FString> CaptureData;
+	Capture(CaptureData);
 
-		TMap < FString, FString> CaptureData;
-		Capture(CaptureData);
-	
-		//Return base64 CaptureData as json object
-		FString DataString = "{";
-		for (auto& Item : CaptureData)
-		{
-			DataString += "\"" + Item.Key + "\":\"" + Item.Value + "\",";
-		}
-		DataString.RemoveAt(DataString.Len() - 1);
-		DataString += "}";
+	//Return base64 CaptureData as json object
+	FString DataString = "[";
+	for (auto& Item : CaptureData)
+	{
+		DataString += "{\"" + Item.Key + "\":\"" + Item.Value + "\"},";
+	}
+	DataString.RemoveAt(DataString.Len() - 1);
+	DataString += "]";
 
-		data.Data = DataString;
+	data.Data = DataString;
 
-		FHolodeckResponse* response = new FHolodeckResponse();
-		response->Source = TEXT("UAV"); // this->GetAttachmentRootActor()->GetHumanReadableName(); //get tag 0 if it's there and use that instead of GetHumanReadableName()... otherwise just use GetHumanReadableName();
-
-		response->Type = data.Type;
-		response->Data = data.Data;
-
-		MessageEndpoint->Publish<FHolodeckResponse>(response);
-
-		//Controller->Publish(data);
-	//}
+	Controller->Publish(data);
 }
 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
