@@ -5,7 +5,6 @@
 #include "SimplePID.h"
 #include "GameFramework/Pawn.h"
 #include "HolodeckUAVController.h"
-#include "PhysXIncludes.h"
 #include "UAV.generated.h"
 
 UCLASS()
@@ -17,8 +16,8 @@ public:
 	AUAV();
 
 	virtual void BeginPlay() override;
-	
-	virtual void Tick( float DeltaSeconds ) override;
+
+	virtual void Tick(float DeltaSeconds) override;
 	void SubstepTick(float DeltaTime, FBodyInstance* BodyInstance);
 
 	void UpdateForcesAndMoments(float DeltaTime);
@@ -73,17 +72,11 @@ private:
 	float CurrentYaw;
 
 	float CurrentGlobalVelocityZ;
-	
+
 	float CurrentYawRate;
 
-	PxRigidBody* UAVRigidBody;
-	PxTransform CurrentTransform;
-
-	UPrimitiveComponent* Parent;
-
-	UWorld* World;
-	AWorldSettings* WorldSettings;
-	float WorldToMetersRatio;
+	// Wind
+	FVector Wind;
 
 	// Define global constants
 	// TODO: rename l, m, n, f to roll, pitch, yaw_rate, and force
@@ -94,7 +87,7 @@ private:
 	//n is yaw rate
 	//f is the force (or fz)
 	const float UAV_MASS = 3.856;
-	const float UAV_MU = 0;
+	const float UAV_MU = 1;
 	const float UAV_MAX_ROLL_L = 6.5080;
 	const float UAV_MAX_PITCH_M = 5.087;
 	const float UAV_MAX_YAW_RATE_N = 0.099828;
