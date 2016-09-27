@@ -21,7 +21,7 @@ void UHolodeckIMUSensor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 
 	Parent = Cast<UPrimitiveComponent>(this->GetAttachParent());
 
@@ -45,11 +45,11 @@ void UHolodeckIMUSensor::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (RootMesh) {
-		RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
-	}
+	//if (RootMesh) {
+	//	RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
+	//}
 
-	/*
+	
 	if (Parent != NULL) {
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
@@ -59,7 +59,7 @@ void UHolodeckIMUSensor::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	}
 
 	PublishSensorMessage();
-	*/
+	
 }
 
 void UHolodeckIMUSensor::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
@@ -121,8 +121,8 @@ void UHolodeckIMUSensor::PublishSensorMessage() {
 		"," + FString::SanitizeFloat(AngularVelocityVector.X) +    // roll_vel
 		"," + FString::SanitizeFloat(AngularVelocityVector.Y) +    // pitch_vel
 		"," + FString::SanitizeFloat(AngularVelocityVector.Z) + "]"; // yaw_vel
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, data.Data);
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, data.Data);
 
-	//Controller->Publish(data);
+	Controller->Publish(data);
 
 }
