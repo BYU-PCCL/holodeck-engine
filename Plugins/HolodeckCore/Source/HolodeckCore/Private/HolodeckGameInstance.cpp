@@ -105,6 +105,10 @@ void UHolodeckGameInstance::OnReceiveSimulatorCommand(const FHolodeckSimulatorCo
 	if (Command.Restart == true) {
 		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
 	}
+
+	if (Command.LoadLevel != "") {
+		UGameplayStatics::OpenLevel(this, FName(*Command.LoadLevel), false);
+	}
 	
 }
 

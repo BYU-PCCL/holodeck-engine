@@ -90,11 +90,15 @@ struct HOLODECKCORE_API FHolodeckSimulatorCommand : public FHolodeckCommand {
 	UPROPERTY()
 	bool Restart;
 
+	UPROPERTY()
+	FString LoadLevel;
+
 	FHolodeckSimulatorCommand() :  
 		Target(),
 		AllowedTicksBetweenCommands(0),
 		TimeDeltaBetweenTicks(0),
-		Restart(0) { }
+		Restart(0),
+		LoadLevel() { }
 };
 
 
