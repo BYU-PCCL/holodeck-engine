@@ -33,7 +33,7 @@ void UPressureSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 	data.Type = "PressureSensor";
 
 	//build json from hitsmap
-	FString DataString = "[";
+	FString DataString = "";
 	for (auto& BoneHitArray : HitsMap)
 	{
 		DataString += "{\"" + BoneHitArray.Key + "\":[";
@@ -44,7 +44,9 @@ void UPressureSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 		}
 		DataString += "]},";
 	}
-	DataString.RemoveAt(DataString.Len() - 1);
+	if (DataString.Len() > 0)
+		DataString.RemoveAt(DataString.Len() - 1);
+	DataString.InsertAt(0, "[");
 	DataString += "]";
 	data.Data = DataString;
 
