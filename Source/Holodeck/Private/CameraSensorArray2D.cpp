@@ -78,7 +78,7 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 
 bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
-	/*
+	
 	UE_LOG(LogTemp, Warning, TEXT("Attempting capture!"));
 	for (USceneCaptureComponent2D* camera :AAttachedSceneCaptureComponents2D) {
 		if (camera->TextureTarget)
@@ -111,6 +111,6 @@ bool UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 				
 		}
 	}
-	*/
+	
 	return false;
 }

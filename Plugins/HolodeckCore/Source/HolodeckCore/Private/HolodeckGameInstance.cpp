@@ -101,6 +101,14 @@ void UHolodeckGameInstance::OnReceiveSimulatorCommand(const FHolodeckSimulatorCo
 	if (Command.TimeDeltaBetweenTicks > 0) {
 		WorldSettings->SetConstantTimeDeltaBetweenTicks(Command.TimeDeltaBetweenTicks);
 	}
+
+	if (Command.Restart == true) {
+		UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+	}
+
+	if (Command.LoadLevel != "") {
+		UGameplayStatics::OpenLevel(this, FName(*Command.LoadLevel), false);
+	}
 	
 }
 
