@@ -26,14 +26,14 @@ AUAV::AUAV()
 void AUAV::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
 
 	// Set up the PID Controllers TODO - WHAT TO USE FOR TAU?
-	RollController.setGains(UAV_ROLL_P, UAV_ROLL_I, UAV_ROLL_D, UAV_TAU_DOWN_ROLL_L);
-	PitchController.setGains(UAV_PITCH_P, UAV_PITCH_I, UAV_PITCH_D, UAV_TAU_DOWN_PITCH_M);
-	YawController.setGains(UAV_YAW_P, UAV_YAW_I, UAV_YAW_D, UAV_TAU_DOWN_YAW_RATE_N);
-	AltitudeController.setGains(UAV_ALT_P, UAV_ALT_I, UAV_ALT_D, UAV_TAU_DOWN_FORCE_F);
+	RollController.setGains(RollP, RollI, RollD, TauDownRoll);
+	PitchController.setGains(PitchP, RollI, RollD, TauDownPitch);
+	YawController.setGains(YawP, YawI, PitchD, TauDownYawRate);
+	AltitudeController.setGains(AltP, AltI, AltD, TauDownForce);
 }
 
 // Called every frame
@@ -64,6 +64,9 @@ FVector AUAV::RotatorToEulerInZYX(FRotator Rotator) {
 
 void AUAV::UpdateForcesAndMoments(float DeltaTime)
 {
+	GEngine->GameUserSettings->SetScreenResolution(FIntPoint(10, 10));
+
+
 	// Get the current locations
 	CurrentPositionX = UEUnitsToMeters(GetActorLocation().X);
 	CurrentPositionY = UEUnitsToMeters(GetActorLocation().Y);
@@ -99,10 +102,10 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime)
 	ThrustToApply = AltitudeController.computePIDDirect(DesiredAltitude, CurrentPositionZ, CurrentGlobalVelocityZ, DeltaTime) + HoverThrust;
 
 	// Calculate first-order filter
-	float TauRoll = (RollTorqueToApply > CurrentRollTorque) ? UAV_TAU_UP_ROLL_L : UAV_TAU_DOWN_ROLL_L;
-	float TauPitch = (PitchTorqueToApply > CurrentPitchTorque) ? UAV_TAU_UP_PITCH_M : UAV_TAU_DOWN_PITCH_M;
-	float TauYawRate = (YawTorqueToApply > CurrentYawTorque) ? UAV_TAU_UP_YAW_RATE_N : UAV_TAU_DOWN_YAW_RATE_N;
-	float TauThrust = (ThrustToApply > CurrentThrust) ? UAV_TAU_UP_FORCE_F : UAV_TAU_DOWN_FORCE_F;
+	float TauRoll = (RollTorqueToApply > CurrentRollTorque) ? TauUpRoll : TauDownRoll;
+	float TauPitch = (PitchTorqueToApply > CurrentPitchTorque) ? TauUpPitch : TauDownPitch;
+	float TauYawRate = (YawTorqueToApply > CurrentYawTorque) ? TauUpYawRate : TauDownYawRate;
+	float TauThrust = (ThrustToApply > CurrentThrust) ? TauUpForce : TauDownForce;
 	float AlphaRoll = DeltaTime / (TauRoll + DeltaTime);
 	float AlphaPitch = DeltaTime / (TauPitch + DeltaTime);
 	float AlphaYaw = DeltaTime / (TauYawRate + DeltaTime);
@@ -114,13 +117,13 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime)
 	ThrustToApply = (1 - AlphaThrust) * ThrustToApply + AlphaThrust * ThrustToApply;
 
 	// Calculate Air Resistance
-	Wind = -UAV_MU * CurrentGlobalVelocity;
+	Wind = -Mu * CurrentGlobalVelocity;
 
 	// Apply the discrete first order filter
-	RollTorqueToApply = FMath::Clamp(RollTorqueToApply, -UAV_MAX_ROLL_L, UAV_MAX_ROLL_L);
-	PitchTorqueToApply = FMath::Clamp(PitchTorqueToApply, -UAV_MAX_PITCH_M, UAV_MAX_PITCH_M);
-	YawTorqueToApply = FMath::Clamp(YawTorqueToApply, -UAV_MAX_YAW_RATE_N, UAV_MAX_YAW_RATE_N);
-	ThrustToApply = FMath::Clamp(ThrustToApply, -UAV_MAX_FORCE_F, UAV_MAX_FORCE_F);
+	RollTorqueToApply = FMath::Clamp(RollTorqueToApply, -MaxRoll, MaxRoll);
+	PitchTorqueToApply = FMath::Clamp(PitchTorqueToApply, -MaxPitch, MaxPitch);
+	YawTorqueToApply = FMath::Clamp(YawTorqueToApply, -MaxYawRate, MaxYawRate);
+	ThrustToApply = FMath::Clamp(ThrustToApply, -MaxForce, MaxForce);
 }
 
 float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
