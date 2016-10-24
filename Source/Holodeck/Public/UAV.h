@@ -79,37 +79,31 @@ private:
 	FVector Wind;
 
 	// Define global constants
-	// TODO: rename l, m, n, f to roll, pitch, yaw_rate, and force
-	// TODO: remove UAV_
-	// TODO: camel case all of these
-	//l is roll
-	//m is pitch
-	//n is yaw rate
-	//f is the force (or fz)
-	const float UAV_MASS = 3.856;
-	const float UAV_MU = 1;
-	const float UAV_MAX_ROLL_L = 6.5080;
-	const float UAV_MAX_PITCH_M = 5.087;
-	const float UAV_MAX_YAW_RATE_N = 0.099828;
-	const float UAV_MAX_FORCE_F = 59.844;
-	const float UAV_TAU_UP_ROLL_L = 0.1904;
-	const float UAV_TAU_UP_PITCH_M = 0.1904;
-	const float UAV_TAU_UP_YAW_RATE_N = 0.1644;
-	const float UAV_TAU_UP_FORCE_F = 0.1644;
-	const float UAV_TAU_DOWN_ROLL_L = 0.1904;
-	const float UAV_TAU_DOWN_PITCH_M = 0.1904;
-	const float UAV_TAU_DOWN_YAW_RATE_N = 0.2164;
-	const float UAV_TAU_DOWN_FORCE_F = 0.2164;
-	const float UAV_ROLL_P = 25.0;
-	const float UAV_ROLL_I = 0.0;
-	const float UAV_ROLL_D = 8.0;
-	const float UAV_PITCH_P = 25.0;
-	const float UAV_PITCH_I = 0.0;
-	const float UAV_PITCH_D = 8.0;
-	const float UAV_YAW_P = 10.0;
-	const float UAV_YAW_I = 0.0;
-	const float UAV_YAW_D = 0.0;
-	const float UAV_ALT_P = 16.0;
-	const float UAV_ALT_I = 5.0;
-	const float UAV_ALT_D = 32.0;
+
+	const float Mass = 3.856;
+	const float Mu = 1;
+	const float MaxRoll = 6.5080;
+	const float MaxPitch = 5.087;
+	const float MaxYawRate = 0.099828;
+	const float MaxForce = 59.844;
+	const float TauUpRoll = 0.1904;
+	const float TauUpPitch = 0.1904;
+	const float TauUpYawRate = 0.1644;
+	const float TauUpForce = 0.1644;
+	const float TauDownRoll = 0.1904;
+	const float TauDownPitch = 0.1904;
+	const float TauDownYawRate = 0.2164;
+	const float TauDownForce = 0.2164;
+	const float RollP = 25.0;
+	const float RollI = 0.0;
+	const float RollD = 8.0;
+	const float PitchP = 25.0;
+	const float PitchI = 0.0;
+	const float PitchD = 8.0;
+	const float YawP = 10.0;
+	const float YawI = 0.0;
+	const float YawD = 0.0;
+	const float AltP = 16.0;
+	const float AltI = 5.0;
+	const float AltD = 32.0;
 };
