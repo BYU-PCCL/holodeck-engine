@@ -10,6 +10,7 @@ AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& Objec
 	MessageEndpoint = FMessageEndpoint::Builder("FHolodeckPawnControllerMessageEndpoint")
 		.Handling<FHolodeckUAVCommand>(this, &AHolodeckPawnController::OnReceiveCommand)
 		.Handling<FHolodeckAndroidCommand>(this, &AHolodeckPawnController::OnReceiveCommand)
+		.Handling<FHolodeckSphereRobotCommand>(this, &AHolodeckPawnController::OnReceiveCommand)
 		.Handling<FHolodeckAndroidConfiguration>(this, &AHolodeckPawnController::OnReceiveConfiguration)
 		.Handling<FHolodeckUAVConfiguration>(this, &AHolodeckPawnController::OnReceiveConfiguration);
 
@@ -17,6 +18,7 @@ AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& Objec
 	{
 		MessageEndpoint->Subscribe<FHolodeckUAVCommand>();
 		MessageEndpoint->Subscribe<FHolodeckAndroidCommand>();
+		MessageEndpoint->Subscribe<FHolodeckSphereRobotCommand>();
 		MessageEndpoint->Subscribe<FHolodeckAndroidConfiguration>();
 		MessageEndpoint->Subscribe<FHolodeckUAVConfiguration>();
 		MessageEndpoint->Disable();
@@ -55,6 +57,12 @@ void AHolodeckPawnController::OnReceiveCommand(const FHolodeckUAVCommand& Comman
 };
 
 void AHolodeckPawnController::OnReceiveCommand(const FHolodeckAndroidCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
+	if ((this->GetPawn() && Command.Target == this->GetPawn()->GetHumanReadableName())) {
+		OnReceiveCommand(Command);
+	}
+};
+
+void AHolodeckPawnController::OnReceiveCommand(const FHolodeckSphereRobotCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
 	if ((this->GetPawn() && Command.Target == this->GetPawn()->GetHumanReadableName())) {
 		OnReceiveCommand(Command);
 	}

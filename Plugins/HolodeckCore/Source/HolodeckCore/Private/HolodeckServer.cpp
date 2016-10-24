@@ -151,6 +151,10 @@ void UHolodeckServer::HandleData(FString id, FString data) {
 			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Sending message to simulator");
 			success = ParseCommandAndPublish<FHolodeckSimulatorCommand>(id, ParsedMessage);
 		}
+		else if (ParsedMessage->CommandType == TEXT("SphereRobotCommand")) {
+			//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Sending message to simulator");
+			success = ParseCommandAndPublish<FHolodeckSphereRobotCommand>(id, ParsedMessage);
+		}
 		else if (ParsedMessage->CommandType == TEXT("WaitForConnect")) {
 			// If we have recieved the message, it means we are connected
 			// so send a success response

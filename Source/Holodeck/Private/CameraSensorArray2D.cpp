@@ -63,14 +63,16 @@ void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, 
 	Capture(CaptureData);
 
 	//Return base64 CaptureData as json object
-	FString DataString = "[";
+	FString DataString = "";
 	for (auto& Item : CaptureData)
 	{
 		DataString += "{\"" + Item.Key + "\":\"" + Item.Value + "\"},";
 	}
-	DataString.RemoveAt(DataString.Len() - 1);
-	DataString += "]";
 
+	if (DataString.Len() > 0)
+		DataString.RemoveAt(DataString.Len() - 1);
+	DataString.InsertAt(0, "[");
+	DataString += "]";
 	data.Data = DataString;
 
 	Controller->Publish(data);

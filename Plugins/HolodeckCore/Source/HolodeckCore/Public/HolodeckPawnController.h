@@ -37,11 +37,13 @@ public:
 
 	void OnReceiveCommand(const FHolodeckUAVCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnReceiveCommand(const FHolodeckAndroidCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnReceiveCommand(const FHolodeckSphereRobotCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnReceiveConfiguration(const FHolodeckAndroidConfiguration& Configuration, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnReceiveConfiguration(const FHolodeckUAVConfiguration& Configuration, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	virtual void OnReceiveCommand(const FHolodeckUAVCommand& Command) { };
 	virtual void OnReceiveCommand(const FHolodeckAndroidCommand& Command) { };
+	virtual void OnReceiveCommand(const FHolodeckSphereRobotCommand& Command) { };
 	virtual void OnReceiveConfiguration(const FHolodeckAndroidConfiguration& Configuration) { };
 	virtual void OnReceiveConfiguration(const FHolodeckUAVConfiguration& Configuration) { };
 

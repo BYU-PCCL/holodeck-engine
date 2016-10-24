@@ -75,6 +75,25 @@ struct HOLODECKCORE_API FHolodeckUAVConfiguration : public FHolodeckCommand {
 };
 
 USTRUCT()
+struct HOLODECKCORE_API FHolodeckSphereRobotCommand : public FHolodeckCommand {
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY()
+		FString Target;
+
+	UPROPERTY()
+		float Forward;
+
+	UPROPERTY()
+		float Right;
+
+	FHolodeckSphereRobotCommand() :
+		Target(),
+		Forward(0),
+		Right(0) { }
+};
+
+USTRUCT()
 struct HOLODECKCORE_API FHolodeckSimulatorCommand : public FHolodeckCommand {
 	GENERATED_USTRUCT_BODY()
 
