@@ -9,15 +9,15 @@
 #include "HolodeckGameInstance.generated.h"
 
 UCLASS()
-class HOLODECKCORE_API UHolodeckGameInstance : public UGameInstance
+class HOLODECKCORE_API UHolodeckGameInstance : public UGameInstance, public FTickFunction
 {
 	GENERATED_BODY()
 	
 private:
 
-	bool Tick(float DeltaSeconds);
+	struct FHolodeckGameInstanceTickFunction;
 
-	FDelegateHandle TickDelegateHandle;
+	FHolodeckGameInstanceTickFunction* TickFunction;
 	
 	AHolodeckWorldSettings* WorldSettings;
 
@@ -27,6 +27,13 @@ private:
 	int CurrentTickWait = -1;
 
 	TSharedPtr<FMessageEndpoint, ESPMode::ThreadSafe> MessageEndpoint;
+
+	struct FHolodeckGameInstanceTickFunction : public FTickFunction
+	{
+		UHolodeckGameInstance* GameInstance;
+
+		virtual void ExecuteTick(float DeltaTime, enum ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent) override;
+	};
 
 public:
 	

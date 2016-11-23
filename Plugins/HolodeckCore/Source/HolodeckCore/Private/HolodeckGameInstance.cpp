@@ -18,8 +18,10 @@ void UHolodeckGameInstance::Shutdown() {
 		delete Server;
 	}
 
-	// Unregister ticker delegate
-	FTicker::GetCoreTicker().RemoveTicker(TickDelegateHandle);
+	if (TickFunction) {
+		TickFunction->UnRegisterTickFunction();
+		delete TickFunction;
+	}
 
 	Super::Shutdown();
 }
@@ -34,26 +36,19 @@ void UHolodeckGameInstance::StartServer() {
 }
 
 
-bool UHolodeckGameInstance::Tick(float DeltaTime) {
+void UHolodeckGameInstance::FHolodeckGameInstanceTickFunction::ExecuteTick(float DeltaTime, enum ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent) {
 
-	//GEngine->AddOnScreenDebugMessage(-1, 2000.f, FColor::Purple, FString::Printf(TEXT("Ticking...")));
+	if (GameInstance->WorldSettings->GetAllowedTicksBetweenCommands() >= 0) {
+		GameInstance->CurrentTickWait -= 1;
 
-	if (this->WorldSettings->GetAllowedTicksBetweenCommands() >= 0) {
-		this->CurrentTickWait -= 1;
-
-		if (this->CurrentTickWait <= 0) {
+		if (GameInstance->CurrentTickWait <= 0) {
 			UE_LOG(LogHolodeck, Warning, TEXT("Pausing Game."));
-			this->SetGamePaused(true);
+			GameInstance->SetGamePaused(true);
 		}
 	}
-
-	return true;
 }
 
 void UHolodeckGameInstance::Init(){
-
-	// Register delegate for ticker callback
-	TickDelegateHandle = FTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateUObject(this, &UHolodeckGameInstance::Tick));
 
 	Super::Init();
 	
@@ -70,7 +65,11 @@ void UHolodeckGameInstance::Init(){
 	// TODO: Ensure this code also gets called when a new level is loaded
 	UWorld* world = GetWorld();
 	if (world) {
+
 		WorldSettings = (AHolodeckWorldSettings*)GetWorld()->GetWorldSettings();
+		TickFunction = new FHolodeckGameInstanceTickFunction();
+		TickFunction->GameInstance = this;
+		TickFunction->RegisterTickFunction(world->GetCurrentLevel());
 	}
 
 	if(WorldSettings->GetAllowedTicksBetweenCommands() > 0){
