@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Engine.h"
+#include "HolodeckGameInstance.h"
 #include "GameFramework/GameMode.h"
 #include "HolodeckGameMode.generated.h"
 
@@ -9,11 +11,12 @@
  * 
  */
 UCLASS()
-class HOLODECK_API AHolodeckGameMode : public AGameMode
+class HOLODECKCORE_API AHolodeckGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
-	
+	public:
+		virtual void Tick(float DeltaSeconds) override;
 	
 	
 };

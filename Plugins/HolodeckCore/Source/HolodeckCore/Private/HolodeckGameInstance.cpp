@@ -18,11 +18,6 @@ void UHolodeckGameInstance::Shutdown() {
 		delete Server;
 	}
 
-	if (TickFunction) {
-		TickFunction->UnRegisterTickFunction();
-		delete TickFunction;
-	}
-
 	Super::Shutdown();
 }
 
@@ -36,14 +31,14 @@ void UHolodeckGameInstance::StartServer() {
 }
 
 
-void UHolodeckGameInstance::FHolodeckGameInstanceTickFunction::ExecuteTick(float DeltaTime, enum ELevelTick TickType, ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent) {
+void UHolodeckGameInstance::Tick(float DeltaTime) {
 
-	if (GameInstance->WorldSettings->GetAllowedTicksBetweenCommands() >= 0) {
-		GameInstance->CurrentTickWait -= 1;
+	if (WorldSettings->GetAllowedTicksBetweenCommands() >= 0) {
+		CurrentTickWait -= 1;
 
-		if (GameInstance->CurrentTickWait <= 0) {
+		if (CurrentTickWait <= 0) {
 			UE_LOG(LogHolodeck, Warning, TEXT("Pausing Game."));
-			GameInstance->SetGamePaused(true);
+			SetGamePaused(true);
 		}
 	}
 }
@@ -64,13 +59,8 @@ void UHolodeckGameInstance::Init(){
 
 	// TODO: Ensure this code also gets called when a new level is loaded
 	UWorld* world = GetWorld();
-	if (world) {
-
+	if (world)
 		WorldSettings = (AHolodeckWorldSettings*)GetWorld()->GetWorldSettings();
-		TickFunction = new FHolodeckGameInstanceTickFunction();
-		TickFunction->GameInstance = this;
-		TickFunction->RegisterTickFunction(world->GetCurrentLevel());
-	}
 
 	if(WorldSettings->GetAllowedTicksBetweenCommands() > 0){
 		SetGamePaused(true);
