@@ -40,24 +40,24 @@ struct HOLODECKCORE_API FHolodeckAndroidConfiguration : public FHolodeckCommand 
 USTRUCT()
 struct HOLODECKCORE_API FHolodeckUAVCommand : public FHolodeckCommand {
 	GENERATED_USTRUCT_BODY()
+		UPROPERTY()
+		FString Target;
+	UPROPERTY()
+		float Roll;
 
 	UPROPERTY()
-	FString Target;
+		float Pitch;
 
 	UPROPERTY()
-	float LocalRoll;
-	
+		float YawRate;
 	UPROPERTY()
-	float LocalPitch;
-	
-	UPROPERTY()
-	float LocalYaw;
-
+		float Altitude;
 	FHolodeckUAVCommand() :
 		Target(),
-		LocalRoll(0),
-		LocalPitch(0), 
-		LocalYaw(0) { }
+		Roll(0),
+		Pitch(0),
+		YawRate(0),
+		Altitude(0) { }
 };
 
 USTRUCT()

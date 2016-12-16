@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Holodeck.h"
+#include "UAV.h"
 #include "HolodeckViewportClient.h"
 
 
@@ -10,22 +11,11 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 {
 	// THIS MUST BE IN DefaultEngine.ini
 	// GameViewportClientClassName = /Script/Holodeck.HolodeckViewportClient
-
 	//Get the viewport size
-	FVector2D viewportSize;
-	GetViewportSize(viewportSize);
-
-	//output viewport size, useful for debugging
-	/*
-	FString text = "x= ";
-	text += FString::FromInt(viewportSize.X);
-	text += "y= ";
-	text += FString::FromInt(viewportSize.Y);
-	GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, text);
-	*/
+	GetViewportSize(ViewportSize);
 	
 	//check the viewport size is valid
-	if (viewportSize.X <= 0 || viewportSize.Y <= 0) return;
+	if (ViewportSize.X <= 0 || ViewportSize.Y <= 0) return;
 
 	// First time setup
 	if (bFirstTime)
@@ -34,11 +24,11 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		HolodeckColorBuffer.Empty();
 
 		//Zero the color buffer
-		HolodeckColorBuffer.AddZeroed(viewportSize.X * viewportSize.Y);
+		HolodeckColorBuffer.AddZeroed(ViewportSize.X * ViewportSize.Y);
 		bFirstTime = false;
 	}
 
-	bool bGotScreenshot = Viewport->ReadPixels(HolodeckColorBuffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, viewportSize.X, viewportSize.Y));
+	bool bGotScreenshot = Viewport->ReadPixels(HolodeckColorBuffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, ViewportSize.X, ViewportSize.Y));
 
 	//Get Screen Shot!
 	if (!bGotScreenshot) 
@@ -47,35 +37,23 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Black, TEXT("Couldn't read pixels!"));
 		return;
 	}
+	else {
+		TArray<uint8> PNG_Compressed_ImageData;
+		FImageUtils::CompressImageArray(
+			ViewportSize.X,
+			ViewportSize.Y,
+			HolodeckColorBuffer,
+			PNG_Compressed_ImageData
+		);
 
-	// If the screenshot was successful
-	/*if (bScreenshotSuccessful && !FirstTime)
-	{
-	TArray<uint8> PNG_Compressed_ImageData;
-	FImageUtils::CompressImageArray(
-	SizeX,
-	SizeY,
-	Bitmap,
-	PNG_Compressed_ImageData
-	);
-
-	//FString result = TEXT("7000: ") + Bitmap[7000].ToString() + TEXT("; 14000: ") + Bitmap[14000].ToString() + TEXT("; 21000: ") + Bitmap[21000].ToString();
-	//GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, result);
-
-	//Save png file to a file to observe it for debugging
-	//const TCHAR* PNGFileName = TEXT("C:\Users\\robert.pottorff\\Desktop\\output.png");
-	//
-	//FFileHelper::SaveArrayToFile(
-	//	PNG_Compressed_ImageData,
-	//	PNGFileName
-	//);
-
-	FString base64data = FBase64::Encode(PNG_Compressed_ImageData);
-
-	// Add to the output
-	output.Add(FString(TEXT("Main Camera")), base64data);
+		FString result;
+		for (uint8& num : PNG_Compressed_ImageData)
+			result += FString::FromInt(num) + ",";
+		//Base64Data = FBase64::Encode(PNG_Compressed_ImageData);
+		//ImageQueue.Enqueue(Base64Data);
+		ImageQueue.Enqueue(result);
 	}
-	*/
+
 	return;
 }
 

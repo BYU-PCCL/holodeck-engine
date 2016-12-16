@@ -49,6 +49,6 @@ public:
 
 	virtual void SendResponse(const FHolodeckResponse& Response) { };
 
-	void Publish(FHolodeckSensorData Response);
+	void Publish(FHolodeckSensorData& Response);
 
 };
