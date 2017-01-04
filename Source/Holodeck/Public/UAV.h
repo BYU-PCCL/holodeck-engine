@@ -3,9 +3,10 @@
 #include "SimplePID.h"
 #include "GameFramework/Pawn.h"
 #include "HolodeckUAVController.h"
+#include "HolodeckAgent.h"
 #include "UAV.generated.h"
 UCLASS()
-class HOLODECK_API AUAV : public APawn
+class HOLODECK_API AUAV : public AHolodeckAgent
 {
 	GENERATED_BODY()
 public:

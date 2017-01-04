@@ -5,10 +5,11 @@
 #include "GameFramework/Pawn.h"
 #include "HolodeckCore/Public/HolodeckMessages.h"
 #include "HolodeckCore/Public/HolodeckPawnController.h"
+#include "HolodeckAgent.h"
 #include "SphereRobot.generated.h"
 
 UCLASS()
-class HOLODECK_API ASphereRobot : public APawn
+class HOLODECK_API ASphereRobot : public AHolodeckAgent
 {
 	GENERATED_BODY()
 
@@ -32,16 +33,9 @@ public:
 		float RotSpeed;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int Score;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		int counter;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool HasWon;
-
-	AHolodeckPawnController* controller;
-	FHolodeckSensorData reward_message;
-	FHolodeckSensorData terminal_state_message;
 	
 };

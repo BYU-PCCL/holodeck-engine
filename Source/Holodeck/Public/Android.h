@@ -4,10 +4,11 @@
 
 #include "GameFramework/Pawn.h"
 #include "PressureSensor.h"
+#include "HolodeckAgent.h"
 #include "Android.generated.h"
 
 UCLASS()
-class HOLODECK_API AAndroid : public APawn
+class HOLODECK_API AAndroid : public AHolodeckAgent
 {
 	GENERATED_BODY()
 

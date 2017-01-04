@@ -23,20 +23,6 @@ void ASphereRobot::BeginPlay()
 void ASphereRobot::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
-	controller = (AHolodeckPawnController*) this->GetController();
-
-	reward_message = FHolodeckSensorData();
-	reward_message.Data = FString::FromInt(Score);
-	reward_message.Type = "Score";
-	controller->Publish(reward_message);
-
-	terminal_state_message = FHolodeckSensorData();
-	terminal_state_message.Data = HasWon ? TEXT("true") : TEXT("false");
-	terminal_state_message.Type = "Terminal";
-	controller->Publish(terminal_state_message);
-
-
 }
 
 // Called to bind functionality to input
