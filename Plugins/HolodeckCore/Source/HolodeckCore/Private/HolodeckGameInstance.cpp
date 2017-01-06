@@ -37,7 +37,7 @@ void UHolodeckGameInstance::Tick(float DeltaTime) {
 		CurrentTickWait -= 1;
 
 		if (CurrentTickWait <= 0) {
-			UE_LOG(LogHolodeck, Warning, TEXT("Pausing Game."));
+			//UE_LOG(LogHolodeck, Warning, TEXT("Pausing Game."));
 			SetGamePaused(true);
 		}
 	}

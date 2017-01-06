@@ -2,6 +2,8 @@
 
 #include "Holodeck.h"
 #include "UAV.h"
+#include "Benchmarker.h"
+#include <stdlib.h>
 #include "HolodeckViewportClient.h"
 
 
@@ -38,20 +40,36 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		return;
 	}
 	else {
-		TArray<uint8> PNG_Compressed_ImageData;
-		FImageUtils::CompressImageArray(
-			ViewportSize.X,
-			ViewportSize.Y,
-			HolodeckColorBuffer,
-			PNG_Compressed_ImageData
-		);
+		
+		//TArray<uint8> PNG_Compressed_ImageData;
+		//this->CompressImageArrayJPEG(
+		//	ViewportSize.X,
+		//	ViewportSize.Y,
+		//	HolodeckColorBuffer,
+		//	PNG_Compressed_ImageData
+		//);
+		
+		static char* ResultArray = new char[ViewportSize.X * ViewportSize.Y * 2 * 3 + 1]; // 2 for 2 hexadecimal digits, 3 for rgb channels, +1 for null char
+		int Pos = 0;
 
-		FString result;
-		for (uint8& num : PNG_Compressed_ImageData)
-			result += FString::FromInt(num) + ",";
-		//Base64Data = FBase64::Encode(PNG_Compressed_ImageData);
-		//ImageQueue.Enqueue(Base64Data);
-		ImageQueue.Enqueue(result);
+		for (int i = 0; i < ViewportSize.X*ViewportSize.Y; i++)
+		{
+			ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].B][0];
+			ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].B][1];
+			Pos += 2;
+			ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].G][0];
+			ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].G][1];
+			Pos += 2;
+			ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].R][0];
+			ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].R][1];
+			Pos += 2;
+		}
+		ResultArray[Pos] = '\0';
+		if (ImageQueue.IsEmpty())
+		{
+			FString FinalResult(ANSI_TO_TCHAR(ResultArray));
+			ImageQueue.Enqueue(FinalResult);
+		}
 	}
 
 	return;
@@ -73,4 +91,28 @@ void UHolodeckViewportClient::Draw(FViewport * Viewport, FCanvas * SceneCanvas)
 
 	//UE_LOG(Victory,Warning,TEXT("VICTORY GAME VIEWPORT Ticking!"));
 	HolodeckTakeScreenShot();
+}
+
+void UHolodeckViewportClient::CompressImageArrayJPEG(int32 ImageWidth, int32 ImageHeight, TArray<FColor> &SrcData, TArray<uint8> &DstData)
+{
+	// PNGs are saved as RGBA but FColors are stored as BGRA. An option to swap the order upon compression may be added at some point. At the moment, manually swapping Red and Blue 
+	for (int32 Index = 0; Index < ImageWidth*ImageHeight; Index++)
+	{
+		uint8 TempRed = SrcData[Index].R;
+		SrcData[Index].R = SrcData[Index].B;
+		SrcData[Index].B = TempRed;
+	}
+	FObjectThumbnail TempThumbnail;
+	TempThumbnail.SetImageSize(ImageWidth, ImageHeight);
+	TArray<uint8>& ThumbnailByteArray = TempThumbnail.AccessImageData();
+
+	// Copy scaled image into destination thumb
+	int32 MemorySize = ImageWidth*ImageHeight * sizeof(FColor);
+	ThumbnailByteArray.AddUninitialized(MemorySize);
+	FMemory::Memcpy(ThumbnailByteArray.GetData(), SrcData.GetData(), MemorySize);
+
+	// Compress data - convert into a .png
+	TempThumbnail.CompressImageData();
+	TArray<uint8>& CompressedByteArray = TempThumbnail.AccessCompressedImageData();
+	DstData = TempThumbnail.AccessCompressedImageData();
 }
