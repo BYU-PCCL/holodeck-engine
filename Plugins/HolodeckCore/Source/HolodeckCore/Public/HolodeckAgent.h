@@ -7,7 +7,7 @@
 #include "HolodeckAgent.generated.h"
 
 UCLASS()
-class HOLODECK_API AHolodeckAgent : public APawn
+class HOLODECKCORE_API AHolodeckAgent : public APawn
 {
 	GENERATED_BODY()
 
@@ -24,8 +24,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
+	UPROPERTY(EditAnywhere)
+	FString AgentName;
+
 	UPROPERTY(BlueprintReadWrite)
-	int Score;
+	int Reward;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool Terminal;

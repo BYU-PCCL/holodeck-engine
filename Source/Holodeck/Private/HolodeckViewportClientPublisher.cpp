@@ -35,7 +35,7 @@ void UHolodeckViewportClientPublisher::TickComponent( float DeltaTime, ELevelTic
 		//TArray<FColor> colorArray = TArray<FColor>(ViewportClient->HolodeckColorBuffer);
 
 		FHolodeckSensorData data = FHolodeckSensorData();
-		data.Type = "ViewportClient";
+		data.Type = "PrimaryPlayerCamera";
 		while (!ImageQueue->IsEmpty())
 			ImageQueue->Dequeue(data.Data);
 		data.Data = FString("\"") + data.Data + FString("\"");

@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "Holodeck.h"
+#include "HolodeckPrivatePCH.h"
 #include "HolodeckAgent.h"
 
 
@@ -8,8 +8,9 @@
 AHolodeckAgent::AHolodeckAgent()
 {
 	PrimaryActorTick.bCanEverTick = true;
-	Score = 0;
+	Reward = 0;
 	Terminal = false;
+	AgentName = "";
 }
 
 // Called when the game starts or when spawned
@@ -26,8 +27,8 @@ void AHolodeckAgent::BeginPlay()
 void AHolodeckAgent::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	RewardMessage.Data = FString::FromInt(Score);
-	RewardMessage.Type = "Score";
+	RewardMessage.Data = FString::FromInt(Reward);
+	RewardMessage.Type = "Reward";
 	if (HolodeckController)
 		HolodeckController->Publish(RewardMessage);
 
@@ -35,7 +36,6 @@ void AHolodeckAgent::Tick( float DeltaTime )
 	TerminalStateMessage.Type = "Terminal";
 	if (HolodeckController)
 		HolodeckController->Publish(TerminalStateMessage);
-
 }
 
 // Called to bind functionality to input

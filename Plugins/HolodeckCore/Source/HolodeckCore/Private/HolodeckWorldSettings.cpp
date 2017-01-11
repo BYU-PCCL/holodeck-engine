@@ -7,15 +7,6 @@ float AHolodeckWorldSettings::FixupDeltaSeconds(float DeltaSeconds, float RealDe
 	return ConstantTimeDeltaBetweenTicks;
 }
 
-int AHolodeckWorldSettings::GetAllowedTicksBetweenCommands() {
-	return AllowedTicksBetweenCommands;
-}
-
-
-void AHolodeckWorldSettings::SetAllowedTicksBetweenCommands(int ticks) {
-	AllowedTicksBetweenCommands = ticks;
-}
-
 float AHolodeckWorldSettings::GetConstantTimeDeltaBetweenTicks() {
 	return ConstantTimeDeltaBetweenTicks;
 }

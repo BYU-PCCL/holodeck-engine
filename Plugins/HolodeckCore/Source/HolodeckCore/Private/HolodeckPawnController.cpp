@@ -39,33 +39,33 @@ void AHolodeckPawnController::UnPossess() {
 void AHolodeckPawnController::OnReceiveCommand(const FHolodeckUAVCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
 	APawn* tester = this->GetPawn();
 	FString human_readable = this->GetPawn()->GetHumanReadableName();
-	if ((this->GetPawn() && Command.Target == FString("UAV"))) {
+	if (this->GetPawn() && Command.Target == Cast<AHolodeckAgent>(this->GetPawn())->AgentName) {
 		OnReceiveCommand(Command);
 	}
 };
 void AHolodeckPawnController::OnReceiveCommand(const FHolodeckAndroidCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
-	if ((this->GetPawn() && Command.Target == this->GetPawn()->GetHumanReadableName())) {
+	if (this->GetPawn() && Command.Target == Cast<AHolodeckAgent>(this->GetPawn())->AgentName) {
 		OnReceiveCommand(Command);
 	}
 };
 void AHolodeckPawnController::OnReceiveCommand(const FHolodeckSphereRobotCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
-	if ((this->GetPawn() && Command.Target == this->GetPawn()->GetHumanReadableName())) {
+	if (this->GetPawn() && Command.Target == Cast<AHolodeckAgent>(this->GetPawn())->AgentName) {
 		OnReceiveCommand(Command);
 	}
 };
 void AHolodeckPawnController::OnReceiveConfiguration(const FHolodeckAndroidConfiguration& Configuration, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
-	if ((this->GetPawn() && Configuration.Target == this->GetPawn()->GetHumanReadableName())) {
+	if (this->GetPawn() && Configuration.Target == Cast<AHolodeckAgent>(this->GetPawn())->AgentName) {
 		OnReceiveConfiguration(Configuration);
 	}
 };
 void AHolodeckPawnController::OnReceiveConfiguration(const FHolodeckUAVConfiguration& Configuration, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
-	if ((this->GetPawn() && Configuration.Target == this->GetPawn()->GetHumanReadableName())) {
+	if (this->GetPawn() && Configuration.Target == Cast<AHolodeckAgent>(this->GetPawn())->AgentName) {
 		OnReceiveConfiguration(Configuration);
 	}
 };
 void AHolodeckPawnController::Publish(FHolodeckSensorData& data) {
 	FHolodeckResponse* response = new FHolodeckResponse();
-	response->Source = FString("UAV");//this->GetPawn()->GetHumanReadableName(); //get tag 0 if it's there and use that instead of GetHumanReadableName()... otherwise just use GetHumanReadableName();
+	response->Source = Cast<AHolodeckAgent>(this->GetPawn())->AgentName;//this->GetPawn()->GetHumanReadableName(); //get tag 0 if it's there and use that instead of GetHumanReadableName()... otherwise just use GetHumanReadableName();
 	response->Type = data.Type;
 	response->Data = data.Data;
 	MessageEndpoint->Publish<FHolodeckResponse>(response);

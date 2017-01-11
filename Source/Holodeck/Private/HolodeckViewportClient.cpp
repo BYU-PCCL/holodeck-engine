@@ -49,7 +49,7 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		//	PNG_Compressed_ImageData
 		//);
 		
-		static char* ResultArray = new char[ViewportSize.X * ViewportSize.Y * 2 * 3 + 1]; // 2 for 2 hexadecimal digits, 3 for rgb channels, +1 for null char
+		static char* ResultArray = new char[int(ViewportSize.X) * int(ViewportSize.Y) * 2 * 3 + 1]; // 2 for 2 hexadecimal digits, 3 for rgb channels, +1 for null char
 		int Pos = 0;
 
 		for (int i = 0; i < ViewportSize.X*ViewportSize.Y; i++)

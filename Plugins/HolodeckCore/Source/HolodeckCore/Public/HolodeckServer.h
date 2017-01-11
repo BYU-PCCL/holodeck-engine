@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Object.h"
+#include "HolodeckAgent.h"
 #include "MessageEndpoint.h"
 #include "MessageEndpointBuilder.h"
 #include "HolodeckMessages.h"

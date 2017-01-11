@@ -33,13 +33,11 @@ void UHolodeckGameInstance::StartServer() {
 
 void UHolodeckGameInstance::Tick(float DeltaTime) {
 
-	if (WorldSettings->GetAllowedTicksBetweenCommands() >= 0) {
-		CurrentTickWait -= 1;
+	CurrentTickWait -= 1;
 
-		if (CurrentTickWait <= 0) {
-			//UE_LOG(LogHolodeck, Warning, TEXT("Pausing Game."));
-			SetGamePaused(true);
-		}
+	if (CurrentTickWait <= 0) {
+		//UE_LOG(LogHolodeck, Warning, TEXT("Pausing Game."));
+		SetGamePaused(true);
 	}
 }
 
@@ -62,9 +60,7 @@ void UHolodeckGameInstance::Init(){
 	if (world)
 		WorldSettings = (AHolodeckWorldSettings*)GetWorld()->GetWorldSettings();
 
-	if(WorldSettings->GetAllowedTicksBetweenCommands() > 0){
-		SetGamePaused(true);
-	}
+	SetGamePaused(true);
 	
 	StartServer();
 }
@@ -83,10 +79,6 @@ void UHolodeckGameInstance::SetGamePaused(bool isPaused)
 }
 
 void UHolodeckGameInstance::OnReceiveSimulatorCommand(const FHolodeckSimulatorCommand& Command, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context) {
-
-	if (Command.AllowedTicksBetweenCommands > 0) {
-		WorldSettings->SetAllowedTicksBetweenCommands(Command.AllowedTicksBetweenCommands);
-	}
 	
 	if (Command.TimeDeltaBetweenTicks > 0) {
 		WorldSettings->SetConstantTimeDeltaBetweenTicks(Command.TimeDeltaBetweenTicks);
@@ -106,7 +98,7 @@ void UHolodeckGameInstance::OnReceiveCommandMessage(const FHolodeckCommandMessag
 	
 	// Always unpause the game and reset the CurrentTickWait, even if we are not using them
 	// this ensures that the game can't get "stuck" paused
-	CurrentTickWait = WorldSettings->GetAllowedTicksBetweenCommands();
+	CurrentTickWait = 1;
 	SetGamePaused(false);
 
 	
