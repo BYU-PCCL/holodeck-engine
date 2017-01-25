@@ -19,17 +19,6 @@ AAndroid::AAndroid()
 void AAndroid::BeginPlay()
 {
 	Super::BeginPlay();
-
-	TArray<USkeletalMeshComponent*> components;
-	this->GetComponents<USkeletalMeshComponent>(components);
-	SkeletalMeshComponent = components[0];
-
-	UPressureSensor* sensor = this->FindComponentByClass<UPressureSensor>();
-	if (sensor)
-	{
-		PressureSensor = sensor;
-	}
-	
 }
 
 // Called every frame
@@ -69,10 +58,6 @@ void AAndroid::NotifyHit(
 			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, "Material for decal is null");
 		}
 
-	}
-
-	if (PressureSensor) {
-		PressureSensor->HandleNotifyHit(SkeletalMeshComponent, NormalImpulse, Hit);
 	}
 
 }

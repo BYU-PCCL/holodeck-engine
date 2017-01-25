@@ -22,6 +22,17 @@ void UPressureSensor::BeginPlay()
 	Super::BeginPlay();
 
 	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+
+	//set hit delegate
+	FScriptDelegate hitDelegate;
+	hitDelegate.BindUFunction(this, TEXT("OnHit"));
+	this->GetAttachmentRootActor()->OnActorHit.AddUnique(hitDelegate);
+
+	//assign skeletal mesh component
+	TArray<USkeletalMeshComponent*> components;
+	this->GetAttachmentRootActor()->GetComponents<USkeletalMeshComponent>(components);
+	SkeletalMeshComponent = components[0];
+
 }
 
 // Called every frame
@@ -56,7 +67,7 @@ void UPressureSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 
 }
 
-void UPressureSensor::HandleNotifyHit(USkeletalMeshComponent*& SkeletalMeshComponent, FVector NormalImpulse, const FHitResult& Hit)
+void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
 {
 	FVector hit_world_location;
 	FVector hit_bone_location;

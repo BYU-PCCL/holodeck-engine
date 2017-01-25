@@ -22,12 +22,15 @@ public:
 	// Called every frame
 	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	virtual void HandleNotifyHit(USkeletalMeshComponent*& SkeletalMeshComponent, FVector NormalImpulse, const FHitResult& Hit);
+	UFUNCTION()
+	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
 
 	AHolodeckPawnController* Controller;
 
 	TMap<FString, TArray<FString>> HitsMap;
+
+	USkeletalMeshComponent* SkeletalMeshComponent;
 	
 };

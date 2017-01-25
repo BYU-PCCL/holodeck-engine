@@ -16,8 +16,6 @@ public:
 	// Sets default values for this pawn's properties
 	AAndroid();
 
-	USkeletalMeshComponent* SkeletalMeshComponent;
-
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -37,8 +35,6 @@ public:
 		FVector NormalImpulse,
 		const FHitResult& Hit
 		) override;
-
-	UPressureSensor* PressureSensor;
 
 	//Decal material. This is used to show collisions on the Android. It is to be left blank and is set programmatically
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
