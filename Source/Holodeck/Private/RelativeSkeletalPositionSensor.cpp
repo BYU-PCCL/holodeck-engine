@@ -59,8 +59,6 @@ FString URelativeSkeletalPositionSensor::getBonesRelativeOffset()
 
 	FString Output = "[";
 
-	UE_LOG(LogTemp, Log, TEXT("Relative"));
-
 	//start at 1 to ignore root that has "None" parent
 	for (int i = 1; i < Bones.Num(); i++) {
 		Output += "{\"Bone\":\"" + Bones[i].ToString() + "\",";
