@@ -28,7 +28,7 @@ public:
 	FString AgentName;
 
 	UPROPERTY(BlueprintReadWrite)
-	int Reward;
+	float Reward;
 
 	UPROPERTY(BlueprintReadWrite)
 	bool Terminal;
