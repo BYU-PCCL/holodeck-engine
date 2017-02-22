@@ -28,6 +28,8 @@ public:
 
 	TQueue<FString> ImageQueue;
 
+	bool bGrayScale;
+
 private:
 	//Only run from draw()!
 	void HolodeckTakeScreenShot();

@@ -27,5 +27,8 @@ public:
 	UHolodeckViewportClient* ViewportClient;
 
 	TQueue<FString>* ImageQueue;
+
+	UPROPERTY(EditAnywhere)
+	bool bGrayScale;
 	
 };

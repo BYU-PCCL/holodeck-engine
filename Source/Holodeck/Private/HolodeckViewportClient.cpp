@@ -7,7 +7,10 @@
 #include "HolodeckViewportClient.h"
 
 
-UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer& PCIP) : Super(PCIP) { bHolodeckDoScreenShot = true; bFirstTime = true; }
+UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer& PCIP) : Super(PCIP) { 
+	bHolodeckDoScreenShot = true; 
+	bFirstTime = true; 
+}
 
 void UHolodeckViewportClient::HolodeckTakeScreenShot()
 {
@@ -48,23 +51,47 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		//	HolodeckColorBuffer,
 		//	PNG_Compressed_ImageData
 		//);
-		
-		static char* ResultArray = new char[int(ViewportSize.X) * int(ViewportSize.Y) * 2 * 3 + 1]; // 2 for 2 hexadecimal digits, 3 for rgb channels, +1 for null char
-		int Pos = 0;
+		static char* ResultArray;
 
-		for (int i = 0; i < ViewportSize.X*ViewportSize.Y; i++)
-		{
-			ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].B][0];
-			ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].B][1];
-			Pos += 2;
-			ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].G][0];
-			ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].G][1];
-			Pos += 2;
-			ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].R][0];
-			ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].R][1];
-			Pos += 2;
+		if (!bGrayScale) {
+			ResultArray = new char[int(ViewportSize.X) * int(ViewportSize.Y) * 2 * 3 + 1]; // 2 for 2 hexadecimal digits, 3 for rgb channels, +1 for null char
+			int Pos = 0;
+
+			for (int i = 0; i < ViewportSize.X*ViewportSize.Y; i++)
+			{
+				ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].B][0];
+				ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].B][1];
+				Pos += 2;
+				ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].G][0];
+				ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].G][1];
+				Pos += 2;
+				ResultArray[Pos] = RGBConv[HolodeckColorBuffer[i].R][0];
+				ResultArray[Pos + 1] = RGBConv[HolodeckColorBuffer[i].R][1];
+				Pos += 2;
+			}
+			ResultArray[Pos] = '\0';
 		}
-		ResultArray[Pos] = '\0';
+		else {
+			ResultArray = new char[int(ViewportSize.X) * int(ViewportSize.Y) * 2 * 1 + 1]; // 2 for 2 hexadecimal digits, 1 for one grayscale channel, +1 for null char
+			int Pos = 0;
+
+			for (int i = 0; i < ViewportSize.X*ViewportSize.Y; i++)
+			{
+				uint8 blue = HolodeckColorBuffer[i].B;
+				uint8 green = HolodeckColorBuffer[i].G;
+				uint8 red = HolodeckColorBuffer[i].R;
+
+				uint8 avg0 = RGBConv[(blue + green + red)/3][0];
+				uint8 avg1 = RGBConv[(blue + green + red) / 3][1];
+
+				ResultArray[Pos] = avg0;
+				ResultArray[Pos + 1] = avg1;
+				Pos += 2;
+			}
+			ResultArray[Pos] = '\0';
+		}
+
+
 		if (ImageQueue.IsEmpty())
 		{
 			FString FinalResult(ANSI_TO_TCHAR(ResultArray));

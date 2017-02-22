@@ -27,7 +27,7 @@ void AHolodeckAgent::BeginPlay()
 void AHolodeckAgent::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	RewardMessage.Data = FString::FromInt(Reward);
+	RewardMessage.Data = FString::SanitizeFloat(Reward);
 	RewardMessage.Type = "Reward";
 	if (HolodeckController)
 		HolodeckController->Publish(RewardMessage);

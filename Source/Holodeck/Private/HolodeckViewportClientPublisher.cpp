@@ -21,8 +21,10 @@ void UHolodeckViewportClientPublisher::BeginPlay()
 
 	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-	if (ViewportClient)
+	if (ViewportClient) {
 		ImageQueue = &(ViewportClient->ImageQueue);
+		ViewportClient->bGrayScale = this->bGrayScale;
+	}
 }
 
 
