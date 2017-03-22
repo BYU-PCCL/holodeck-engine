@@ -47,7 +47,7 @@ void UHolodeckServer::Start() {
 		FString ConnectURL = FString::Printf(TEXT("tcp://*:%s"), *PortNumber);
 
 		UE_LOG(LogHolodeck, Warning, TEXT("Server started at %s"), *ConnectURL);
-		GEngine->AddOnScreenDebugMessage(-1, 100, FColor::Green, FString::Printf(TEXT("Server started at %s"), *ConnectURL));
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, FString::Printf(TEXT("Server started at %s"), *ConnectURL));
 
 
 		// Bind the server to the socket

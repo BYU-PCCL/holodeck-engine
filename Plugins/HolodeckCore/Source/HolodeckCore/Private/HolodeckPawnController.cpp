@@ -25,7 +25,7 @@ AHolodeckPawnController::~AHolodeckPawnController() {
 void AHolodeckPawnController::Possess(APawn* InPawn) {
 	Super::Possess(InPawn);
 	UE_LOG(LogHolodeck, Warning, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
-	GEngine->AddOnScreenDebugMessage(-1, 100, FColor::Green, FString::Printf(TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName()));
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, FString::Printf(TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName()));
 	if (MessageEndpoint.IsValid()) {
 		MessageEndpoint->Enable();
 	}
