@@ -1,0 +1,19 @@
+Package for Linux:
+
+Clone Holodeck Project
+Follow tutorial to compile binaries for linux
+	Tutorial: https://wiki.unrealengine.com/Compiling_For_Linux
+	I used this to help: http://allarsblog.com/2015/11/06/Installing-Linux-Toolchain-On-Windows/
+	Note that part of this setup is compiling Unreal Engine 4 from source (version 4.12)
+Right click on holodeck, click on change Unreal Engine version, select your compiled Unreal Engine 4
+Package for Linux in UE4 editor (File -> Package Project -> Linux)
+
+Setup RL Environment in Holodeck:
+-In File > Project Settings, set game instance class to HolodeckGameInstance and gamemode to HolodeckGameModeBP
+-Available agents are available in HolodeckContent folder in project (drag and drop to place in world). Make sure to set the correct AI Controller Class for that agent
+-Available sensors are available in C++ classes folder. Drag and drop to agent body in details window on right hand side to add to agent
+-If you want the camera to follow the agent as it moves throughout the world, add a camera follower. (See UAVFollwer inside HolodeckContent/UAV). Drag and drop in to world. Set the "Actor to follow" in details pane to the agent you want it to follow. Set "Auto Possess Player" to "Player 0"
+-If you want rewards, you need to set a task. (See HolodeckContent/Tasks). The MazeTask is a good example. It updates the "Reward" and "Terminal" values inside of the agent that are broadcasted back
+
+Notes:
+If something is running slow (like 1 tick per second), make sure name of agent matches what it should be (UAV or UAV0, for example)
