@@ -3,12 +3,12 @@
 #pragma once
 
 #include "Components/SceneComponent.h"
-#include "HolodeckPawnController.h"
+#include "HolodeckSensor.h"
 #include "PressureSensor.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UPressureSensor : public USceneComponent
+class HOLODECK_API UPressureSensor : public UHolodeckSensor
 {
 	GENERATED_BODY()
 
@@ -19,16 +19,16 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
+protected:
+	virtual void SetDataType() override { ResultData.Type = "PressureSensor"; };
+	// Called every frame
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 private:
-
-	AHolodeckPawnController* Controller;
-
 	TMap<FString, TArray<FString>> HitsMap;
 
 	USkeletalMeshComponent* SkeletalMeshComponent;

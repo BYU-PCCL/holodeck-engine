@@ -21,8 +21,6 @@ void UPressureSensor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
-
 	//set hit delegate
 	FScriptDelegate hitDelegate;
 	hitDelegate.BindUFunction(this, TEXT("OnHit"));
@@ -32,17 +30,11 @@ void UPressureSensor::BeginPlay()
 	TArray<USkeletalMeshComponent*> components;
 	this->GetAttachmentRootActor()->GetComponents<USkeletalMeshComponent>(components);
 	SkeletalMeshComponent = components[0];
-
 }
 
 // Called every frame
-void UPressureSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UPressureSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	FHolodeckSensorData data = FHolodeckSensorData();
-	data.Type = "PressureSensor";
-
 	//build json from hitsmap
 	FString DataString = "";
 	for (auto& BoneHitArray : HitsMap)
@@ -59,10 +51,9 @@ void UPressureSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 		DataString.RemoveAt(DataString.Len() - 1);
 	DataString.InsertAt(0, "[");
 	DataString += "]";
-	data.Data = DataString;
+	ResultData.Data = DataString;
 
-	//send data back and empty HitsMap
-	Controller->Publish(data);
+	//Empty the hits map
 	HitsMap.Empty();
 
 }
@@ -96,5 +87,4 @@ void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norma
 	HitInformation += "}";
 
 	HitsMap.FindOrAdd(Hit.BoneName.ToString()).Add(HitInformation);
-
 }

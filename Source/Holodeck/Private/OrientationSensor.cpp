@@ -27,12 +27,14 @@ void UOrientationSensor::BeginPlay()
 	World = Parent->GetWorld();
 }
 
+void UOrientationSensor::SetDataType()
+{
+	ResultData.Type = "OrientationSensor";
+}
 
 // Called every frame
-void UOrientationSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UOrientationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
 	if (Parent != NULL) {
 		
 		if (RootMesh != NULL) {
@@ -40,10 +42,7 @@ void UOrientationSensor::TickComponent( float DeltaTime, ELevelTick TickType, FA
 			FVector Right = RootMesh->GetRightVector();
 			FVector Up = RootMesh->GetUpVector();
 
-			FHolodeckSensorData data = FHolodeckSensorData();
-			data.Type = "OrientationSensor";
-
-			data.Data =
+			ResultData.Data =
 				FString::SanitizeFloat(Forward.X) + "," +
 				FString::SanitizeFloat(Forward.Y) + "," +
 				FString::SanitizeFloat(Forward.Z) + "," +
@@ -53,13 +52,10 @@ void UOrientationSensor::TickComponent( float DeltaTime, ELevelTick TickType, FA
 				FString::SanitizeFloat(Up.X) + "," +
 				FString::SanitizeFloat(Up.Y) + "," +
 				FString::SanitizeFloat(Up.Z);
-																			 //GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, data.Data);
-
-			Controller->Publish(data);
 		}
 	}
 	else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "ERROR: Failed to cast 'this->GetAttachParent()' to UPrimitiveComponent");
+		UE_LOG(LogTemp, Warning, TEXT("ERROR: Failed to cast 'this->GetAttachParent()' to UPrimitiveComponent"));
 	}
 }
 

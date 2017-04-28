@@ -18,8 +18,6 @@ void UJointRotationSensor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
-
 	//set skeletal mesh component
 	AActor* Android = this->GetOwner();
 	TArray<USkeletalMeshComponent*> components;
@@ -34,12 +32,15 @@ void UJointRotationSensor::BeginPlay()
 	}
 }
 
-// Called every frame
-void UJointRotationSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UJointRotationSensor::SetDataType()
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
+	ResultData.Type = "JointRotationSensor";
+}
 
-	PublishData();
+// Called every frame
+void UJointRotationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+{
+	ResultData.Data = GetJointRotationVectorJSON();
 }
 
 FString UJointRotationSensor::GetJointRotationVectorJSON() {
@@ -162,11 +163,3 @@ FString UJointRotationSensor::CastSingleJointRotationToString(FString jointName,
 	}
 	return result;;
 }
-
-void UJointRotationSensor::PublishData() {
-	FHolodeckSensorData data = FHolodeckSensorData();
-	data.Type = "JointRotationSensor";
-	data.Data = GetJointRotationVectorJSON();
-	Controller->Publish(data);
-}
-

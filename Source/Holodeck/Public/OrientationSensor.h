@@ -3,12 +3,12 @@
 #pragma once
 
 #include "HolodeckPawnController.h"
-#include "Components/SceneComponent.h"
+#include "HolodeckSensor.h"
 #include "OrientationSensor.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UOrientationSensor : public USceneComponent
+class HOLODECK_API UOrientationSensor : public UHolodeckSensor
 {
 	GENERATED_BODY()
 
@@ -19,13 +19,16 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
+	
+
+protected:
+	virtual void SetDataType() override;
+
 	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	// The controller for the agent
-	AHolodeckPawnController* Controller;
-
+	// Cache important info
 	UPrimitiveComponent* Parent;
 	UStaticMeshComponent* RootMesh;
 	UWorld* World;

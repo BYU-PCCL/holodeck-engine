@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "HolodeckSensor.h"
@@ -9,7 +7,7 @@
  * 
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HOLODECK_API UHolodeckIMUSensor : public UHolodeckSensor
+class HOLODECK_API UHolodeckIMUSensor : public USceneComponent
 {
 	GENERATED_BODY()
 	

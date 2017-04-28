@@ -19,8 +19,7 @@ void UIMUSensor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
-
+	// Cache important variables
 	Parent = Cast<UPrimitiveComponent>(this->GetAttachParent());
 
 	World = Parent->GetWorld();
@@ -36,20 +35,23 @@ void UIMUSensor::BeginPlay()
 }
 
 
-// Called every frame
-void UIMUSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	if (Parent != NULL) {
+	if (Parent != nullptr) {
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
+
+		ResultData.Data =
+			"[" + FString::SanitizeFloat(LinearAccelerationVector.X) + // x_accel
+			"," + FString::SanitizeFloat(LinearAccelerationVector.Y) + // y_accel
+			"," + FString::SanitizeFloat(LinearAccelerationVector.Z) + // z_accel
+			"," + FString::SanitizeFloat(AngularVelocityVector.X) +    // roll_vel
+			"," + FString::SanitizeFloat(AngularVelocityVector.Y) +    // pitch_vel
+			"," + FString::SanitizeFloat(AngularVelocityVector.Z) + "]"; // yaw_vel
 	}
 	else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "ERROR: Failed to cast 'this->GetAttachParent()' to UPrimitiveComponent");
+		UE_LOG(LogTemp, Warning, TEXT("Failed to cast parent to UPrimitiveCompenent in IMUSensor"));
 	}
-
-	PublishSensorMessage();
 }
 
 void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
@@ -87,18 +89,7 @@ FVector UIMUSensor::GetAngularVelocityVector()
 	return AngularVelocityVector;
 }
 
-void UIMUSensor::PublishSensorMessage() {
-	FHolodeckSensorData data = FHolodeckSensorData();
-	data.Type = "IMUSensor";
-
-	data.Data =
-		"[" + FString::SanitizeFloat(LinearAccelerationVector.X) + // x_accel
-		"," + FString::SanitizeFloat(LinearAccelerationVector.Y) + // y_accel
-		"," + FString::SanitizeFloat(LinearAccelerationVector.Z) + // z_accel
-		"," + FString::SanitizeFloat(AngularVelocityVector.X) +    // roll_vel
-		"," + FString::SanitizeFloat(AngularVelocityVector.Y) +    // pitch_vel
-		"," + FString::SanitizeFloat(AngularVelocityVector.Z) + "]"; // yaw_vel
-
-	Controller->Publish(data);
-
+void UIMUSensor::SetDataType()
+{
+	ResultData.Type = "IMUSensor";
 }

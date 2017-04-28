@@ -11,8 +11,6 @@ UHolodeckSensor::UHolodeckSensor()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -21,8 +19,9 @@ void UHolodeckSensor::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	// Get the controller of the agent this is attached to
+	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+	SetDataType();
 }
 
 
@@ -31,6 +30,9 @@ void UHolodeckSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	// ...
+	if (Controller != nullptr) {
+		TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
+		Controller->Publish(ResultData);
+	}
 }
 

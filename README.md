@@ -7,12 +7,12 @@ Holodeck is an open source project built primarily for training reinforcement le
 This repository contains everything you need to build environments in the unreal engine. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
 
 ## Prerequisites
-git lfs
-Unreal Engine 4.12
+* git lfs
+* Unreal Engine 4.12
 
 ## Installation
 * Run the following:
-`git clone https://github.com/joshgreaves/holodeck`
+`git clone https://github.com/BYU-PCCL/Holodeck`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.12
 * Run Holodeck.uproject

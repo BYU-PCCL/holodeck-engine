@@ -45,5 +45,5 @@ private:
 	const static int NUM_GRAYSCALE_CHANNELS = 1;
 	const static int HEX_COLOR_WIDTH = 2;
 
-	const static char RGBConv[256][2];
+	const static char RGBConv[][];
 };
