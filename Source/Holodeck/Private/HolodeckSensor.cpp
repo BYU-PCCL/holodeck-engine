@@ -11,6 +11,7 @@ UHolodeckSensor::UHolodeckSensor()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
+	bOn = true;
 }
 
 
@@ -30,7 +31,7 @@ void UHolodeckSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	if (Controller != nullptr) {
+	if (bOn && Controller != nullptr) {
 		TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 		Controller->Publish(ResultData);
 	}

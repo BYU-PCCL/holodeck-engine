@@ -13,8 +13,6 @@ URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor()
 	// off to improve performance if you don't need them.
 	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -22,8 +20,6 @@ URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor()
 void URelativeSkeletalPositionSensor::BeginPlay()
 {
 	Super::BeginPlay();
-
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 
 	//set skeletal mesh component
 	AActor* Android = this->GetOwner();
@@ -42,16 +38,9 @@ void URelativeSkeletalPositionSensor::BeginPlay()
 
 
 // Called every frame
-void URelativeSkeletalPositionSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void URelativeSkeletalPositionSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
-	FHolodeckSensorData data = FHolodeckSensorData();
-	data.Type = "RelativeSkeletalPositionSensor";
-
-	data.Data = getBonesRelativeOffset();
-
-	Controller->Publish(data);
+	ResultData.Data = getBonesRelativeOffset();
 }
 
 FString URelativeSkeletalPositionSensor::getBonesRelativeOffset() 

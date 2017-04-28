@@ -19,7 +19,6 @@ void UHolodeckViewportClientPublisher::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
 	if (ViewportClient) {
 		ImageQueue = &(ViewportClient->ImageQueue);
@@ -29,22 +28,15 @@ void UHolodeckViewportClientPublisher::BeginPlay()
 
 
 // Called every frame
-void UHolodeckViewportClientPublisher::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
+void UHolodeckViewportClientPublisher::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
-	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
-
 	if (ViewportClient) {
-		//TArray<FColor> colorArray = TArray<FColor>(ViewportClient->HolodeckColorBuffer);
-
-		FHolodeckSensorData data = FHolodeckSensorData();
-		data.Type = "PrimaryPlayerCamera";
 		while (!ImageQueue->IsEmpty())
-			ImageQueue->Dequeue(data.Data);
-		data.Data = FString("\"") + data.Data + FString("\"");
-		Controller->Publish(data);
+			ImageQueue->Dequeue(ResultData.Data);
+		ResultData.Data = FString("\"") + ResultData.Data + FString("\"");
 	}
 	else {
-		GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "camera broken");
+		UE_LOG(LogTemp, Warning, TEXT("Couldn't find HolodeckViewportClient"));
 	}
 }
 

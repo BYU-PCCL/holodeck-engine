@@ -66,4 +66,8 @@ protected:
 	// The place to save the result data to
 	FHolodeckSensorData ResultData;
 
+	// Allows you to turn the sensor on and off in the editor
+	UPROPERTY(EditAnywhere)
+	bool bOn;
+
 };

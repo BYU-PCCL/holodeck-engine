@@ -3,12 +3,12 @@
 #pragma once
 
 #include "Components/SceneComponent.h"
-#include "HolodeckPawnController.h"
+#include "HolodeckSensor.h"
 #include "RelativeSkeletalPositionSensor.generated.h"
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API URelativeSkeletalPositionSensor : public USceneComponent
+class HOLODECK_API URelativeSkeletalPositionSensor : public UHolodeckSensor
 {
 	GENERATED_BODY()
 
@@ -19,14 +19,16 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	FString getBonesRelativeOffset();
+protected:
+	virtual void SetDataType() override { ResultData.Type = "RelativeSkeletalPositionSensor"; };
+	// Called every frame
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+	FString getBonesRelativeOffset();
+
 	USkeletalMeshComponent* SkeletalMeshComponent;
-	AHolodeckPawnController* Controller;
 	TArray<FName> Bones;
 	TArray<FName> ParentBones;
 };

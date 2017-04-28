@@ -3,12 +3,11 @@
 #pragma once
 
 #include "HolodeckViewportClient.h"
-#include "HolodeckPawnController.h"
-#include "Components/SceneComponent.h"
+#include "HolodeckSensor.h"
 #include "HolodeckViewportClientPublisher.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UHolodeckViewportClientPublisher : public USceneComponent
+class HOLODECK_API UHolodeckViewportClientPublisher : public UHolodeckSensor
 {
 	GENERATED_BODY()
 
@@ -19,16 +18,16 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
+protected:
+	virtual void SetDataType() override { ResultData.Type = "PrimaryPlayerCamera"; };
 	// Called every frame
-	virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+	virtual void TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
 
-	AHolodeckPawnController* Controller;
+	UPROPERTY(EditAnywhere)
+		bool bGrayScale;
 
+private:
 	UHolodeckViewportClient* ViewportClient;
 
 	TQueue<FString>* ImageQueue;
-
-	UPROPERTY(EditAnywhere)
-	bool bGrayScale;
-	
 };

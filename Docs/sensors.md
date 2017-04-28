@@ -25,6 +25,9 @@ To extend this base class:
 * Ensure that in BeginPlay you call `Super::BeginPlay();`
 
 ## UHolodeckViewportClientPublisher
+To get in python, add "PrimaryPlayerCamera" to state_sensors.
+Attach UHolodeckViewportClientPublisher to an agent, and set the viewport for your project to be HolodeckViewport.
+The returned image is whatever resolution you load your project in.
 
 ## UCameraSensorArray2D
 This is a sensor that can be added to an agent to capture multiple points of views. Just attach it to your agent, then add as many SceneCaptureComponents as you want.
@@ -110,5 +113,9 @@ To access this sensor from python, add "OrientationSensor" to the state_sensors.
 ## UPressureSensor
 Currently only supported for Android.
 Returns a JSON string which contains hit components
+To access this sensor from python, add "PressureSensor" to the state_sensors.
 
 ## URelativeSkeletalPositionSensor
+Gets the position of each bone as a quaternion. Can be attached to any skeletal mesh.
+The returned shape is [67, 4] for the android.
+To use in python, add "RelativeSkeletalPositionSensor" to the state_sensors
