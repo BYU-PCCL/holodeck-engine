@@ -1,14 +1,31 @@
-# HOLODECK #
+# HOLODECK
 
-Installation
-------------
-	*git clone https://github.com/joshgreaves/holodeck
-	*Navigate to the root folder
-	*Right click Holodeck.uproject -> Generate Visual Studio project files
-	*Run Holodeck.uproject
+## About
+Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.12, with bindings for python to communicate with the agents in the environments. For best results, use windows.
 
+## Usage
+This repository contains everything you need to build environments in the unreal engine. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
 
-Description
------------
-This repository contains an Unreal Project that correctly implements the HolodeckCore plugin.
-The Holodeck is built for use with Unreal Engine 4.12
+## Prerequisites
+git lfs
+Unreal Engine 4.12
+
+## Installation
+* Run the following:
+`git clone https://github.com/joshgreaves/holodeck`
+* Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
+* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.12
+* Run Holodeck.uproject
+
+## Building For Linux
+For a great tutorial, see https://wiki.unrealengine.com/Building_On_Linux
+
+## Best Practices
+* To keep the repo clean, Holodeck should only contain ExampleLevel. It should also not contain any assets which are not salient to this project. For example, salient assets might be agents, tasks, and sensors.
+* To build a new environment, first clone holodeck, then migrate any levels and assets into the project. This new holodeck environment should be kept separate from the main holodeck project.
+
+## Troubleshooting
+If you are having problems with holodeck, open the project in visual studio, then in the explorer right click on Holodeck, and click clean, then try to build again.
+
+## Tips
+* When running an agent in the world, the world is paused when waiting to receive an action. Unfortunately, this results in motion blur. To fix this, when building a world add a Post Process Volume with motion blur turned to zero, and make it unbounded.
