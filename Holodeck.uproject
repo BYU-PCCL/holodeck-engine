@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{729ABCE1-4E4A-1D53-0ADE-08AF1EEA48E2}",
+	"EngineAssociation": "4.12",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -9,8 +9,7 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine",
-				"HolodeckCore"
+				"Engine"
 			]
 		}
 	],

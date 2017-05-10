@@ -1,4 +1,0 @@
-/Binaries/*
-!/Binaries/ThirdParty
-/Intermediate
-/Source/ThirdParty/*/*.pdb
