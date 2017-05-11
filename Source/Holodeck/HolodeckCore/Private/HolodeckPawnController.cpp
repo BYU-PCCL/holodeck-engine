@@ -5,7 +5,6 @@
 #include "HolodeckPawnController.h"
 // TODO: Move publishing messages to a class that can be composed with actors who need additional controllers (like a PlayerController)
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer) : AAIController(ObjectInitializer) {
-	Server = &HolodeckServer::getInstance();
 }
 
 AHolodeckPawnController::~AHolodeckPawnController() {
@@ -22,9 +21,30 @@ void AHolodeckPawnController::UnPossess() {
 }
 
 void AHolodeckPawnController::Publish(FHolodeckSensorData& data) {
-	Server->setSensor(data.AgentName, data.Key, TCHAR_TO_UTF8(*data.Data));
+		Server->setSensor(data.AgentName, data.Key, TCHAR_TO_UTF8(*data.Data));
 }
 
 void AHolodeckPawnController::Subscribe(FHolodeckSensorData& Data, int Length) {
-	Server->subscribeSensor(Data.AgentName, Data.Key, Length);
+	GetServer();
+
+	if (Server == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Sensor could not find server..."));
+	} 
+	else
+		Server->subscribeSensor(Data.AgentName, Data.Key, Length);
+}
+
+void AHolodeckPawnController::GetServer() {
+	if (Server != nullptr) return;
+
+	if (GEngine->GetWorld() != nullptr && GEngine->GetWorld()->GetGameInstance() != nullptr)
+	{
+		UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GEngine->GetWorld()->GetGameInstance());
+		if (Instance != nullptr)
+			Server = Instance->GetServer();
+		else
+			UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
+	}
+	else
+		UE_LOG(LogHolodeck, Warning, TEXT("Could not access the game instance."));
 }

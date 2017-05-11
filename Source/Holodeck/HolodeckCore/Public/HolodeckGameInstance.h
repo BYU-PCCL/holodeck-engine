@@ -17,15 +17,20 @@ private:
 	
 	AHolodeckWorldSettings* WorldSettings;
 
-	HolodeckServer* Server;
-	
-	int CurrentTickWait = -1;
+	void StartServer();
+
+	UPROPERTY()
+	UHolodeckServer* Server;
+
 public:
 
-	UHolodeckGameInstance();
+	UHolodeckServer* GetServer();
+
+	UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer);
 
 	void Tick(float DeltaTime);
 	void Init();
+
 };
 
 

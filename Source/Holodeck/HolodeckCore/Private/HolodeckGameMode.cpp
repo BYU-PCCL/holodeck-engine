@@ -8,7 +8,7 @@ void AHolodeckGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	UHolodeckGameInstance* GameInstance = Cast<UHolodeckGameInstance>(GetGameInstance());
+	UHolodeckGameInstance* GameInstance = (UHolodeckGameInstance*)(GetGameInstance());
 	if (GameInstance)
 		GameInstance->Tick(DeltaSeconds);
 }

@@ -20,7 +20,7 @@ public class Holodeck : ModuleRules
 
 #if PLATFORM_LINUX
         PublicDependencyModuleNames.AddRange(new string[] { "rt", "pthread" };
-        //TARGET_LINK_LIBRARIES(HolodeckServer rt pthread)
+        //TARGET_LINK_LIBRARIES(UHolodeckServer rt pthread)
 #endif
 
         // Uncomment if you are using Slate UI

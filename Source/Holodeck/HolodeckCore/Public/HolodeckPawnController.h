@@ -3,6 +3,7 @@
 #pragma once
 
 #include "HolodeckServer.h"
+#include "HolodeckGameInstance.h"
 #include "AIController.h"
 #include "HolodeckMessages.h"
 #include "HolodeckPawnController.generated.h"
@@ -26,6 +27,8 @@ public:
 
 	void Subscribe(FHolodeckSensorData& Data, int Length);
 
+	void GetServer();
+
 private:
-	HolodeckServer* Server;
+	UHolodeckServer* Server;
 };

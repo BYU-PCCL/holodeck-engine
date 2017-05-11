@@ -13,12 +13,17 @@
 #include "HolodeckSharedmemory.h"
 
 #if PLATFORM_WINDOWS
-#include <windows.h>
+//#include <windows.h>
+#include "AllowWindowsPlatformTypes.h"
+#include "Windows.h"
+#include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
 #include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
 #endif
+
+#include "HolodeckServer.generated.h"
 
 #define SENSOR_PATH "SENSORS"
 #define SETTINGS_PATH "SETTINGS"
@@ -34,24 +39,32 @@
 #define SEM_PATH1 "/HOLODECK_SEMAPHORE_1"
 #define SEM_PATH2 "/HOLODECK_SEMAPHORE_2"
 
+
 /**
 * This class resides in Holodeck, and handles the
 * passing of messages through shared memory.
 * It contains six blocks of shared memory, 2 mapping blocks and 3 for data.
 * The mapping blocks are for explaining what lies in the corresponding data memory.
 * The three types are sensors, commands, and settings (settings needs no mapping block, it is text).
-* HolodeckServer follows the Singleton design pattern, and can be obtained with the getInstance function.
+* UHolodeckServer follows the Singleton design pattern, and can be obtained with the getInstance function.
 * Should be instantiated by GameInstance
 */
-class HOLODECK_API HolodeckServer
+UCLASS()
+class HOLODECK_API UHolodeckServer : public UObject
 {
+	GENERATED_BODY()
+
 public:
-	/**
-     * Gets a reference to the HolodeckServer
-     * Following the singleton design pattern, this allows only one holodeck server object.
-     * @return a reference to the HolodeckServer object.
-     */
-	static HolodeckServer& getInstance();
+	///**
+    // * Gets a reference to the UHolodeckServer
+    // * Following the singleton design pattern, this allows only one holodeck server object.
+    // * @return a reference to the UHolodeckServer object.
+    // */
+	//static UHolodeckServer& getInstance();
+
+	void start();
+
+	void kill();
 
 	/**
 	* Subscribes a sensor to a part of the memory
@@ -92,11 +105,11 @@ public:
 
 	void release();
 
-	~HolodeckServer();
+	~UHolodeckServer();
 
+	UHolodeckServer();
 
-protected:
-	HolodeckServer();
+	bool isRunning() const;
 
 private:
 
@@ -107,21 +120,13 @@ private:
 	sem_t* lockingSemaphore1;
 	sem_t* lockingSemaphore2;
 #endif
+
 	HolodeckSharedMemory* sensors;
 	HolodeckSharedMemory* commands;
 	HolodeckSharedMemory* settings;
 
-	void updateSensors();
-
-	/*
-	 * Locks a CriticalSection object that is used to prevent simultaneous read/write on a socket by two threads
-	 */
-	void LockSocket();
-
-	/*
-	 * Unlocks a CriticalSection object that is used to prevent simultaneous read/write on a socket by two threads
-	 */
-	void UnlockSocket();
+	UPROPERTY()
+	bool bIsRunning;
 };
 
 
