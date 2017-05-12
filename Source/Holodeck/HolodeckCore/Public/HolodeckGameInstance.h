@@ -14,10 +14,11 @@ class UHolodeckGameInstance : public UGameInstance
 	GENERATED_BODY()
 	
 private:
+
+	bool bIsRunning;
 	
 	AHolodeckWorldSettings* WorldSettings;
 
-	void StartServer();
 
 	UPROPERTY()
 	UHolodeckServer* Server;
@@ -25,6 +26,7 @@ private:
 public:
 
 	UHolodeckServer* GetServer();
+	void StartServer();
 
 	UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer);
 

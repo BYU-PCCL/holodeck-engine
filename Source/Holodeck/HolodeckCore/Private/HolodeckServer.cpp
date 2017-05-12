@@ -21,12 +21,10 @@ void UHolodeckServer::start() {
 	settings = new HolodeckSharedMemory(SETTINGS_PATH, SETTINGS_MEM_SIZE, SETTINGS_MAP_SIZE);
 
 #if PLATFORM_WINDOWS
-	this->lockingSemaphore1 = CreateSemaphoreEx(NULL, 1, 1, TEXT(SEM_PATH1), 0, STANDARD_RIGHTS_ALL);
-	std::stringstream ss;
-	ss << lockingSemaphore1;
-	UE_LOG(LogTemp, Warning, TEXT("Semaphore: %s"), *FString(ss.str().c_str()));
-	this->lockingSemaphore2 = CreateSemaphoreEx(NULL, 0, 1, TEXT(SEM_PATH2), 0, STANDARD_RIGHTS_ALL);
+	this->mutex1 = CreateMutex(NULL, true, TEXT(MUTEX_PATH1));
+	this->mutex2 = CreateMutex(NULL, true, TEXT(MUTEX_PATH2));
 #elif PLATFORM_LINUX
+	// TODO change to MUTEX
 	// Create the semaphores - Currently destroys existing semaphores
 	sem_unlink(SEM_PATH1);
 	sem_unlink(SEM_PATH2);
@@ -45,8 +43,8 @@ void UHolodeckServer::kill() {
 	sensors = nullptr;
 	commands = nullptr;
 	settings = nullptr;
-	CloseHandle(lockingSemaphore1);
-	CloseHandle(lockingSemaphore2);
+	CloseHandle(this->mutex1);
+	CloseHandle(this->mutex2);
 	bIsRunning = false;
 }
 
@@ -128,10 +126,9 @@ FString UHolodeckServer::getSettingsMapping() const {
 
 void UHolodeckServer::acquire() {
 #if PLATFORM_WINDOWS
-	std::stringstream ss;
-	ss << this->lockingSemaphore1;
-	UE_LOG(LogTemp, Warning, TEXT("Semaphore: %s"), *FString(ss.str().c_str()));
-	WaitForSingleObject(lockingSemaphore1, INFINITE);
+	UE_LOG(LogHolodeck, Log, TEXT("Acquiring mutex..."));
+	WaitForSingleObject(this->mutex1, INFINITE);
+	UE_LOG(LogHolodeck, Log, TEXT("Acquired!"));
 #elif PLATFROM_LINUX
 	sem_wait(lockingSemaphore1);
 #endif
@@ -140,8 +137,9 @@ void UHolodeckServer::acquire() {
 void UHolodeckServer::release() {
 	// TODO: Ensure that the value is 0 before releasing it
 #if PLATFORM_WINDOWS
-	ReleaseSemaphore(lockingSemaphore2, 1, NULL);
-	GetLastError();
+	UE_LOG(LogHolodeck, Log, TEXT("Releasing mutex..."));
+	ReleaseMutex(this->mutex2);
+	UE_LOG(LogHolodeck, Log, TEXT("Released!"));
 #elif PLATFORM_LINX
 	sem_post(lockingSemaphore2);
 #endif

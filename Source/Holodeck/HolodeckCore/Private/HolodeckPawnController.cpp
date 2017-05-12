@@ -37,14 +37,9 @@ void AHolodeckPawnController::Subscribe(FHolodeckSensorData& Data, int Length) {
 void AHolodeckPawnController::GetServer() {
 	if (Server != nullptr) return;
 
-	if (GEngine->GetWorld() != nullptr && GEngine->GetWorld()->GetGameInstance() != nullptr)
-	{
-		UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GEngine->GetWorld()->GetGameInstance());
-		if (Instance != nullptr)
-			Server = Instance->GetServer();
-		else
-			UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
-	}
+	UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
+	if (Instance != nullptr)
+		Server = Instance->GetServer();
 	else
-		UE_LOG(LogHolodeck, Warning, TEXT("Could not access the game instance."));
+		UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
 }

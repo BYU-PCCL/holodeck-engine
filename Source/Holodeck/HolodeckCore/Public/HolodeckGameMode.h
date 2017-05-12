@@ -15,8 +15,12 @@ class AHolodeckGameMode : public AGameMode
 {
 	GENERATED_BODY()
 	
-	public:
-		virtual void Tick(float DeltaSeconds) override;
-	
+public:
+	virtual void Tick(float DeltaSeconds) override;
+
+	virtual void StartPlay() override;
+
+private:
+	UHolodeckGameInstance* Instance;
 	
 };

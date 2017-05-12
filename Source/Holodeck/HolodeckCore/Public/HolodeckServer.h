@@ -14,10 +14,14 @@
 
 #if PLATFORM_WINDOWS
 //#include <windows.h>
+#define MUTEX_PATH1 "Global\\HOLODECK_MUTEX_1"
+#define MUTEX_PATH2 "Global\\HOLODECK_MUTEX_2"
 #include "AllowWindowsPlatformTypes.h"
 #include "Windows.h"
 #include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
+#define MUTEX_PATH1 "/HOLODECK_MUTEX_1"
+#define MUTEX_PATH2 "/HOLODECK_MUTEX_2"
 #include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
@@ -36,8 +40,6 @@
 #define COMMAND_MAP_SIZE 10000
 #define SETTINGS_MAP_SIZE 10000
 
-#define SEM_PATH1 "/HOLODECK_SEMAPHORE_1"
-#define SEM_PATH2 "/HOLODECK_SEMAPHORE_2"
 
 
 /**
@@ -114,8 +116,8 @@ public:
 private:
 
 #if PLATFORM_WINDOWS
-	HANDLE lockingSemaphore1;
-	HANDLE lockingSemaphore2;
+	HANDLE mutex1;
+	HANDLE mutex2;
 #elif PLATFORM_LINUX
 	sem_t* lockingSemaphore1;
 	sem_t* lockingSemaphore2;

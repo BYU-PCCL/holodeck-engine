@@ -9,19 +9,17 @@ void UHolodeckGameInstance::StartServer() {
 }
 
 UHolodeckServer* UHolodeckGameInstance::GetServer() {
-	if (Server == nullptr) StartServer();
+	//if (!bIsRunning) StartServer();
 	return Server;
 }
 
 UHolodeckGameInstance::UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer){
+	UE_LOG(LogHolodeck, Log, TEXT("Game Instance initialized"));
 }
 
 void UHolodeckGameInstance::Tick(float DeltaTime) {
 	static bool bFirstTime = true;
-	if (bFirstTime)
-		Server->start();
-	else
-		Server->release();
+	if (!bFirstTime) Server->release();
 	Server->acquire();
 	bFirstTime = false;
 }
