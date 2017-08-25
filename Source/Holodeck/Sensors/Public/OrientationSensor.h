@@ -19,8 +19,6 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-	
-
 protected:
 	virtual FString GetDataKey() override;
 	virtual int GetDataLength() override;
@@ -33,5 +31,4 @@ private:
 	UPrimitiveComponent* Parent;
 	UStaticMeshComponent* RootMesh;
 	UWorld* World;
-
 };

@@ -12,8 +12,8 @@ AHoldeckSphereRobotController::~AHoldeckSphereRobotController() {
 
 }
 
-void AHoldeckSphereRobotController::Possess(APawn* Pawn) {
-	Super::Possess(Pawn);
+void AHoldeckSphereRobotController::Possess(APawn* pawn) {
+	Super::Possess(pawn);
 
 	//TArray<UStaticMeshComponent*> components;
 	//Pawn->GetComponents<UStaticMeshComponent>(components);

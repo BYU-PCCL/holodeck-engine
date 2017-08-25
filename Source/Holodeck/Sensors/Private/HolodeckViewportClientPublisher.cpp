@@ -9,7 +9,6 @@ UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -21,7 +20,7 @@ void UHolodeckViewportClientPublisher::BeginPlay()
 
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
 	if (ViewportClient) {
-		ImageQueue = &(ViewportClient->ImageQueue);
+		// ImageQueue = &(ViewportClient->ImageQueue);
 		ViewportClient->bGrayScale = this->bGrayScale;
 	}
 }
@@ -30,6 +29,16 @@ void UHolodeckViewportClientPublisher::BeginPlay()
 // Called every frame
 void UHolodeckViewportClientPublisher::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
+	UE_LOG(LogTemp, Warning, TEXT("buffer size is %d"), GetDataLength());
+	if (ViewportClient) {
+		for (int i = 0; i < ViewportClient->HolodeckColorBuffer.Num(); i++) {
+			UE_LOG(LogTemp, Warning, TEXT("position: %d - %d"), 3 * i, 3 * i + 2);
+			buffer[3 * i] = (float)ViewportClient->HolodeckColorBuffer[i].R / 255.0f;
+			buffer[3 * i + 1] = (float)ViewportClient->HolodeckColorBuffer[i].G / 255.0f;
+			buffer[3 * i + 2] = (float)ViewportClient->HolodeckColorBuffer[i].B / 255.0f;
+		}
+	}
+	/*
 	if (ViewportClient) {
 		while (!ImageQueue->IsEmpty())
 			ImageQueue->Dequeue(ResultData.Data);
@@ -37,15 +46,16 @@ void UHolodeckViewportClientPublisher::TickSensorComponent( float DeltaTime, ELe
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Couldn't find HolodeckViewportClient"));
-	}
+	}*/
 }
 
 int UHolodeckViewportClientPublisher::GetDataLength() {
+	return 256 * 256 * 4 * 3;
 	if (ViewportClient)
 	{
 		FVector2D Dims;
 		ViewportClient->GetViewportSize(Dims);
-		return Dims.X * Dims.Y * 4 * 2; // X by Y pixels, 4 for RGBA, 2 for uint8
+		return Dims.X * Dims.Y * sizeof(float) * 3; // X by Y pixels, 3 for RGB
 	}
 	else {
 		return 0;

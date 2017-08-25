@@ -11,12 +11,13 @@
 #include <string>
 #include <fcntl.h>
 #include <map>
-#include "SubscriberInfo.h"
 #include <sys/stat.h>
 #include <sys/types.h>
 
 #if PLATFORM_WINDOWS
+#include "AllowWindowsPlatformTypes.h"
 #include <windows.h>
+#include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
 #include <sys/mman.h>
 #include <unistd.h>
@@ -27,44 +28,23 @@ class HOLODECK_API HolodeckSharedMemory
 
 public:
 	HolodeckSharedMemory();
-    HolodeckSharedMemory(FString name, int memSize, int mapSize);
+    HolodeckSharedMemory(std::string name, int memSize);
 
-    void clear();
+	float* get() const { return memPointer; }
 
-    bool containsKey(const FString &agentName, const FString &name);
-
-    FString get(const FString &agentName, const FString &name);
-
-    void subscribe(const FString &agentName, const FString &name, int size);
-
-    void set(const FString &agentName, const FString &name, char* data);
-
-    FString getData() const;
-    FString getMappings() const;
+	int size() const { return memSize; }
 
 private:
     // The handle to shared memory
-    FString memPath;
-    FString mapPath;
+    std::string memPath;
     int memSize;
-    int mapSize;
 
     // The "file" and pointer to the start
 #if PLATFORM_WINDOWS
 	HANDLE memFile;
-	HANDLE mapFile;
 #elif PLATFORM_LINUX
     int memFile;
-    int mapFile;
 #endif
-	char* memPointer;
-	char* mapPointer;
-
-    int mapCurrentLength;
-    int memLastIndex;
-    std::map<FString, SubscriberInfo> subscribedItems;
-
-    int getLength();
-    void updateSubscribedMap();
+	float* memPointer;
 };
 

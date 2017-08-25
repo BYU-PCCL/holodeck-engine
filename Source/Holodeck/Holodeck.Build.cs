@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class Holodeck : ModuleRules
 {
-	public Holodeck(TargetInfo Target)
+	public Holodeck(ReadOnlyTargetRules Target) : base(Target)
 	{
         PrivateIncludePaths.AddRange(new string[] {
              "Holodeck/Agents/Public",

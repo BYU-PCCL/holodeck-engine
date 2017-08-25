@@ -28,12 +28,12 @@ public:
 	FString AgentName;
 
 	UPROPERTY(BlueprintReadWrite)
-	float Reward;
+	float reward;
+	float* reward_ptr;
 
 	UPROPERTY(BlueprintReadWrite)
-	bool Terminal;
+	float terminal;
+	float* terminal_ptr;
 
 	AHolodeckPawnController* HolodeckController;
-	FHolodeckSensorData RewardMessage;
-	FHolodeckSensorData TerminalStateMessage;
 };

@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "Engine.h"
+
 #include <iostream>
 #include <stdio.h>
 #include <stdexcept>
@@ -10,18 +12,18 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <map>
+#include <memory>
 #include "HolodeckSharedmemory.h"
 
 #if PLATFORM_WINDOWS
-//#include <windows.h>
-#define MUTEX_PATH1 "Global\\HOLODECK_MUTEX_1"
-#define MUTEX_PATH2 "Global\\HOLODECK_MUTEX_2"
+#define SEMAPHORE_PATH1 "Global\\HOLODECK_SEMAPHORE_1"
+#define SEMAPHORE_PATH2 "Global\\HOLODECK_SEMAPHORE_2"
 #include "AllowWindowsPlatformTypes.h"
 #include "Windows.h"
 #include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
-#define MUTEX_PATH1 "/HOLODECK_MUTEX_1"
-#define MUTEX_PATH2 "/HOLODECK_MUTEX_2"
+#define SEMAPHORE_PATH1 "/HOLODECK_SEMAPHORE_1"
+#define SEMAPHORE_PATH2 "/HOLODECK_SEMAPHORE_2"
 #include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
@@ -29,27 +31,11 @@
 
 #include "HolodeckServer.generated.h"
 
-#define SENSOR_PATH "SENSORS"
-#define SETTINGS_PATH "SETTINGS"
-#define COMMAND_PATH "COMMANDS"
-
-#define SENSOR_MEM_SIZE 33177600 // Enough space for 2 RGBA images at 1920 x 1080, around 33mb
-#define COMMAND_MEM_SIZE 10000
-#define SETTINGS_MEM_SIZE 10000
-#define SENSOR_MAP_SIZE 10000
-#define COMMAND_MAP_SIZE 10000
-#define SETTINGS_MAP_SIZE 10000
-
-
-
 /**
 * This class resides in Holodeck, and handles the
 * passing of messages through shared memory.
-* It contains six blocks of shared memory, 2 mapping blocks and 3 for data.
-* The mapping blocks are for explaining what lies in the corresponding data memory.
-* The three types are sensors, commands, and settings (settings needs no mapping block, it is text).
-* UHolodeckServer follows the Singleton design pattern, and can be obtained with the getInstance function.
-* Should be instantiated by GameInstance
+* A new shared memory block is created for each sensor and for each action space.
+* There should only be one UHolodeckServer, and it should be instantiated by HolodeckGameInstance.
 */
 UCLASS()
 class HOLODECK_API UHolodeckServer : public UObject
@@ -57,51 +43,20 @@ class HOLODECK_API UHolodeckServer : public UObject
 	GENERATED_BODY()
 
 public:
-	///**
-    // * Gets a reference to the UHolodeckServer
-    // * Following the singleton design pattern, this allows only one holodeck server object.
-    // * @return a reference to the UHolodeckServer object.
-    // */
-	//static UHolodeckServer& getInstance();
 
 	void start();
 
 	void kill();
 
 	/**
-	* Subscribes a sensor to a part of the memory
+	* Subscribes a sensor.
 	* If a sensor with that name already exists in the memory, and the size is the same
 	* then it is allocated that space, otherwise an invalid argument exception is thrown.
 	* @param agentName the name of the agent this sensor belongs to
 	* @param sensorKey the name of the sensor
 	* @param size the size of the data to allocate
 	*/
-	void subscribeSensor(const FString &agentName, const FString &sensorKey, int size);
-
-	void setSensor(const FString &agentName, const FString &sensorKey, char *data);
-
-	FString getSensor(const FString &agentName, const FString &sensorKey);
-
-	FString getSensorsData() const;
-	FString getSensorsMapping() const;
-
-	void subscribeCommand(const FString &agentName, const FString& commandKey, int size);
-
-	void setCommand(const FString& agentName, const FString& commandKey, char* data);
-
-	FString getCommand(const FString& agentName, const FString& commandKey);
-
-	FString getCommandsData() const;
-	FString getCommandsMapping() const;
-
-	void subscribeSetting(const FString &agentName, const FString& settingKey, int size);
-
-	void setSetting(const FString& agentName, const FString& settingKey, char* data);
-
-	FString getSetting(const FString& agentName, const FString& settingKey);
-
-	FString getSettingsData() const;
-	FString getSettingsMapping() const;
+	float* subscribeSensor(const std::string& agent_name, const std::string& sensor_key, int size);
 
 	void acquire();
 
@@ -115,17 +70,17 @@ public:
 
 private:
 
+	std::string makeKey(const std::string& agent_name, const std::string& sensor_name);
+
 #if PLATFORM_WINDOWS
-	HANDLE mutex1;
-	HANDLE mutex2;
+	HANDLE lockingSemaphore1;
+	HANDLE lockingSemaphore2;
 #elif PLATFORM_LINUX
 	sem_t* lockingSemaphore1;
 	sem_t* lockingSemaphore2;
 #endif
 
-	HolodeckSharedMemory* sensors;
-	HolodeckSharedMemory* commands;
-	HolodeckSharedMemory* settings;
+	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> sensors;
 
 	UPROPERTY()
 	bool bIsRunning;

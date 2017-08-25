@@ -20,18 +20,15 @@ void AHolodeckPawnController::UnPossess() {
 	Super::UnPossess();
 }
 
-void AHolodeckPawnController::Publish(FHolodeckSensorData& data) {
-		Server->setSensor(data.AgentName, data.Key, TCHAR_TO_UTF8(*data.Data));
-}
-
-void AHolodeckPawnController::Subscribe(FHolodeckSensorData& Data, int Length) {
+float* AHolodeckPawnController::Subscribe(const FString& agent_name, const FString& sensor_name, int length) {
 	GetServer();
 
 	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Sensor could not find server..."));
+		return nullptr;
 	} 
 	else
-		Server->subscribeSensor(Data.AgentName, Data.Key, Length);
+		return Server->subscribeSensor(TCHAR_TO_UTF8(*agent_name), TCHAR_TO_UTF8(*sensor_name), length);
 }
 
 void AHolodeckPawnController::GetServer() {

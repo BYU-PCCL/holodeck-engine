@@ -29,9 +29,9 @@ void AAndroid::Tick( float DeltaTime )
 }
 
 // Called to bind functionality to input
-void AAndroid::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+void AAndroid::SetupPlayerInputComponent(class UInputComponent* component)
 {
-	Super::SetupPlayerInputComponent(InputComponent);
+	Super::SetupPlayerInputComponent(component);
 
 }
 

@@ -14,17 +14,17 @@ AHolodeckAndroidController::~AHolodeckAndroidController() {
 
 }
 
-void AHolodeckAndroidController::Possess(APawn* Pawn) {
-	Super::Possess(Pawn);
+void AHolodeckAndroidController::Possess(APawn* pawn) {
+	Super::Possess(pawn);
 
 	TArray<USkeletalMeshComponent*> components;
-	Pawn->GetComponents<USkeletalMeshComponent>(components);
+	pawn->GetComponents<USkeletalMeshComponent>(components);
 	SkeletalMeshComponent = components[0];
 }
 
 
 void AHolodeckAndroidController::SetJointConstraint(FName joint, float swing1, float twist, float swing2, float force) {
-
+	/*
 	FConstraintInstance* Constraint = SkeletalMeshComponent->FindConstraintInstance(joint);
 	Constraint->SetAngularPositionDrive(true, true);
 	Constraint->SetAngularDriveParams(100000 * force, 10000, 100000);
@@ -33,12 +33,12 @@ void AHolodeckAndroidController::SetJointConstraint(FName joint, float swing1, f
 						FRotator(Constraint->Swing2LimitAngle * swing2, // Blue fan in Unreal Editor
 								 Constraint->Swing1LimitAngle * swing1, // Red fan
 								 Constraint->TwistLimitAngle * twist)  // Green fan
-								.Quaternion());
+								.Quaternion());*/
 }
 
 
 void AHolodeckAndroidController::OnReceiveCommand(const FHolodeckAndroidCommand& Command) {
-	
+	/*
 	TArray<float> commandArray = Command.ConstraintVector;
 
 	if(commandArray.Num() > 1){
@@ -90,12 +90,12 @@ void AHolodeckAndroidController::OnReceiveCommand(const FHolodeckAndroidCommand&
 		SetJointConstraint(FName(TEXT("calf_r"     )), commandArray[119],                 0,                 0, commandArray[120]);
 		SetJointConstraint(FName(TEXT("foot_r"     )), commandArray[121],                 0, commandArray[122], commandArray[123]);
 		SetJointConstraint(FName(TEXT("ball_r"     )), commandArray[124], commandArray[125],                 0, commandArray[126]);
-	}
+	}*/
 }
 
 void AHolodeckAndroidController::OnReceiveConfiguration(const FHolodeckAndroidConfiguration& Configuration) {
 
-	((AAndroid*) this->GetPawn())->SetCollisionsVisible(Configuration.AreCollisionsVisible);
+//	((AAndroid*) this->GetPawn())->SetCollisionsVisible(Configuration.AreCollisionsVisible);
 
 }
 

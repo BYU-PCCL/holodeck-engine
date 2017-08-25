@@ -5,15 +5,17 @@ using System.Collections.Generic;
 
 public class HolodeckEditorTarget : TargetRules
 {
-	public HolodeckEditorTarget(TargetInfo Target)
+	public HolodeckEditorTarget(TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
-	}
+        // LaunchModuleName = "Holodeck";
+        ExtraModuleNames.Add("Holodeck");
+    }
 
 	//
 	// TargetRules interface.
 	//
-
+    /*
 	public override void SetupBinaries(
 		TargetInfo Target,
 		ref List<UEBuildBinaryConfiguration> OutBuildBinaryConfigurations,
@@ -22,4 +24,5 @@ public class HolodeckEditorTarget : TargetRules
 	{
 		OutExtraModuleNames.AddRange( new string[] { "Holodeck" } );
 	}
+    */
 }

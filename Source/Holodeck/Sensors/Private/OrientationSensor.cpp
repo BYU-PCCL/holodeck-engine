@@ -9,7 +9,6 @@ UOrientationSensor::UOrientationSensor()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -40,6 +39,7 @@ int UOrientationSensor::GetDataLength()
 // Called every frame
 void UOrientationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
+	/*
 	if (Parent != NULL) {
 		
 		if (RootMesh != NULL) {
@@ -62,5 +62,6 @@ void UOrientationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickTy
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("ERROR: Failed to cast 'this->GetAttachParent()' to UPrimitiveComponent"));
 	}
+	*/
 }
 

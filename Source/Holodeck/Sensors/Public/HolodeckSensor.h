@@ -67,16 +67,18 @@ protected:
 	* Make sure to set the data:
 	* ResultData.Data = ...
 	*/
-	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) { check(0 && "You must override TickSensorComponent"); };
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) { 
+		check(0 && "You must override TickSensorComponent"); };
 
 	// The controller for the agent this is attached to
 	AHolodeckPawnController* Controller;
-
-	// The place to save the result data to
-	FHolodeckSensorData ResultData;
 
 	// Allows you to turn the sensor on and off in the editor
 	UPROPERTY(EditAnywhere)
 	bool bOn;
 
+	FString agent_name;
+	FString sensor_name;
+
+	float* buffer;
 };

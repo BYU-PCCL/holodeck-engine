@@ -26,9 +26,9 @@ void ASphereRobot::Tick( float DeltaTime )
 }
 
 // Called to bind functionality to input
-void ASphereRobot::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+void ASphereRobot::SetupPlayerInputComponent(class UInputComponent* component)
 {
-	Super::SetupPlayerInputComponent(InputComponent);
+	Super::SetupPlayerInputComponent(component);
 
 }
 

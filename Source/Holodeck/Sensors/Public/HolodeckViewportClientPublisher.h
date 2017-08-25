@@ -31,5 +31,5 @@ protected:
 private:
 	UHolodeckViewportClient* ViewportClient;
 
-	TQueue<FString>* ImageQueue;
+	// TQueue<FString>* ImageQueue;
 };

@@ -10,11 +10,12 @@
 // Sets default values for this component's properties
 UCameraSensorArray2D::UCameraSensorArray2D()
 {
+	/*
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.TickGroup = TG_PrePhysics; // Tick every physics substep?
+	*/
 }
 
 
@@ -22,7 +23,7 @@ UCameraSensorArray2D::UCameraSensorArray2D()
 void UCameraSensorArray2D::BeginPlay()
 {
 	Super::BeginPlay();
-
+	/*
 	//get all the attached USceneCaptureComponent2D
 	for (USceneComponent* child : GetAttachChildren()) {
 		USceneCaptureComponent2D* SceneCaptureComponent = Cast<USceneCaptureComponent2D>(child);
@@ -30,6 +31,7 @@ void UCameraSensorArray2D::BeginPlay()
 		if (SceneCaptureComponent)
 			AAttachedSceneCaptureComponents2D.Add(SceneCaptureComponent);
 	}
+	*/
 }
 
 
@@ -43,6 +45,7 @@ void UCameraSensorArray2D::BeginPlay()
 
 void UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 {
+	/*
 	// For each camera attached to this agent
 	for (USceneCaptureComponent2D* camera :AAttachedSceneCaptureComponents2D) {
 		if (camera->TextureTarget)
@@ -76,6 +79,7 @@ void UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
 			}
 		}
 	}
+	*/
 }
 
 FString UCameraSensorArray2D::GetDataKey() {
@@ -101,11 +105,11 @@ int UCameraSensorArray2D::GetDataLength() {
 			}
 		}
 	}
-	return numCameras * numPixels * HEX_COLOR_WIDTH * NUM_RGB_CHANNELS + 1;
+	return numCameras * numPixels * NUM_RGB_CHANNELS * sizeof(float);
 }
 
 void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	TMap <FString, FString> CaptureData;
+	/*TMap <FString, FString> CaptureData;
 	Capture(CaptureData);
 
 	//Return base64 CaptureData as json object
@@ -119,7 +123,7 @@ void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickT
 		DataString.RemoveAt(DataString.Len() - 1);
 	DataString.InsertAt(0, "[");
 	DataString += "]";
-	ResultData.Data = DataString;
+	ResultData.Data = DataString;*/
 }
 
 const char UCameraSensorArray2D::RGBConv[256][2] = { { '0','0' },{ '0','1' },{ '0','2' },{ '0','3' },{ '0','4' },{ '0','5' },{ '0','6' },{ '0','7' },{ '0','8' },{ '0','9' },{ '0','a' },{ '0','b' },{ '0','c' },{ '0','d' },{ '0','e' },{ '0','f' },

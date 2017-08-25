@@ -23,9 +23,7 @@ public:
 	void Possess(APawn* InPawn);
 	void UnPossess();
 
-	void Publish(FHolodeckSensorData& Response);
-
-	void Subscribe(FHolodeckSensorData& Data, int Length);
+	float* Subscribe(const FString& agent_name, const FString& sensor_name, int length);
 
 	void GetServer();
 

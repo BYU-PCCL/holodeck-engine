@@ -19,14 +19,11 @@ class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient
 
 public:
 	UHolodeckViewportClient(const FObjectInitializer& PCIP);
-	bool bHolodeckDoScreenShot;
-	virtual void Draw(FViewport* Viewport, FCanvas* SceneCanvas) override;
+	void Draw(FViewport* Viewport, FCanvas* SceneCanvas) override;
 	void CompressImageArrayJPEG(int32 ImageWidth, int32 ImageHeight, TArray<FColor>& SrcData, TArray<uint8>& DstData);
 	TArray<FColor> HolodeckColorBuffer;
 	FVector2D ViewportSize;
 	FString Base64Data;
-
-	TQueue<FString> ImageQueue;
 
 	bool bGrayScale;
 

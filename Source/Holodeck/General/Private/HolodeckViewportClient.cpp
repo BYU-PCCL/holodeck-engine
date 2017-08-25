@@ -7,7 +7,6 @@
 #include "HolodeckViewportClient.h"
 
 UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer& PCIP) : Super(PCIP) { 
-	bHolodeckDoScreenShot = true; 
 	bFirstTime = true; 
 }
 
@@ -41,6 +40,7 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 		GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Black, TEXT("Couldn't read pixels!"));
 		return;
 	}
+	/*
 	else {
 		if (!bGrayScale) {
 			// Check whether result array has been initialized
@@ -85,27 +85,20 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot()
 			ResultArray[Pos] = '\0';
 		}
 
-
-		if (ImageQueue.IsEmpty())
-		{
-			FString FinalResult(ANSI_TO_TCHAR(ResultArray));
-			ImageQueue.Enqueue(FinalResult);
-		}
 	}
-
-	return;
+	*/
 }
 
 
 //Draw
-void UHolodeckViewportClient::Draw(FViewport * Viewport, FCanvas * SceneCanvas)
+void UHolodeckViewportClient::Draw(FViewport * viewport, FCanvas * SceneCanvas)
 {
 	//GEngine->AddOnScreenDebugMessage(-1, 200.f, FColor::Red, TEXT("Using HolodeckViewportClient!"));
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//this line is reaaaaaaaaaaaaaalllly important
-	Super::Draw(Viewport, SceneCanvas);
+	Super::Draw(viewport, SceneCanvas);
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

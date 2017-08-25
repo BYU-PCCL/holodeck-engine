@@ -9,7 +9,6 @@ UHolodeckSensor::UHolodeckSensor()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 	bOn = true;
 }
@@ -22,26 +21,23 @@ void UHolodeckSensor::BeginPlay()
 
 	// Get the controller of the agent this is attached to
 	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
-	if (Controller != nullptr)
+	if (bOn && Controller != nullptr)
 	{
 		AHolodeckAgent* Agent = (AHolodeckAgent*)(Controller->GetPawn());
 		if (Agent != nullptr)
-			ResultData.AgentName = Agent->AgentName;
-		ResultData.Key = GetDataKey();
+			agent_name = Agent->AgentName;
+		sensor_name = GetDataKey();
 
-		Controller->Subscribe(ResultData, GetDataLength());
+		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetDataLength());
+		buffer = Controller->Subscribe(agent_name, sensor_name, GetDataLength());
 	}
 }
-
 
 // Called every frame
 void UHolodeckSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	if (bOn && Controller != nullptr) {
+	if (bOn && Controller != nullptr)
 		TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
-		Controller->Publish(ResultData);
-	}
 }
-

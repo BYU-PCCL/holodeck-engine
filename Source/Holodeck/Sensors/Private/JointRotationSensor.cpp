@@ -9,7 +9,6 @@ using namespace std;
 UJointRotationSensor::UJointRotationSensor()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame. 
-	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -45,7 +44,7 @@ int UJointRotationSensor::GetDataLength()
 // Called every frame
 void UJointRotationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
 {
-	ResultData.Data = GetJointRotationVectorJSON();
+	//ResultData.Data = GetJointRotationVectorJSON();
 }
 
 FString UJointRotationSensor::GetJointRotationVectorJSON() {
@@ -114,6 +113,7 @@ FString UJointRotationSensor::GetJointRotationVectorJSON() {
 *  smaller result is what we will most often use.
 */
 FString UJointRotationSensor::GetJointRotationsJSON() {
+	/*
 	FString result = "[";
 
 	FName BoneName;
@@ -148,11 +148,12 @@ FString UJointRotationSensor::GetJointRotationsJSON() {
 	}
 	result.RemoveAt(result.Len() - 1);
 	result += "]";
-	return result;
+	return result;*/
+	return TEXT("");
 }
 
 FString UJointRotationSensor::CastSingleJointRotationToString(FString jointName, bool swing1, bool twist, bool swing2) {
-	FConstraintInstance* Constraint = SkeletalMeshComponent->FindConstraintInstance(FName(*jointName));
+	/*FConstraintInstance* Constraint = SkeletalMeshComponent->FindConstraintInstance(FName(*jointName));
 	FString result;
 	if (swing1) {
 		result += FString::SanitizeFloat(Constraint->GetCurrentSwing1());
@@ -166,5 +167,6 @@ FString UJointRotationSensor::CastSingleJointRotationToString(FString jointName,
 		result += FString::SanitizeFloat(Constraint->GetCurrentSwing2());
 		result += ",";
 	}
-	return result;;
+	return result;;*/
+	return TEXT("");
 }

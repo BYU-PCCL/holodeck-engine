@@ -10,7 +10,6 @@ UIMUSensor::UIMUSensor()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	bWantsBeginPlay = true;
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -36,7 +35,7 @@ void UIMUSensor::BeginPlay()
 
 
 void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
-{
+{/*
 	if (Parent != nullptr) {
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
@@ -51,7 +50,7 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("Failed to cast parent to UPrimitiveCompenent in IMUSensor"));
-	}
+	}*/
 }
 
 void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
