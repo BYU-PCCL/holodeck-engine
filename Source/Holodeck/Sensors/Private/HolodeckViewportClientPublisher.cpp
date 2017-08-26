@@ -5,8 +5,7 @@
 
 
 // Sets default values for this component's properties
-UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher()
-{
+UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
@@ -14,8 +13,7 @@ UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher()
 
 
 // Called when the game starts
-void UHolodeckViewportClientPublisher::BeginPlay()
-{
+void UHolodeckViewportClientPublisher::BeginPlay() {
 	Super::BeginPlay();
 
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
@@ -27,8 +25,7 @@ void UHolodeckViewportClientPublisher::BeginPlay()
 
 
 // Called every frame
-void UHolodeckViewportClientPublisher::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
+void UHolodeckViewportClientPublisher::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	UE_LOG(LogTemp, Warning, TEXT("buffer size is %d"), GetDataLength());
 	if (ViewportClient) {
 		for (int i = 0; i < ViewportClient->HolodeckColorBuffer.Num(); i++) {

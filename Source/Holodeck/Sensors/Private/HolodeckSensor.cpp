@@ -38,6 +38,6 @@ void UHolodeckSensor::TickComponent( float DeltaTime, ELevelTick TickType, FActo
 {
 	Super::TickComponent( DeltaTime, TickType, ThisTickFunction );
 
-	if (bOn && Controller != nullptr)
+	if (bOn && Controller != nullptr && buffer != nullptr)
 		TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }

@@ -13,9 +13,14 @@ void AHolodeckGameMode::Tick(float DeltaSeconds)
 }
 
 void AHolodeckGameMode::StartPlay() {
-	this->Instance = (UHolodeckGameInstance*)(GetGameInstance());
-	if (this->Instance) this->Instance->StartServer();
-	else UE_LOG(LogHolodeck, Warning, TEXT("Game Instance couldn't be found and initialized"));
+	if (bHolodeckIsOn) {
+		this->Instance = (UHolodeckGameInstance*)(GetGameInstance());
+		if (this->Instance) {
+			if (bHolodeckIsOn)
+				this->Instance->StartServer();
+			else UE_LOG(LogHolodeck, Warning, TEXT("Game Instance couldn't be found and initialized"));
+		}
+	}
 
 	Super::StartPlay();
 }

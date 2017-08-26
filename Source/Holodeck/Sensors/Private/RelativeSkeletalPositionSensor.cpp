@@ -7,8 +7,7 @@
 // TODO: delete this class entirely in it's own git commit
 
 // Sets default values for this component's properties
-URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor()
-{
+URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
@@ -16,8 +15,7 @@ URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor()
 
 
 // Called when the game starts
-void URelativeSkeletalPositionSensor::BeginPlay()
-{
+void URelativeSkeletalPositionSensor::BeginPlay() {
 	Super::BeginPlay();
 
 	//set skeletal mesh component
@@ -37,13 +35,11 @@ void URelativeSkeletalPositionSensor::BeginPlay()
 
 
 // Called every frame
-void URelativeSkeletalPositionSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
+void URelativeSkeletalPositionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	//ResultData.Data = getBonesRelativeOffset();
 }
 
-FString URelativeSkeletalPositionSensor::getBonesRelativeOffset() 
-{
+FString URelativeSkeletalPositionSensor::getBonesRelativeOffset() {
 
 	FString Output = "[";
 

@@ -14,8 +14,7 @@ UIMUSensor::UIMUSensor()
 }
 
 // Called when the game starts
-void UIMUSensor::BeginPlay()
-{
+void UIMUSensor::BeginPlay() {
 	Super::BeginPlay();
 
 	// Cache important variables
@@ -34,8 +33,8 @@ void UIMUSensor::BeginPlay()
 }
 
 
-void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
-{/*
+void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) {
+	/*
 	if (Parent != nullptr) {
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
@@ -78,22 +77,18 @@ void UIMUSensor::CalculateAngularVelocityVector() {
 	AngularVelocityVector = RotationNow.UnrotateVector(AngularVelocityVector); //Rotate from world angles to local angles.
 }
 
-FVector UIMUSensor::GetAccelerationVector()
-{
+FVector UIMUSensor::GetAccelerationVector() {
 	return LinearAccelerationVector;
 }
 
-FVector UIMUSensor::GetAngularVelocityVector()
-{
+FVector UIMUSensor::GetAngularVelocityVector() {
 	return AngularVelocityVector;
 }
 
-FString UIMUSensor::GetDataKey()
-{
+FString UIMUSensor::GetDataKey() {
 	return "IMUSensor";
 }
 
-int UIMUSensor::GetDataLength()
-{
+int UIMUSensor::GetDataLength() {
 	return 500;
 }

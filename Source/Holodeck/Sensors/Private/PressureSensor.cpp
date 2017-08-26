@@ -5,8 +5,7 @@
 
 
 // Sets default values for this component's properties
-UPressureSensor::UPressureSensor()
-{
+UPressureSensor::UPressureSensor() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
@@ -16,8 +15,7 @@ UPressureSensor::UPressureSensor()
 
 
 // Called when the game starts
-void UPressureSensor::BeginPlay()
-{
+void UPressureSensor::BeginPlay() {
 	Super::BeginPlay();
 
 	//set hit delegate
@@ -32,8 +30,8 @@ void UPressureSensor::BeginPlay()
 }
 
 // Called every frame
-void UPressureSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{/*
+void UPressureSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+/*
 	//build json from hitsmap
 	FString DataString = "";
 	for (auto& BoneHitArray : HitsMap)
@@ -56,8 +54,7 @@ void UPressureSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType,
 	HitsMap.Empty();*/
 }
 
-void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit)
-{
+void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
 	FVector hit_world_location;
 	FVector hit_bone_location;
 	FRotator hit_bone_rotation;

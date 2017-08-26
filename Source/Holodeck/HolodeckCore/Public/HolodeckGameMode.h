@@ -16,9 +16,13 @@ class AHolodeckGameMode : public AGameMode
 	GENERATED_BODY()
 	
 public:
+	AHolodeckGameMode(const FObjectInitializer & ObjectInitializer) : AGameMode(ObjectInitializer), bHolodeckIsOn(true) {}
 	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void StartPlay() override;
+
+	UPROPERTY(EditAnywhere)
+	bool bHolodeckIsOn;
 
 private:
 	UHolodeckGameInstance* Instance;

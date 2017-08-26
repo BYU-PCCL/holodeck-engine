@@ -14,8 +14,7 @@ UOrientationSensor::UOrientationSensor()
 
 
 // Called when the game starts
-void UOrientationSensor::BeginPlay()
-{
+void UOrientationSensor::BeginPlay() {
 	Super::BeginPlay();
 
 	// Set the controller, parent, and root mesh
@@ -26,19 +25,16 @@ void UOrientationSensor::BeginPlay()
 	World = Parent->GetWorld();
 }
 
-FString UOrientationSensor::GetDataKey()
-{
+FString UOrientationSensor::GetDataKey() {
 	return "OrientationSensor";
 }
 
-int UOrientationSensor::GetDataLength()
-{
+int UOrientationSensor::GetDataLength() {
 	return 1000;
 }
 
 // Called every frame
-void UOrientationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
+void UOrientationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	/*
 	if (Parent != NULL) {
 		
@@ -64,4 +60,3 @@ void UOrientationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickTy
 	}
 	*/
 }
-

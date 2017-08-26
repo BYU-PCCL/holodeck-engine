@@ -12,26 +12,23 @@ UCLASS()
 class UHolodeckGameInstance : public UGameInstance
 {
 	GENERATED_BODY()
-	
-private:
 
-	bool bIsRunning;
+public:
+	UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer);
+
+	UHolodeckServer* GetServer();
+	void StartServer();
+
+	void Tick(float DeltaTime);
+	void Init();
+
+private:
 	
 	AHolodeckWorldSettings* WorldSettings;
 
 
 	UPROPERTY()
 	UHolodeckServer* Server;
-
-public:
-
-	UHolodeckServer* GetServer();
-	void StartServer();
-
-	UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer);
-
-	void Tick(float DeltaTime);
-	void Init();
 
 };
 

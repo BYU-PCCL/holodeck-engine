@@ -8,8 +8,7 @@
 
 
 // Sets default values for this component's properties
-UCameraSensorArray2D::UCameraSensorArray2D()
-{
+UCameraSensorArray2D::UCameraSensorArray2D() {
 	/*
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -20,8 +19,7 @@ UCameraSensorArray2D::UCameraSensorArray2D()
 
 
 // Called when the game starts
-void UCameraSensorArray2D::BeginPlay()
-{
+void UCameraSensorArray2D::BeginPlay() {
 	Super::BeginPlay();
 	/*
 	//get all the attached USceneCaptureComponent2D
@@ -43,8 +41,7 @@ void UCameraSensorArray2D::BeginPlay()
 // 	Controller->Publish(data);
 // }
 
-void UCameraSensorArray2D::Capture(TMap<FString, FString>& output)
-{
+void UCameraSensorArray2D::Capture(TMap<FString, FString>& output) {
 	/*
 	// For each camera attached to this agent
 	for (USceneCaptureComponent2D* camera :AAttachedSceneCaptureComponents2D) {

@@ -4,6 +4,7 @@
 #include "HolodeckGameInstance.h"
 
 void UHolodeckGameInstance::StartServer() {
+	// HolodeckGameMode should start the server.
 	Server = NewObject<UHolodeckServer>();
 	Server->start();
 }
@@ -12,11 +13,12 @@ UHolodeckServer* UHolodeckGameInstance::GetServer() {
 	return Server;
 }
 
-UHolodeckGameInstance::UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer){
+UHolodeckGameInstance::UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
 	UE_LOG(LogHolodeck, Log, TEXT("Game Instance initialized"));
 }
 
 void UHolodeckGameInstance::Tick(float DeltaTime) {
+	// HolodeckGameMode will decide whether this ticks or not.
 	static bool bFirstTime = true;
 	if (!bFirstTime) Server->release();
 	// FString note = UTF8_TO_TCHAR(Server->getSensorsMapping().c_str());

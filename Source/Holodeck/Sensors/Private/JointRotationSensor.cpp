@@ -13,8 +13,7 @@ UJointRotationSensor::UJointRotationSensor()
 }
 
 // Called when the game starts
-void UJointRotationSensor::BeginPlay()
-{
+void UJointRotationSensor::BeginPlay() {
 	Super::BeginPlay();
 
 	//set skeletal mesh component
@@ -31,19 +30,16 @@ void UJointRotationSensor::BeginPlay()
 	}
 }
 
-FString UJointRotationSensor::GetDataKey()
-{
+FString UJointRotationSensor::GetDataKey() {
 	return "JointRotationSensor";
 }
 
-int UJointRotationSensor::GetDataLength()
-{
+int UJointRotationSensor::GetDataLength() {
 	return 1000;
 }
 
 // Called every frame
-void UJointRotationSensor::TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-{
+void UJointRotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	//ResultData.Data = GetJointRotationVectorJSON();
 }
 
