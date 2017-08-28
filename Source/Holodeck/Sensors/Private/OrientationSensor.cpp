@@ -29,8 +29,12 @@ FString UOrientationSensor::GetDataKey() {
 	return "OrientationSensor";
 }
 
-int UOrientationSensor::GetDataLength() {
+int UOrientationSensor::GetNumItems() {
 	return 1000;
+}
+
+int UOrientationSensor::GetItemSize() {
+	return sizeof(float);
 }
 
 // Called every frame

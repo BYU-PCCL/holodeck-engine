@@ -34,8 +34,12 @@ FString UJointRotationSensor::GetDataKey() {
 	return "JointRotationSensor";
 }
 
-int UJointRotationSensor::GetDataLength() {
+int UJointRotationSensor::GetNumItems() {
 	return 1000;
+}
+
+int UJointRotationSensor::GetItemSize() {
+	return sizeof(float);
 }
 
 // Called every frame

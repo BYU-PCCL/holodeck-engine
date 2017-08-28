@@ -42,9 +42,9 @@ UHolodeckServer::~UHolodeckServer() {
 	kill();
 }
 
-void* UHolodeckServer::subscribeSensor(const std::string& agent_name, const std::string& sensor_key, int buffer_size) {
+float* UHolodeckServer::subscribeSensor(const std::string& agent_name, const std::string& sensor_key, int size) {
 	std::string key = makeKey(agent_name, sensor_key);
-	sensors[key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(key, buffer_size));
+	sensors[key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(key, size));
 	return sensors[key]->get();
 }
 

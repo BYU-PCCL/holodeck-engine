@@ -19,21 +19,18 @@ void AHolodeckAgent::BeginPlay()
 	if (HolodeckController == nullptr) {
 		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red, TEXT("No Holodeck Controller on Holodeck Agent!"));
 	} else {
-		reward_ptr = HolodeckController->Subscribe(AgentName, "Reward", sizeof(float));
-		terminal_ptr = HolodeckController->Subscribe(AgentName, "Terminal", sizeof(float));
+		reward_ptr = static_cast<float*>(HolodeckController->Subscribe(AgentName, "Reward", 1, sizeof(float)));
+		terminal_ptr = static_cast<bool*>(HolodeckController->Subscribe(AgentName, "Terminal", 1, sizeof(bool)));
 		if (reward_ptr != nullptr)
 			*reward_ptr = 0.0;
 		if (terminal_ptr != nullptr)
-			*terminal_ptr = 0.0;
+			*terminal_ptr = false;
 	}
 }
 
 // Called every frame
 void AHolodeckAgent::Tick( float DeltaTime )
 {
-	// TODO (josh) : Set the reward properly
-	if (reward_ptr != nullptr)
-		*reward_ptr = (float)(((int)(*reward_ptr) + 1) % 100);
 }
 
 // Called to bind functionality to input

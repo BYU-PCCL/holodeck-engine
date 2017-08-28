@@ -56,10 +56,17 @@ protected:
 
 	/**
 	* Must be overridden by subclass
-	* Set the name for the data
+	* Set the number of data items
 	* e.g. return 100
 	*/
-	virtual int GetDataLength() { check(0 && "You must override GetDataLength"); return 0; };
+	virtual int GetNumItems() { check(0 && "You must override getNumItems"); return 0; };
+
+	/**
+	* Must be overridden by subclass
+	* Set the size of each data item
+	* e.g. return sizeof(float)
+	*/
+	virtual int GetItemSize() { check(0 && "You must override getItemSize"); return 0; };
 
 	/**
 	* Must be overridden by subclass
@@ -80,5 +87,5 @@ protected:
 	FString agent_name;
 	FString sensor_name;
 
-	float* buffer;
+	void* buffer;
 };

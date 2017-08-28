@@ -4,13 +4,7 @@
 
 #pragma once
 
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <cstring>
 #include <string>
-#include <fcntl.h>
-#include <map>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -27,12 +21,11 @@ class HOLODECK_API HolodeckSharedMemory
 {
 
 public:
-	HolodeckSharedMemory();
-    HolodeckSharedMemory(std::string name, int memSize);
+    explicit HolodeckSharedMemory(std::string name, int mem_size);
 
-	float* get() const { return memPointer; }
+	void* get() const {return memPointer;}
 
-	int size() const { return memSize; }
+	int size() const {return memSize;}
 
 private:
     // The handle to shared memory
@@ -45,6 +38,6 @@ private:
 #elif PLATFORM_LINUX
     int memFile;
 #endif
-	float* memPointer;
+	void* memPointer;
 };
 

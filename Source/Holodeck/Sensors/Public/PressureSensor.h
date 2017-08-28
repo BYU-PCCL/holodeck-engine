@@ -24,8 +24,9 @@ public:
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
 protected:
-	virtual FString GetDataKey() override { return "PressureSensor"; };
-	virtual int GetDataLength() override { return 10000; };
+	FString GetDataKey() override { return "PressureSensor"; };
+	int GetNumItems() override { return 10000; };
+	int GetItemSize() override { return sizeof(float); };
 
 	// Called every frame
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

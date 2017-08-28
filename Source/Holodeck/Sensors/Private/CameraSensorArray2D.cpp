@@ -83,7 +83,7 @@ FString UCameraSensorArray2D::GetDataKey() {
 	return "CameraSensorArray2D";
 }
 
-int UCameraSensorArray2D::GetDataLength() {
+int UCameraSensorArray2D::GetNumItems() {
 	int numPixels = 0;
 	int numCameras = AAttachedSceneCaptureComponents2D.Num();
 	// For each camera attached to this agent
@@ -102,7 +102,11 @@ int UCameraSensorArray2D::GetDataLength() {
 			}
 		}
 	}
-	return numCameras * numPixels * NUM_RGB_CHANNELS * sizeof(float);
+	return numCameras * numPixels;
+}
+
+int UCameraSensorArray2D::GetItemSize() {
+	return sizeof(float);
 }
 
 void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

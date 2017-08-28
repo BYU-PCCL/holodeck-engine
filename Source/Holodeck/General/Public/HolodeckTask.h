@@ -22,5 +22,10 @@ public:
 	virtual void Tick( float DeltaSeconds ) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float reward;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	bool terminal;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AHolodeckAgent* MainAgent;
 };

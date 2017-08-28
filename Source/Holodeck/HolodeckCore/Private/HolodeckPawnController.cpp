@@ -20,7 +20,7 @@ void AHolodeckPawnController::UnPossess() {
 	Super::UnPossess();
 }
 
-float* AHolodeckPawnController::Subscribe(const FString& agent_name, const FString& sensor_name, int length) {
+void* AHolodeckPawnController::Subscribe(const FString& agent_name, const FString& sensor_name, int num_items, int item_size) {
 	GetServer();
 
 	if (Server == nullptr) {
@@ -28,7 +28,7 @@ float* AHolodeckPawnController::Subscribe(const FString& agent_name, const FStri
 		return nullptr;
 	} 
 	else
-		return Server->subscribeSensor(TCHAR_TO_UTF8(*agent_name), TCHAR_TO_UTF8(*sensor_name), length);
+		return Server->subscribeSensor(TCHAR_TO_UTF8(*agent_name), TCHAR_TO_UTF8(*sensor_name), num_items * item_size);
 }
 
 void AHolodeckPawnController::GetServer() {

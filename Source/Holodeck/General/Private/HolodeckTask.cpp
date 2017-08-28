@@ -24,6 +24,8 @@ void AHolodeckTask::BeginPlay()
 void AHolodeckTask::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-
+	if (MainAgent != nullptr) {
+		MainAgent->SetReward(reward);
+		MainAgent->SetTerminal(terminal);
+	}
 }
-

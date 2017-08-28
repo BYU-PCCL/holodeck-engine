@@ -20,11 +20,12 @@ public:
 	virtual void BeginPlay() override;
 	
 protected:
-	virtual FString GetDataKey() override;
-	virtual int GetDataLength() override;
+	FString GetDataKey() override;
+	int GetNumItems() override;
+	int GetItemSize() override;
 
 	// Called every frame
-	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	// Cache important info

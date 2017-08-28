@@ -27,7 +27,8 @@ public:
 
 protected:
 	virtual FString GetDataKey() override;
-	virtual int GetDataLength() override;
+	virtual int GetNumItems() override;
+	virtual int GetItemSize() override;
 
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 

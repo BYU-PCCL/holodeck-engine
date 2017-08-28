@@ -20,7 +20,8 @@ public:
 	
 protected:
 	virtual FString GetDataKey() override { return "PrimaryPlayerCamera"; };
-	virtual int GetDataLength() override;
+	virtual int GetNumItems() override;
+	virtual int GetItemSize() override;
 
 	// Called every frame
 	virtual void TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;

@@ -54,9 +54,9 @@ public:
 	* then it is allocated that space, otherwise an invalid argument exception is thrown.
 	* @param agentName the name of the agent this sensor belongs to
 	* @param sensorKey the name of the sensor
-	* @param size the size of the data to allocate
+	* @param buffer_size the size to allocate in bytes
 	*/
-	float* subscribeSensor(const std::string& agent_name, const std::string& sensor_key, int size);
+	void* subscribeSensor(const std::string& agent_name, const std::string& sensor_key, int buffer_size);
 
 	void acquire();
 

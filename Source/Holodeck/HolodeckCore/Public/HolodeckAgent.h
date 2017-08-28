@@ -17,23 +17,22 @@ public:
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
+
 	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 
 	UPROPERTY(EditAnywhere)
-	FString AgentName;
+		FString AgentName;
 
-	UPROPERTY(BlueprintReadWrite)
-	float reward;
+	void SetReward(int reward) { if (reward_ptr != nullptr) *reward_ptr = reward; };
+	void SetTerminal(bool terminal) { if (terminal_ptr != nullptr) *terminal_ptr = terminal; };
+
+private:
 	float* reward_ptr;
-
-	UPROPERTY(BlueprintReadWrite)
-	float terminal;
-	float* terminal_ptr;
+	bool* terminal_ptr;
 
 	AHolodeckPawnController* HolodeckController;
 };

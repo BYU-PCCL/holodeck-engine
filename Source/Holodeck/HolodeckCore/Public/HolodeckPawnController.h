@@ -23,7 +23,7 @@ public:
 	void Possess(APawn* InPawn);
 	void UnPossess();
 
-	float* Subscribe(const FString& agent_name, const FString& sensor_name, int length);
+	void* Subscribe(const FString& agent_name, const FString& sensor_name, int num_items, int item_size);
 
 	void GetServer();
 

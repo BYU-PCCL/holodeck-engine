@@ -28,8 +28,8 @@ void UHolodeckSensor::BeginPlay()
 			agent_name = Agent->AgentName;
 		sensor_name = GetDataKey();
 
-		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetDataLength());
-		buffer = Controller->Subscribe(agent_name, sensor_name, GetDataLength());
+		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetNumItems() * GetItemSize());
+		buffer = Controller->Subscribe(agent_name, sensor_name, GetNumItems(), GetItemSize());
 	}
 }
 

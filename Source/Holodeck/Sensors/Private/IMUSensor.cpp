@@ -89,6 +89,10 @@ FString UIMUSensor::GetDataKey() {
 	return "IMUSensor";
 }
 
-int UIMUSensor::GetDataLength() {
+int UIMUSensor::GetNumItems() {
 	return 500;
+}
+
+int UIMUSensor::GetItemSize() {
+	return sizeof(float);
 }

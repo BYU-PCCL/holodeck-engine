@@ -21,11 +21,12 @@ public:
 	
 
 protected:
-	virtual FString GetDataKey() override { return "RelativeSkeletalPositionSensor"; };
-	virtual int GetDataLength() override { return 1000; };
+	FString GetDataKey() override { return "RelativeSkeletalPositionSensor"; };
+	int GetNumItems() override { return 1000; };
+	int GetItemSize() override { return sizeof(float); };
 
 	// Called every frame
-	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	FString getBonesRelativeOffset();

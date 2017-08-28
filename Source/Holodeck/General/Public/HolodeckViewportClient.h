@@ -20,27 +20,11 @@ class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient
 public:
 	UHolodeckViewportClient(const FObjectInitializer& PCIP);
 	void Draw(FViewport* Viewport, FCanvas* SceneCanvas) override;
-	void CompressImageArrayJPEG(int32 ImageWidth, int32 ImageHeight, TArray<FColor>& SrcData, TArray<uint8>& DstData);
-	TArray<FColor> HolodeckColorBuffer;
-	FVector2D ViewportSize;
-	FString Base64Data;
-
-	bool bGrayScale;
+	void SetBuffer(void* buffer);
 
 private:
 	//Only run from draw()!
 	void HolodeckTakeScreenShot();
-	bool bFirstTime;
-
-	int Red;
-	int Green;
-	int Blue;
-
-	char* ResultArray;
-
-	const static int NUM_RGB_CHANNELS = 3;
-	const static int NUM_GRAYSCALE_CHANNELS = 1;
-	const static int HEX_COLOR_WIDTH = 2;
-
-	const static char RGBConv[256][2];
+	FColor* buffer;
+	FVector2D ViewportSize;
 };
