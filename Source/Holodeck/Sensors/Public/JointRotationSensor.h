@@ -2,6 +2,7 @@
 
 #include "HolodeckPawnController.h"
 #include "HolodeckSensor.h"
+#include "PhysicsEngine/ConstraintInstance.h"
 #include "JointRotationSensor.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -29,11 +30,5 @@ private:
 	TArray<FName> ParentBones;
 	USkeletalMeshComponent* SkeletalMeshComponent;	
 
-	FString CastSingleJointRotationToString(FString jointName, bool swing1, bool twist, bool swing2);
-
-	FString GetJointRotationVectorJSON();
-
-	FString GetJointRotationsJSON();
-
-	void PublishData();
+	float* AddJointRotationToBuffer(FString jointName, bool swing1, bool twist, bool swing2, float* data);
 };

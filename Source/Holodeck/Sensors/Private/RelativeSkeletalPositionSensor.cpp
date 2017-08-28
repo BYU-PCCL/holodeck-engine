@@ -36,35 +36,14 @@ void URelativeSkeletalPositionSensor::BeginPlay() {
 
 // Called every frame
 void URelativeSkeletalPositionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	//ResultData.Data = getBonesRelativeOffset();
-}
-
-FString URelativeSkeletalPositionSensor::getBonesRelativeOffset() {
-
-	FString Output = "[";
-
-	//start at 1 to ignore root that has "None" parent
-	for (int i = 1; i < Bones.Num(); i++) {
-		Output += "{\"Bone\":\"" + Bones[i].ToString() + "\",";
-		Output += "\"Parent_Bone\":\"" + ParentBones[i].ToString() + "\",";
-		
-		//component space
-		//FQuat Quat = SkeletalMeshComponent->GetBoneQuaternion(Bones[i], EBoneSpaces::ComponentSpace);
-		
-		//local space
+	float* float_buffer = static_cast<float*>(buffer);
+	for (int i = 0; i < Bones.Num(); i++) {
 		FQuat Bone_Q = SkeletalMeshComponent->GetBoneQuaternion(Bones[i], EBoneSpaces::WorldSpace);
 		FQuat Parent_Q = SkeletalMeshComponent->GetBoneQuaternion(ParentBones[i], EBoneSpaces::WorldSpace);
 		FQuat Quat = Parent_Q.Inverse() * Bone_Q;
-		
-		Output += "\"Quaternion\":{\"X\":" + FString::SanitizeFloat(Quat.X) +
-			",\"Y\":" + FString::SanitizeFloat(Quat.Y) +
-			",\"Z\":" + FString::SanitizeFloat(Quat.Z) +
-			",\"W\":" + FString::SanitizeFloat(Quat.W) +
-			+ "} },";
+		float_buffer[4 * i] = Quat.X;
+		float_buffer[4 * i + 1] = Quat.Y;
+		float_buffer[4 * i + 2] = Quat.Z;
+		float_buffer[4 * i + 3] = Quat.W;
 	}
-	Output.RemoveAt(Output.Len() - 1);
-	Output += "]";
-
-	return Output;
-
 }

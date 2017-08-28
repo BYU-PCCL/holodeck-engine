@@ -34,22 +34,18 @@ void UIMUSensor::BeginPlay() {
 
 
 void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) {
-	/*
-	if (Parent != nullptr) {
+	if (Parent != nullptr && bOn) {
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
 
-		ResultData.Data =
-			"[" + FString::SanitizeFloat(LinearAccelerationVector.X) + // x_accel
-			"," + FString::SanitizeFloat(LinearAccelerationVector.Y) + // y_accel
-			"," + FString::SanitizeFloat(LinearAccelerationVector.Z) + // z_accel
-			"," + FString::SanitizeFloat(AngularVelocityVector.X) +    // roll_vel
-			"," + FString::SanitizeFloat(AngularVelocityVector.Y) +    // pitch_vel
-			"," + FString::SanitizeFloat(AngularVelocityVector.Z) + "]"; // yaw_vel
+		float* float_buffer = static_cast<float*>(buffer);
+		float_buffer[0] = LinearAccelerationVector.X;
+		float_buffer[1] = LinearAccelerationVector.Y;
+		float_buffer[2] = LinearAccelerationVector.Z;
+		float_buffer[3] = AngularVelocityVector.X;
+		float_buffer[4] = AngularVelocityVector.Y;
+		float_buffer[5] = AngularVelocityVector.Z;
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("Failed to cast parent to UPrimitiveCompenent in IMUSensor"));
-	}*/
 }
 
 void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
@@ -90,7 +86,7 @@ FString UIMUSensor::GetDataKey() {
 }
 
 int UIMUSensor::GetNumItems() {
-	return 500;
+	return 6;
 }
 
 int UIMUSensor::GetItemSize() {

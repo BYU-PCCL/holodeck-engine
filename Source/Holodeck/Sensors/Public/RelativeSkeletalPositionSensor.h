@@ -22,15 +22,13 @@ public:
 
 protected:
 	FString GetDataKey() override { return "RelativeSkeletalPositionSensor"; };
-	int GetNumItems() override { return 1000; };
+	int GetNumItems() override { return 67 * 4; };
 	int GetItemSize() override { return sizeof(float); };
 
 	// Called every frame
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	FString getBonesRelativeOffset();
-
 	USkeletalMeshComponent* SkeletalMeshComponent;
 	TArray<FName> Bones;
 	TArray<FName> ParentBones;
