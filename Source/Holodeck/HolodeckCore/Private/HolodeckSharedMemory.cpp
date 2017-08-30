@@ -1,27 +1,24 @@
 //
-// Created by josh on 5/9/17.
+// Created by joshgreaves on 5/9/17.
 //
 
 #include "Holodeck.h"
 #include "HolodeckSharedmemory.h"
 
-std::string HOLODECK_BASE_PATH = "/HOLODECK_MEM_";
+const char HOLODECK_BASE_PATH[] = "/HOLODECK_MEM_";
 
-HolodeckSharedMemory::HolodeckSharedMemory(std::string name, int mem_size) :
-		memPath(HOLODECK_BASE_PATH + name), memSize(mem_size) {
+HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSize) :
+		MemPath(HOLODECK_BASE_PATH + Name), MemSize(BufferSize) {
 
-#if PLATFORM_WINDOWS
-	std::wstring stemp = std::wstring(memPath.begin(), memPath.end());
-	LPCWSTR windowsMemPath = stemp.c_str();
-	//LPCWSTR windowsMemPath = *memPath;
-	memFile = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, this->memSize, windowsMemPath);
-
-	memPointer = static_cast<void*>(MapViewOfFile(memFile, FILE_MAP_ALL_ACCESS, 0, 0, this->memSize));
-#elif PLATFORM_LINUX
-    // Create the memory for the sensors and their mappings
-    memFile = shm_open(memPath.c_str(), O_CREAT | O_RDWR | O_TRUNC, 0777);
-    ftruncate(memFile, this->memSize);
-    memPointer = static_cast<void*>(mmap(nullptr, this->memSize, PROT_READ | PROT_WRITE,
+	#if PLATFORM_WINDOWS
+	std::wstring STemp = std::wstring(MemPath.begin(), MemPath.end());
+	LPCWSTR WindowsMemPath = STemp.c_str();
+	MemFile = CreateFileMapping(INVALID_HANDLE_VALUE, NULL, PAGE_READWRITE, 0, this->MemSize, WindowsMemPath);
+	MemPointer = static_cast<void*>(MapViewOfFile(MemFile, FILE_MAP_ALL_ACCESS, 0, 0, this->MemSize));
+	#elif PLATFORM_LINUX
+    MemFile = shm_open(MemPath.c_str(), O_CREAT | O_RDWR | O_TRUNC, 0777);
+    ftruncate(MemFile, this->memSize);
+    MemPointer = static_cast<void*>(mmap(nullptr, this->MemSize, PROT_READ | PROT_WRITE,
                                          MAP_SHARED, memFile, 0));
-#endif
+	#endif
 }

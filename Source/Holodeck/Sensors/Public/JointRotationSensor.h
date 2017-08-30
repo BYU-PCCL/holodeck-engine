@@ -1,28 +1,34 @@
 #pragma once
 
+#include "Holodeck.h"
+
 #include "HolodeckPawnController.h"
 #include "HolodeckSensor.h"
 #include "PhysicsEngine/ConstraintInstance.h"
+
 #include "JointRotationSensor.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UJointRotationSensor : public UHolodeckSensor
-{
+class HOLODECK_API UJointRotationSensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	/**
+	  * Default Constructor.
+	  */
 	UJointRotationSensor();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	  * BeginPlay
+	  * Called when the games starts.
+	  */
+	void BeginPlay() override;
 	
 protected:
-	virtual FString GetDataKey() override;
-	virtual int GetNumItems() override;
-	virtual int GetItemSize() override;
-
-	// Called every frame
+	// See HolodeckSensor for information on these classes.
+	virtual FString GetDataKey() override { return "JointRotationSensor"; };
+	virtual int GetNumItems() override { return 79; };
+	virtual int GetItemSize() override { return sizeof(float); };
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
@@ -30,5 +36,15 @@ private:
 	TArray<FName> ParentBones;
 	USkeletalMeshComponent* SkeletalMeshComponent;	
 
-	float* AddJointRotationToBuffer(FString jointName, bool swing1, bool twist, bool swing2, float* data);
+	/**
+	  * AddJointRotationToBuffer
+	  * Adds a certain joint rotation to the buffer.
+	  * @param JointName the name of the joint to add.
+	  * @param Swing1 true to insert the swing1 value.
+	  * @param Twist true to insert the twist value.
+	  * @param Swing2 true to insert the swing2 value.
+	  * @param Data a pointer into the data buffer at the point the data should be inserted
+	  * @return a pointer to the next position in the buffer.
+	  */
+	float* AddJointRotationToBuffer(FString JointName, bool Swing1, bool Twist, bool Swing2, float* Data);
 };

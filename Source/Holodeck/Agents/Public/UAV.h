@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
+
 #include "SimplePID.h"
 #include "GameFramework/Pawn.h"
-#include "HolodeckUAVController.h"
 #include "HolodeckAgent.h"
 #include "UAV.generated.h"
+
 UCLASS()
 class HOLODECK_API AUAV : public AHolodeckAgent
 {
@@ -30,6 +31,7 @@ public:
 		UStaticMeshComponent* RootMesh;
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		float ThrustToApply;
+
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
 	// PID Controllers
@@ -56,31 +58,4 @@ private:
 	float CurrentYawRate;
 	// Wind
 	FVector Wind;
-	// Define global constants
-	const float Mass = 3.856;
-	const float Mu = 1;
-	const float MaxRoll = 6.5080;
-	const float MaxPitch = 5.087;
-	const float MaxYawRate = 0.099828;
-	const float MaxForce = 59.844;
-	const float TauUpRoll = 0.1904;
-	const float TauUpPitch = 0.1904;
-	const float TauUpYawRate = 0.1644;
-	const float TauUpForce = 0.1644;
-	const float TauDownRoll = 0.1904;
-	const float TauDownPitch = 0.1904;
-	const float TauDownYawRate = 0.2164;
-	const float TauDownForce = 0.2164;
-	const float RollP = 25.0;
-	const float RollI = 0.0;
-	const float RollD = 8.0;
-	const float PitchP = 25.0;
-	const float PitchI = 0.0;
-	const float PitchD = 8.0;
-	const float YawP = 10.0;
-	const float YawI = 0.0;
-	const float YawD = 0.0;
-	const float AltP = 16.0;
-	const float AltI = 5.0;
-	const float AltD = 32.0;
 };

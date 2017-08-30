@@ -2,142 +2,104 @@
 
 #include "Holodeck.h"
 #include "SimplePID.h"
-#include "stdlib.h"
 
-SimplePID::SimplePID()
-{
-	kp = 0.0f; // in context of our whole program, P is greater when mass is greater. These numbers are tuned to a certain drone. We may need to tune them again for UE4
-	ki = 0.0f;
-	kd = 0.0f;
-	integrator = 0.0f;
-	differentiator = 0.0f;
-	last_error = 0.0f;
-	last_state = 0.0f;
-	tau = 0.0f; //Connor: What does tau represent?
+SimplePID::SimplePID() {
+	KP = 0.0f; // in context of our whole program, P is greater when mass is greater. 
+	KI = 0.0f; // These numbers are tuned to a certain drone. We may need to tune them again for UE4.
+	KD = 0.0f;
+	Integrator = 0.0f;
+	Differentiator = 0.0f;
+	LastError = 0.0f;
+	LastState = 0.0f;
+	Tau = 0.0f; // Connor: What does tau represent?
 }
 
-SimplePID::SimplePID(double p, double i, double d, double Tau) :
-	kp(p), ki(i), kd(d), tau(Tau)
-{
-	integrator = 0.0f;
-	differentiator = 0.0f;
-	last_error = 0.0f;
-	last_state = 0.0f;
+SimplePID::SimplePID(double P, double I, double D, double Tau)
+		: KP(P), KI(I), KD(D), Tau(Tau) {
+	Integrator = 0.0f;
+	Differentiator = 0.0f;
+	LastError = 0.0f;
+	LastState = 0.0f;
 }
 
-SimplePID::~SimplePID()
-{
-}
-
-float SimplePID::computePID(float desired, float current, float dt)
-{
+float SimplePID::ComputePID(float Desired, float Current, float Delta) {
 	// Get the error
-	float error = desired - current;
+	float Error = Desired - Current;
 
 	// If dt is 0 or the error is massive, that's a probelm
-	if (dt == 0.0 || my_abs(error) > 9999999)
-	{
-		last_error = error;
-		last_state = current;
+	if (Delta == 0.0 || MyAbs(Error) > 9999999) {
+		LastError = Error;
+		LastState = Current;
 		return 0.0;
 	}
 
-	integrator += dt / 2 * (error + last_error);
+	Integrator += Delta / 2.0 * (Error + LastError);
 
 	// Derivative
-	if (dt > 0.0)
-	{
-		// Noise reduction (See "Small Unmanned Aircraft". Chapter 6. Slide 31/33)
-		// d/dx w.r.t. error:: differentiator_ = (2*tau_ - dt)/(2*tau_ + dt)*differentiator_ + 2/(2*tau_ + dt)*(error - last_error_);
-		differentiator = (2 * tau - dt) / (2 * tau + dt)*differentiator + 2 / (2 * tau + dt)*(current - last_state);
-	}
+	// Noise reduction (See "Small Unmanned Aircraft". Chapter 6. Slide 31/33)
+	// d/dx w.r.t. error:: differentiator_ = (2*tau_ - dt)/(2*tau_ + dt)*differentiator_ + 2/(2*tau_ + dt)*(error - last_error_);
+	if (Delta > 0.0)
+		Differentiator = (2.0 * Tau - Delta) / (2.0 * Tau + Delta) * Differentiator + 2.0 / (2.0 * Tau + Delta) * (Current - LastState);
 
-	last_error = error;
-	last_state = current;
+	LastError = Error;
+	LastState = Current;
 
 	// Note the negative der. term.  This is because now the differentiator is in the feedback loop rather than the forward loop
-	return kp*error + ki*integrator - kd*differentiator;
+	return KP * Error + KI * Integrator - KD * Differentiator;
 }
 
-/**
-* computePIDDirect
-*
-* Computes the PID directly?
-* @param x_c desired
-* @param x current
-* @param x_dot the gradient (angular velocity?)
-* @param dt the change in time
-* @return force or torque
-*/
-float SimplePID::computePIDDirect(float x_c, float x, float x_dot, float dt)
-{
-	//x_c is the desired, x is the current
-	float error = x_c - x;
+float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
+	//XC is the desired, X is the current
+	float Error = XC - X;
 
-	if (dt == 0 || my_abs(error) > 9999999)
-	{
-		last_error = error;
-		last_state = x;
+	if (Delta == 0 || MyAbs(Error) > 9999999) {
+		LastError = Error;
+		LastState = X;
 	}
 
-	integrator += dt / 2 * (error + last_error);
+	Integrator += Delta / 2.0 * (Error + LastError);
 
-	last_error = error;
-	last_state = x;
+	LastError = Error;
+	LastState = X;
 
-	return kp*error + ki*integrator - kd*x_dot;
+	return KP * Error + KI * Integrator - KD * XDot;
 }
 
-/**
-* computePIDDirect
-*
-* Computes the PID directly?
-* @param x_c desired
-* @param x current
-* @param x_dot the gradient (angular velocity?)
-* @param dt the change in time
-* @return force or torque
-*/
-float SimplePID::computePIDDirect(float x_c, float x, float x_dot, float dt, bool isAngle)
-{
-	//x_c is the desired, x is the current
-	float error = x_c - x;
+float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bool bIsAngle) {
+	// XC is the desired, X is the current
+	float Error = XC - X;
 
-	if (isAngle) {
-		if (error >= PI) 
-			error = error - (2 * PI);
-		else if (error <= -PI)
-			error = error + (2 * PI);
+	if (bIsAngle) {
+		if (Error >= PI) 
+			Error -= (2.0 * PI);
+		else if (Error <= -PI)
+			Error += (2 * PI);
 	}
 
-	if (dt == 0 || my_abs(error) > 9999999)
-	{
-		last_error = error;
-		last_state = x;
+	if (Delta == 0 || MyAbs(Error) > 9999999) {
+		LastError = Error;
+		LastState = X;
 	}
 
-	integrator += dt / 2 * (error + last_error);
+	Integrator += Delta / 2.0 * (Error + LastError);
+	LastError = Error;
+	LastState = X;
 
-	last_error = error;
-	last_state = x;
-
-	return kp*error + ki*integrator - kd*x_dot;
+	return KP * Error + KI * Integrator - KD * XDot;
 }
 
-void SimplePID::setGains(float p, float i, float d, float Tau)
-{
-	kp = p;
-	ki = i;
-	kd = d;
+void SimplePID::SetGains(float P, float I, float D, float Tau) {
+	KP = P;
+	KI = I;
+	KD = D;
 
-	tau = 0; // time for force to go from 0 to 63.2% of maximum desired force
+	this->Tau = Tau; // time for force to go from 0 to 63.2% of maximum desired force
 	return;
 }
 
-float SimplePID::my_abs(float i)
-{
-	if (i < 0)
-	return -i;
+float SimplePID::MyAbs(float I){
+	if (I < 0)
+		return -I;
 	else
-	return i;
+		return I;
 }

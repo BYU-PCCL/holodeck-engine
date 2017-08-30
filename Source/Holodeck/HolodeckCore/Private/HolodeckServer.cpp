@@ -1,10 +1,6 @@
-//
-// Created by josh on 5/9/17.
-//
+// Created by joshgreaves on 5/9/17.
 
 #include "Holodeck.h"
-#include <cstring>
-#include <vector>
 #include "HolodeckServer.h"
 
 UHolodeckServer::UHolodeckServer() {
@@ -13,64 +9,75 @@ UHolodeckServer::UHolodeckServer() {
 	bIsRunning = false;
 }
 
-void UHolodeckServer::start() {
-	if (bIsRunning) kill();
+UHolodeckServer::~UHolodeckServer() {
+	Kill();
+}
 
-#if PLATFORM_WINDOWS
-	this->lockingSemaphore1 = CreateSemaphore(NULL, 1, 1, TEXT(SEMAPHORE_PATH1));
-	this->lockingSemaphore2 = CreateSemaphore(NULL, 0, 1, TEXT(SEMAPHORE_PATH2));
-#elif PLATFORM_LINUX
-	// Create the semaphores - Currently destroys existing semaphores
+void UHolodeckServer::Start() {
+	if (bIsRunning) Kill();
+
+	#if PLATFORM_WINDOWS
+	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, TEXT(SEMAPHORE_PATH1));
+	this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, TEXT(SEMAPHORE_PATH2));
+	#elif PLATFORM_LINUX
 	sem_unlink(SEM_PATH1);
 	sem_unlink(SEM_PATH2);
-	lockingSemaphore1 = sem_open(SEM_PATH1, O_CREAT, 0777, 1);
-	lockingSemaphore2 = sem_open(SEM_PATH2, O_CREAT, 0777, 0);
-#endif
+	LockingSemaphore1 = sem_open(SEM_PATH1, O_CREAT, 0777, 1);
+	LockingSemaphore2 = sem_open(SEM_PATH2, O_CREAT, 0777, 0);
+	#endif
 
 	bIsRunning = true;
 }
 
-void UHolodeckServer::kill() {
+void UHolodeckServer::Kill() {
 	if (!bIsRunning) return;
-	sensors.clear();
-	CloseHandle(this->lockingSemaphore1);
-	CloseHandle(this->lockingSemaphore2);
+
+	Sensors.clear();
+	ActionSpaces.clear();
+	Settings.clear();
+
+	CloseHandle(this->LockingSemaphore1);
+	CloseHandle(this->LockingSemaphore2);
 	bIsRunning = false;
 }
 
-UHolodeckServer::~UHolodeckServer() {
-	kill();
+void* UHolodeckServer::SubscribeSensor(const std::string& AgentName, const std::string& SensorKey, int BufferSize) {
+	std::string Key = MakeKey(AgentName, SensorKey);
+	Sensors[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize));
+	return Sensors[Key]->GetPtr();
 }
 
-void* UHolodeckServer::subscribeSensor(const std::string& agent_name, const std::string& sensor_key, int buffer_size) {
-	std::string key = makeKey(agent_name, sensor_key);
-	sensors[key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(key, buffer_size));
-	return sensors[key]->get();
+void* UHolodeckServer::SubscribeActionSpace(const std::string& AgentName, int BufferSize) {
+	ActionSpaces[AgentName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(AgentName, BufferSize));
+	return ActionSpaces[AgentName]->GetPtr();
 }
 
-void UHolodeckServer::acquire() {
-#if PLATFORM_WINDOWS
-	UE_LOG(LogHolodeck, Log, TEXT("Acquiring semaphore..."));
-	WaitForSingleObject(this->lockingSemaphore1, INFINITE);
-	UE_LOG(LogHolodeck, Log, TEXT("Acquired!"));
-#elif PLATFROM_LINUX
-	sem_wait(lockingSemaphore1);
-#endif
+
+void* UHolodeckServer::SubscribeSetting(const std::string& SettingName, int BufferSize) {
+	Settings[SettingName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(SettingName, BufferSize));
+	return Settings[SettingName]->GetPtr();
 }
 
-void UHolodeckServer::release() {
-	// TODO: Ensure that the value is 0 before releasing it
-#if PLATFORM_WINDOWS
-	ReleaseSemaphore(this->lockingSemaphore2, 1, NULL);
-#elif PLATFORM_LINX
-	sem_post(lockingSemaphore2);
-#endif
+void UHolodeckServer::Acquire() {
+	#if PLATFORM_WINDOWS
+	WaitForSingleObject(this->LockingSemaphore1, INFINITE);
+	#elif PLATFROM_LINUX
+	sem_wait(LockingSemaphore1);
+	#endif
 }
 
-bool UHolodeckServer::isRunning() const {
+void UHolodeckServer::Release() {
+	#if PLATFORM_WINDOWS
+	ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
+	#elif PLATFORM_LINX
+	sem_post(LockingSemaphore2);
+	#endif
+}
+
+bool UHolodeckServer::IsRunning() const {
 	return bIsRunning;
 }
 
-std::string UHolodeckServer::makeKey(const std::string& agent_name, const std::string& sensor_name) {
-	return agent_name + "/" + sensor_name;
+std::string UHolodeckServer::MakeKey(const std::string& AgentName, const std::string& SensorName) const {
+	return AgentName + "/" + SensorName;
 }

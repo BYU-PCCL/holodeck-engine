@@ -11,6 +11,6 @@ float AHolodeckWorldSettings::GetConstantTimeDeltaBetweenTicks() {
 	return ConstantTimeDeltaBetweenTicks;
 }
 
-void AHolodeckWorldSettings::SetConstantTimeDeltaBetweenTicks(float delta) {
-	ConstantTimeDeltaBetweenTicks = delta;
+void AHolodeckWorldSettings::SetConstantTimeDeltaBetweenTicks(float Delta) {
+	ConstantTimeDeltaBetweenTicks = Delta;
 }

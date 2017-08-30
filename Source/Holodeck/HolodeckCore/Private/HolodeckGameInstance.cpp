@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Written by joshgreaves
 
 #include "Holodeck.h"
 #include "HolodeckGameInstance.h"
@@ -6,7 +6,7 @@
 void UHolodeckGameInstance::StartServer() {
 	// HolodeckGameMode should start the server.
 	Server = NewObject<UHolodeckServer>();
-	Server->start();
+	Server->Start();
 }
 
 UHolodeckServer* UHolodeckGameInstance::GetServer() {
@@ -14,16 +14,15 @@ UHolodeckServer* UHolodeckGameInstance::GetServer() {
 }
 
 UHolodeckGameInstance::UHolodeckGameInstance(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
-	UE_LOG(LogHolodeck, Log, TEXT("Game Instance initialized"));
+	UE_LOG(LogHolodeck, Log, TEXT("Holodeck Game Instance initialized"));
 }
 
 void UHolodeckGameInstance::Tick(float DeltaTime) {
-	// HolodeckGameMode will decide whether this ticks or not.
+	// HolodeckGameMode will call tick on this.
+	// The release and acquire is what allows this to work in lock step with the client.
 	static bool bFirstTime = true;
-	if (!bFirstTime) Server->release();
-	// FString note = UTF8_TO_TCHAR(Server->getSensorsMapping().c_str());
-	// UE_LOG(LogHolodeck, Log, TEXT("%s"), *note);
-	Server->acquire();
+	if (!bFirstTime) Server->Release();
+	Server->Acquire();
 	bFirstTime = false;
 }
 
@@ -31,7 +30,7 @@ void UHolodeckGameInstance::Init(){
 	Super::Init();
 
 	// TODO: Ensure this code also gets called when a new level is loaded
-	UWorld* world = GetWorld();
-	if (world)
-		WorldSettings = (AHolodeckWorldSettings*)GetWorld()->GetWorldSettings();
+	UWorld* World = GetWorld();
+	if (World)
+		WorldSettings = static_cast<AHolodeckWorldSettings*>(World->GetWorldSettings());
 }

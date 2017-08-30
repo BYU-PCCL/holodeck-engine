@@ -2,30 +2,34 @@
 
 #pragma once
 
+#include "Holodeck.h"
+
 #include "Components/SceneComponent.h"
 #include "HolodeckSensor.h"
+
 #include "RelativeSkeletalPositionSensor.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API URelativeSkeletalPositionSensor : public UHolodeckSensor
-{
+class HOLODECK_API URelativeSkeletalPositionSensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	/**
+	  * Default Constructor.
+	  */
 	URelativeSkeletalPositionSensor();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	  * BeginPlay
+	  * Called at the start of the game.
+	  */
+	void BeginPlay() override;
 	
-
 protected:
+	// See HolodeckSensor for documentation on these functions.
 	FString GetDataKey() override { return "RelativeSkeletalPositionSensor"; };
 	int GetNumItems() override { return 67 * 4; };
 	int GetItemSize() override { return sizeof(float); };
-
-	// Called every frame
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:

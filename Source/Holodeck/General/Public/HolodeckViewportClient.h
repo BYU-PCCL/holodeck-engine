@@ -2,29 +2,52 @@
 
 #pragma once
 
-#include "Benchmarker.h"
-#include "ImageUtils.h"
-#include "Misc/Base64.h"
-#include "EasyFileManager.h"
+#include "Holodeck.h"
+
 #include "Engine/GameViewportClient.h"
+
 #include "HolodeckViewportClient.generated.h"
 
 /**
- * 
- */
+  * UHolodeckViewportClient
+  * Handles capturing the main player camera image data.
+  * Must be set in the editor to be the viewport client.
+  *
+  * THIS MUST BE IN DefaultEngine.ini
+  * GameViewportClientClassName = /Script/Holodeck.HolodeckViewportClient
+  */
 UCLASS()
 class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient
 {
 	GENERATED_BODY()
 
 public:
+	/**
+	  * Default Constructor.
+	  */
 	UHolodeckViewportClient(const FObjectInitializer& PCIP);
+
+	/**
+	  * Draw
+	  * Calls the parent draw function, and captures the pixels.
+	  */
 	void Draw(FViewport* Viewport, FCanvas* SceneCanvas) override;
-	void SetBuffer(void* buffer);
+
+	/**
+	  * SetBuffer
+	  * Sets the buffer to capture pixels to.
+	  * @param NewBuffer the buffer to save the pixel data to.
+	  */
+	void SetBuffer(void* NewBuffer);
 
 private:
-	//Only run from draw()!
+	/**
+	  * HolodeckTakeScreenShot
+	  * Takes a screenshot of the main player camera.
+	  * Must only be called from inside the draw function!
+	  */
 	void HolodeckTakeScreenShot();
-	FColor* buffer;
+
+	FColor* Buffer;
 	FVector2D ViewportSize;
 };

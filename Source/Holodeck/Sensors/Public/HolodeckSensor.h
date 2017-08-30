@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Written by joshgreaves.
 
 #pragma once
 
@@ -39,53 +39,51 @@ public:
 	
 	/**
 	  * Publishes sensor data each tick
-	  * Subclasses should NOT override this class
+	  * Subclasses should NOT override this function.
 	  * Instead, they should override TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 	  * TickSensorComponent is called from this
 	  */
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override; //final override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 protected:
 
 	/**
-	* Must be overridden by subclass
-	* Set the name for the data
-	* e.g. return "MyNewSensor"
-	*/
+	  * Must be overridden by subclass
+	  * Set the name for the data
+	  * e.g. return "MyNewSensor"
+	  */
 	virtual FString GetDataKey() { check(0 && "You must override GetDataKey"); return ""; };
 
 	/**
-	* Must be overridden by subclass
-	* Set the number of data items
-	* e.g. return 100
-	*/
+	  * Must be overridden by subclass
+	  * Set the number of data items
+	  * e.g. return 100
+	  */
 	virtual int GetNumItems() { check(0 && "You must override getNumItems"); return 0; };
 
 	/**
-	* Must be overridden by subclass
-	* Set the size of each data item
-	* e.g. return sizeof(float)
-	*/
+	  * Must be overridden by subclass
+	  * Set the size of each data item
+	  * e.g. return sizeof(float)
+	  */
 	virtual int GetItemSize() { check(0 && "You must override getItemSize"); return 0; };
 
 	/**
-	* Must be overridden by subclass
-	* Handles the logic for ticking the sensor
-	* Make sure to set the data:
-	* ResultData.Data = ...
-	*/
+	  * Must be overridden by subclass
+	  * Handles the logic for ticking the sensor
+	  * Make sure to set the data,
+	  * Cast Buffer into the right kind of pointer and set the data.
+	  */
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) { 
 		check(0 && "You must override TickSensorComponent"); };
-
-	// The controller for the agent this is attached to
-	AHolodeckPawnController* Controller;
 
 	// Allows you to turn the sensor on and off in the editor
 	UPROPERTY(EditAnywhere)
 	bool bOn;
 
-	FString agent_name;
-	FString sensor_name;
+	FString AgentName;
+	FString SensorName;
 
-	void* buffer;
+	AHolodeckPawnController* Controller;
+	void* Buffer;
 };

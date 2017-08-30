@@ -2,33 +2,36 @@
 
 #pragma once
 
+#include "Holodeck.h"
+
 #include "HolodeckPawnController.h"
 #include "HolodeckSensor.h"
+
 #include "OrientationSensor.generated.h"
 
-
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UOrientationSensor : public UHolodeckSensor
-{
+class HOLODECK_API UOrientationSensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	/**
+	  * Default Constructor.
+	  */
 	UOrientationSensor();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	  * Called at the start of the game.
+	  */
+	void BeginPlay() override;
 	
 protected:
-	FString GetDataKey() override;
-	int GetNumItems() override;
-	int GetItemSize() override;
-
-	// Called every frame
+	// See HolodeckSensor for documentation on these classes.
+	FString GetDataKey() override { return "OrientationSensor"; };
+	int GetNumItems() override { return 9; };
+	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	// Cache important info
 	UPrimitiveComponent* Parent;
 	UStaticMeshComponent* RootMesh;
 	UWorld* World;

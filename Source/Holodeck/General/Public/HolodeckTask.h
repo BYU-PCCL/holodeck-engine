@@ -2,29 +2,50 @@
 
 #pragma once
 
+#include "Holodeck.h"
+
 #include "GameFramework/Actor.h"
 #include "HolodeckAgent.h"
+
 #include "HolodeckTask.generated.h"
 
+/**
+  * AHolodeckTask
+  * A base class for tasks within Holodeck.
+  * This class chooses a HolodeckAgent which is trying to perform the task.
+  * The task logic then sets the reward and terminal each tick.
+  * The child class must remember to call the parent tick class at the end of
+  * setting the reward and terminal. This allows the parent class to set those
+  * variables in the shared memory.
+  */
 UCLASS()
 class HOLODECK_API AHolodeckTask : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	// Sets default values for this actor's properties
+	/**
+	  * Default Constructor.
+	  */
 	AHolodeckTask();
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	/**
+	  * BeginPlay
+	  * Called at the beginning of the game.
+	  */
+	void BeginPlay() override;
 	
-	// Called every frame
-	virtual void Tick( float DeltaSeconds ) override;
+	/**
+	  * Tick
+	  * Called each frame.
+	  * @param DeltaSeconds time since last frame.
+	  */
+	void Tick(float DeltaSeconds) override;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float reward;
+	float Reward;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool terminal;
+	bool Terminal;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	AHolodeckAgent* MainAgent;

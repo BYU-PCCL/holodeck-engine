@@ -2,35 +2,39 @@
 
 #pragma once
 
+#include "Holodeck.h"
+
 #include "HolodeckViewportClient.h"
 #include "HolodeckSensor.h"
+
 #include "HolodeckViewportClientPublisher.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UHolodeckViewportClientPublisher : public UHolodeckSensor
-{
+class HOLODECK_API UHolodeckViewportClientPublisher : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	/**
+	  * Default Constructor.
+	  */
 	UHolodeckViewportClientPublisher();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	  * BeginPlay
+	  * Called at the start of the game.
+	  */
+	void BeginPlay() override;
 	
 protected:
-	virtual FString GetDataKey() override { return "PrimaryPlayerCamera"; };
-	virtual int GetNumItems() override;
-	virtual int GetItemSize() override;
-
-	// Called every frame
-	virtual void TickSensorComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+	// See HolodeckSensor for documentation for these overridden functions.
+	FString GetDataKey() override { return "PrimaryPlayerCamera"; };
+	int GetNumItems() override;
+	int GetItemSize() override { return sizeof(FColor); };
+	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere)
 		bool bGrayScale;
 
 private:
 	UHolodeckViewportClient* ViewportClient;
-
-	// TQueue<FString>* ImageQueue;
 };

@@ -5,27 +5,21 @@
 
 
 // Sets default values
-AHolodeckTask::AHolodeckTask()
-{
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+AHolodeckTask::AHolodeckTask() {
 	PrimaryActorTick.bCanEverTick = true;
 	MainAgent = nullptr;
-
 }
 
 // Called when the game starts or when spawned
-void AHolodeckTask::BeginPlay()
-{
+void AHolodeckTask::BeginPlay() {
 	Super::BeginPlay();
-	
 }
 
 // Called every frame
-void AHolodeckTask::Tick( float DeltaTime )
-{
+void AHolodeckTask::Tick( float DeltaTime ) {
 	Super::Tick( DeltaTime );
 	if (MainAgent != nullptr) {
-		MainAgent->SetReward(reward);
-		MainAgent->SetTerminal(terminal);
+		MainAgent->SetReward(Reward);
+		MainAgent->SetTerminal(Terminal);
 	}
 }

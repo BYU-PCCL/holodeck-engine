@@ -1,12 +1,10 @@
 //
-// Created by josh on 5/9/17.
+// Created by joshgreaves on 5/9/17.
 //
 
 #pragma once
 
 #include <string>
-#include <sys/stat.h>
-#include <sys/types.h>
 
 #if PLATFORM_WINDOWS
 #include "AllowWindowsPlatformTypes.h"
@@ -17,27 +15,44 @@
 #include <unistd.h>
 #endif
 
-class HOLODECK_API HolodeckSharedMemory
-{
-
+/**
+  * HolodeckSharedMemory
+  * A simple abstraction of memory mapped files for Windows
+  * and Linux.
+  */
+class HOLODECK_API HolodeckSharedMemory {
 public:
-    explicit HolodeckSharedMemory(std::string name, int mem_size);
+	/**
+	  * Constructor
+	  * Constructs a memory mapped file with a given name, prepended
+	  * by "HOLODECK_MEM_".
+	  * @param Name the name of the memory mapped file. Is prepended.
+	  * @param BufferSize the number of bytes to allocated for the file.
+	  */
+    explicit HolodeckSharedMemory(const std::string& Name, int BufferSize);
 
-	void* get() const {return memPointer;}
+	/**
+	  * GetPtr
+	  * Gets a pointer to the start of the memory mapped file.
+	  * @return a void pointer to the start of the memory buffer.
+	  */
+	void* GetPtr() const {return MemPointer;}
 
-	int size() const {return memSize;}
+	/**
+	  * Size
+	  * Gets the size of the allocated memory mapped file.
+	  * @return the size in bytes of the file.
+	  */
+	int Size() const {return MemSize;}
 
 private:
-    // The handle to shared memory
-    std::string memPath;
-    int memSize;
+    std::string MemPath;
+    int MemSize;
+	void* MemPointer;
 
-    // The "file" and pointer to the start
-#if PLATFORM_WINDOWS
-	HANDLE memFile;
-#elif PLATFORM_LINUX
-    int memFile;
-#endif
-	void* memPointer;
+	#if PLATFORM_WINDOWS
+	HANDLE MemFile;
+	#elif PLATFORM_LINUX
+	int MemFile;
+	#endif
 };
-

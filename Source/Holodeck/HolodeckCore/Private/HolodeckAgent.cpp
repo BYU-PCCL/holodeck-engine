@@ -3,39 +3,34 @@
 #include "Holodeck.h"
 #include "HolodeckAgent.h"
 
+const char REWARD_KEY[] = "Reward";
+const int REWARD_SIZE = 1;
+const char TERMINAL_KEY[] = "Terminal";
+const int TERMINAL_SIZE = 1;
 
-// Sets default values
-AHolodeckAgent::AHolodeckAgent()
-{
+AHolodeckAgent::AHolodeckAgent() : AgentName("") {
 	PrimaryActorTick.bCanEverTick = true;
 	AgentName = "";
 }
 
-// Called when the game starts or when spawned
-void AHolodeckAgent::BeginPlay()
-{
+void AHolodeckAgent::BeginPlay() {
 	Super::BeginPlay();
 	HolodeckController = Cast<AHolodeckPawnController>(Controller);
+
 	if (HolodeckController == nullptr) {
 		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red, TEXT("No Holodeck Controller on Holodeck Agent!"));
 	} else {
-		reward_ptr = static_cast<float*>(HolodeckController->Subscribe(AgentName, "Reward", 1, sizeof(float)));
-		terminal_ptr = static_cast<bool*>(HolodeckController->Subscribe(AgentName, "Terminal", 1, sizeof(bool)));
-		if (reward_ptr != nullptr)
-			*reward_ptr = 0.0;
-		if (terminal_ptr != nullptr)
-			*terminal_ptr = false;
+		RewardPtr = static_cast<float*>(HolodeckController->Subscribe(AgentName, REWARD_KEY, REWARD_SIZE, sizeof(float)));
+		TerminalPtr = static_cast<bool*>(HolodeckController->Subscribe(AgentName, TERMINAL_KEY, TERMINAL_SIZE, sizeof(bool)));
+		if (RewardPtr != nullptr)
+			*RewardPtr = 0.0;
+		if (TerminalPtr != nullptr)
+			*TerminalPtr = false;
+		HolodeckController->GetActionBuffer(AgentName);
 	}
 }
 
-// Called every frame
-void AHolodeckAgent::Tick( float DeltaTime )
-{
+void AHolodeckAgent::Tick(float DeltaTime) {
+	if (HolodeckController != nullptr)
+		HolodeckController->ExecuteCommand();
 }
-
-// Called to bind functionality to input
-void AHolodeckAgent::SetupPlayerInputComponent(class UInputComponent* component)
-{
-	Super::SetupPlayerInputComponent(component);
-}
-

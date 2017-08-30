@@ -2,8 +2,11 @@
 
 #pragma once
 
+#include "Holodeck.h"
+
 #include "GameFramework/Pawn.h"
 #include "HolodeckPawnController.h"
+
 #include "HolodeckAgent.generated.h"
 
 UCLASS()
@@ -12,27 +15,46 @@ class AHolodeckAgent : public APawn
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this pawn's properties
+	/**
+	  * Default Constructor
+	  */
 	AHolodeckAgent();
 
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	/**
+	  * BeginPlay
+	  * Called when the game starts.
+	  * Registers the reward and terminal signals.
+	  */
+	void BeginPlay() override;
 
-	// Called every frame
-	virtual void Tick(float DeltaSeconds) override;
+	/**
+	  * Tick
+	  * Ticks the agent.
+	  * If it is overridden, it must be called by the child class!
+	  * @param DeltaSeconds the time since the last tick.
+	  */
+	void Tick(float DeltaSeconds) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
-
+	// Must be set in the editor.
 	UPROPERTY(EditAnywhere)
-		FString AgentName;
+	FString AgentName;
 
-	void SetReward(int reward) { if (reward_ptr != nullptr) *reward_ptr = reward; };
-	void SetTerminal(bool terminal) { if (terminal_ptr != nullptr) *terminal_ptr = terminal; };
+	/**
+	  * SetReward
+	  * Sets the reward in the server for this agent.
+	  * @param Reward the value of the reward.
+	  */
+	void SetReward(int Reward) { if (RewardPtr != nullptr) *RewardPtr = Reward; };
+
+	/**
+	  * SetTerminal
+	  * Sets the terminal in the server for this agent.
+	  * @param Terminal the value of the terminal signal.
+	  */
+	void SetTerminal(bool Terminal) { if (TerminalPtr != nullptr) *TerminalPtr = Terminal; };
 
 private:
-	float* reward_ptr;
-	bool* terminal_ptr;
-
+	float* RewardPtr;
+	bool* TerminalPtr;
 	AHolodeckPawnController* HolodeckController;
 };

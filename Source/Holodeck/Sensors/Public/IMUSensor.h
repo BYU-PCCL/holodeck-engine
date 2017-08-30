@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Components/SceneComponent.h"
+#include "Holodeck.h"
+
 #include "HolodeckSensor.h"
+
 #include "IMUSensor.generated.h"
 
 /**
@@ -10,31 +12,54 @@
   * `[acceleration_x, acceleration_y, acceleration_z, velocity_roll, velocity_pitch, velocity_yaw]`
   */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UIMUSensor : public UHolodeckSensor
-{
+class HOLODECK_API UIMUSensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this component's properties
+	/**
+	  * Default Constructor.
+	  */
 	UIMUSensor();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	  * BeginPlay
+	  * Called at the start of the game.
+	  */
+	void BeginPlay() override;
 
+	/**
+	  * GetAccelerationVector
+	  * Gets the acceleration vector.
+	  * @return the acceleration vector.
+	  */
 	FVector GetAccelerationVector();
 
+	/**
+	  * GetAngularVelocityVector
+	  * Gets the angular velocity vector.
+	  * @return the angular velocity vector.
+	  */
 	FVector GetAngularVelocityVector();
 
 protected:
-	virtual FString GetDataKey() override;
-	virtual int GetNumItems() override;
-	virtual int GetItemSize() override;
-
-	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	// See HolodeckSensor for more information on these overridden functions.
+	FString GetDataKey() override { return "IMUSensor"; };
+	int GetNumItems() override { return 6; };
+	int GetItemSize() override { return sizeof(float); };
+	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
+	/**
+	  * CalculateAccelerationVector
+	  * Calculates the acceleration vector.
+	  * @param DeltaTime the time that has passsed since the last tick.
+	  */
 	void CalculateAccelerationVector(float DeltaTime);
 
+	/**
+	* CalculateAngularVelocityVector
+	* Calculates the angular velocity vector.
+	*/
 	void CalculateAngularVelocityVector();
 
 	UPrimitiveComponent* Parent;

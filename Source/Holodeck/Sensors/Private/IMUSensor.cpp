@@ -2,18 +2,11 @@
 
 #include "Holodeck.h"
 #include "IMUSensor.h"
-#include <string>
-#include <sstream>
 
-// Sets default values for this component's properties
-UIMUSensor::UIMUSensor()
-{
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
+UIMUSensor::UIMUSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-// Called when the game starts
 void UIMUSensor::BeginPlay() {
 	Super::BeginPlay();
 
@@ -28,7 +21,6 @@ void UIMUSensor::BeginPlay() {
 	VelocityThen = FVector();
 	VelocityNow = FVector();
 	LinearAccelerationVector = FVector();
-
 	AngularVelocityVector = FVector();
 }
 
@@ -38,18 +30,17 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 		CalculateAccelerationVector(DeltaTime);
 		CalculateAngularVelocityVector();
 
-		float* float_buffer = static_cast<float*>(buffer);
-		float_buffer[0] = LinearAccelerationVector.X;
-		float_buffer[1] = LinearAccelerationVector.Y;
-		float_buffer[2] = LinearAccelerationVector.Z;
-		float_buffer[3] = AngularVelocityVector.X;
-		float_buffer[4] = AngularVelocityVector.Y;
-		float_buffer[5] = AngularVelocityVector.Z;
+		float* FloatBuffer = static_cast<float*>(Buffer);
+		FloatBuffer[0] = LinearAccelerationVector.X;
+		FloatBuffer[1] = LinearAccelerationVector.Y;
+		FloatBuffer[2] = LinearAccelerationVector.Z;
+		FloatBuffer[3] = AngularVelocityVector.X;
+		FloatBuffer[4] = AngularVelocityVector.Y;
+		FloatBuffer[5] = AngularVelocityVector.Z;
 	}
 }
 
 void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
-	// Calculate Acceleration Vector
 	VelocityThen = VelocityNow;
 	VelocityNow = Parent->GetPhysicsLinearVelocity();
 
@@ -79,16 +70,4 @@ FVector UIMUSensor::GetAccelerationVector() {
 
 FVector UIMUSensor::GetAngularVelocityVector() {
 	return AngularVelocityVector;
-}
-
-FString UIMUSensor::GetDataKey() {
-	return "IMUSensor";
-}
-
-int UIMUSensor::GetNumItems() {
-	return 6;
-}
-
-int UIMUSensor::GetItemSize() {
-	return sizeof(float);
 }

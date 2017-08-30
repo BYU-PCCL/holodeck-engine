@@ -7,14 +7,9 @@
 #include "CameraSensorArray2D.h"
 
 
-// Sets default values for this component's properties
 UCameraSensorArray2D::UCameraSensorArray2D() {
-	/*
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-	PrimaryComponentTick.TickGroup = TG_PrePhysics; // Tick every physics substep?
-	*/
+	// PrimaryComponentTick.TickGroup = TG_PrePhysics; // Tick every physics substep?
 }
 
 
@@ -33,13 +28,11 @@ void UCameraSensorArray2D::BeginPlay() {
 }
 
 
-// // Called every frame
-// void UCameraSensorArray2D::TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction )
-// {
-// 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-// 
-// 	Controller->Publish(data);
-// }
+// Called every frame
+void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	// if (Controller != nullptr)
+	// 	Controller->Publish(data);
+}
 
 void UCameraSensorArray2D::Capture(TMap<FString, FString>& output) {
 	/*
@@ -47,7 +40,7 @@ void UCameraSensorArray2D::Capture(TMap<FString, FString>& output) {
 	for (USceneCaptureComponent2D* camera :AAttachedSceneCaptureComponents2D) {
 		if (camera->TextureTarget)
 		{
-			// Read the texure into ColorBuffer
+			// Read the texture into ColorBuffer
 			FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)camera->TextureTarget->Resource;
 			TArray<FColor> ColorBuffer;
 			bool bSuccessfulRead = textureResource->ReadPixels(ColorBuffer);
@@ -109,7 +102,7 @@ int UCameraSensorArray2D::GetItemSize() {
 	return sizeof(float);
 }
 
-void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+//void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	/*TMap <FString, FString> CaptureData;
 	Capture(CaptureData);
 
@@ -125,7 +118,7 @@ void UCameraSensorArray2D::TickSensorComponent(float DeltaTime, ELevelTick TickT
 	DataString.InsertAt(0, "[");
 	DataString += "]";
 	ResultData.Data = DataString;*/
-}
+//}
 
 const char UCameraSensorArray2D::RGBConv[256][2] = { { '0','0' },{ '0','1' },{ '0','2' },{ '0','3' },{ '0','4' },{ '0','5' },{ '0','6' },{ '0','7' },{ '0','8' },{ '0','9' },{ '0','a' },{ '0','b' },{ '0','c' },{ '0','d' },{ '0','e' },{ '0','f' },
 { '1','0' },{ '1','1' },{ '1','2' },{ '1','3' },{ '1','4' },{ '1','5' },{ '1','6' },{ '1','7' },{ '1','8' },{ '1','9' },{ '1','a' },{ '1','b' },{ '1','c' },{ '1','d' },{ '1','e' },{ '1','f' },

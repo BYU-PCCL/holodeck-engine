@@ -2,26 +2,30 @@
 
 #pragma once
 
-#include "HolodeckViewportClient.h"
-#include "HolodeckSensor.h"
+#include "Holodeck.h"
+
 #include "HolodeckPawnController.h"
+#include "HolodeckSensor.h"
+#include "HolodeckViewportClient.h"
+
 #include "CameraSensorArray2D.generated.h"
 
 
-UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UCameraSensorArray2D : public UHolodeckSensor
-{
+UCLASS(Blueprintable, ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
+class HOLODECK_API UCameraSensorArray2D : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+	/**
+	  * Default Constructor.
+	  */
 	UCameraSensorArray2D();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
-	
-	// Called every frame
-	// virtual void TickComponent( float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction ) override;
+	/**
+	  * BeginPlay
+	  * Called at the start of the game.
+	  */
+	void BeginPlay() override;
 
 	void Capture(TMap<FString, FString>& output);
 
@@ -29,7 +33,6 @@ protected:
 	virtual FString GetDataKey() override;
 	virtual int GetNumItems() override;
 	virtual int GetItemSize() override;
-
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction) override;
 
 private:
