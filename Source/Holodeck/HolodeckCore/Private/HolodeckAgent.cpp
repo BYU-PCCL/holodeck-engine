@@ -10,6 +10,8 @@ const int TERMINAL_SIZE = 1;
 
 AHolodeckAgent::AHolodeckAgent() : AgentName("") {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PrePhysics;
+	AddTickPrerequisiteActor(GetController());
 	AgentName = "";
 }
 
@@ -32,6 +34,4 @@ void AHolodeckAgent::BeginPlay() {
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	if (HolodeckController != nullptr)
-		HolodeckController->ExecuteCommand();
 }

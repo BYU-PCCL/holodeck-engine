@@ -24,7 +24,7 @@ public:
 	/**
 	  * Default Constructor.
 	  */
-	explicit AHolodeckGameMode(const FObjectInitializer & ObjectInitializer) : AGameMode(ObjectInitializer), bHolodeckIsOn(true) {}
+	explicit AHolodeckGameMode(const FObjectInitializer& ObjectInitializer);
 
 	/**
 	  * Tick

@@ -31,6 +31,22 @@ public:
 	  * Default Destructor
 	  */
 	~AHolodeckPawnController();
+
+
+	/**
+	* BeginPlay
+	* Called when the game starts.
+	* Registers the reward and terminal signals.
+	*/
+	void BeginPlay() override;
+
+	/**
+	* Tick
+	* Ticks the agent.
+	* If it is overridden, it must be called by the child class!
+	* @param DeltaSeconds the time since the last tick.
+	*/
+	void Tick(float DeltaSeconds) override;
 	
 	/**
 	  * Possess

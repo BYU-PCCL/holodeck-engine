@@ -7,6 +7,7 @@
 // Sets default values
 AHolodeckTask::AHolodeckTask() {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
 	MainAgent = nullptr;
 }
 
@@ -16,7 +17,7 @@ void AHolodeckTask::BeginPlay() {
 }
 
 // Called every frame
-void AHolodeckTask::Tick( float DeltaTime ) {
+void AHolodeckTask::Tick(float DeltaTime) {
 	Super::Tick( DeltaTime );
 	if (MainAgent != nullptr) {
 		MainAgent->SetReward(Reward);

@@ -5,6 +5,7 @@
 
 UHolodeckSensor::UHolodeckSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.TickGroup = TG_PostPhysics;
 	bOn = true;
 }
 

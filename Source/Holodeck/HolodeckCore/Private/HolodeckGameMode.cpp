@@ -6,6 +6,11 @@
 const char RESET_KEY[] = "RESET";
 const int RESET_BYTES = 1;
 
+AHolodeckGameMode::AHolodeckGameMode(const FObjectInitializer& ObjectInitializer) : AGameMode(ObjectInitializer), bHolodeckIsOn(true) {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PrePhysics;
+}
+
 void AHolodeckGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);

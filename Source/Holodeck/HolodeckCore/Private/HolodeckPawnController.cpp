@@ -4,9 +4,17 @@
 #include "HolodeckPawnController.h"
 
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
-	: AAIController(ObjectInitializer) { }
+		: AAIController(ObjectInitializer) {
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PrePhysics;
+}
 
 AHolodeckPawnController::~AHolodeckPawnController() { }
+
+void AHolodeckPawnController::BeginPlay() {
+	Super::BeginPlay();
+	AddTickPrerequisiteActor(GetWorld()->GetAuthGameMode());
+}
 
 void AHolodeckPawnController::Possess(APawn* InPawn) {
 	Super::Possess(InPawn);
@@ -20,6 +28,11 @@ void AHolodeckPawnController::Possess(APawn* InPawn) {
 
 void AHolodeckPawnController::UnPossess() {
 	Super::UnPossess();
+}
+
+void AHolodeckPawnController::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
+	ExecuteCommand();
 }
 
 void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
