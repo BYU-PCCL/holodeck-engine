@@ -18,6 +18,13 @@ public:
 	  * Default Constructor.
 	  */
 	ASphereRobot();
+
+	/**
+	* BeginPlay
+	* Called when the game starts.
+	* Registers the reward and terminal signals.
+	*/
+	void BeginPlay() override;
 	
 	/**
 	  * Tick
@@ -31,10 +38,4 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float RotSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int Counter;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	bool HasWon;
 };

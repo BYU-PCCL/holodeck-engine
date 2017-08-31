@@ -42,5 +42,5 @@ public:
 	void ExecuteCommand() override;
 
 protected:
-	int GetActionSpaceDimension() override { return 3; };
+	int GetActionSpaceDimension() override { return 2; };
 };

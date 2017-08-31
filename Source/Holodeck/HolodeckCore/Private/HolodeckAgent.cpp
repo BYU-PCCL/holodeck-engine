@@ -30,7 +30,8 @@ void AHolodeckAgent::BeginPlay() {
 	}
 }
 
-void AHolodeckAgent::Tick(float DeltaTime) {
+void AHolodeckAgent::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
 	if (HolodeckController != nullptr)
 		HolodeckController->ExecuteCommand();
 }

@@ -9,7 +9,11 @@ ASphereRobot::ASphereRobot() {
 	PrimaryActorTick.bCanEverTick = true;
 }
 
+void ASphereRobot::BeginPlay() {
+	Super::BeginPlay();
+}
+
 // Called every frame
-void ASphereRobot::Tick(float DeltaTime) {
-	Super::Tick( DeltaTime );
+void ASphereRobot::Tick(float DeltaSeconds) {
+	Super::Tick(DeltaSeconds);
 }

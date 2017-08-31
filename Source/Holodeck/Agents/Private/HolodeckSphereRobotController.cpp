@@ -15,24 +15,9 @@ void AHolodeckSphereRobotController::Possess(APawn* Pawn) {
 }
 
 void AHolodeckSphereRobotController::ExecuteCommand() {
-	// TODO(joshgreaves) : Fix the Sphere robot and get this working.
-	/*
-	UE_LOG(LogTemp, Warning, TEXT("Received command to SphereRobot"));
-
-	ASphereRobot* pawn = (ASphereRobot*) this->GetPawn();
+	ASphereRobot* SpherePawn = static_cast<ASphereRobot*>(this->GetPawn());
+	float* FloatBuffer = static_cast<float*>(ActionBuffer);
 	
-	if (Command.Forward) {
-		pawn->ForwardSpeed = Command.Forward;
-	}
-	else {
-		pawn->ForwardSpeed = 0;
-	}
-
-	if (Command.Right) {
-		pawn->RotSpeed = Command.Right;
-	}
-	else {
-		pawn->RotSpeed = 0;
-	}
-	*/
+	SpherePawn->ForwardSpeed = FloatBuffer[0];
+	SpherePawn->RotSpeed = FloatBuffer[1];
 }
