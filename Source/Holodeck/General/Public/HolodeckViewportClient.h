@@ -40,6 +40,13 @@ public:
 	  */
 	void SetBuffer(void* NewBuffer);
 
+	/**
+	  * BufferIsSet
+	  * Gets whether the buffer has been set.
+	  * @return true if the buffer has been set.
+	  */
+	bool BufferIsSet() { return Buffer != nullptr; };
+
 private:
 	/**
 	  * HolodeckTakeScreenShot

@@ -28,12 +28,18 @@ public:
 protected:
 	// See HolodeckSensor for documentation for these overridden functions.
 	FString GetDataKey() override { return "PrimaryPlayerCamera"; };
-	int GetNumItems() override;
+	int GetNumItems() override { return Width * Height; };
 	int GetItemSize() override { return sizeof(FColor); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere)
-		bool bGrayScale;
+	bool bGrayScale;
+
+	UPROPERTY(EditAnywhere)
+	int Width;
+
+	UPROPERTY(EditAnywhere)
+	int Height;
 
 private:
 	UHolodeckViewportClient* ViewportClient;

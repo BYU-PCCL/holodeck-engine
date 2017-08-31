@@ -3,7 +3,7 @@
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
 
-const char RESET_KEY[] = "RESET_KEY";
+const char RESET_KEY[] = "RESET";
 const int RESET_BYTES = 1;
 
 void AHolodeckGameMode::Tick(float DeltaSeconds)
