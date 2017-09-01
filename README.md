@@ -8,17 +8,17 @@ This repository contains everything you need to build environments in the unreal
 
 ## Prerequisites
 * git lfs
-* Unreal Engine 4.12
+* Unreal Engine 4.17
 
 ## Installation
 * Run the following:
 `git clone https://github.com/BYU-PCCL/Holodeck`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
-* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.12
+* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.17
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
 
 ## Building For Linux
-For a great tutorial, see https://wiki.unrealengine.com/Building_On_Linux
+For a great tutorial, see the [wiki page](https://github.com/BYU-PCCL/Holodeck/wiki/Building-for-Linux)
 
 ## Best Practices
 * To keep the repo clean, Holodeck should only contain ExampleLevel. It should also not contain any assets which are not salient to this project. For example, salient assets might be agents, tasks, and sensors.

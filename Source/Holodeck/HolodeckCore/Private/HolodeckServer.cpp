@@ -20,10 +20,10 @@ void UHolodeckServer::Start() {
 	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, TEXT(SEMAPHORE_PATH1));
 	this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, TEXT(SEMAPHORE_PATH2));
 	#elif PLATFORM_LINUX
-	sem_unlink(SEM_PATH1);
-	sem_unlink(SEM_PATH2);
-	LockingSemaphore1 = sem_open(SEM_PATH1, O_CREAT, 0777, 1);
-	LockingSemaphore2 = sem_open(SEM_PATH2, O_CREAT, 0777, 0);
+	sem_unlink(SEMAPHORE_PATH1);
+	sem_unlink(SEMAPHORE_PATH2);
+	LockingSemaphore1 = sem_open(SEMAPHORE_PATH1, O_CREAT, 0777, 1);
+	LockingSemaphore2 = sem_open(SEMAPHORE_PATH2, O_CREAT, 0777, 0);
 	#endif
 
 	bIsRunning = true;
@@ -36,8 +36,14 @@ void UHolodeckServer::Kill() {
 	ActionSpaces.clear();
 	Settings.clear();
 
+	#if PLATFORM_WINDOWS
 	CloseHandle(this->LockingSemaphore1);
 	CloseHandle(this->LockingSemaphore2);
+	#elif PLATFORM_LINUX
+	sem_unlink(SEMAPHORE_PATH1);
+	sem_unlink(SEMAPHORE_PATH2);
+	#endif
+
 	bIsRunning = false;
 }
 

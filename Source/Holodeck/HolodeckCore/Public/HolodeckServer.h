@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 
-#include "HolodeckSharedmemory.h"
+#include "HolodeckSharedMemory.h"
 #if PLATFORM_WINDOWS
 #define SEMAPHORE_PATH1 "Global\\HOLODECK_SEMAPHORE_1"
 #define SEMAPHORE_PATH2 "Global\\HOLODECK_SEMAPHORE_2"
