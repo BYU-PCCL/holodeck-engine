@@ -71,7 +71,7 @@ void* UHolodeckServer::SubscribeSetting(const std::string& SettingName, int Buff
 void UHolodeckServer::Acquire() {
 	#if PLATFORM_WINDOWS
 	WaitForSingleObject(this->LockingSemaphore1, INFINITE);
-	#elif PLATFROM_LINUX
+	#elif PLATFORM_LINUX
 	sem_wait(LockingSemaphore1);
 	#endif
 }
@@ -79,7 +79,7 @@ void UHolodeckServer::Acquire() {
 void UHolodeckServer::Release() {
 	#if PLATFORM_WINDOWS
 	ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
-	#elif PLATFORM_LINX
+	#elif PLATFORM_LINUX
 	sem_post(LockingSemaphore2);
 	#endif
 }
