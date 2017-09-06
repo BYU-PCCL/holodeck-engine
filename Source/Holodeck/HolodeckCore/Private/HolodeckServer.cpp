@@ -85,5 +85,5 @@ bool UHolodeckServer::IsRunning() const {
 }
 
 std::string UHolodeckServer::MakeKey(const std::string& AgentName, const std::string& SensorName) const {
-	return AgentName + "/" + SensorName;
+	return AgentName + "_" + SensorName;
 }
