@@ -9,6 +9,7 @@
 const char HOLODECK_BASE_PATH[] = "/HOLODECK_MEM_";
 #elif PLATFORM_LINUX
 const char HOLODECK_BASE_PATH[] = "/tmp/HOLODECK_MEM_";
+#endif
 
 HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSize) :
 		MemPath(HOLODECK_BASE_PATH + Name), MemSize(BufferSize) {
