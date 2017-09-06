@@ -14,6 +14,7 @@ UHolodeckServer::~UHolodeckServer() {
 }
 
 void UHolodeckServer::Start() {
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckServer"));
 	if (bIsRunning) Kill();
 
 	#if PLATFORM_WINDOWS
@@ -30,6 +31,7 @@ void UHolodeckServer::Start() {
 }
 
 void UHolodeckServer::Kill() {
+	UE_LOG(LogHolodeck, Log, TEXT("Killing HolodeckServer"));
 	if (!bIsRunning) return;
 
 	Sensors.clear();
@@ -48,12 +50,14 @@ void UHolodeckServer::Kill() {
 }
 
 void* UHolodeckServer::SubscribeSensor(const std::string& AgentName, const std::string& SensorKey, int BufferSize) {
+	UE_LOG(LogHolodeck, Log, TEXT("Subscribing sensor %s for agent %s"), UTF8_TO_TCHAR(SensorKey.c_str()), UTF8_TO_TCHAR(AgentName.c_str()));
 	std::string Key = MakeKey(AgentName, SensorKey);
 	Sensors[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize));
 	return Sensors[Key]->GetPtr();
 }
 
 void* UHolodeckServer::SubscribeActionSpace(const std::string& AgentName, int BufferSize) {
+	UE_LOG(LogHolodeck, Log, TEXT("Subscribing action space for %s"), UTF8_TO_TCHAR(AgentName.c_str()));
 	ActionSpaces[AgentName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(AgentName, BufferSize));
 	return ActionSpaces[AgentName]->GetPtr();
 }

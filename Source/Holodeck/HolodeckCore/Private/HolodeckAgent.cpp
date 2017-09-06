@@ -17,10 +17,11 @@ AHolodeckAgent::AHolodeckAgent() : AgentName("") {
 
 void AHolodeckAgent::BeginPlay() {
 	Super::BeginPlay();
-	HolodeckController = Cast<AHolodeckPawnController>(Controller);
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+	HolodeckController = static_cast<AHolodeckPawnController*>(Controller);
 
 	if (HolodeckController == nullptr) {
-		GEngine->AddOnScreenDebugMessage(-1, 20.f, FColor::Red, TEXT("No Holodeck Controller on Holodeck Agent!"));
+		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't find controller for HolodeckAgent"));
 	} else {
 		RewardPtr = static_cast<float*>(HolodeckController->Subscribe(AgentName, REWARD_KEY, REWARD_SIZE, sizeof(float)));
 		TerminalPtr = static_cast<bool*>(HolodeckController->Subscribe(AgentName, TERMINAL_KEY, TERMINAL_SIZE, sizeof(bool)));
@@ -29,6 +30,7 @@ void AHolodeckAgent::BeginPlay() {
 		if (TerminalPtr != nullptr)
 			*TerminalPtr = false;
 		HolodeckController->GetActionBuffer(AgentName);
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));
 	}
 }
 

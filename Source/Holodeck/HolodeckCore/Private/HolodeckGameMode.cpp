@@ -9,10 +9,10 @@ const int RESET_BYTES = 1;
 AHolodeckGameMode::AHolodeckGameMode(const FObjectInitializer& ObjectInitializer) : AGameMode(ObjectInitializer), bHolodeckIsOn(true) {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
+	UE_LOG(LogHolodeck, Log, TEXT("HolodeckGameMode initialized"));
 }
 
-void AHolodeckGameMode::Tick(float DeltaSeconds)
-{
+void AHolodeckGameMode::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
 	// If !bOn, then we never got instance or reset signal,
@@ -28,6 +28,7 @@ void AHolodeckGameMode::Tick(float DeltaSeconds)
 }
 
 void AHolodeckGameMode::StartPlay() {
+	UE_LOG(LogHolodeck, Log, TEXT("HolodeckGameMode starting play"));
 	if (bHolodeckIsOn) {
 		this->Instance = (UHolodeckGameInstance*)(GetGameInstance());
 		if (this->Instance) {
@@ -44,7 +45,9 @@ void AHolodeckGameMode::StartPlay() {
 }
 
 void AHolodeckGameMode::RegisterSettings() {
+	UE_LOG(LogHolodeck, Log, TEXT("Registering Settings"));
 	if (Server != nullptr) {
 		ResetSignal = static_cast<bool*>(Server->SubscribeSetting(RESET_KEY, RESET_BYTES));
+		UE_LOG(LogHolodeck, Log, TEXT("Rest signal registered"));
 	}
 }

@@ -18,8 +18,7 @@ void AHolodeckPawnController::BeginPlay() {
 
 void AHolodeckPawnController::Possess(APawn* InPawn) {
 	Super::Possess(InPawn);
-	UE_LOG(LogHolodeck, Warning, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Green, FString::Printf(TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName()));
+	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	GetServer();
 
 	if (Server == nullptr)
@@ -38,6 +37,7 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
 	GetServer();
 
+	UE_LOG(LogHolodeck, Log, TEXT("Subscribing sensor %s for %s"), *SensorName, *AgentName);
 	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Sensor could not find server..."));
 		return nullptr;
