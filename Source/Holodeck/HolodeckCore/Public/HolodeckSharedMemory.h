@@ -11,6 +11,7 @@
 #include <windows.h>
 #include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
+#include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #endif
