@@ -48,6 +48,6 @@ void AHolodeckGameMode::RegisterSettings() {
 	UE_LOG(LogHolodeck, Log, TEXT("Registering Settings"));
 	if (Server != nullptr) {
 		ResetSignal = static_cast<bool*>(Server->SubscribeSetting(RESET_KEY, RESET_BYTES));
-		UE_LOG(LogHolodeck, Log, TEXT("Rest signal registered"));
+		UE_LOG(LogHolodeck, Log, TEXT("Reset signal registered"));
 	}
 }

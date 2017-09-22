@@ -5,8 +5,10 @@
 
 void UHolodeckGameInstance::StartServer() {
 	// HolodeckGameMode should start the server.
-	Server = NewObject<UHolodeckServer>();
-	Server->Start();
+	if (Server == nullptr) {
+		Server = NewObject<UHolodeckServer>();
+		Server->Start();
+	}
 }
 
 UHolodeckServer* UHolodeckGameInstance::GetServer() {

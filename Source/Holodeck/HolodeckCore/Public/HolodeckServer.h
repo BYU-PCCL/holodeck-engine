@@ -9,14 +9,14 @@
 
 #include "HolodeckSharedMemory.h"
 #if PLATFORM_WINDOWS
-#define SEMAPHORE_PATH1 "Global\\HOLODECK_SEMAPHORE_1"
-#define SEMAPHORE_PATH2 "Global\\HOLODECK_SEMAPHORE_2"
+#define SEMAPHORE_PATH1 "Global\\HOLODECK_SEMAPHORE_SERVER"
+#define SEMAPHORE_PATH2 "Global\\HOLODECK_SEMAPHORE_CLIENT"
 #include "AllowWindowsPlatformTypes.h"
 #include "Windows.h"
 #include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
-#define SEMAPHORE_PATH1 "/HOLODECK_SEMAPHORE_1"
-#define SEMAPHORE_PATH2 "/HOLODECK_SEMAPHORE_2"
+#define SEMAPHORE_PATH1 "/HOLODECK_SEMAPHORE_SERVER"
+#define SEMAPHORE_PATH2 "/HOLODECK_SEMAPHORE_CLIENT"
 #include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
