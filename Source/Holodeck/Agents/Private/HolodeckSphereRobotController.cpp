@@ -18,6 +18,8 @@ void AHolodeckSphereRobotController::ExecuteCommand() {
 	ASphereRobot* SpherePawn = static_cast<ASphereRobot*>(this->GetPawn());
 	float* FloatBuffer = static_cast<float*>(ActionBuffer);
 	
-	SpherePawn->ForwardSpeed = FloatBuffer[0];
-	SpherePawn->RotSpeed = FloatBuffer[1];
+    if (FloatBuffer != nullptr) {
+        SpherePawn->ForwardSpeed = FloatBuffer[0];
+        SpherePawn->RotSpeed = FloatBuffer[1];
+    }
 }
