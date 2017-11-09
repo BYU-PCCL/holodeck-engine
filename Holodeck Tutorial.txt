@@ -9,7 +9,7 @@ Right click on holodeck, click on change Unreal Engine version, select your comp
 Package for Linux in UE4 editor (File -> Package Project -> Linux)
 
 Setup RL Environment in Holodeck:
--In File > Project Settings, set game instance class to HolodeckGameInstance and gamemode to HolodeckGameModeBP
+-In Edit > Project Settings, set game instance class to HolodeckGameInstance and gamemode to HolodeckGameModeBP
 -Available agents are available in HolodeckContent folder in project (drag and drop to place in world). Make sure to set the correct AI Controller Class for that agent
 -Available sensors are available in C++ classes folder. Drag and drop to agent body in details window on right hand side to add to agent
 -If you want the camera to follow the agent as it moves throughout the world, add a camera follower. (See UAVFollwer inside HolodeckContent/UAV). Drag and drop in to world. Set the "Actor to follow" in details pane to the agent you want it to follow. Set "Auto Possess Player" to "Player 0"
