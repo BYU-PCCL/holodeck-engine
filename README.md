@@ -3,6 +3,13 @@
 ## About
 Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.12, with bindings for python to communicate with the agents in the environments. For best results, use windows.
 
+## Branches
+We publish source code for Holodeck in two main branches: 
+* The [master branch](https://github.com/BYU-PCCL/Holodeck/tree/master) contains our production quality code. We try our best to keep it bug free, and only commit to this branch when we have tested the code and feel that it is ready.
+* The [develop branch](https://github.com/BYU-PCCL/Holodeck/tree/develop) is where the action happens. When we make new features, we branch off from here. The feature branches are merged back onto here when they are ready. This keeps the master branch clean and stable while we get things together on this branch. 
+
+Several other branches will come and go as needed, like hotfix or feature branches. Specifically, once we have a group of features working on the develop branch, we will debug and test them on a release branch. Once the release branch is stable, we will merge it back into both the devleop and master branch. A great guide for the workflow we emulate can be found [here](http://nvie.com/posts/a-successful-git-branching-model/).
+
 ## Usage
 This repository contains everything you need to build environments in the unreal engine. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
 
