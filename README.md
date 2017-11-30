@@ -19,7 +19,7 @@ This repository contains everything you need to build environments in the unreal
 
 ## Installation
 * Run the following:
-`git clone https://github.com/BYU-PCCL/Holodeck`
+`git lfs clone https://github.com/BYU-PCCL/Holodeck`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.17
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
