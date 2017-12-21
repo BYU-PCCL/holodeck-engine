@@ -17,14 +17,19 @@ void UHolodeckServer::Start() {
 	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckServer"));
 	if (bIsRunning) Kill();
 
+	if (FParse::Value(FCommandLine::Get(), TEXT("HolodeckUUID"), UUID))
+		UUID = UUID.Replace(TEXT("="), TEXT("")).Replace(TEXT("\""), TEXT(""));
+	else
+		UUID = "";
+
 	#if PLATFORM_WINDOWS
-	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, TEXT(SEMAPHORE_PATH1));
-	this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, TEXT(SEMAPHORE_PATH2));
+	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, *(SEMAPHORE_PATH1 + UUID));
+	this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, *(SEMAPHORE_PATH2 + UUID));
 	#elif PLATFORM_LINUX
 	sem_unlink(SEMAPHORE_PATH1);
 	sem_unlink(SEMAPHORE_PATH2);
-	LockingSemaphore1 = sem_open(SEMAPHORE_PATH1, O_CREAT, 0777, 1);
-	LockingSemaphore2 = sem_open(SEMAPHORE_PATH2, O_CREAT, 0777, 0);
+	LockingSemaphore1 = sem_open(*(SEMAPHORE_PATH1 + UUID), O_CREAT, 0777, 1);
+	LockingSemaphore2 = sem_open(*(SEMAPHORE_PATH2 + UUID), O_CREAT, 0777, 0);
 	#endif
 
 	bIsRunning = true;
@@ -52,19 +57,18 @@ void UHolodeckServer::Kill() {
 void* UHolodeckServer::SubscribeSensor(const std::string& AgentName, const std::string& SensorKey, int BufferSize) {
 	UE_LOG(LogHolodeck, Log, TEXT("Subscribing sensor %s for agent %s"), UTF8_TO_TCHAR(SensorKey.c_str()), UTF8_TO_TCHAR(AgentName.c_str()));
 	std::string Key = MakeKey(AgentName, SensorKey);
-	Sensors[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize));
+	Sensors[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize, TCHAR_TO_UTF8(*UUID)));
 	return Sensors[Key]->GetPtr();
 }
 
 void* UHolodeckServer::SubscribeActionSpace(const std::string& AgentName, int BufferSize) {
 	UE_LOG(LogHolodeck, Log, TEXT("Subscribing action space for %s"), UTF8_TO_TCHAR(AgentName.c_str()));
-	ActionSpaces[AgentName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(AgentName, BufferSize));
+	ActionSpaces[AgentName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(AgentName, BufferSize, TCHAR_TO_UTF8(*UUID)));
 	return ActionSpaces[AgentName]->GetPtr();
 }
 
-
 void* UHolodeckServer::SubscribeSetting(const std::string& SettingName, int BufferSize) {
-	Settings[SettingName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(SettingName, BufferSize));
+	Settings[SettingName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(SettingName, BufferSize, TCHAR_TO_UTF8(*UUID)));
 	return Settings[SettingName]->GetPtr();
 }
 
