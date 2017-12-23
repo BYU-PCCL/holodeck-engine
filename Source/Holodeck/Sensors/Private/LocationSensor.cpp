@@ -7,8 +7,8 @@ ULocationSensor::ULocationSensor() {
 void ULocationSensor::BeginPlay() {
 	Super::BeginPlay();
 
-	//You need to get the pointers to some important objects
-	Parent = Cast<UPrimitiveComponent>(this->GetAttachParent());
+	//You need to get the pointer to the object you are attached to. 
+	Parent = this->GetAttachParent();
 }
 FVector ULocationSensor::GetLocationVector() {
 	FVector toReturn;

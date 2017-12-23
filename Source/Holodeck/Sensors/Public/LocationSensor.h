@@ -36,7 +36,7 @@ protected:
 
 private:
 
-	UPrimitiveComponent* Parent;
+	USceneComponent* Parent;
 
 
 };
