@@ -1,6 +1,11 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
+
 #include "Holodeck.h"
 #include "HolodeckSensor.h"
+
+#include "LocationSensor.generated.h"
 
 /**
 * LocationSensor
@@ -9,7 +14,9 @@
 
 
 */
-class ULocationSensor : public UHolodeckSensor {
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class HOLODECK_API ULocationSensor : public UHolodeckSensor {
+	GENERATED_BODY()
 
 public:
 	/*
@@ -35,7 +42,10 @@ protected:
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-
+	/*
+	 * Parent
+	 * Contains a pointer to whatever it is attached to after initialization
+	 */
 	USceneComponent* Parent;
 
 
