@@ -27,8 +27,8 @@ void UHolodeckServer::Start() {
 	#elif PLATFORM_LINUX
 	sem_unlink(SEMAPHORE_PATH1);
 	sem_unlink(SEMAPHORE_PATH2);
-	LockingSemaphore1 = sem_open(*(SEMAPHORE_PATH1 + UUID), O_CREAT, 0777, 1);
-	LockingSemaphore2 = sem_open(*(SEMAPHORE_PATH2 + UUID), O_CREAT, 0777, 0);
+	LockingSemaphore1 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH1 + UUID)), O_CREAT, 0777, 1);
+	LockingSemaphore2 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH2 + UUID)), O_CREAT, 0777, 0);
 	#endif
 
 	bIsRunning = true;
