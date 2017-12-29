@@ -29,6 +29,8 @@ public:
 	  */
 	void BeginPlay() override;
 
+	FVector GetVelocity();
+
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
 	FString GetDataKey() override { return "VelocitySensor"; };
