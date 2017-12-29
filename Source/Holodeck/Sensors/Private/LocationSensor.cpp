@@ -12,11 +12,17 @@ void ULocationSensor::BeginPlay() {
 }
 FVector ULocationSensor::GetLocationVector() {
 	FVector toReturn;
-	if (Parent != NULL) {
+	if (Parent != nullptr) {
 		toReturn = Parent->GetComponentLocation();
 	}
 	return toReturn;
 }
 void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-
+	if (Parent != nullptr && bOn) {
+		FVector Location = GetLocationVector();
+		float* FloatBuffer = static_cast<float*>(Buffer);
+		FloatBuffer[0] = Location.X;
+		FloatBuffer[1] = Location.Y;
+		FloatBuffer[2] = Location.Z;
+	}
 }
