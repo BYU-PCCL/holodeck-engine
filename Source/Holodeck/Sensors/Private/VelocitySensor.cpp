@@ -11,9 +11,15 @@ void UVelocitySensor::BeginPlay() {
 	Parent = this->GetAttachParent();
 }
 
+FVector UVelocitySensor::GetVelocity() {
+	AActor* ActorParent = reinterpret_cast<AActor*>(Parent);
+
+	return ActorParent->GetVelocity();
+}
+
 void UVelocitySensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	if (Parent != nullptr && bOn) {
-		FVector Velocity = Parent->ComponentVelocity;
+		FVector Velocity = GetVelocity();
 		float* FloatBuffer = static_cast<float*>(Buffer);
 		FloatBuffer[0] = Velocity.X;
 		FloatBuffer[1] = Velocity.Y;
