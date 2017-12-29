@@ -8,25 +8,25 @@
 #include "VelocitySensor.generated.h"
 
 /**
- * VelocitySensor
- * Inherits from the HolodeckSensor class
- * Check out the parent class for documentation on all of the overridden funcions. 
- * Gets the true velocity of the component that the sensor is attached to. 
- */
+  * VelocitySensor
+  * Inherits from the HolodeckSensor class
+  * Check out the parent class for documentation on all of the overridden funcions. 
+  * Gets the true velocity of the component that the sensor is attached to. 
+  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UVelocitySensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:
-	/*
-	 * Default Constructor
-	 */
+	/**
+	  * Default Constructor
+	  */
 	UVelocitySensor();
 
-	/*
-	 * BeginPlay
-  	 * Called at the start of the game.
-	 */
+	/**
+	  * BeginPlay
+  	  * Called at the start of the game.
+	  */
 	void BeginPlay() override;
 
 protected:
@@ -37,10 +37,10 @@ protected:
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	/*
-	 * Parent
-	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
-	 */
+	/**
+	  * Parent
+	  * After initialization, Parent contains a pointer to whatever the sensor is attached to.
+	  */
 	USceneComponent* Parent;
 
 };
