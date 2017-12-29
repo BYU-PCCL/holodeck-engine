@@ -17,10 +17,9 @@ void UHolodeckServer::Start() {
 	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckServer"));
 	if (bIsRunning) Kill();
 
-	if (FParse::Value(FCommandLine::Get(), TEXT("HolodeckUUID"), UUID))
-		UUID = UUID.Replace(TEXT("="), TEXT("")).Replace(TEXT("\""), TEXT(""));
-	else
+	if (!FParse::Value(FCommandLine::Get(), TEXT("HolodeckUUID="), UUID))
 		UUID = "";
+	UE_LOG(LogHolodeck, Log, TEXT("UUID: %s"), *UUID);
 
 	#if PLATFORM_WINDOWS
 	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, *(SEMAPHORE_PATH1 + UUID));
