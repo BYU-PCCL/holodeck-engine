@@ -7,7 +7,7 @@ UVelocitySensor::UVelocitySensor() {
 
 void UVelocitySensor::BeginPlay() {
 	Super::BeginPlay();
-	//You need to get the pointer to the object you are attached to. 
+	//You need to get the pointer to the object the sensor is attached to. 
 	Parent = this->GetAttachParent();
 }
 
