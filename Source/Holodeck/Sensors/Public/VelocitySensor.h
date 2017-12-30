@@ -29,14 +29,6 @@ public:
 	  */
 	void BeginPlay() override;
 
-	/**
-	  * GetVelocity
-	  * Calculates and returns the velocity.
-	  * It is dependent on ChangeInTime, LocationAtPreviousTick, and CurrentLocation being updated and current. 
-	  * @return the x, y, and z components of instantaneous velocity. 
-	  */
-	FVector GetVelocity();
-
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
 	FString GetDataKey() override { return "VelocitySensor"; };
@@ -50,11 +42,6 @@ private:
 	  * After initialization, Parent contains a pointer to whatever the sensor is attached to.
 	  * Not owned.
 	  */
-	USceneComponent* Parent;
-
-	//These private member variables are for computing the instantaneous velocity. 
-	float ChangeInTime;
-	FVector LocationAtPreviousTick;
-	FVector CurrentLocation;
+	AActor* Parent;
 
 };
