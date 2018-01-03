@@ -14,8 +14,8 @@ SimplePID::SimplePID() {
 	Tau = 0.0f; // Connor: What does tau represent?
 }
 
-SimplePID::SimplePID(double P, double I, double D, double Tau)
-		: KP(P), KI(I), KD(D), Tau(Tau) {
+SimplePID::SimplePID(double P, double I, double D)
+		: KP(P), KI(I), KD(D), Tau(0.05) {
 	Integrator = 0.0f;
 	Differentiator = 0.0f;
 	LastError = 0.0f;
@@ -88,16 +88,16 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bo
 	return KP * Error + KI * Integrator - KD * XDot;
 }
 
-void SimplePID::SetGains(float P, float I, float D, float Tau) {
+void SimplePID::SetGains(float P, float I, float D) {
 	KP = P;
 	KI = I;
 	KD = D;
 
-	this->Tau = Tau; // time for force to go from 0 to 63.2% of maximum desired force
+	Tau = 0.05; // time for force to go from 0 to 63.2% of maximum desired force
 	return;
 }
 
-float SimplePID::MyAbs(float I){
+float SimplePID::MyAbs(float I) {
 	if (I < 0)
 		return -I;
 	else
