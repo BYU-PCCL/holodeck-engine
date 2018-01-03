@@ -135,4 +135,6 @@ private:
 	sem_t* LockingSemaphore1;
 	sem_t* LockingSemaphore2;
 	#endif
+
+	FString UUID;
 };
