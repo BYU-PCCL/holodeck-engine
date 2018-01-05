@@ -27,12 +27,12 @@
 #include "HolodeckServer.generated.h"
 
 /**
-* This class resides in Holodeck, and handles the passing of messages through
-* shared memory. A new shared memory block is created for each sensor, action
-* space, and setting.
-* There should only be one UHolodeckServer, and it should be instantiated by
-* HolodeckGameInstance.
-*/
+  * This class resides in Holodeck, and handles the passing of messages through
+  * shared memory. A new shared memory block is created for each sensor, action
+  * space, and setting.
+  * There should only be one UHolodeckServer, and it should be instantiated by
+  * HolodeckGameInstance.
+  */
 UCLASS()
 class HOLODECK_API UHolodeckServer : public UObject {
 	GENERATED_BODY()
