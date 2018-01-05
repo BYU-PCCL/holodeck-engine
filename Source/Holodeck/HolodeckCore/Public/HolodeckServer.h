@@ -128,7 +128,7 @@ private:
 	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> Settings;
 
 	UPROPERTY()
-		bool bIsRunning;
+	bool bIsRunning;
 
 	#if PLATFORM_WINDOWS
 	HANDLE LockingSemaphore1;
