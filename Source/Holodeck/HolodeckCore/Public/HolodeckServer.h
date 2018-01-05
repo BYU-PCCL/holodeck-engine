@@ -40,87 +40,87 @@ class HOLODECK_API UHolodeckServer : public UObject {
 public:
 
 	/**
-	* Default Constructor
-	*/
+	  * Default Constructor
+	  */
 	UHolodeckServer();
 
 	/**
-	* Default Destructor
-	*/
+	  * Default Destructor
+	  */
 	~UHolodeckServer();
 
 	/**
-	* Start
-	* Starts the server.
-	*/
+	  * Start
+	  * Starts the server.
+	  */
 	void Start();
 
 	/**
-	* Kill
-	* Shuts the server down.
-	*/
+	  * Kill
+	  * Shuts the server down.
+	  */
 	void Kill();
 
 	/**
-	* SubscribeSensor
-	* Subscribes a sensor. Creates a shared memory block for the sensor.
-	* If a sensor already exists in this project with the same name and
-	* same agent, the block is overwritten with the new sensor.
-	* @param AgentName the name of the agent this sensor belongs to.
-	* @param SensorKey the name of the sensor.
-	* @param BufferSize the size to allocate in bytes.
-	* @return a pointer to the start of the assigned memory.
-	*/
+	  * SubscribeSensor
+	  * Subscribes a sensor. Creates a shared memory block for the sensor.
+	  * If a sensor already exists in this project with the same name and
+	  * same agent, the block is overwritten with the new sensor.
+	  * @param AgentName the name of the agent this sensor belongs to.
+	  * @param SensorKey the name of the sensor.
+	  * @param BufferSize the size to allocate in bytes.
+	  * @return a pointer to the start of the assigned memory.
+	  */
 	void* SubscribeSensor(const std::string& AgentName, const std::string& SensorKey, int BufferSize);
 
 	/**
-	* SubscribeActionSpace
-	* Subscribes an action space. Creates a shared memory block for the
-	* action space.
-	* @param AgentName the agent to subscribe space for.
-	* @param BufferSize the size of the buffer to allocate in bytes.
-	* @return a poitner to the start of the assigned memory.
-	*/
+	  * SubscribeActionSpace
+	  * Subscribes an action space. Creates a shared memory block for the
+	  * action space.
+	  * @param AgentName the agent to subscribe space for.
+	  * @param BufferSize the size of the buffer to allocate in bytes.
+	  * @return a poitner to the start of the assigned memory.
+	  */
 	void* SubscribeActionSpace(const std::string& AgentName, int BufferSize);
 
 	/**
-	* SubscribeSetting
-	* Subscribes a setting. Creates a shared memory block for the setting.
-	* @param SettingName the name of the setting.
-	* @param BufferSize the size of the buffer to allocate in bytes.
-	* @return a pointer to the start of the assigned memory.
-	*/
+	  * SubscribeSetting
+	  * Subscribes a setting. Creates a shared memory block for the setting.
+	  * @param SettingName the name of the setting.
+	  * @param BufferSize the size of the buffer to allocate in bytes.
+	  * @return a pointer to the start of the assigned memory.
+	  */
 	void* SubscribeSetting(const std::string& SettingName, int BufferSize);
 
 	/**
-	* Acquire
-	* Acquires the mutex to allow the next tick to occur. Will block until
-	* the client releases.
-	*/
+	  * Acquire
+	  * Acquires the mutex to allow the next tick to occur. Will block until
+	  * the client releases.
+	  */
 	void Acquire();
 
 	/**
-	* Release
-	* Releases the mutex to allow the client to tick.
-	*/
+	  * Release
+	  * Releases the mutex to allow the client to tick.
+	  */
 	void Release();
 
 	/**
-	* IsRunning
-	* Gets whether the server is running.
-	* @return true if the server is running.
-	*/
+	  * IsRunning
+	  * Gets whether the server is running.
+	  * @return true if the server is running.
+	  */
 	bool IsRunning() const;
 
 private:
 
 	/**
-	* MakeKey
-	* Makes the key for subscribing sensors.
-	* @param AgentName the name of the agent.
-	* @param SensorName the name of the sensor.
-	* @return a key for this agent/sensor for the map.
-	*/
+	  * MakeKey
+	  * Makes the key for subscribing sensors.
+	  * @param AgentName the name of the agent.
+	  * @param SensorName the name of the sensor.
+	  * @return a key for this agent/sensor for the map.
+	  */
 	std::string MakeKey(const std::string& AgentName, const std::string& SensorName) const;
 
 	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> Sensors;
