@@ -21,12 +21,12 @@ void UHolodeckServer::Start() {
 		UUID = "";
 	UE_LOG(LogHolodeck, Log, TEXT("UUID: %s"), *UUID);
 
-#if PLATFORM_WINDOWS
+	#if PLATFORM_WINDOWS
 	auto LoadingSemaphore = OpenSemaphore(EVENT_ALL_ACCESS, false, *(LOADING_SEMAPHORE_PATH + UUID));
 	ReleaseSemaphore(LoadingSemaphore, 1, NULL);
 	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, *(SEMAPHORE_PATH1 + UUID));
 	this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, *(SEMAPHORE_PATH2 + UUID));
-#elif PLATFORM_LINUX
+	#elif PLATFORM_LINUX
 	sem_unlink(SEMAPHORE_PATH1);
 	sem_unlink(SEMAPHORE_PATH2);
 	auto LoadingSemaphore = sem_open(TCHAR_TO_ANSI(*(LOADING_SEMAPHORE_PATH + UUID)), O_CREAT, 0777, 0);
@@ -34,7 +34,7 @@ void UHolodeckServer::Start() {
 	LockingSemaphore1 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH1 + UUID)), O_CREAT, 0777, 1);
 	LockingSemaphore2 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH2 + UUID)), O_CREAT, 0777, 0);
 	sem_unlink(LOADING_SEMAPHORE_PATH);
-#endif
+	#endif
 
 	bIsRunning = true;
 }
@@ -47,13 +47,13 @@ void UHolodeckServer::Kill() {
 	ActionSpaces.clear();
 	Settings.clear();
 
-#if PLATFORM_WINDOWS
+	#if PLATFORM_WINDOWS
 	CloseHandle(this->LockingSemaphore1);
 	CloseHandle(this->LockingSemaphore2);
-#elif PLATFORM_LINUX
+	#elif PLATFORM_LINUX
 	sem_unlink(SEMAPHORE_PATH1);
 	sem_unlink(SEMAPHORE_PATH2);
-#endif
+	#endif
 
 	bIsRunning = false;
 }
@@ -77,19 +77,19 @@ void* UHolodeckServer::SubscribeSetting(const std::string& SettingName, int Buff
 }
 
 void UHolodeckServer::Acquire() {
-#if PLATFORM_WINDOWS
+	#if PLATFORM_WINDOWS
 	WaitForSingleObject(this->LockingSemaphore1, INFINITE);
-#elif PLATFORM_LINUX
+	#elif PLATFORM_LINUX
 	sem_wait(LockingSemaphore1);
-#endif
+	#endif
 }
 
 void UHolodeckServer::Release() {
-#if PLATFORM_WINDOWS
+	#if PLATFORM_WINDOWS
 	ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
-#elif PLATFORM_LINUX
+	#elif PLATFORM_LINUX
 	sem_post(LockingSemaphore2);
-#endif
+	#endif
 }
 
 bool UHolodeckServer::IsRunning() const {
