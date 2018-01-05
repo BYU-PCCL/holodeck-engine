@@ -130,13 +130,13 @@ private:
 	UPROPERTY()
 		bool bIsRunning;
 
-#if PLATFORM_WINDOWS
+	#if PLATFORM_WINDOWS
 	HANDLE LockingSemaphore1;
 	HANDLE LockingSemaphore2;
-#elif PLATFORM_LINUX
+	#elif PLATFORM_LINUX
 	sem_t* LockingSemaphore1;
 	sem_t* LockingSemaphore2;
-#endif
+	#endif
 
 	FString UUID;
 };
