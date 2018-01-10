@@ -6,6 +6,12 @@
 // Sets default values for this component's properties
 UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher() : Width(512), Height(512) {
 	PrimaryComponentTick.bCanEverTick = true;
+	FVector2D ViewportDimensions;
+	if (GEngine && GEngine->GameViewport)	{
+		GEngine->GameViewport->GetViewportSize(ViewportDimensions);
+		Width = ViewportDimensions.X;
+		Height = ViewportDimensions.Y;
+	}
 }
 
 void UHolodeckViewportClientPublisher::BeginPlay() {
