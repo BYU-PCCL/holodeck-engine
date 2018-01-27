@@ -41,5 +41,5 @@ private:
 	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
 	 */
 	USceneComponent* Parent;
-
+	float UnitsPerMeter;
 };
