@@ -16,7 +16,7 @@ public:
 	  * Full Constructor.
 	  * Constructs the PID controller with values for P, I, D, and Tau.
 	  */
-	SimplePID(double P, double I, double D, double Tau);
+	SimplePID(double P, double I, double D);
 
 	/**
 	  * Default Destructor.
@@ -63,7 +63,7 @@ public:
 	*
 	* Used for late initialization or a redo
 	*/
-	void SetGains(float P, float I, float D, float Tau);
+	void SetGains(float P, float I, float D);
 
 	private:
 	float Integrator;

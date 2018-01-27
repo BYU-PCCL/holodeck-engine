@@ -9,12 +9,14 @@
 
 #include "HolodeckSharedMemory.h"
 #if PLATFORM_WINDOWS
+#define LOADING_SEMAPHORE_PATH "Global\\HOLODECK_LOADING_SEM"
 #define SEMAPHORE_PATH1 "Global\\HOLODECK_SEMAPHORE_SERVER"
 #define SEMAPHORE_PATH2 "Global\\HOLODECK_SEMAPHORE_CLIENT"
 #include "AllowWindowsPlatformTypes.h"
 #include "Windows.h"
 #include "HideWindowsPlatformTypes.h"
 #elif PLATFORM_LINUX
+#define LOADING_SEMAPHORE_PATH "/HOLODECK_LOADING_SEM"
 #define SEMAPHORE_PATH1 "/HOLODECK_SEMAPHORE_SERVER"
 #define SEMAPHORE_PATH2 "/HOLODECK_SEMAPHORE_CLIENT"
 #include <sys/mman.h>
@@ -38,13 +40,13 @@ class HOLODECK_API UHolodeckServer : public UObject {
 public:
 
 	/**
-	* Default Constructor
-	*/
+	  * Default Constructor
+	  */
 	UHolodeckServer();
 
 	/**
-	* Default Destructor
-	*/
+	  * Default Destructor
+	  */
 	~UHolodeckServer();
 
 	/**
@@ -135,4 +137,6 @@ private:
 	sem_t* LockingSemaphore1;
 	sem_t* LockingSemaphore2;
 	#endif
+
+	FString UUID;
 };
