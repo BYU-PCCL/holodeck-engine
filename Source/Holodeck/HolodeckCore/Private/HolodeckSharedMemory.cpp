@@ -5,10 +5,10 @@
 #include "Holodeck.h"
 #include "HolodeckSharedMemory.h"
 
-const char HOLODECK_BASE_PATH[] = "/HOLODECK_MEM_";
+const char HOLODECK_BASE_PATH[] = "/HOLODECK_MEM";
 
-HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSize) :
-		MemPath(HOLODECK_BASE_PATH + Name), MemSize(BufferSize) {
+HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSize, const std::string& UUID) :
+		MemPath(HOLODECK_BASE_PATH + UUID + "_" + Name), MemSize(BufferSize) {
 
 	#if PLATFORM_WINDOWS
 	std::wstring STemp = std::wstring(MemPath.begin(), MemPath.end());
