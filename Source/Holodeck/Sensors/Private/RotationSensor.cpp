@@ -15,7 +15,6 @@ void URotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, 
 	if (Parent != nullptr && bOn) {
 		FRotator Rotation = Parent->GetActorRotation();
 		float* FloatBuffer = static_cast<float*>(Buffer);
-		
 		FloatBuffer[0] = FMath::DegreesToRadians(Rotation.Roll);
 		FloatBuffer[1] = FMath::DegreesToRadians(Rotation.Pitch);
 		FloatBuffer[2] = FMath::DegreesToRadians(Rotation.Yaw);
