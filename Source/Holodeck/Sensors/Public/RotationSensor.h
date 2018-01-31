@@ -8,10 +8,10 @@
 #include "RotationSensor.generated.h"
 
 /**
-* VelocitySensor
+* RotationSensor
 * Inherits from the HolodeckSensor class
 * Check out the parent class for documentation on all of the overridden funcions.
-* Gets the true velocity of the component that the sensor is attached to.
+* Gets the true rotation of the component that the sensor is attached to.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API URotationSensor : public UHolodeckSensor {
