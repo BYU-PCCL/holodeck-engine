@@ -2,13 +2,11 @@
 #include "CollisionSensor.h"
 
 UCollisionSensor::UCollisionSensor() {
-	UE_LOG(LogHolodeck, Log, TEXT("Constructor was called"));
 	PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
 }
 
 void UCollisionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	UE_LOG(LogHolodeck, Log, TEXT("It ticks."));
 	if (Parent != nullptr && bOn) {
 		bool* BoolBuffer = static_cast<bool*>(Buffer);
 		BoolBuffer[0] = bIsColliding;
