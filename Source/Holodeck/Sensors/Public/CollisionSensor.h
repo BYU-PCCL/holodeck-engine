@@ -24,12 +24,12 @@ public:
 	* Default Constructor
 	*/
 	UCollisionSensor();
-
 	/**
-	* BeginPlay
-	* Called at the start of the game.
+	* InitializeComponent
+	* Called on level load, before begin play
+	* It's important for these things to be initialized before the its actor's BeginPlay() is called.
 	*/
-	void BeginPlay() override;
+	void InitializeComponent() override;
 
 
 	UFUNCTION()
