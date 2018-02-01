@@ -34,8 +34,7 @@ void AHolodeckAgent::BeginPlay() {
 	}
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
-	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent))
-	{
+	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)){
 		PrimitiveComponent->SetNotifyRigidBodyCollision(true);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent collision events enabled"));
 	}
