@@ -3,10 +3,8 @@
 
 #include "Holodeck.h"
 
-
 #include "Components/SceneComponent.h"
 #include "HolodeckSensor.h"
-
 
 #include "CollisionSensor.generated.h"
 
@@ -25,13 +23,13 @@ public:
 	* Default Constructor
 	*/
 	UCollisionSensor();
+	
 	/**
 	* InitializeComponent
 	* Called on level load, before begin play
 	* It's important for these things to be initialized before the its actor's BeginPlay() is called.
 	*/
 	void InitializeComponent() override;
-
 
 	UFUNCTION()
 		void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
