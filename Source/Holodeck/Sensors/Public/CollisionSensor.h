@@ -3,10 +3,11 @@
 
 #include "Holodeck.h"
 
-#include <string>
 
 #include "Components/SceneComponent.h"
 #include "HolodeckSensor.h"
+
+
 #include "CollisionSensor.generated.h"
 
 /**
