@@ -26,8 +26,7 @@ void UCollisionSensor::InitializeComponent() {
 	HitDelegate.BindUFunction(this, TEXT("OnHit"));
 	if (Parent) {
 		Parent->OnActorHit.AddUnique(HitDelegate);
-	}
-	else {
+	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UCollisionSensor::Parent was never initialized. Cannot add HitDelegate"));
 	}
 }
