@@ -3,8 +3,10 @@
 
 #include "Holodeck.h"
 
-#include "HolodeckSensor.h"
+#include <string>
 
+#include "Components/SceneComponent.h"
+#include "HolodeckSensor.h"
 #include "CollisionSensor.generated.h"
 
 /**
@@ -29,6 +31,10 @@ public:
 	*/
 	void BeginPlay() override;
 
+
+	UFUNCTION()
+		void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
+
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
 	FString GetDataKey() override { return "CollisionSensor"; };
@@ -43,5 +49,7 @@ private:
 	* Not owned.
 	*/
 	AActor* Parent;
+
+	bool bIsColliding = false;
 
 };
