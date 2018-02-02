@@ -5,24 +5,25 @@
 
 #include "HolodeckSensor.h"
 
-#include "LocationSensor.generated.h"
+#include "RotationSensor.generated.h"
 
 /**
-* LocationSensor
+* RotationSensor
 * Inherits from the HolodeckSensor class
-* Check out the parent class for documentation on all of the overridden functions.
+* Check out the parent class for documentation on all of the overridden funcions.
+* Gets the true rotation of the component that the sensor is attached to.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HOLODECK_API ULocationSensor : public UHolodeckSensor {
+class HOLODECK_API URotationSensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:
-	/*
+	/**
 	* Default Constructor
 	*/
-	ULocationSensor();
+	URotationSensor	();
 
-	/*
+	/**
 	* BeginPlay
 	* Called at the start of the game.
 	*/
@@ -30,16 +31,16 @@ public:
 
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
-	FString GetDataKey() override { return "LocationSensor"; };
+	FString GetDataKey() override { return "RotationSensor"; };
 	int GetNumItems() override { return 3; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	/*
-	 * Parent
-	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
-	 */
-	USceneComponent* Parent;
-	float UnitsPerMeter;
+	/**
+	* Parent
+	* After initialization, Parent contains a pointer to whatever the sensor is attached to.
+	*/
+	AActor* Parent;
+
 };
