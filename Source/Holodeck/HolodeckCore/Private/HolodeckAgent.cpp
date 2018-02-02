@@ -30,7 +30,7 @@ void AHolodeckAgent::BeginPlay() {
 		if (TerminalPtr != nullptr)
 			*TerminalPtr = false;
 		HolodeckController->GetActionBuffer(AgentName);
-		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));	
 	}
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
