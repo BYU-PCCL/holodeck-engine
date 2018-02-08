@@ -83,6 +83,5 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	if (Pawn && FloatPtr) {
 		FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 		Pawn->Teleport(TeleportLocation);
-
 	}
 }
