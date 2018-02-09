@@ -38,7 +38,7 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	ExecuteCommand();
 	bool* BoolPtr = static_cast<bool*>(ShouldTeleportBuffer);
-	if (BoolPtr) {
+	if (BoolPtr && *BoolPtr == true) {
 		ExecuteTeleport();
 		BoolPtr = false;
 	}
