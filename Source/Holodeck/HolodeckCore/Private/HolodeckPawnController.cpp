@@ -2,11 +2,16 @@
 
 #include "Holodeck.h"
 #include "HolodeckPawnController.h"
+#include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
+
+
+
 
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
 		: AAIController(ObjectInitializer) {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
+	
 }
 
 AHolodeckPawnController::~AHolodeckPawnController() { }
@@ -31,6 +36,16 @@ void AHolodeckPawnController::UnPossess() {
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+	bool* BoolPtr = static_cast<bool*>(ShouldTeleportBuffer);
+	UE_LOG(LogHolodeck, Warning, TEXT("Controller Ticking"));
+	if (BoolPtr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("BoolPtr exists"));
+		if (*BoolPtr == true) {
+			UE_LOG(LogHolodeck, Warning, TEXT("BoolPtr = True"));
+			ExecuteTeleport();
+			BoolPtr = false;
+		}
+	}
 	ExecuteCommand();
 }
 
@@ -57,6 +72,22 @@ void AHolodeckPawnController::GetServer() {
 }
 
 void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
-	if (Server != nullptr)
+	if (Server != nullptr) {
+		FString BoolString = AgentName + "_teleport_bool";
+		FString CommandString = AgentName + "_teleport_command";
 		ActionBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*AgentName), GetActionSpaceDimension() * sizeof(float));
+		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), TELEPORT_BOOL_COUNT * sizeof(bool));
+		TeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*CommandString), TELEPORT_COMMAND_COUNT * sizeof(float));
+	}
+
+}
+
+void AHolodeckPawnController::ExecuteTeleport() {
+	UE_LOG(LogHolodeck, Warning, TEXT("ExecuteTeleporrt(0 was called"));
+	float* FloatPtr = static_cast<float*>(TeleportBuffer);
+	AHolodeckAgent* Pawn = Cast<AHolodeckAgent>(this->GetPawn());
+	if (Pawn && FloatPtr) {
+		FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+		Pawn->Teleport(TeleportLocation);
+	}
 }
