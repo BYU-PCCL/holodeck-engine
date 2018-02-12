@@ -30,7 +30,7 @@ void AHolodeckAgent::BeginPlay() {
 		if (TerminalPtr != nullptr)
 			*TerminalPtr = false;
 		HolodeckController->GetActionBuffer(AgentName);
-		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));	
 	}
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
@@ -45,4 +45,26 @@ void AHolodeckAgent::BeginPlay() {
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+}
+
+bool AHolodeckAgent::Teleport(FVector NewLocation, FRotator NewRotation){
+	FHitResult DummyHitResult;
+	bool bWasSuccessful = this->K2_SetActorLocationAndRotation(
+		NewLocation,
+		NewRotation,
+		false, //will not be blocked by object in between 
+		DummyHitResult, //this object reports the hit result if it can be blocked by objects in between
+		false //the object will not retain its momentum.
+	);
+	if (bWasSuccessful) {
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent teleported successfully"));
+	} else {
+		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent did not teleport successfully"));
+	}
+	return bWasSuccessful;
+}
+
+bool AHolodeckAgent::Teleport(FVector NewLocation){
+	FRotator DefaultRotation = this->GetActorRotation();
+	return Teleport(NewLocation, DefaultRotation);
 }
