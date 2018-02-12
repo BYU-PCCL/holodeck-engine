@@ -101,6 +101,7 @@ protected:
 	void* ShouldTeleportBuffer;
 
 
+
 private:
 	/**
 	* GetServer
