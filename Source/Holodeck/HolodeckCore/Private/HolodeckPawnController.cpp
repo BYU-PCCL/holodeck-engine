@@ -36,12 +36,17 @@ void AHolodeckPawnController::UnPossess() {
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	ExecuteCommand();
 	bool* BoolPtr = static_cast<bool*>(ShouldTeleportBuffer);
-	if (BoolPtr && *BoolPtr == true) {
-		ExecuteTeleport();
-		BoolPtr = false;
+	UE_LOG(LogHolodeck, Warning, TEXT("Controller Ticking"));
+	if (BoolPtr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("BoolPtr exists"));
+		if (*BoolPtr == true) {
+			UE_LOG(LogHolodeck, Warning, TEXT("BoolPtr = True"));
+			ExecuteTeleport();
+			BoolPtr = false;
+		}
 	}
+	ExecuteCommand();
 }
 
 void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
@@ -68,8 +73,8 @@ void AHolodeckPawnController::GetServer() {
 
 void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 	if (Server != nullptr) {
-		FString BoolString = AgentName + "_teleportBool";
-		FString CommandString = AgentName + "_teleportCommand";
+		FString BoolString = AgentName + "_teleport_bool";
+		FString CommandString = AgentName + "_teleport_command";
 		ActionBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*AgentName), GetActionSpaceDimension() * sizeof(float));
 		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), TELEPORT_BOOL_COUNT * sizeof(bool));
 		TeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*CommandString), TELEPORT_COMMAND_COUNT * sizeof(float));
@@ -78,6 +83,7 @@ void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 }
 
 void AHolodeckPawnController::ExecuteTeleport() {
+	UE_LOG(LogHolodeck, Warning, TEXT("ExecuteTeleporrt(0 was called"));
 	float* FloatPtr = static_cast<float*>(TeleportBuffer);
 	AHolodeckAgent* Pawn = Cast<AHolodeckAgent>(this->GetPawn());
 	if (Pawn && FloatPtr) {
