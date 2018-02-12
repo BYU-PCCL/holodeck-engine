@@ -84,7 +84,7 @@ FVector AUAV::RotatorToEulerInZYX(FRotator Rotator) {
 void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	GEngine->GameUserSettings->SetScreenResolution(FIntPoint(10, 10)); // TODO - Why is this needed?
 
-	// Get the current locations
+																	   // Get the current locations
 	CurrentPositionX = UEUnitsToMeters(GetActorLocation().X);
 	CurrentPositionY = UEUnitsToMeters(GetActorLocation().Y);
 	CurrentPositionZ = UEUnitsToMeters(GetActorLocation().Z);
@@ -142,7 +142,7 @@ float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
 void AUAV::ApplyForces() {
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply); // In [North, West, Up] format
-																							  // Convert meters to unreal-unit-newtons
+																							// Convert meters to unreal-unit-newtons
 	LocalThrust *= 100;
 	LocalTorque *= 10000;
 	// Scale force for substepping
