@@ -4,14 +4,10 @@
 #include "HolodeckPawnController.h"
 #include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
 
-
-
-
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
 		: AAIController(ObjectInitializer) {
 	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.TickGroup = TG_PrePhysics;
-	
+	PrimaryActorTick.TickGroup = TG_PrePhysics;	
 }
 
 AHolodeckPawnController::~AHolodeckPawnController() { }
@@ -38,10 +34,7 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	bool* BoolPtr = static_cast<bool*>(ShouldTeleportBuffer);
 	UE_LOG(LogHolodeck, Warning, TEXT("Controller Ticking"));
-	if (BoolPtr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("BoolPtr exists"));
-		if (*BoolPtr == true) {
-			UE_LOG(LogHolodeck, Warning, TEXT("BoolPtr = True"));
+	if (BoolPtr && *BoolPtr == true) {
 			ExecuteTeleport();
 			BoolPtr = false;
 		}
@@ -79,7 +72,6 @@ void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), TELEPORT_BOOL_COUNT * sizeof(bool));
 		TeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*CommandString), TELEPORT_COMMAND_COUNT * sizeof(float));
 	}
-
 }
 
 void AHolodeckPawnController::ExecuteTeleport() {
