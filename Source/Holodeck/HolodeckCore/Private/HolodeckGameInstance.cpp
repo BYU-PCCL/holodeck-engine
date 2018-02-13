@@ -4,7 +4,7 @@
 #include "HolodeckGameInstance.h"
 
 void UHolodeckGameInstance::StartServer() {
-	// HolodeckGameMode should start the server.
+	// HolodeckGameMode should start the server, so it will call this function. 
 	if (Server == nullptr) {
 		Server = NewObject<UHolodeckServer>();
 		Server->Start();

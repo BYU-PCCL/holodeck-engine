@@ -14,6 +14,7 @@ void ULocationSensor::BeginPlay() {
 }
 
 void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	//check if your parent pointer is valid, and if the sensor is on. Then get the location and buffer, then send the data to it. 
 	if (Parent != nullptr && bOn) {
 		FVector Location = Parent->GetComponentLocation();
 		float* FloatBuffer = static_cast<float*>(Buffer);

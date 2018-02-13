@@ -9,10 +9,10 @@
 #include "CollisionSensor.generated.h"
 
 /**
-* VelocitySensor
+* UCollisionSensor
 * Inherits from the HolodeckSensor class
 * Check out the parent class for documentation on all of the overridden funcions.
-* Gets the true velocity of the component that the sensor is attached to.
+* Reports whether the parent agent is currenty colliding with any other object. 
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UCollisionSensor : public UHolodeckSensor {
