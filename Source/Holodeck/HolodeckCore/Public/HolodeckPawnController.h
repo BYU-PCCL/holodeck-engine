@@ -32,7 +32,6 @@ public:
 	  */
 	~AHolodeckPawnController();
 
-
 	/**
 	* BeginPlay
 	* Called when the game starts.
@@ -86,6 +85,8 @@ public:
 	  */
 	virtual void ExecuteCommand() { check(0 && "You must override ExecuteCommand"); };
 
+	virtual void ExecuteTeleport();
+
 protected:
 	/**
 	  * GetActionSpaceDimension
@@ -95,6 +96,8 @@ protected:
 	virtual int GetActionSpaceDimension() { check(0 && "You must override GetActionSpaceDimension"); return 0; };
 
 	void* ActionBuffer;
+	void* TeleportBuffer;
+	void* ShouldTeleportBuffer;
 
 private:
 	/**
@@ -104,4 +107,6 @@ private:
 	void GetServer();
 
 	UHolodeckServer* Server;
+	const int TELEPORT_BOOL_SIZE = 1;
+	const int TELEPORT_COMMAND_SIZE = 3;
 };
