@@ -91,6 +91,7 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 
 	// Get the rotator to get state and transform from world to local coordinates
 	FRotator CurrentRotator = GetActorRotation();
+	//TODO(mitch): Remove/fix the extraneous conversions. 
 	FVector EulerRotation = RotatorToEulerInZYX(CurrentRotator);  // Get these in local coords in (Z, Y, X) order - CurrentRotator.Euler() provides (X, Y, Z)
 	FVector CurrentGlobalVelocity = GetVelocity();
 	FVector LocalAngularVelocity = CurrentRotator.UnrotateVector(RootMesh->GetPhysicsAngularVelocity());
@@ -104,11 +105,11 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	float CurrentPitchRate = FMath::DegreesToRadians(LocalAngularVelocity.Y);
 	CurrentYawRate = FMath::DegreesToRadians(LocalAngularVelocity.Z);
 
-	// Convert from [North, West, Up] to [North, East, Down] coordinate frames
+	// Convert to correct coordinate frames
+	CurrentRoll *= -1;
 	CurrentPitch *= -1;
-	CurrentYaw *= -1;
+	CurrentRollRate *= -1;
 	CurrentPitchRate *= -1;
-	CurrentYawRate *= -1;
 
 	// Calculate the force and torques from the PID controller
 	RollTorqueToApply = RollController.ComputePIDDirect(DesiredRoll, CurrentRoll, CurrentRollRate, DeltaTime);
@@ -147,7 +148,7 @@ float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
 
 void AUAV::ApplyForces() {
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
-	FVector LocalTorque = FVector(RollTorqueToApply, -PitchTorqueToApply, -YawTorqueToApply); // In [North, West, Up] format
+	FVector LocalTorque = FVector(-RollTorqueToApply, -PitchTorqueToApply, YawTorqueToApply); //Make sure to apply the forces how unreal expects it
 																							  // Convert meters to unreal-unit-newtons
 	LocalThrust *= 100;
 	LocalTorque *= 10000;
