@@ -53,6 +53,25 @@ public:
 	  */
 	void SetTerminal(bool Terminal) { if (TerminalPtr != nullptr) *TerminalPtr = Terminal; };
 
+	/**
+	* Teleport
+	* Instantly moves the agent to target location, with the orientation that was given
+	* If no orientation was given, orientation remains unchanged.
+	* @param NewLocation The location to move to
+	* @param NewRotation The rotation that the object will take on
+	* @return Bool if the teleport was successful.
+	*/
+	bool Teleport(const FVector& NewLocation, FRotator NewRotation);
+
+	/**
+	* Teleport
+	* Instantly moves the agent to target location, with the orientation that was given
+	* Orientation remains unchanged
+	* @param NewLocation The location to move to
+	* @return Bool if the teleport was successful.
+	*/
+	bool Teleport(const FVector& NewLocation);
+
 private:
 	float* RewardPtr;
 	bool* TerminalPtr;
