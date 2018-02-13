@@ -31,8 +31,10 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 		CalculateAngularVelocityVector();
 
 		float* FloatBuffer = static_cast<float*>(Buffer);
-		FloatBuffer[0] = LinearAccelerationVector.X;
-		FloatBuffer[1] = LinearAccelerationVector.Y;
+
+		//Some negative values are given so they obey Unreal's coordinate frame. 
+		FloatBuffer[0] = -LinearAccelerationVector.X;
+		FloatBuffer[1] = -LinearAccelerationVector.Y;
 		FloatBuffer[2] = LinearAccelerationVector.Z;
 		FloatBuffer[3] = AngularVelocityVector.X;
 		FloatBuffer[4] = AngularVelocityVector.Y;
