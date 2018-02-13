@@ -32,7 +32,6 @@ public:
 	  */
 	~AHolodeckPawnController();
 
-
 	/**
 	* BeginPlay
 	* Called when the game starts.
@@ -99,8 +98,6 @@ protected:
 	void* ActionBuffer;
 	void* TeleportBuffer;
 	void* ShouldTeleportBuffer;
-
-
 
 private:
 	/**
