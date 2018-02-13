@@ -11,6 +11,7 @@
 * LocationSensor
 * Inherits from the HolodeckSensor class
 * Check out the parent class for documentation on all of the overridden functions.
+* Reports the XYZ coordinate of the parent agent. 
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API ULocationSensor : public UHolodeckSensor {
