@@ -107,6 +107,6 @@ private:
 	void GetServer();
 
 	UHolodeckServer* Server;
-	int const TELEPORT_BOOL_SIZE = 1;
-	int const TELEPORT_COMMAND_SIZE = 3;
+	const int TELEPORT_BOOL_SIZE = 1;
+	const int TELEPORT_COMMAND_SIZE = 3;
 };
