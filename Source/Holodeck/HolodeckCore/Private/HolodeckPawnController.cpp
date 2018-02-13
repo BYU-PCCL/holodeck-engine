@@ -73,7 +73,6 @@ void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 }
 
 void AHolodeckPawnController::ExecuteTeleport() {
-	UE_LOG(LogHolodeck, Warning, TEXT("ExecuteTeleporrt(0 was called"));
 	float* FloatPtr = static_cast<float*>(TeleportBuffer);
 	AHolodeckAgent* Pawn = Cast<AHolodeckAgent>(this->GetPawn());
 	if (Pawn && FloatPtr) {
