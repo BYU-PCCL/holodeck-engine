@@ -7,7 +7,7 @@
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
 		: AAIController(ObjectInitializer) {
 	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.TickGroup = TG_PrePhysics;	
+	PrimaryActorTick.TickGroup = TG_PrePhysics;
 }
 
 AHolodeckPawnController::~AHolodeckPawnController() { }
