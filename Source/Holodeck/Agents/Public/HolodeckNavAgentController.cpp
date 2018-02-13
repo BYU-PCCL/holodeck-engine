@@ -5,7 +5,7 @@
 
 AHolodeckNavAgentController::AHolodeckNavAgentController(const FObjectInitializer& ObjectInitializer)
 	: AHolodeckPawnController(ObjectInitializer) {
-	UE_LOG(LogTemp, Warning, TEXT("NavAgent Controller Initialized"));
+	UE_LOG(LogHolodeck, Log, TEXT("NavAgent Controller Initialized"));
 }
 
 AHolodeckNavAgentController::~AHolodeckNavAgentController() {}
