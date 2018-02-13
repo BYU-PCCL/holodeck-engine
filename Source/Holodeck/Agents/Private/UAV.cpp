@@ -105,10 +105,12 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	CurrentYawRate = FMath::DegreesToRadians(LocalAngularVelocity.Z);
 
 	// Convert from [North, West, Up] to [North, East, Down] coordinate frames
+	CurrentRoll *= -1;
 	CurrentPitch *= -1;
-	CurrentYaw *= -1;
+	//CurrentYaw *= -1;
+	CurrentRollRate *= -1;
 	CurrentPitchRate *= -1;
-	CurrentYawRate *= -1;
+	//CurrentYawRate *= -1;
 
 	// Calculate the force and torques from the PID controller
 	RollTorqueToApply = RollController.ComputePIDDirect(DesiredRoll, CurrentRoll, CurrentRollRate, DeltaTime);
@@ -147,7 +149,7 @@ float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
 
 void AUAV::ApplyForces() {
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
-	FVector LocalTorque = FVector(RollTorqueToApply, -PitchTorqueToApply, -YawTorqueToApply); // In [North, West, Up] format
+	FVector LocalTorque = FVector(-RollTorqueToApply, -PitchTorqueToApply, YawTorqueToApply); // In [North, West, Up] format
 																							  // Convert meters to unreal-unit-newtons
 	LocalThrust *= 100;
 	LocalTorque *= 10000;
