@@ -111,5 +111,5 @@ private:
 
 	UHolodeckServer* Server;
 	int const TELEPORT_BOOL_COUNT = 1;
-	int const TELEPORT_COMMAND_COUNT = 3;
+	int const TELEPORT_COMMAND_SIZE = 3;
 };
