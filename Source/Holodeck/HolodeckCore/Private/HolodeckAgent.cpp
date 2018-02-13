@@ -46,7 +46,7 @@ void AHolodeckAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 }
 
-bool AHolodeckAgent::Teleport(FVector NewLocation, FRotator NewRotation){
+bool AHolodeckAgent::Teleport(const FVector& NewLocation, FRotator NewRotation){
 	FHitResult DummyHitResult;
 	bool bWasSuccessful = this->K2_SetActorLocationAndRotation(
 		NewLocation,
@@ -63,7 +63,7 @@ bool AHolodeckAgent::Teleport(FVector NewLocation, FRotator NewRotation){
 	return bWasSuccessful;
 }
 
-bool AHolodeckAgent::Teleport(FVector NewLocation){
+bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	FRotator DefaultRotation = this->GetActorRotation();
 	return Teleport(NewLocation, DefaultRotation);
 }

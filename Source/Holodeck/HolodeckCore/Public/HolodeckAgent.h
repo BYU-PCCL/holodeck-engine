@@ -61,7 +61,7 @@ public:
 	* @param NewRotation The rotation that the object will take on
 	* @return Bool if the teleport was successful.
 	*/
-	bool Teleport(FVector NewLocation, FRotator NewRotation);
+	bool Teleport(const FVector& NewLocation, FRotator NewRotation);
 
 	/**
 	* Teleport
@@ -70,7 +70,7 @@ public:
 	* @param NewLocation The location to move to
 	* @return Bool if the teleport was successful.
 	*/
-	bool Teleport(FVector NewLocation);
+	bool Teleport(const FVector& NewLocation);
 
 private:
 	float* RewardPtr;
