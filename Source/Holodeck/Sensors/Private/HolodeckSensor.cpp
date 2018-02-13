@@ -5,7 +5,9 @@
 
 UHolodeckSensor::UHolodeckSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
-	PrimaryComponentTick.TickGroup = TG_PostPhysics;
+	//Sensors should tick after physics is processed, so that the data
+	//they collect is current. 
+	PrimaryComponentTick.TickGroup = TG_PostPhysics; 
 	bOn = true;
 }
 

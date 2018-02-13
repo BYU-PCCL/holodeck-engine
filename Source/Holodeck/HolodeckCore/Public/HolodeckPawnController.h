@@ -14,7 +14,12 @@
   * AHolodeckPawnController
   * A controller for Holodeck Agents.
   * If a HolodeckAgent doesn't contain this controller or a controller which
-  * inherits it, then you will run into problems.
+  * inherits it, then you will run into problems. This class handles the 
+  * subscribing of sensors and setting up action buffer channels. The 
+  * sensors themselves tell the controller to subscribe them. Its base 
+  * classes must report what size of action buffer they need. 
+  * HolodeckPawnControllers get the data from the shared memory and give
+  * the commands to the pawns/agents. 
   */
 UCLASS()
 class AHolodeckPawnController : public AAIController
