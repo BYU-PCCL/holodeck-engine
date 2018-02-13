@@ -33,11 +33,9 @@ void AHolodeckPawnController::UnPossess() {
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	bool* BoolPtr = static_cast<bool*>(ShouldTeleportBuffer);
-	UE_LOG(LogHolodeck, Warning, TEXT("Controller Ticking"));
 	if (BoolPtr && *BoolPtr == true) {
 			ExecuteTeleport();
 			BoolPtr = false;
-		}
 	}
 	ExecuteCommand();
 }
