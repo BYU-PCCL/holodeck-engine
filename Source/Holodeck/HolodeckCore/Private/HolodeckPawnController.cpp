@@ -67,7 +67,7 @@ void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 		FString BoolString = AgentName + "_teleport_bool";
 		FString CommandString = AgentName + "_teleport_command";
 		ActionBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*AgentName), GetActionSpaceDimension() * sizeof(float));
-		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), TELEPORT_BOOL_COUNT * sizeof(bool));
+		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), TELEPORT_BOOL_SIZE * sizeof(bool));
 		TeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*CommandString), TELEPORT_COMMAND_SIZE * sizeof(float));
 	}
 }
