@@ -10,8 +10,11 @@
 #include "HolodeckUAVController.generated.h"
 
 /**
- * Controller for the Holodeck UAV
- */
+  * AHolodeckUAVController
+  * Controller for the Holodeck UAV
+  * Gets the commands to give the the UAV from the action buffer
+  * Sets the desired commands on the UAV. 
+  */
 UCLASS()
 class HOLODECK_API AHolodeckUAVController : public AHolodeckPawnController {
 	GENERATED_BODY()

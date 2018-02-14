@@ -6,9 +6,10 @@
 #include "HolodeckWorldSettings.generated.h"
 
 /**
- * The global settings being used by the simulator.
- * This is where the tick time is set.
- */
+  * AHolodeckWorldSettings
+  * The global settings being used by the simulator.
+  * This is where the tick time is set.
+  */
 UCLASS()
 class AHolodeckWorldSettings : public AWorldSettings
 {

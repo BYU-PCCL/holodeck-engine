@@ -9,6 +9,12 @@
 
 #include "HolodeckAgent.generated.h"
 
+/**
+* AHolodeckAgent
+* The base class for holodeck agents. 
+* HolodeckAgents are what are controllable from the python side of the code. HolodeckAgents will 
+* tell their controller to open up the channels needed for giving commands across the python binding.
+*/
 UCLASS()
 class AHolodeckAgent : public APawn
 {
@@ -56,7 +62,7 @@ public:
 	/**
 	* Teleport
 	* Instantly moves the agent to target location, with the orientation that was given
-	* If no orientation was given, orientation remains unchanged.
+	* If no orientation was given, orientation remains unchanged (see overloaded function)
 	* @param NewLocation The location to move to
 	* @param NewRotation The rotation that the object will take on
 	* @return Bool if the teleport was successful.

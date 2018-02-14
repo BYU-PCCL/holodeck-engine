@@ -10,6 +10,12 @@
 
 #include "HolodeckGameInstance.generated.h"
 
+/**
+* UHolodeckGameInstance
+* An instance of a holodeck game.
+* It is a placeholder for important information, and it is also used for starting the server. 
+* tell their controller to open up the channels needed for giving commands across the python binding.
+*/
 UCLASS()
 class UHolodeckGameInstance : public UGameInstance
 {

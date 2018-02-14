@@ -7,6 +7,7 @@ UCollisionSensor::UCollisionSensor() {
 }
 
 void UCollisionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	//Update the buffer to current collision status, then set the colliding bool to false. 
 	if (Parent != nullptr && bOn) {
 		bool* BoolBuffer = static_cast<bool*>(Buffer);
 		BoolBuffer[0] = bIsColliding;
@@ -21,7 +22,7 @@ void UCollisionSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norm
 void UCollisionSensor::InitializeComponent() {
 	Super::InitializeComponent();
 	Parent = this->GetOwner();
-	//Set the hit delegate. Give it to the parent. 
+	//Set up the hit delegate, then give it to the parent. The parent will then call OnHit whenever it collides. 
 	FScriptDelegate HitDelegate;
 	HitDelegate.BindUFunction(this, TEXT("OnHit"));
 	if (Parent) {
