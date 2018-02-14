@@ -10,8 +10,8 @@ const int TERMINAL_SIZE = 1;
 
 AHolodeckAgent::AHolodeckAgent() : AgentName("") {
 	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.TickGroup = TG_PrePhysics;
-	AddTickPrerequisiteActor(GetController());
+	PrimaryActorTick.TickGroup = TG_PrePhysics; //The tick function will we called before any physics simulation. 
+	AddTickPrerequisiteActor(GetController()); //The agent's controller will always tick before the agent. 
 	AgentName = "";
 }
 
@@ -23,6 +23,7 @@ void AHolodeckAgent::BeginPlay() {
 	if (HolodeckController == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't find controller for HolodeckAgent"));
 	} else {
+		//We found the controller, so tell it to set up the action buffers. Also, open up the channels for the reward pointer and terminal pointer.
 		RewardPtr = static_cast<float*>(HolodeckController->Subscribe(AgentName, REWARD_KEY, REWARD_SIZE, sizeof(float)));
 		TerminalPtr = static_cast<bool*>(HolodeckController->Subscribe(AgentName, TERMINAL_KEY, TERMINAL_SIZE, sizeof(bool)));
 		if (RewardPtr != nullptr)
@@ -34,6 +35,7 @@ void AHolodeckAgent::BeginPlay() {
 	}
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
+	//This is needed specifically for the collision sensor.
 	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)){
 		PrimitiveComponent->SetNotifyRigidBodyCollision(true);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent collision events enabled"));
@@ -52,8 +54,8 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation, FRotator NewRotation){
 	bool bWasSuccessful = this->K2_SetActorLocationAndRotation(
 		NewLocation,
 		NewRotation,
-		false, //will not be blocked by object in between 
-		DummyHitResult, //this object reports the hit result if it can be blocked by objects in between
+		false, //will not be blocked by object in between current and new location. 
+		DummyHitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
 		false //the object will not retain its momentum.
 	);
 	if (bWasSuccessful) {
