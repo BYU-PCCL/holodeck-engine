@@ -83,7 +83,7 @@ FVector AUAV::RotatorToEulerInZYX(FRotator Rotator) {
 
 void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	GEngine->GameUserSettings->SetScreenResolution(FIntPoint(10, 10)); // TODO - Why is this needed?
-
+	//TODO(mitch): Get rid of/fix the unneccessary conversions. 
 	// Get the current locations
 	CurrentPositionX = UEUnitsToMeters(GetActorLocation().X);
 	CurrentPositionY = UEUnitsToMeters(GetActorLocation().Y);
@@ -104,11 +104,12 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	float CurrentPitchRate = FMath::DegreesToRadians(LocalAngularVelocity.Y);
 	CurrentYawRate = FMath::DegreesToRadians(LocalAngularVelocity.Z);
 
-	// Convert from [North, West, Up] to [North, East, Down] coordinate frames
+	// Convert to proper coordinate frame (we want to respect Unreal's coordinate frame)
+	CurrentRoll *= -1;
 	CurrentPitch *= -1;
-	CurrentYaw *= -1;
+	CurrentRollRate *= -1;
 	CurrentPitchRate *= -1;
-	CurrentYawRate *= -1;
+
 
 	// Calculate the force and torques from the PID controller
 	RollTorqueToApply = RollController.ComputePIDDirect(DesiredRoll, CurrentRoll, CurrentRollRate, DeltaTime);
@@ -147,8 +148,7 @@ float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
 
 void AUAV::ApplyForces() {
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
-	FVector LocalTorque = FVector(RollTorqueToApply, -PitchTorqueToApply, -YawTorqueToApply); // In [North, West, Up] format
-																							  // Convert meters to unreal-unit-newtons
+	FVector LocalTorque = FVector(-RollTorqueToApply, -PitchTorqueToApply, YawTorqueToApply); //Convert to proper coordinate frame
 	LocalThrust *= 100;
 	LocalTorque *= 10000;
 	// Scale force for substepping
