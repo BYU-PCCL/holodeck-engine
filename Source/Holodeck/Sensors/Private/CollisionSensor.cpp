@@ -7,7 +7,7 @@ UCollisionSensor::UCollisionSensor() {
 }
 
 void UCollisionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	//Update the buffer to current collision, then set the colliding bool to false. 
+	//Update the buffer to current collision status, then set the colliding bool to false. 
 	if (Parent != nullptr && bOn) {
 		bool* BoolBuffer = static_cast<bool*>(Buffer);
 		BoolBuffer[0] = bIsColliding;
