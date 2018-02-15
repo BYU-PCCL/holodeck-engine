@@ -1,7 +1,6 @@
 #include "Holodeck.h"
 #include "CollisionSensor.h"
 
-
 UCollisionSensor::UCollisionSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
