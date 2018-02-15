@@ -18,8 +18,7 @@ class UHolodeckCamera; //Must forward declare instead of include to avoid cyclic
   * GameViewportClientClassName = /Script/Holodeck.HolodeckViewportClient
   */
 UCLASS()
-class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient
-{
+class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient{
 	GENERATED_BODY()
 
 public:
