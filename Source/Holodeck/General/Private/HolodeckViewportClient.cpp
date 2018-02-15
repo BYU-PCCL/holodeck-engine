@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckViewportClient.h"
+#include "HolodeckCamera.h" //Included here to avoid cyclic dependency. 
 
 UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer& PCIP) : Super(PCIP) {}
 
@@ -11,13 +12,21 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot() {
 		if (ViewportSize.X <= 0 || ViewportSize.Y <= 0) return;
 		bool bGotScreenshot = Viewport->ReadPixelsPtr(Buffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, ViewportSize.X, ViewportSize.Y));
 	}
+
 }
 
 void UHolodeckViewportClient::Draw(FViewport * ViewportParam, FCanvas * SceneCanvas) {
 	Super::Draw(ViewportParam, SceneCanvas);
 	HolodeckTakeScreenShot();
+	for (int i = 0; i < Cameras.Num(); i++) {
+		Cameras[i]->Capture();
+	}
 }
 
 void UHolodeckViewportClient::SetBuffer(void* NewBuffer) {
 	this->Buffer = static_cast<FColor*>(NewBuffer);
+}
+
+void UHolodeckViewportClient::AddCamera(UHolodeckCamera* Camera) {
+	this->Cameras.Add(Camera);
 }

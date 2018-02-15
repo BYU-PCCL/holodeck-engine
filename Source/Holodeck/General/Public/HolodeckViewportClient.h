@@ -5,8 +5,9 @@
 #include "Holodeck.h"
 
 #include "Engine/GameViewportClient.h"
-
 #include "HolodeckViewportClient.generated.h"
+
+class UHolodeckCamera; //Must forward declare instead of include to avoid cyclic dependency. 
 
 /**
   * UHolodeckViewportClient
@@ -47,6 +48,12 @@ public:
 	  */
 	bool BufferIsSet() { return Buffer != nullptr; };
 
+	/**
+	  *
+	  *
+	  */
+	void AddCamera(UHolodeckCamera* Camera);
+
 private:
 	/**
 	  * HolodeckTakeScreenShot
@@ -57,4 +64,5 @@ private:
 
 	FColor* Buffer;
 	FVector2D ViewportSize;
+	TArray<UHolodeckCamera*> Cameras;
 };
