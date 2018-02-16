@@ -12,8 +12,6 @@ class HOLODECK_API UPixelCamera : public UHolodeckCamera {
 public:
 		UPixelCamera();
 
-		virtual void Capture() override;
-
 		virtual void BeginPlay() override;
 
 protected:
@@ -24,6 +22,6 @@ protected:
 
 
 private:
-
+	
 
 };
