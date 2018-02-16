@@ -18,9 +18,18 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot() {
 void UHolodeckViewportClient::Draw(FViewport * ViewportParam, FCanvas * SceneCanvas) {
 	Super::Draw(ViewportParam, SceneCanvas);
 	HolodeckTakeScreenShot();
-	for (int i = 0; i < Cameras.Num(); i++) {
-		Cameras[i]->Capture();
+	UE_LOG(LogHolodeck, Log, TEXT("@@@@@ Draw called"));
+	int i = 0;
+	while (i < Cameras.size()) {
+		if (Cameras[i] == nullptr) {
+			Cameras.erase(Cameras.begin() + i);
+		} else {
+			Cameras[i]->Capture();
+			i++;
+		}
 	}
+
+	UE_LOG(LogHolodeck, Log, TEXT("@@@@@ Draw Ended"));
 }
 
 void UHolodeckViewportClient::SetBuffer(void* NewBuffer) {
@@ -28,5 +37,18 @@ void UHolodeckViewportClient::SetBuffer(void* NewBuffer) {
 }
 
 void UHolodeckViewportClient::AddCamera(UHolodeckCamera* Camera) {
-	this->Cameras.Add(Camera);
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckViewportClient::AddCamera called"));
+	this->Cameras.push_back(Camera);
 }
+
+//void UHolodeckViewportClient::ClearNullCameras() {
+//	int i = 0;
+//	while( i < Cameras.Num()){
+//		if (Cameras[i] == nullptr) {
+//			Cameras.RemoveAt(i);
+//		}
+//		else {
+//			i++;
+//		}
+//	}
+//}

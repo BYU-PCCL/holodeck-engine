@@ -4,6 +4,8 @@
 
 #include "Holodeck.h"
 
+#include <vector>
+
 #include "Engine/GameViewportClient.h"
 #include "HolodeckViewportClient.generated.h"
 
@@ -61,7 +63,9 @@ private:
 	  */
 	void HolodeckTakeScreenShot();
 
+	//void ClearNullCameras();
+
 	FColor* Buffer;
 	FVector2D ViewportSize;
-	TArray<UHolodeckCamera*> Cameras;
+	std::vector<UHolodeckCamera*> Cameras;
 };

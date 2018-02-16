@@ -7,6 +7,7 @@ UHolodeckCamera::UHolodeckCamera() {
 }
 
 void UHolodeckCamera::BeginPlay() {
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay"));
 	Super::BeginPlay();
 
 	//set up everything for the texture that you are using for output. These won't likely change for subclasses.
@@ -33,10 +34,12 @@ void UHolodeckCamera::BeginPlay() {
 	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::BeginPlay failed to locate HolodeckViewportClient."));
 	}
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay ended"));
 }
 
 bool UHolodeckCamera::Capture() {
-	FTextureRenderTargetResource* RenderTarget = TargetTexture->GetRenderTargetResource();
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture called"));
+	FTextureRenderTargetResource* RenderTarget = TargetTexture->GameThread_GetRenderTargetResource();
 	bool bReadWorked = false;
 	if (RenderTarget != nullptr) {
 		bReadWorked = RenderTarget->ReadPixelsPtr(this->Buffer);//, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, Width, Height))
@@ -47,6 +50,7 @@ bool UHolodeckCamera::Capture() {
 	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::Capture failed to retrieve TargetTexture's RenderTargetResource. Capture failed."));
 	}
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture ended"));
 	return bReadWorked;
 }
 
