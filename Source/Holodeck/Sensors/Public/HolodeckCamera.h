@@ -32,10 +32,11 @@ public:
 
 	/**
 	  * Capture
-	  * Must be overridden by subclasses
+	  * Can safely be overridden
 	  * Used to capture the desired pixel data and export it to the buffer.
+	  * @return True if the capture was successful. 
 	  */
-	virtual void Capture() { check(0 && "You must override Capture"); };
+	virtual bool Capture();
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
@@ -44,7 +45,12 @@ protected:
 	int CaptureWidth = 512;
 	int CaptureHeight = 512;
 
+	USceneCaptureComponent2D* SceneCapture;
+	UTextureRenderTarget2D* TargetTexture;
+
 private:
 
 	UHolodeckViewportClient* ViewportClient;
+	FColor* Buffer;
+
 };
