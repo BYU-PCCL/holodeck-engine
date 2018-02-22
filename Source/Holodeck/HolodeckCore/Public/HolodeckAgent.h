@@ -84,8 +84,10 @@ public:
 	  */
 	void GetSettingsBuffer();
 
+	virtual void UploadSettings() { check(0 && "You must override HolodeckAgent::UploadSettings"); };
+
 protected:
-	virtual int GetNumSettings() { check(0 && "You must override HolodeckAgent::GetNumSettings"); };
+	virtual int GetNumSettings() { check(0 && "You must override HolodeckAgent::GetNumSettings"); return 0; };
 
 
 private:

@@ -35,6 +35,8 @@ void AHolodeckAgent::BeginPlay() {
 	}
 
 	GetServer();
+	GetSettingsBuffer();
+	UploadSettings(); //This is essentially a pure virtual function. It is fine here because BeginPlay() is called after the constructor is called.
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
 	//This is needed specifically for the collision sensor.
@@ -78,20 +80,19 @@ void AHolodeckAgent::GetSettingsBuffer() {
 		SettingsBuffer = static_cast<float*>(Server->SubscribeActionSpace(TCHAR_TO_UTF8(*AgentName), this->GetNumSettings() * sizeof(float)));
 	}
 	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent::GetSettingsBuffer failed do to null Server pointer"));
+		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent::GetSettingsBuffer failed due to null Server pointer"));
 	}
-	
 }
 
 void AHolodeckAgent::GetServer() {
 	if (Server != nullptr) return;
 	UHolodeckGameInstance* Instance;
 	if (this->IsControlled()) {
-		Instance = static_cast<UHolodeckGameInstance*>(this->GetController->GetGameInstance());
+		Instance = static_cast<UHolodeckGameInstance*>(this->GetController()->GetGameInstance());
+		if (Instance != nullptr)
+			Server = Instance->GetServer();
 	}
-	 
-	if (Instance != nullptr)
-		Server = Instance->GetServer();
-	else
+	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
+	 }
 }
