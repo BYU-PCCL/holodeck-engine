@@ -84,19 +84,33 @@ public:
 	  */
 	void GetSettingsBuffer();
 
-	virtual void UploadSettings() { check(0 && "You must override HolodeckAgent::UploadSettings"); };
+	/**
+	* UploadSettings 
+	* This is called in HolodeckAgent::BeginPlay
+	* In order to upload settings, this function must be overridden by derived classes. 
+	* It is used to send all of the necessary data to the SettingsBuffer
+	* For this function to be called, make sure to set bShouldExposeSettings to true. 
+	*/
+	virtual void UploadSettings() { check(0 && "You must override AHolodeckAgent::UploadSettings or set bShouldExposeSettings to false"); };
 
 protected:
-	virtual int GetNumSettings() { check(0 && "You must override HolodeckAgent::GetNumSettings"); return 0; };
+	/**
+	* GetNumSettings
+	* Derived classes must override this function.
+	* It is used to represent the total number of settings that need 
+	* to be uploaded to the python binding. 
+	* @return The total number of settings.
+	*/
+	virtual int GetNumSettings() { check(0 && "You must override AHolodeckAgent::GetNumSettings or set bShouldExposeSettings to false"); return 0; };
 
+	float* SettingsBuffer;
 
+	bool bShouldExposeSettings = false; //The default is false. If you need to expose settings, make sure to set this to true before AHolodeckAgent::BeginPlay() is called. 
 private:
 
 	void GetServer();
-
 	float* RewardPtr;
 	bool* TerminalPtr;
 	AHolodeckPawnController* HolodeckController;
-	float* SettingsBuffer;
 	UHolodeckServer* Server;
 };

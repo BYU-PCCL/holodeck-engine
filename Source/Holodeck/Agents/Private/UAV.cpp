@@ -30,6 +30,8 @@ const float UAV_ALT_P = 305.0;
 const float UAV_ALT_I = 100.0;
 const float UAV_ALT_D = 600.0;
 
+const int TOTAL_ITEMS = 26;
+
 AUAV::AUAV() {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -47,6 +49,7 @@ AUAV::AUAV() {
 }
 
 void AUAV::BeginPlay() {
+	this->bShouldExposeSettings = true; //This needs to be set before Super::BeginPlay() is called. 
 	Super::BeginPlay();
 
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
@@ -163,4 +166,41 @@ void AUAV::ApplyForces() {
 	CurrentPitchTorque = PitchTorqueToApply;
 	CurrentYawTorque = YawTorqueToApply;
 	CurrentThrust = ThrustToApply;
+}
+
+void AUAV::UploadSettings() {
+	float SettingsToUpload [TOTAL_ITEMS] = {
+		UAV_MASS,
+		UAV_MU,
+		UAV_MAX_ROLL,
+		UAV_MAX_PITCH,
+		UAV_MAX_YAW_RATE,
+		UAV_MAX_FORCE,
+		UAV_TAU_UP_ROLL,
+		UAV_TAU_UP_PITCH,
+		UAV_TAU_UP_YAW_RATE,
+		UAV_TAU_UP_FORCE,
+		UAV_TAU_DOWN_ROLL,
+		UAV_TAU_DOWN_PITCH,
+		UAV_TAU_DOWN_YAW_RATE,
+		UAV_TAU_DOWN_FORCE,
+		UAV_ROLL_P,
+		UAV_ROLL_I,
+		UAV_ROLL_D,
+		UAV_PITCH_P,
+		UAV_PITCH_I,
+		UAV_PITCH_D,
+		UAV_YAW_P,
+		UAV_YAW_I,
+		UAV_YAW_D,
+		UAV_ALT_P,
+		UAV_ALT_I,
+		UAV_ALT_D,
+	};
+	for (int i = 0; i < TOTAL_ITEMS; i++) {
+		SettingsBuffer[i] = SettingsToUpload[i];
+	}
+}
+int AUAV::GetNumSettings() {
+	return TOTAL_ITEMS;
 }
