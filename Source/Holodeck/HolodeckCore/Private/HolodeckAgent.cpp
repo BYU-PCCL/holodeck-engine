@@ -34,6 +34,8 @@ void AHolodeckAgent::BeginPlay() {
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));
 	}
 
+	GetServer();
+
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
 	//This is needed specifically for the collision sensor.
 	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)){
@@ -69,4 +71,27 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation, FRotator NewRotation){
 bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	FRotator DefaultRotation = this->GetActorRotation();
 	return Teleport(NewLocation, DefaultRotation);
+}
+
+void AHolodeckAgent::GetSettingsBuffer() {
+	if (Server != nullptr) {
+		SettingsBuffer = static_cast<float*>(Server->SubscribeActionSpace(TCHAR_TO_UTF8(*AgentName), this->GetNumSettings() * sizeof(float)));
+	}
+	else {
+		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent::GetSettingsBuffer failed do to null Server pointer"));
+	}
+	
+}
+
+void AHolodeckAgent::GetServer() {
+	if (Server != nullptr) return;
+	UHolodeckGameInstance* Instance;
+	if (this->IsControlled()) {
+		Instance = static_cast<UHolodeckGameInstance*>(this->GetController->GetGameInstance());
+	}
+	 
+	if (Instance != nullptr)
+		Server = Instance->GetServer();
+	else
+		UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
 }
