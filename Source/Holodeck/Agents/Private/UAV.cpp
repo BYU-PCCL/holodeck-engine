@@ -3,7 +3,8 @@
 #include "UAV.h"
 #include <math.h>
 
-const float UAV_MASS = 3.856;
+//All in radians. (rad/s, rad/s^2, etc.)
+const float UAV_MASS = 3.856; //Kilograms
 const float UAV_MU = 1;
 const float UAV_MAX_ROLL = 6.5080;
 const float UAV_MAX_PITCH = 5.087;
@@ -199,6 +200,7 @@ void AUAV::UploadSettings() {
 	};
 	for (int i = 0; i < TOTAL_ITEMS; i++) {
 		SettingsBuffer[i] = SettingsToUpload[i];
+		UE_LOG(LogHolodeck, Log, TEXT("set the settings buffer "));
 	}
 }
 int AUAV::GetNumSettings() {
