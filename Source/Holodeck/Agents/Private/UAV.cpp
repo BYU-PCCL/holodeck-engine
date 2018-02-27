@@ -200,7 +200,6 @@ void AUAV::UploadSettings() {
 	};
 	for (int i = 0; i < TOTAL_ITEMS; i++) {
 		SettingsBuffer[i] = SettingsToUpload[i];
-		UE_LOG(LogHolodeck, Log, TEXT("set the settings buffer "));
 	}
 }
 int AUAV::GetNumSettings() {
