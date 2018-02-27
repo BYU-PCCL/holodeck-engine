@@ -38,8 +38,13 @@ void AHolodeckAgent::BeginPlay() {
 	//It is important that these are called in this order. Each rely on the successful completion of the prior. 
 	if (bShouldExposeSettings) {
 		GetServer();
-		GetSettingsBuffer();
-		UploadSettings(); //This is essentially a pure virtual function. It is fine here because BeginPlay() is called after the constructor is called.
+		if (Server != nullptr) {
+			GetSettingsBuffer();
+			UploadSettings(); //This is essentially a pure virtual function. It is fine here because BeginPlay() is called after the constructor is called.
+		}
+		else {
+			UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to upload settings due to no server"));
+		}
 	}
 
 
@@ -81,7 +86,7 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 }
 
 void AHolodeckAgent::GetSettingsBuffer() {
-	FString SettingName = AgentName + "_Settings";
+	FString SettingName = AgentName + "_settings";
 	if (Server != nullptr) {
 		SettingsBuffer = static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*SettingName), this->GetNumSettings() * sizeof(float)));
 	}
@@ -93,12 +98,14 @@ void AHolodeckAgent::GetSettingsBuffer() {
 void AHolodeckAgent::GetServer() {
 	if (Server != nullptr) return;
 	UHolodeckGameInstance* Instance;
-	if (this->IsControlled()) {
+
 		Instance = static_cast<UHolodeckGameInstance*>(this->GetController()->GetGameInstance());
-		if (Instance != nullptr)
+		if (Instance != nullptr) {
 			Server = Instance->GetServer();
-	}
-	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
-	 }
+		}
+		else {
+			UE_LOG(LogHolodeck, Warning, TEXT("AHolodeckAgent => Game Instance is not UHolodeckGameInstance."));
+		}
+			
+		
 }
