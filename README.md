@@ -25,7 +25,7 @@ This repository contains everything you need to build environments in the unreal
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
 
 ## Building For Linux
-For a great tutorial, see the [wiki page](https://github.com/BYU-PCCL/Holodeck/wiki/Building-for-Linux)
+For a great tutorial, see the [wiki page](https://github.com/BYU-PCCL/Holodeck/wiki/Cross-Compiling-for-Linux)
 
 ## Best Practices
 * To keep the repo clean, Holodeck should only contain ExampleLevel. It should also not contain any assets which are not salient to this project. For example, salient assets might be agents, tasks, and sensors.
