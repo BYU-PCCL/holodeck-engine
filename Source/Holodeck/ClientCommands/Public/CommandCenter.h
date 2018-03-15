@@ -47,8 +47,8 @@ private:
 	char* Buffer;
 	void* ShouldReadBufferPtr;
 	UHolodeckServer* Server;
-	std::string BUFFER_NAME = "CommandBuffer";
-	std::string BUFFER_SHOULD_READ_NAME = "CommandBufferBool";
+	FString BUFFER_NAME = "command_buffer";
+	FString BUFFER_SHOULD_READ_NAME = "command_bool";
 	int BUFFER_SHOULD_READ_SIZE = 1;
 	int BUFFER_SIZE = 1048576; 
 

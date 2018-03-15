@@ -22,6 +22,7 @@ void UCommandCenter::Tick(float DeltaTime) {
 		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter received signal to read from the readCommandBuffer"));
 		ReadCommandBuffer();
 		BoolPtr = false;
+		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter set signal to false"));
 	}
 	
 	//execute all of the commands that you found, plus any that were given to you.
@@ -40,8 +41,10 @@ void UCommandCenter::GetCommandBuffer() {
 		return;
 	}
 	else {
-		Buffer = static_cast<char*>(Server->SubscribeSetting(BUFFER_NAME, BUFFER_SIZE));
-		ShouldReadBufferPtr = Server->SubscribeSetting(BUFFER_SHOULD_READ_NAME, BUFFER_SHOULD_READ_SIZE);
+		Buffer = static_cast<char*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_NAME), BUFFER_SIZE));
+		ShouldReadBufferPtr = Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_SHOULD_READ_NAME), BUFFER_SHOULD_READ_SIZE * sizeof(bool));
+		bool* BoolPtr = static_cast<bool*>(ShouldReadBufferPtr);
+		*BoolPtr = false;
 	}
 }
 
@@ -62,7 +65,7 @@ int UCommandCenter::ReadCommandBuffer() {
 		UE_LOG(LogHolodeck, Error, TEXT("Unable to parse command buffer as a json file"));
 	}
 	else {
-		//sum_and_print(Value);
+		PrintJson(Value);
 	}
 	return Status;
 }
