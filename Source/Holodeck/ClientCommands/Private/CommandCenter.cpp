@@ -21,7 +21,7 @@ void UCommandCenter::Tick(float DeltaTime) {
 	if (BoolPtr && *BoolPtr == true) {
 		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter received signal to read from the readCommandBuffer"));
 		ReadCommandBuffer();
-		BoolPtr = false;
+		*BoolPtr = false;
 		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter set signal to false"));
 	}
 	
