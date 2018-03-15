@@ -37,7 +37,7 @@ public:
 
 	void Init(UHolodeckServer* Server);
 
-	double sum_and_print(JsonValue o);
+	//double sum_and_print(JsonValue o);
 
 private:
 	virtual void GetCommandBuffer();
@@ -52,5 +52,6 @@ private:
 	int BUFFER_SHOULD_READ_SIZE = 1;
 	int BUFFER_SIZE = 1048576; 
 
+	void PrintJson(JsonValue Input);
 
 };

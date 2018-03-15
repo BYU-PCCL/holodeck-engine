@@ -14,12 +14,12 @@ UCommandCenter::UCommandCenter() {
 }
 
 void UCommandCenter::Tick(float DeltaTime) {
-	UE_LOG(LogHolodeck, Log, TEXT("CommandCenter::tick"));
 
 	//read all of the commands in the buffer.
 	// do not forget to terminate the source string with 0
 	bool* BoolPtr = static_cast<bool*>(ShouldReadBufferPtr);
 	if (BoolPtr && *BoolPtr == true) {
+		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter received signal to read from the readCommandBuffer"));
 		ReadCommandBuffer();
 		BoolPtr = false;
 	}
@@ -29,7 +29,6 @@ void UCommandCenter::Tick(float DeltaTime) {
 		Commands[i]->Execute();
 	}
 	Commands.clear();
-	UE_LOG(LogHolodeck, Log, TEXT("CommandCenter::tick end"));
 
 }
 
@@ -51,7 +50,6 @@ void UCommandCenter::Init(UHolodeckServer* ParameterServer) {
 
 	this->Server = ParameterServer;
 	GetCommandBuffer();
-	UE_LOG(LogHolodeck, Log, TEXT("CommandCenter::init end"));
 
 }
 
@@ -64,12 +62,53 @@ int UCommandCenter::ReadCommandBuffer() {
 		UE_LOG(LogHolodeck, Error, TEXT("Unable to parse command buffer as a json file"));
 	}
 	else {
-		sum_and_print(Value);
+		//sum_and_print(Value);
 	}
 	return Status;
 }
 
-double UCommandCenter::sum_and_print(JsonValue o) {
+void UCommandCenter::PrintJson(JsonValue Value) {
+	switch (Value.getTag()) {
+	case JSON_NUMBER: {
+		UE_LOG(LogHolodeck, Log, TEXT("%f"), Value.toNumber());
+	}
+		break;
+	case JSON_STRING: {
+
+		std::string MyString = Value.toString();
+		FString String = UTF8_TO_TCHAR(MyString.c_str());
+
+		UE_LOG(LogHolodeck, Log, TEXT("OutputString: %s"), *String);
+	}
+		break;
+	case JSON_ARRAY: {
+		for (auto i : Value) {
+			PrintJson(i->value);
+		}
+	}
+		break;
+	case JSON_OBJECT: {
+		for (auto i : Value) {
+			PrintJson(i->value);
+		}
+	}
+		break;
+	case JSON_TRUE: {
+		UE_LOG(LogHolodeck, Log, TEXT("true"));
+	}
+		break;
+	case JSON_FALSE: {
+		UE_LOG(LogHolodeck, Log, TEXT("false"));
+	}
+		break;
+	case JSON_NULL: {
+		UE_LOG(LogHolodeck, Log, TEXT("null"));
+	}	
+		break;
+	}
+}
+
+//double UCommandCenter::sum_and_print(JsonValue o) {
 	//double sum = 0;
 	//switch (o.getTag()) {
 	//case JSON_NUMBER:
@@ -104,5 +143,5 @@ double UCommandCenter::sum_and_print(JsonValue o) {
 	//	UE_LOG(LogHolodeck, Log, TEXT("null"));
 	//	break;
 	//}
-	//return sum;
-}
+//	//return sum;
+//}
