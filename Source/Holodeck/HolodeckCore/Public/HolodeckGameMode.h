@@ -6,7 +6,7 @@
 
 #include "GameFramework/GameMode.h"
 #include "HolodeckGameInstance.h"
-
+#include "CommandCenter.h"
 #include "HolodeckGameMode.generated.h"
 
 /**
@@ -58,4 +58,5 @@ private:
 	UPROPERTY()
 	UHolodeckServer* Server;
 	UHolodeckGameInstance* Instance;
+	UCommandCenter* CommandCenter;
 };
