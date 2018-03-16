@@ -4,3 +4,7 @@
 UCommand::UCommand() {
 	
 }
+
+UCommand* UCommand::Make() {
+	return new UCommand();
+}

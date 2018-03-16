@@ -15,7 +15,8 @@ public:
 
 	virtual void Execute() { check( 0 && "You must override UCommand::Execute" ); };
 
-	virtual UCommand* GetNew() { check( 0 && "You must override UCommand::Copy" ); return new UCommand; };
+
+	static UCommand* Make();
 
 private:
 

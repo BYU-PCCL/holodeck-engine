@@ -125,6 +125,7 @@ void UCommandCenter::ExctractCommandsFromJson(JsonValue Input){
 		for (auto Iter : Input) {
 			JsonValue JsonCommand = Iter->value;
 			if (JsonCommand.getTag() == JSON_OBJECT) {
+				UE_LOG(LogHolodeck, Log, TEXT("Found a command and now Adding it to commands to execute."));
 				this->GetCommand(JsonCommand);
 			}
 		}
@@ -132,9 +133,25 @@ void UCommandCenter::ExctractCommandsFromJson(JsonValue Input){
 }
 
 void UCommandCenter::GetCommand(JsonValue Input){
-	UE_LOG(LogHolodeck, Log, TEXT("Found a command and now Adding it to commands to execute."));
+	//get the iterator, and then get the name of the command
 	JsonIterator Iter = begin(Input);
-	//JsonIterator end = JsonIterator(Input);
+	std::string CommandName = Iter->value.toString();
+	
+	//Now get the list of the parameters.
+	std::vector<std::string> StringParameters;
+	std::vector<float> FloatParameters;
+	Iter.p = Iter->next; //Already got the frist value, and it was the name of the command. Start at the second. 
+	while (Iter != nullptr) {
+		if (Iter->value.getTag() == JSON_NUMBER) {
+			FloatParameters.push_back(Iter->value.toNumber());
+		} else{
+			StringParameters.push_back(Iter->value.toString());
+		}
+		Iter.p = Iter->next;
+	}
+
+	//then just make the command!
+
 }
 
 //std::tuple<std::string, std::string> UCommandCenter::GetParameter(JsonValue Input){
