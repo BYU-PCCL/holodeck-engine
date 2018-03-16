@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 
+#include <tuple>
 #include <vector>
 
 #include "Command.h"
@@ -53,5 +54,9 @@ private:
 	int BUFFER_SIZE = 1048576; 
 
 	void PrintJson(JsonValue Input);
+	void InterpretJson(JsonValue Input);
+	void GetCommand(JsonValue Input);
+	std::tuple<std::string, std::string> GetParameter(JsonValue Input);
+
 
 };

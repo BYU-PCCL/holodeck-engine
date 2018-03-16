@@ -24,7 +24,7 @@ void UCommandCenter::Tick(float DeltaTime) {
 		*BoolPtr = false;
 		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter set signal to false"));
 	}
-	
+		
 	//execute all of the commands that you found, plus any that were given to you.
 	for (int i = 0; i < Commands.size(); i++) {
 		Commands[i]->Execute();
@@ -66,6 +66,7 @@ int UCommandCenter::ReadCommandBuffer() {
 	}
 	else {
 		PrintJson(Value);
+
 	}
 	return Status;
 }
@@ -110,6 +111,18 @@ void UCommandCenter::PrintJson(JsonValue Value) {
 		break;
 	}
 }
+
+void UCommandCenter::InterpretJson(JsonValue Input){
+
+}
+
+void UCommandCenter::GetCommand(JsonValue Input){
+
+}
+
+//std::tuple<std::string, std::string> UCommandCenter::GetParameter(JsonValue Input){
+//	return std::tuple<std::string, std::string>();
+//}
 
 //double UCommandCenter::sum_and_print(JsonValue o) {
 	//double sum = 0;
