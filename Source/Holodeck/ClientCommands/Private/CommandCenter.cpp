@@ -72,6 +72,9 @@ int UCommandCenter::ReadCommandBuffer() {
 }
 
 void UCommandCenter::PrintJson(JsonValue Value) {
+	//std::string MyString = Value.toString();
+	//FString String = UTF8_TO_TCHAR(MyString.c_str());
+	//UE_LOG(LogHolodeck, Log, TEXT("OutputString: %s"), *String);
 	switch (Value.getTag()) {
 	case JSON_NUMBER: {
 		UE_LOG(LogHolodeck, Log, TEXT("%f"), Value.toNumber());
@@ -86,15 +89,20 @@ void UCommandCenter::PrintJson(JsonValue Value) {
 	}
 		break;
 	case JSON_ARRAY: {
+		UE_LOG(LogHolodeck, Log, TEXT("Entering JSON_ARRAY"));
 		for (auto i : Value) {
+			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered array:"));
 			PrintJson(i->value);
 		}
 	}
 		break;
 	case JSON_OBJECT: {
+		UE_LOG(LogHolodeck, Log, TEXT("@@@Entering JSON_OBJECT@@@"));
 		for (auto i : Value) {
+			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered object:"));
 			PrintJson(i->value);
 		}
+		UE_LOG(LogHolodeck, Log, TEXT("@@@Exiting JSON_OBJECT@@@"));
 	}
 		break;
 	case JSON_TRUE: {
@@ -112,12 +120,21 @@ void UCommandCenter::PrintJson(JsonValue Value) {
 	}
 }
 
-void UCommandCenter::InterpretJson(JsonValue Input){
-
+void UCommandCenter::ExctractCommandsFromJson(JsonValue Input){
+	if (Input.getTag() == JSON_OBJECT) {
+		for (auto Iter : Input) {
+			JsonValue JsonCommand = Iter->value;
+			if (JsonCommand.getTag() == JSON_OBJECT) {
+				this->GetCommand(JsonCommand);
+			}
+		}
+	}
 }
 
 void UCommandCenter::GetCommand(JsonValue Input){
-
+	UE_LOG(LogHolodeck, Log, TEXT("Found a command and now Adding it to commands to execute."));
+	JsonIterator Iter = begin(Input);
+	//JsonIterator end = JsonIterator(Input);
 }
 
 //std::tuple<std::string, std::string> UCommandCenter::GetParameter(JsonValue Input){
