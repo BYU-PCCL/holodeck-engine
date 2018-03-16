@@ -58,33 +58,29 @@ bool AAndroid::GetCollisionsVisible() {
 
 void AAndroid::ApplyTorques() {
 
-	
-
 	for (int i = 0; i < Constraints.Num(); i++) {
 
 		int BegComInd = i * 3;
 		FName JointName = Constraints[i]->JointName;
 
-		// TODO Find swing1,swing2,twist torque vectors
+		// Get rotation of that socket
 		FRotator JointRotation = SkeletalMesh->GetSocketRotation(JointName);
-
 		FConstraintInstance* Constraint = Constraints[i];
-
 		FTransform JointTransform = Constraint->GetRefFrame(EConstraintFrame::Frame1);
 
+		// Get the proper Vector based on the axis
 		FVector Swing1TorqVec = JointTransform.GetScaledAxis(EAxis::X);
 		FVector Swing2TorqVec = JointTransform.GetScaledAxis(EAxis::Y);
 		FVector TwistTorqVec = JointTransform.GetScaledAxis(EAxis::Z);
 
-		// Convert Torque magnitude to (Kg*m^2)/(s^2) and scale with Commands
+		// Convert Torque magnitude to (Kg*m^2)/(s^2) and scale with commands
 		Swing1TorqVec *= (CM_TORQUE_TO_M_TORQUE * CommandArray[BegComInd]);
 		Swing2TorqVec *= (CM_TORQUE_TO_M_TORQUE * CommandArray[BegComInd + 1]);
 		TwistTorqVec *= (CM_TORQUE_TO_M_TORQUE * CommandArray[BegComInd + 2]);
 
+		// Add Torques to the mesh
 		SkeletalMesh->AddTorque(Swing1TorqVec, JointName, false);
 		SkeletalMesh->AddTorque(Swing2TorqVec, JointName, false);
 		SkeletalMesh->AddTorque(TwistTorqVec, JointName, false);
-
-		UE_LOG(LogTemp, Warning, TEXT("Added Torque for Bone %s"), JointName.SafeString);
 	}
 }
