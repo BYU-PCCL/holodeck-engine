@@ -63,23 +63,77 @@ int UCommandCenter::ReadCommandBuffer() {
 	int Status = jsonParse(Buffer, &Endptr, &Value, Allocator);
 	if (Status != JSON_OK) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unable to parse command buffer as a json file"));
-	}
+	} 
 	else {
 		PrintJson(Value);
-
+		ExtractCommandsFromJson(Value);
 	}
 	return Status;
 }
 
+void UCommandCenter::ExtractCommandsFromJson(JsonValue Input){
+	if (Input.getTag() == JSON_OBJECT) {
+		//we are in the main object that hold the array of commands. 
+		JsonIterator Iter = begin(Input);
+		//Iter.p = Iter->next; //maybe I dont actually have to get the next one when I make an iter? 
+		//check if this is actually that array, and then extract the commands from it.
+		if (Iter->value.getTag() == JSON_ARRAY) {
+			//We are in the array of commands. 
+			for (JsonNode* ArrayIter : Iter->value) {
+				//get the command!!
+				GetCommand(ArrayIter->value);
+			}
+		} 
+		else {
+			UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
+		}
+	}
+	else {
+		UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
+
+	}
+}
+
+void UCommandCenter::GetCommand(JsonValue Input){
+	//get the iterator, and then get the name of the command
+	JsonIterator Iter = begin(Input);
+	std::string CommandName = Iter->value.toString();
+	FString CommandFString = UTF8_TO_TCHAR(CommandName.c_str());
+	UE_LOG(LogHolodeck, Log, TEXT("CommandName: %s"), *CommandFString);
+	//Now to get the list of the parameters...
+	std::vector<std::string> StringParameters;
+	std::vector<float> FloatParameters;
+	Iter.p = Iter->next; //Already got the frist value, and it was the name of the command. Go to the second. This should be the array of parameters
+	bool bSucceeded = true;
+	if (Iter->value.getTag() == JSON_ARRAY) {
+		//This means that we are in the array
+		for (JsonNode* ArrayIter : Iter->value) {
+			//the value inside ArrayIter will be a JSON object, we need to get the value wrapped inside it. 
+			JsonIterator ObjIter = begin(ArrayIter->value);
+				if (ObjIter->value.getTag() == JSON_NUMBER) {
+					FloatParameters.push_back(ObjIter->value.toNumber());
+				} 
+				else{
+					StringParameters.push_back(ObjIter->value.toString());
+				}
+		}
+	}
+	else {
+		UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
+		bSucceeded = false;
+	}
+
+	//then just make and give the command!
+	std::unique_ptr<UCommand> CommandPtr = UCommand::CommandFactory(CommandName, FloatParameters, StringParameters);
+	this->GiveCommand(CommandPtr);
+}
+
 void UCommandCenter::PrintJson(JsonValue Value) {
-	//std::string MyString = Value.toString();
-	//FString String = UTF8_TO_TCHAR(MyString.c_str());
-	//UE_LOG(LogHolodeck, Log, TEXT("OutputString: %s"), *String);
 	switch (Value.getTag()) {
 	case JSON_NUMBER: {
 		UE_LOG(LogHolodeck, Log, TEXT("%f"), Value.toNumber());
 	}
-		break;
+					  break;
 	case JSON_STRING: {
 
 		std::string MyString = Value.toString();
@@ -87,15 +141,15 @@ void UCommandCenter::PrintJson(JsonValue Value) {
 
 		UE_LOG(LogHolodeck, Log, TEXT("OutputString: %s"), *String);
 	}
-		break;
+					  break;
 	case JSON_ARRAY: {
-		UE_LOG(LogHolodeck, Log, TEXT("Entering JSON_ARRAY"));
+		UE_LOG(LogHolodeck, Log, TEXT("[[[Entering JSON_ARRAY]]]"));
 		for (auto i : Value) {
 			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered array:"));
 			PrintJson(i->value);
 		}
 	}
-		break;
+					 break;
 	case JSON_OBJECT: {
 		UE_LOG(LogHolodeck, Log, TEXT("@@@Entering JSON_OBJECT@@@"));
 		for (auto i : Value) {
@@ -104,94 +158,18 @@ void UCommandCenter::PrintJson(JsonValue Value) {
 		}
 		UE_LOG(LogHolodeck, Log, TEXT("@@@Exiting JSON_OBJECT@@@"));
 	}
-		break;
+					  break;
 	case JSON_TRUE: {
 		UE_LOG(LogHolodeck, Log, TEXT("true"));
 	}
-		break;
+					break;
 	case JSON_FALSE: {
 		UE_LOG(LogHolodeck, Log, TEXT("false"));
 	}
-		break;
+					 break;
 	case JSON_NULL: {
 		UE_LOG(LogHolodeck, Log, TEXT("null"));
-	}	
-		break;
+	}
+					break;
 	}
 }
-
-void UCommandCenter::ExctractCommandsFromJson(JsonValue Input){
-	if (Input.getTag() == JSON_OBJECT) {
-		for (auto Iter : Input) {
-			JsonValue JsonCommand = Iter->value;
-			if (JsonCommand.getTag() == JSON_OBJECT) {
-				UE_LOG(LogHolodeck, Log, TEXT("Found a command and now Adding it to commands to execute."));
-				this->GetCommand(JsonCommand);
-			}
-		}
-	}
-}
-
-void UCommandCenter::GetCommand(JsonValue Input){
-	//get the iterator, and then get the name of the command
-	JsonIterator Iter = begin(Input);
-	std::string CommandName = Iter->value.toString();
-	
-	//Now get the list of the parameters.
-	std::vector<std::string> StringParameters;
-	std::vector<float> FloatParameters;
-	Iter.p = Iter->next; //Already got the frist value, and it was the name of the command. Start at the second. 
-	while (Iter != nullptr) {
-		if (Iter->value.getTag() == JSON_NUMBER) {
-			FloatParameters.push_back(Iter->value.toNumber());
-		} else{
-			StringParameters.push_back(Iter->value.toString());
-		}
-		Iter.p = Iter->next;
-	}
-
-	//then just make the command!
-
-}
-
-//std::tuple<std::string, std::string> UCommandCenter::GetParameter(JsonValue Input){
-//	return std::tuple<std::string, std::string>();
-//}
-
-//double UCommandCenter::sum_and_print(JsonValue o) {
-	//double sum = 0;
-	//switch (o.getTag()) {
-	//case JSON_NUMBER:
-	//	//UE_LOG(LogHolodeck, Log, TEXT("%f"), o.toNumber());
-	//	sum += o.toNumber();
-	//	break;
-	//case JSON_STRING:
-	//	//printf("\"%s\"\n", o.toString());
-	//	//std::string MyString = o.toString();
-	//	
-	//	UE_LOG(LogHolodeck, Log, TEXT("MyString->"));
-	//	break;
-	//case JSON_ARRAY:
-	//	for (auto i : o) {
-	//		sum += sum_and_print(i->value);
-	//	}
-	//	break;
-	//case JSON_OBJECT:
-	//	for (auto i : o) {
-	//		//UE_LOG(LogHolodeck, Log, TEXT("%s = "), i->key);
-	//		sum += sum_and_print(i->value);
-	//	}
-	//	break;
-	//case JSON_TRUE:
-	//	UE_LOG(LogHolodeck, Log, TEXT("true"));
-	//	break;
-	//case JSON_FALSE:
-	//	UE_LOG(LogHolodeck, Log, TEXT("false"));
-	//	break;
-	//case JSON_NULL:
-	//	printf("null\n");
-	//	UE_LOG(LogHolodeck, Log, TEXT("null"));
-	//	break;
-	//}
-//	//return sum;
-//}
