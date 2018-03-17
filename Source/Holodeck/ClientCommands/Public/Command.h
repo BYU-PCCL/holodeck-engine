@@ -16,7 +16,7 @@ public:
 	virtual void Execute() { check( 0 && "You must override UCommand::Execute" ); };
 
 
-	static UCommand* Make();
+	static std::unique_ptr<UCommand> CommandFactory(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters);
 
 private:
 
