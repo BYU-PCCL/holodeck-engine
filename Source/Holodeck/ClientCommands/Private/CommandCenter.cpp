@@ -26,10 +26,10 @@ void UCommandCenter::Tick(float DeltaTime) {
 	}
 		
 	//execute all of the commands that you found, plus any that were given to you.
-	for (int i = 0; i < Commands.size(); i++) {
-		Commands[i]->Execute();
-	}
-	Commands.clear();
+	//for (int i = 0; i < Commands.size(); i++) {
+	//	Commands[i]->Execute();
+	//}
+	//Commands.clear();
 
 }
 
@@ -124,7 +124,7 @@ void UCommandCenter::GetCommand(JsonValue Input){
 	}
 
 	//then just make and give the command!
-	std::unique_ptr<UCommand> CommandPtr = UCommand::CommandFactory(CommandName, FloatParameters, StringParameters);
+	std::unique_ptr<UCommand> CommandPtr = std::move(UCommandFactory::MakeCommand(CommandName, FloatParameters, StringParameters));
 	this->GiveCommand(CommandPtr);
 }
 

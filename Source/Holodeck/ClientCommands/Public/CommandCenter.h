@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Command.h"
+#include "CommandFactory.h"
 #include "gason.h"
 #include "HolodeckServer.h"
 #include "CommandCenter.generated.h"
@@ -56,7 +57,7 @@ private:
 	void PrintJson(JsonValue Input);
 	void ExtractCommandsFromJson(JsonValue Input);
 	void GetCommand(JsonValue Input);
-	std::tuple<std::string, std::string> GetParameter(JsonValue Input);
+	//std::tuple<std::string, std::string> GetParameter(JsonValue Input);
 
 
 };
