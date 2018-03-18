@@ -16,18 +16,29 @@ void USpawnAgentCommand::Execute() {
 		UE_LOG(LogHolodeck, Warning, TEXT("Unexpected argument length found in USpawnAgentCommand. Agent not spawned."));
 		return;
 	}
+	if (Target == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand::Target is nullptr. Cannot spawn agent without a target!"));
+
+	}
 
 	FString AgentType = StringParams[0].c_str();
-	FString Name = StringParams[1].c_str();
+	//FString TempString = StringParams[1].c_str();
+	FName Name = FName(StringParams[1].c_str());
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
+	FRotator Rotation = FRotator();
 	//find out which agent was requested, then spawn that agent at that location, then give it the requested name!
-	if (Name == UAV) {
+	if (AgentType == UAV) {
+		FActorSpawnParameters ActorSpawnParameters = FActorSpawnParameters();
+		ActorSpawnParameters.Name = Name;
+		Target->GetWorld()->SpawnActor<AUAV>(Location, Rotation, ActorSpawnParameters);
+		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new UAV"));
+
+		return;
+	}
+	if (AgentType == Android) {
 
 	}
-	if (Name == Android) {
-
-	}
-	if (Name == SphereRobot) {
+	if (AgentType == SphereRobot) {
 
 	}
 }
