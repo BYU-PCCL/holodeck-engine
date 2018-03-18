@@ -8,7 +8,7 @@ UCommand* UCommandFactory::MakeCommand(std::string Name, std::vector<float> Numb
 	UCommand* ToReturn = nullptr;
 	if (Name == SPAWN_AGENT) {
 		ToReturn = NewObject<USpawnAgentCommand>();
-		ToReturn->Init(NumberParameters, StringParameters);
+		ToReturn->Init(NumberParameters, StringParameters, ParameterGameMode);
 	}
 
 	return ToReturn;

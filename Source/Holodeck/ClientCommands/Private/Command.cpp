@@ -1,6 +1,5 @@
 #include "Holodeck.h"
 #include "Command.h"
-//#include "HolodeckGameMode.h"
 
 UCommand::UCommand() {
 	
@@ -14,8 +13,8 @@ UCommand::UCommand(std::vector<float> NumberParameters, std::vector<std::string>
 //	return std::make_unique<USpawnAgentCommand>();
 //}
 
-void UCommand::Init(std::vector<float> NumberParameters, std::vector<std::string> StringParameters/*, AHolodeckGameMode* ParameterGameMode*/) {
+void UCommand::Init(std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterTarget) {
 	this->NumberParams = NumberParameters;
 	this->StringParams = StringParameters;
-	//this->GameMode = ParameterGameMode;
+	this->Target = ParameterTarget;
 }

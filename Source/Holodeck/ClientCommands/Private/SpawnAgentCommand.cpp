@@ -21,5 +21,13 @@ void USpawnAgentCommand::Execute() {
 	FString Name = StringParams[1].c_str();
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
 	//find out which agent was requested, then spawn that agent at that location, then give it the requested name!
+	if (Name == UAV) {
 
+	}
+	if (Name == Android) {
+
+	}
+	if (Name == SphereRobot) {
+
+	}
 }

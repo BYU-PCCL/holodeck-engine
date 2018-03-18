@@ -51,7 +51,7 @@ void AHolodeckGameMode::StartPlay() {
 		}
 		if (this->Server) {
 			this->CommandCenter = NewObject<UCommandCenter>();
-			CommandCenter->Init(Server);
+			CommandCenter->Init(Server, this);
 		}
 	}
 
