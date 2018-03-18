@@ -15,5 +15,7 @@ public:
 	USpawnAgentCommand(std::vector<float> NumberParams, std::vector<std::string> StringParams);
 
 private:
-
+	const FString UAV = "UAV";
+	const FString SphereRobot = "SphereRobot";
+	const FString Android = "Android";
 };

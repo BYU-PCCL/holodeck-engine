@@ -11,6 +11,8 @@
 #include "HolodeckServer.h"
 #include "CommandCenter.generated.h"
 
+class AHolodeckGameMode; //forward declare to avoid circular dependency. 
+
 UCLASS(ClassGroup = (Custom))
 class HOLODECK_API UCommandCenter : public UObject {
 	GENERATED_BODY()
@@ -23,9 +25,7 @@ public:
 	  * It is used to execute whatever queued up commands there are.
 	  * @param InputCommand A unique_ptr to a command. The given pointer will be null after this function call.
 	  */
-	virtual void GiveCommand(std::unique_ptr<UCommand> &InputCommand);
-
-	virtual void GiveCommands(JsonValue Value);
+	virtual void GiveCommand(UCommand* &InputCommand);
 
 	/**
 	  *Tick
@@ -37,7 +37,7 @@ public:
 
 	
 
-	void Init(UHolodeckServer* Server);
+	void Init(UHolodeckServer* Server, AHolodeckGameMode* GameMode);
 
 	//double sum_and_print(JsonValue o);
 
@@ -45,10 +45,11 @@ private:
 	virtual void GetCommandBuffer();
 	int ReadCommandBuffer();
 	
-	std::vector<std::unique_ptr<UCommand>> Commands;
+	TArray<UCommand*> Commands;
 	char* Buffer;
 	void* ShouldReadBufferPtr;
 	UHolodeckServer* Server;
+	AHolodeckGameMode* GameMode;
 	FString BUFFER_NAME = "command_buffer";
 	FString BUFFER_SHOULD_READ_NAME = "command_bool";
 	int BUFFER_SHOULD_READ_SIZE = 1;

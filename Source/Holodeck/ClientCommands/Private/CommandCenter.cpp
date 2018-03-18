@@ -1,12 +1,12 @@
 #include "Holodeck.h"
 #include "CommandCenter.h"
+#include "HolodeckGameMode.h" // to avoid a circular dependency. 
 
-void UCommandCenter::GiveCommand(std::unique_ptr<UCommand> &Input) {
-	Commands.push_back(std::move(Input));
-}
-
-void UCommandCenter::GiveCommands(JsonValue Value) {
-
+void UCommandCenter::GiveCommand(UCommand* &Input) {
+	if (Input == nullptr) {
+		return;
+	}
+	Commands.Add(Input);
 }
 
 UCommandCenter::UCommandCenter() {
@@ -19,17 +19,15 @@ void UCommandCenter::Tick(float DeltaTime) {
 	// do not forget to terminate the source string with 0
 	bool* BoolPtr = static_cast<bool*>(ShouldReadBufferPtr);
 	if (BoolPtr && *BoolPtr == true) {
-		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter received signal to read from the readCommandBuffer"));
 		ReadCommandBuffer();
 		*BoolPtr = false;
-		UE_LOG(LogHolodeck, Log, TEXT("CommandCenter set signal to false"));
 	}
 		
 	//execute all of the commands that you found, plus any that were given to you.
-	//for (int i = 0; i < Commands.size(); i++) {
-	//	Commands[i]->Execute();
-	//}
-	//Commands.clear();
+	for (int i = 0; i < Commands.Num(); i++) {
+		Commands[i]->Execute();
+	}
+	Commands.Empty();
 
 }
 
@@ -48,10 +46,10 @@ void UCommandCenter::GetCommandBuffer() {
 	}
 }
 
-void UCommandCenter::Init(UHolodeckServer* ParameterServer) {
-	UE_LOG(LogHolodeck, Log, TEXT("CommandCenter::init"));
+void UCommandCenter::Init(UHolodeckServer* ParameterServer, AHolodeckGameMode* ParameterGameMode) {
 
 	this->Server = ParameterServer;
+	this->GameMode = ParameterGameMode;
 	GetCommandBuffer();
 
 }
@@ -124,7 +122,7 @@ void UCommandCenter::GetCommand(JsonValue Input){
 	}
 
 	//then just make and give the command!
-	std::unique_ptr<UCommand> CommandPtr = std::move(UCommandFactory::MakeCommand(CommandName, FloatParameters, StringParameters));
+	UCommand* CommandPtr = UCommandFactory::MakeCommand(CommandName, FloatParameters, StringParameters, GameMode);
 	this->GiveCommand(CommandPtr);
 }
 
