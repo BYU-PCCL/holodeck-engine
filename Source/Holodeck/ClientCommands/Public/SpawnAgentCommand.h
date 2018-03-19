@@ -2,7 +2,10 @@
 
 #include "Holodeck.h"
 
+#include "Android.h"
 #include "Command.h"
+#include "SphereRobot.h"
+#include "UAV.h"
 #include "SpawnAgentCommand.generated.h"
 
 UCLASS(ClassGroup = (Custom))
@@ -18,4 +21,7 @@ private:
 	const FString UAV = "UAV";
 	const FString SphereRobot = "SphereRobot";
 	const FString Android = "Android";
+	static TSubclassOf<class AUAV> UAVBlueprint;
+	static TSubclassOf<class AAnroid> AndroidBlueprint;
+	static TSubclassOf<class ASphereRobot> SphereRobotBlueprint;
 };

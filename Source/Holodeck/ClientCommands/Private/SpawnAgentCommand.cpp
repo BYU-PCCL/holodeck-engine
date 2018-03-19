@@ -3,7 +3,10 @@
 
 
 USpawnAgentCommand::USpawnAgentCommand() {
-
+	static bool bFirstInstance = true;
+	if (bFirstInstance) {
+		bFirstInstance = false;
+	}
 }
 
 USpawnAgentCommand::USpawnAgentCommand(std::vector<float> NumberParams, std::vector<std::string> StringParams) : UCommand(NumberParams, StringParams){
@@ -11,6 +14,8 @@ USpawnAgentCommand::USpawnAgentCommand(std::vector<float> NumberParams, std::vec
 }
 
 void USpawnAgentCommand::Execute() {
+	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute was called"));
+
 	//Program should throw an error if any of these aren't the correct size. They should always be this size.
 	if (StringParams.size() != 2 || NumberParams.size() != 3) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Unexpected argument length found in USpawnAgentCommand. Agent not spawned."));
@@ -30,8 +35,8 @@ void USpawnAgentCommand::Execute() {
 	if (AgentType == UAV) {
 		FActorSpawnParameters ActorSpawnParameters = FActorSpawnParameters();
 		ActorSpawnParameters.Name = Name;
-		Target->GetWorld()->SpawnActor<AUAV>(Location, Rotation, ActorSpawnParameters);
-		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new UAV"));
+		//Target->GetWorld()->SpawnActor<AUAV>(Location, Rotation, ActorSpawnParameters);
+		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new UAV. Sanity check. "));
 
 		return;
 	}
