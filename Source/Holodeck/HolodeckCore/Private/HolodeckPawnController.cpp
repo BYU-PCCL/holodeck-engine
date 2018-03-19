@@ -74,9 +74,9 @@ void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 
 void AHolodeckPawnController::ExecuteTeleport() {
 	float* FloatPtr = static_cast<float*>(TeleportBuffer);
-	AHolodeckAgent* Pawn = Cast<AHolodeckAgent>(this->GetPawn());
-	if (Pawn && FloatPtr) {
+	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
+	if (PawnVar && FloatPtr) {
 		FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
-		Pawn->Teleport(TeleportLocation);
+		PawnVar->Teleport(TeleportLocation);
 	}
 }
