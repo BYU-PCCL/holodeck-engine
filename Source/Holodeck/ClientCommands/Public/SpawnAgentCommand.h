@@ -22,6 +22,7 @@ private:
 	const FString SphereRobot = "SphereRobot";
 	const FString Android = "Android";
 	static TSubclassOf<class AUAV> UAVBlueprint;
-	static TSubclassOf<class AAnroid> AndroidBlueprint;
+	static TSubclassOf<class AAndroid> AndroidBlueprint;
 	static TSubclassOf<class ASphereRobot> SphereRobotBlueprint;
+	static bool bFirstInstance;
 };
