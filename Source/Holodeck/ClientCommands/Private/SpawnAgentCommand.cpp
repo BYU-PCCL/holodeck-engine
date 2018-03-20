@@ -10,6 +10,7 @@ TSubclassOf<class ASphereRobot> USpawnAgentCommand::SphereRobotBlueprint = nullp
 bool USpawnAgentCommand::bFirstInstance = true;
 
 USpawnAgentCommand::USpawnAgentCommand() {
+	//This is used to find the blueprints for the spawnable agents only the first time a spawnagetncommand is instantiated. 
 	if (bFirstInstance) {
 		bFirstInstance = false;
 		ConstructorHelpers::FObjectFinder<UBlueprint> UAVBlueprintVar(*UAVReference);
@@ -36,12 +37,8 @@ USpawnAgentCommand::USpawnAgentCommand() {
 	}
 }
 
-USpawnAgentCommand::USpawnAgentCommand(std::vector<float> NumberParams, std::vector<std::string> StringParams) : UCommand(NumberParams, StringParams){
-
-}
-
 void USpawnAgentCommand::Execute() {
-	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute was called"));
+	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
 
 	//Program should throw an error if any of these aren't the correct size. They should always be this size.
 	if (StringParams.size() != 2 || NumberParams.size() != 3) {
@@ -49,7 +46,7 @@ void USpawnAgentCommand::Execute() {
 		return;
 	}
 	if (Target == nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand::Target is nullptr. Cannot spawn agent without a target!"));
+		UE_LOG(LogHolodeck, Warning, TEXT("UCommand::Target is nullptr. SpawnAgentCommand::Execute Cannot spawn agent without a target!"));
 	}
 	//if you can't get the world, then you can't spawn any agents
 	UWorld* World = Target->GetWorld();
@@ -70,13 +67,16 @@ void USpawnAgentCommand::Execute() {
 	//find out which agent was requested, then spawn that agent at that location, and give it the requested name!
 	if (AgentType == UAV) {
 		SpawnedAgent = World->SpawnActor<AUAV>(this->UAVBlueprint, Location, Rotation, SpawnParams);
-	}
+	} else
 	if (AgentType == Android) {
 		SpawnedAgent = World->SpawnActor<AAndroid>(this->AndroidBlueprint, Location, Rotation, SpawnParams);
-	}
+	} else
 	if (AgentType == SphereRobot) {
 		SpawnedAgent = World->SpawnActor<ASphereRobot>(this->SphereRobotBlueprint, Location, Rotation, SpawnParams);
 	}
+
+	//This is where you should put the spawn command for new agents you are putting in to the code. 
+
 	if (SpawnedAgent) {
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent. Sanity check."));
 	}

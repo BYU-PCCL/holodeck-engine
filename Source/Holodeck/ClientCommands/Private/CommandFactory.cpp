@@ -4,7 +4,7 @@
 
 const std::string SPAWN_AGENT = "SpawnAgent";
 
-UCommand* UCommandFactory::MakeCommand(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AHolodeckGameMode* ParameterGameMode) {
+UCommand* UCommandFactory::MakeCommand(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterGameMode) {
 	UCommand* ToReturn = nullptr;
 	if (Name == SPAWN_AGENT) {
 		ToReturn = NewObject<USpawnAgentCommand>();

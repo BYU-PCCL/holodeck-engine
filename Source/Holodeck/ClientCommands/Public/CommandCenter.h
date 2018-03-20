@@ -13,6 +13,13 @@
 
 class AHolodeckGameMode; //forward declare to avoid circular dependency. 
 
+ /**
+   * UCommandCenter
+   * It subscribes a memory space to receive commands from the client binding.
+   * It expects the memory to be formatted in UTF-8 JSON.
+   * When creating a new commandcenter object, you must call the init after or it will not function. 
+   * It requires a valid pointer to the server to be initialized, and the currrent gamemode object to continue running correctly. 
+   */
 UCLASS(ClassGroup = (Custom))
 class HOLODECK_API UCommandCenter : public UObject {
 	GENERATED_BODY()
@@ -20,6 +27,7 @@ class HOLODECK_API UCommandCenter : public UObject {
 		UCommandCenter();
 
 public:
+
 	/**
 	  * GiveCommand
 	  * It is used to execute whatever queued up commands there are.
@@ -47,15 +55,18 @@ public:
 	void Init(UHolodeckServer* Server, AHolodeckGameMode* GameMode);
 
 private:
+
 	/**
 	  *GetCommandBuffer
 	  * Sets up the buffer used for pasing json commands to the command center. 
 	  * also sets up the bool buffer. 
 	  */
 	virtual void GetCommandBuffer();
+
 	/**
 	  *ReadCommandBuffer
 	  * Reads the buffer, parses the resulting json, and gives the commands to the command queue.
+	  * @return the status of the read/parse
 	  */
 	int ReadCommandBuffer();
 	
@@ -70,10 +81,25 @@ private:
 	int BUFFER_SIZE = 1048576; 
 
 	/**
-	  *PrintJson
-	  * Reads the buffer, parses the resulting json, and gives the commands to the command queue.
+	  * PrintJson
+	  * Used solely for debugging. It is accurate and prints exactly how the json is structured.
+	  * @param Input The JsonValue to print
 	  */
 	void PrintJson(JsonValue Input);
+
+	/**
+	  * ExctractCommandsFromJson
+	  * Reads the buffer, parses the resulting json, and gives the commands to the command queue.
+	  * It will not succeed if the json object is not in the ofrmat expected. 
+	  * At a lower level, it calls GetCommand on every json object that in an array expected to be a command.
+	  * @param Input the Json to extract commands from.
+	  */
 	void ExtractCommandsFromJson(JsonValue Input);
+
+	/**
+	  * GetCommand
+	  * Traverses a specific json object that is a command.
+	  * Separates the parameters into string parameters and number parameters, then pushes the command to the Commands array. 
+	  */
 	void GetCommand(JsonValue Input);
 };

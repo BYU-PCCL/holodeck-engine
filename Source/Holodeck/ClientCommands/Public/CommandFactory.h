@@ -16,7 +16,7 @@ class HOLODECK_API UCommandFactory : public UObject {
 
 public:
 
-	static UCommand* MakeCommand(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AHolodeckGameMode* ParameterGameMode);
+	static UCommand* MakeCommand(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterGameMode);
 
 private:
 	UCommandFactory() {};
