@@ -78,6 +78,9 @@ public:
 	*/
 	bool Teleport(const FVector& NewLocation);
 
+
+	bool InitializeController();
+
 private:
 	float* RewardPtr;
 	bool* TerminalPtr;
