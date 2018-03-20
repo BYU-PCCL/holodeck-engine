@@ -45,6 +45,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bHolodeckIsOn;
 
+	UHolodeckServer* GetAssociatedServer() { return this->Server; };
+
 private:
 	/**
 	  * RegisterSettings
