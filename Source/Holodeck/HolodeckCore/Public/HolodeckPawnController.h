@@ -92,6 +92,8 @@ public:
 
 	virtual void ExecuteTeleport();
 
+	virtual void SetServer(UHolodeckServer* ServerParam);
+
 protected:
 	/**
 	  * GetActionSpaceDimension

@@ -21,9 +21,9 @@ void AHolodeckPawnController::Possess(APawn* InPawn) {
 	Super::Possess(InPawn);
 	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	GetServer();
-
 	if (Server == nullptr)
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckPawnController couldn't find server..."));
+
 }
 
 void AHolodeckPawnController::UnPossess() {
@@ -42,7 +42,6 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 
 void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
 	GetServer();
-
 	UE_LOG(LogHolodeck, Log, TEXT("Subscribing sensor %s for %s"), *SensorName, *AgentName);
 	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Sensor could not find server..."));
@@ -54,7 +53,6 @@ void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString
 
 void AHolodeckPawnController::GetServer() {
 	if (Server != nullptr) return;
-
 	UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
 	if (Instance != nullptr)
 		Server = Instance->GetServer();
@@ -79,4 +77,8 @@ void AHolodeckPawnController::ExecuteTeleport() {
 		FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 		PawnVar->Teleport(TeleportLocation);
 	}
+}
+
+void AHolodeckPawnController::SetServer(UHolodeckServer* ServerParam) {
+	this->Server = ServerParam;
 }
