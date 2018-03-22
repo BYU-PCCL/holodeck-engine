@@ -99,7 +99,6 @@ void UCommandCenter::GetCommand(JsonValue Input){
 	std::vector<std::string> StringParameters;
 	std::vector<float> FloatParameters;
 	Iter.p = Iter->next; //Already got the frist value, and it was the name of the command. Go to the second. This should be the array of parameters
-	bool bSucceeded = true;
 	if (Iter->value.getTag() == JSON_ARRAY) {
 		//This means that we are in the array
 		for (JsonNode* ArrayIter : Iter->value) {
@@ -115,7 +114,6 @@ void UCommandCenter::GetCommand(JsonValue Input){
 	}
 	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
-		bSucceeded = false;
 	}
 
 	//then just make and give the command!
