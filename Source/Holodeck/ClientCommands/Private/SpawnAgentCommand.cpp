@@ -16,24 +16,18 @@ USpawnAgentCommand::USpawnAgentCommand() {
 		ConstructorHelpers::FObjectFinder<UBlueprint> UAVBlueprintVar(*UAVReference);
 		ConstructorHelpers::FObjectFinder<UBlueprint> AndroidBlueprintVar(*AndroidReference);
 		ConstructorHelpers::FObjectFinder<UBlueprint> SphereRobotBlueprintVar(*SphereRobotReference);
-		if (UAVBlueprintVar.Object) {
+		if (UAVBlueprintVar.Object)
 			UAVBlueprint = (UClass*)UAVBlueprintVar.Object->GeneratedClass;
-		}
-		else {
+		else
 			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find UAV blueprint"));
-		}
-		if (AndroidBlueprintVar.Object) {
+		if (AndroidBlueprintVar.Object)
 			AndroidBlueprint = (UClass*)AndroidBlueprintVar.Object->GeneratedClass;
-		}
-		else {
+		else
 			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find Android blueprint"));
-		}
-		if (SphereRobotBlueprintVar.Object) {
+		if (SphereRobotBlueprintVar.Object)
 			SphereRobotBlueprint = (UClass*)SphereRobotBlueprintVar.Object->GeneratedClass;
-		}
-		else {
+		else
 			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find SphereRobot blueprint"));
-		}
 	}
 }
 
@@ -50,7 +44,6 @@ void USpawnAgentCommand::Execute() {
 		return;
 	}
 
-	//if you can't get the world, then you can't spawn any agents
 	UWorld* World = Target->GetWorld();
 	if (World == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand::Execute found world as nullptr. Unable to spawn agent!"));
@@ -69,15 +62,14 @@ void USpawnAgentCommand::Execute() {
 
 	//find out which agent was requested, then spawn that agent at that location!
 	//This is where you should put the spawn command for new agents you are putting into the code. 
-	if (AgentType == UAV) {
+	if (AgentType == UAV)
 		SpawnedAgent = World->SpawnActor<AUAV>(this->UAVBlueprint, Location, Rotation, SpawnParams);
-	} else
-	if (AgentType == Android) {
+	else
+	if (AgentType == Android)
 		SpawnedAgent = World->SpawnActor<AAndroid>(this->AndroidBlueprint, Location, Rotation, SpawnParams);
-	} else
-	if (AgentType == SphereRobot) {
+	else
+	if (AgentType == SphereRobot)
 		SpawnedAgent = World->SpawnActor<ASphereRobot>(this->SphereRobotBlueprint, Location, Rotation, SpawnParams);
-	}
 
 	//Finalize the initialization of the agent. 
 	if (SpawnedAgent) {

@@ -43,7 +43,7 @@ public:
 	  * @param StringParameters the strings to be used as parameters for the execute call.
 	  * @param TargetParameter The target of the execute function call. Usually will be the GameMode pointer. 
 	*/
-	virtual void Init(std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* TargetParameter);
+	virtual void Init(const std::vector<float> NumberParameters, const std::vector<std::string> StringParameters, AActor* TargetParameter);
 
 protected:
 

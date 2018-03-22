@@ -78,7 +78,10 @@ public:
 	*/
 	bool Teleport(const FVector& NewLocation);
 
-
+	/**
+	* InitializeController
+	* Hooks up everything with the controller. 
+	*/
 	bool InitializeController();
 
 private:

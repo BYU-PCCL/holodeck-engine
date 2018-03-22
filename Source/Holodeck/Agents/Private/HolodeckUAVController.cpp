@@ -19,9 +19,7 @@ void AHolodeckUAVController::ExecuteCommand() {
 		UAVPawn->DesiredYawRate = FloatPtr[2]; // Command.YawRate;
 		UAVPawn->DesiredAltitude = FloatPtr[3]; // Command.Altitude;
 
-	}
-	else {
+	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UAV controller could not find the UAV."));
-
 	}
 }
