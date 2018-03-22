@@ -47,6 +47,7 @@ void USpawnAgentCommand::Execute() {
 	AHolodeckGameMode* GameTarget = static_cast<AHolodeckGameMode*>(Target);
 	if (GameTarget == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("UCommand::Target is not a UHolodeckGameMode*. SpawnAgentCommand::Execute Cannot spawn agent without this pointer!"));
+		return;
 	}
 
 	//if you can't get the world, then you can't spawn any agents
@@ -67,27 +68,23 @@ void USpawnAgentCommand::Execute() {
 	AHolodeckPawnController* SpawnedController = nullptr;
 
 	//find out which agent was requested, then spawn that agent at that location!
+	//This is where you should put the spawn command for new agents you are putting into the code. 
 	if (AgentType == UAV) {
 		SpawnedAgent = World->SpawnActor<AUAV>(this->UAVBlueprint, Location, Rotation, SpawnParams);
-		SpawnedController = NewObject<AHolodeckUAVController>();
 	} else
 	if (AgentType == Android) {
 		SpawnedAgent = World->SpawnActor<AAndroid>(this->AndroidBlueprint, Location, Rotation, SpawnParams);
-		SpawnedController = NewObject<AHolodeckAndroidController>();
 	} else
 	if (AgentType == SphereRobot) {
 		SpawnedAgent = World->SpawnActor<ASphereRobot>(this->SphereRobotBlueprint, Location, Rotation, SpawnParams);
-		SpawnedController = NewObject<AHolodeckSphereRobotController>();
 	}
 
-	//This is where you should put the spawn command for new agents you are putting into the code. 
-
 	//Finalize the initialization of the agent. 
-	if (SpawnedAgent && SpawnedController) {
+	if (SpawnedAgent) {
 		SpawnedAgent->AgentName = StringParams[1].c_str();
+		SpawnedAgent->SpawnDefaultController();
+		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
-		SpawnedController->UnPossess();
-		SpawnedController->Possess(SpawnedAgent);
 		SpawnedAgent->InitializeController();
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent. Sanity check."));
 	}

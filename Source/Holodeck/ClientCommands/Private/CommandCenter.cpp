@@ -63,7 +63,6 @@ int UCommandCenter::ReadCommandBuffer() {
 		UE_LOG(LogHolodeck, Error, TEXT("Unable to parse command buffer as a json file"));
 	} 
 	else {
-		PrintJson(Value);
 		ExtractCommandsFromJson(Value);
 	}
 	return Status;
@@ -73,7 +72,6 @@ void UCommandCenter::ExtractCommandsFromJson(JsonValue Input){
 	if (Input.getTag() == JSON_OBJECT) {
 		//we are in the main object that hold the array of commands. 
 		JsonIterator Iter = begin(Input);
-		//Iter.p = Iter->next; //maybe I dont actually have to get the next one when I make an iter? 
 		//check if this is actually that array, and then extract the commands from it.
 		if (Iter->value.getTag() == JSON_ARRAY) {
 			//We are in the array of commands. 
@@ -97,7 +95,6 @@ void UCommandCenter::GetCommand(JsonValue Input){
 	JsonIterator Iter = begin(Input);
 	std::string CommandName = Iter->value.toString();
 	FString CommandFString = UTF8_TO_TCHAR(CommandName.c_str());
-	UE_LOG(LogHolodeck, Log, TEXT("CommandName: %s"), *CommandFString);
 	//Now to get the list of the parameters...
 	std::vector<std::string> StringParameters;
 	std::vector<float> FloatParameters;
