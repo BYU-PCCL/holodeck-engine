@@ -43,7 +43,7 @@ private:
 	const FString UAV = "UAV";
 	const FString SphereRobot = "SphereRobot";
 	const FString Android = "Android";
-	//These are their blueprints, and are correctly initialized the first time a SpawnAgentCommand is instantiated. 
+	//These are their blueprints, and should be correctly initialized the first time a SpawnAgentCommand is instantiated. 
 	static TSubclassOf<class AUAV> UAVBlueprint;
 	static TSubclassOf<class AAndroid> AndroidBlueprint;
 	static TSubclassOf<class ASphereRobot> SphereRobotBlueprint;

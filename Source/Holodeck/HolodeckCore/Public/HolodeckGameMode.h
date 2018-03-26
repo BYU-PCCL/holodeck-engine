@@ -45,6 +45,10 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bHolodeckIsOn;
 
+	/**
+	  * GetAssociatedServer
+	  * Returns the private server pointer that the instance contains.
+	  */
 	UHolodeckServer* GetAssociatedServer() { return this->Server; };
 
 private:

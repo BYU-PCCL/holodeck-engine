@@ -24,8 +24,16 @@ class HOLODECK_API UCommandFactory : public UObject {
 
 public:
 
+	/**
+	  * MakeCommand
+	  * This is the factory method for producing commands. 
+	  */
 	static UCommand* MakeCommand(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterGameMode);
 
 private:
+	/**
+	  * UCommandFactory
+	  * Default constructor. Should not be instantiated, hence it is private. 
+	  */
 	UCommandFactory() {};
 };

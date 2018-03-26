@@ -19,10 +19,8 @@ void AHolodeckGameMode::Tick(float DeltaSeconds) {
 	// so we don't need to check bOn here.
 	if (this->Instance)
 		this->Instance->Tick(DeltaSeconds);
-
 	if (this->CommandCenter)
 		this->CommandCenter->Tick(DeltaSeconds);
-
 	//Check if we should reset, and then reset the level. 
 	if (ResetSignal != nullptr && *ResetSignal) {
 		UGameplayStatics::OpenLevel(this->Instance, FName(*GetWorld()->GetName()), false);
