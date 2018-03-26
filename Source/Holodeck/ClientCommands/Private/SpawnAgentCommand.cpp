@@ -79,8 +79,7 @@ void USpawnAgentCommand::Execute() {
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
 		SpawnedAgent->InitializeController();
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent. Sanity check."));
-	}
-	else {
+	} else {
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand did not spawn a new Agent. Sanity check."));
 	}
 }

@@ -17,9 +17,8 @@ void UCommandCenter::Tick(float DeltaTime) {
 		ReadCommandBuffer();
 		*BoolPtr = false;
 	}
-	for (int i = 0; i < Commands.Num(); i++) {
+	for (int i = 0; i < Commands.Num(); i++)
 		Commands[i]->Execute();
-	}
 	Commands.Empty();
 }
 
@@ -59,9 +58,8 @@ void UCommandCenter::ExtractCommandsFromJson(JsonValue Input){
 		JsonIterator Iter = begin(Input);
 		//check if this is actually the array of commands, and then extract the commands from it.
 		if (Iter->value.getTag() == JSON_ARRAY) {
-			for (JsonNode* ArrayIter : Iter->value) {
+			for (JsonNode* ArrayIter : Iter->value)
 				GetCommand(ArrayIter->value);
-			}
 		} else {
 			UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
 		}
@@ -70,22 +68,21 @@ void UCommandCenter::ExtractCommandsFromJson(JsonValue Input){
 	}
 }
 
-void UCommandCenter::GetCommand(JsonValue Input){
+void UCommandCenter::GetCommand(JsonValue Input) {
 	JsonIterator Iter = begin(Input);
 	std::string CommandName = Iter->value.toString();
 	FString CommandFString = UTF8_TO_TCHAR(CommandName.c_str());
 	std::vector<std::string> StringParameters;
 	std::vector<float> FloatParameters;
-	Iter.p = Iter->next; 
+	Iter.p = Iter->next;
 	if (Iter->value.getTag() == JSON_ARRAY) {
 		//We are now inside the array
 		for (JsonNode* ArrayIter : Iter->value) {
 			JsonIterator ObjIter = begin(ArrayIter->value);
-				if (ObjIter->value.getTag() == JSON_NUMBER) {
-					FloatParameters.push_back(ObjIter->value.toNumber());
-				} else {
-					StringParameters.push_back(ObjIter->value.toString());
-				}
+			if (ObjIter->value.getTag() == JSON_NUMBER)
+				FloatParameters.push_back(ObjIter->value.toNumber());
+			else
+				StringParameters.push_back(ObjIter->value.toString());
 		}
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
