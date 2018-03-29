@@ -14,7 +14,7 @@
   * - Note: commands are more safely instantiated from the commandfactory. 
   * When inheriting from this class, you must: 
   * - Implement the execute function.
-  * - Add the inhereted class to the CommandFactory cpp file. 
+  * - Add the inhereted class and its name string to the CommandFactory.h file. 
   */
 UCLASS(ClassGroup = (Custom), abstract)
 class HOLODECK_API UCommand : public UObject {
@@ -28,7 +28,7 @@ public:
 	  * Override this function with what you want the child command to do.
 	  * Use NumberParams, StringParams, and Target as input variables for the execute function. 
 	  */
-	virtual void Execute() { check( 0 && "You must override UCommand::Execute" ); };
+	const virtual void Execute() { check( 0 && "You must override UCommand::Execute" ); };
 
 	/**
 	* UCommand

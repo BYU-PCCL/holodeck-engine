@@ -2,7 +2,7 @@
 #include "CommandCenter.h"
 #include "HolodeckGameMode.h" // to avoid a circular dependency. 
 
-void UCommandCenter::GiveCommand(UCommand* &Input) {
+void UCommandCenter::GiveCommand(UCommand * const Input) {
 	if (Input != nullptr)
 		Commands.Add(Input);
 }
@@ -12,13 +12,12 @@ UCommandCenter::UCommandCenter() {
 }
 
 void UCommandCenter::Tick(float DeltaTime) {
-	bool* BoolPtr = static_cast<bool*>(ShouldReadBufferPtr);
-	if (BoolPtr && *BoolPtr == true) {
+	if (ShouldReadBufferPtr && *ShouldReadBufferPtr == true) {
 		ReadCommandBuffer();
-		*BoolPtr = false;
+		*ShouldReadBufferPtr = false;
 	}
-	for (int i = 0; i < Commands.Num(); i++)
-		Commands[i]->Execute();
+	for (const auto &i : Commands)
+		i->Execute();
 	Commands.Empty();
 }
 
@@ -28,9 +27,11 @@ void UCommandCenter::GetCommandBuffer() {
 		UE_LOG(LogHolodeck, Warning, TEXT("CommandCenter could not find server..."));
 	} else {
 		Buffer = static_cast<char*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_NAME), BUFFER_SIZE * BYTE_SIZE));
-		ShouldReadBufferPtr = Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_SHOULD_READ_NAME), BUFFER_SHOULD_READ_SIZE * sizeof(bool));
-		bool* BoolPtr = static_cast<bool*>(ShouldReadBufferPtr);
-		*BoolPtr = false;
+		ShouldReadBufferPtr = static_cast<bool*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_SHOULD_READ_NAME), BUFFER_SHOULD_READ_SIZE * sizeof(bool)));
+		if (ShouldReadBufferPtr != nullptr)
+			*ShouldReadBufferPtr = false;
+		else
+			UE_LOG(LogHolodeck, Error, TEXT("ShouldReadBufferPtr is null"));
 	}
 }
 
@@ -53,7 +54,7 @@ int UCommandCenter::ReadCommandBuffer() {
 	return Status;
 }
 
-void UCommandCenter::ExtractCommandsFromJson(JsonValue Input){
+void UCommandCenter::ExtractCommandsFromJson(const JsonValue &Input){
 	if (Input.getTag() == JSON_OBJECT) {
 		JsonIterator Iter = begin(Input);
 		//check if this is actually the array of commands, and then extract the commands from it.
@@ -68,7 +69,7 @@ void UCommandCenter::ExtractCommandsFromJson(JsonValue Input){
 	}
 }
 
-void UCommandCenter::GetCommand(JsonValue Input) {
+void UCommandCenter::GetCommand(const JsonValue &Input) {
 	JsonIterator Iter = begin(Input);
 	std::string CommandName = Iter->value.toString();
 	FString CommandFString = UTF8_TO_TCHAR(CommandName.c_str());
@@ -91,11 +92,10 @@ void UCommandCenter::GetCommand(JsonValue Input) {
 	this->GiveCommand(CommandPtr);
 }
 
-void UCommandCenter::PrintJson(JsonValue Value) {
+void const UCommandCenter::PrintJson(JsonValue Value) {
 	switch (Value.getTag()) {
-	case JSON_NUMBER: {
+	case JSON_NUMBER:
 		UE_LOG(LogHolodeck, Log, TEXT("%f"), Value.toNumber());
-	}
 					  break;
 	case JSON_STRING: {
 		std::string MyString = Value.toString();
@@ -103,34 +103,29 @@ void UCommandCenter::PrintJson(JsonValue Value) {
 		UE_LOG(LogHolodeck, Log, TEXT("OutputString: %s"), *String);
 	}
 					  break;
-	case JSON_ARRAY: {
+	case JSON_ARRAY:
 		UE_LOG(LogHolodeck, Log, TEXT("[[[Entering JSON_ARRAY]]]"));
-		for (auto i : Value) {
+		for (const auto& i : Value) {
 			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered array:"));
 			PrintJson(i->value);
 		}
-	}
 					 break;
-	case JSON_OBJECT: {
+	case JSON_OBJECT:
 		UE_LOG(LogHolodeck, Log, TEXT("@@@Entering JSON_OBJECT@@@"));
 		for (auto i : Value) {
 			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered object:"));
 			PrintJson(i->value);
 		}
 		UE_LOG(LogHolodeck, Log, TEXT("@@@Exiting JSON_OBJECT@@@"));
-	}
 					  break;
-	case JSON_TRUE: {
+	case JSON_TRUE:
 		UE_LOG(LogHolodeck, Log, TEXT("true"));
-	}
 					break;
-	case JSON_FALSE: {
+	case JSON_FALSE:
 		UE_LOG(LogHolodeck, Log, TEXT("false"));
-	}
 					 break;
-	case JSON_NULL: {
+	case JSON_NULL:
 		UE_LOG(LogHolodeck, Log, TEXT("null"));
-	}
 					break;
 	}
 }

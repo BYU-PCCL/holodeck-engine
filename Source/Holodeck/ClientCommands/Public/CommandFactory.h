@@ -47,9 +47,6 @@ private:
 
 
 	template<typename T>
-	static UCommand* CreateInstance() {
-		return NewObject<T>();
-	}
+	static UCommand* CreateInstance() { return NewObject<T>(); }
 
-	static void InitializeMap();
 };

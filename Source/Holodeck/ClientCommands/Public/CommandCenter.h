@@ -31,9 +31,9 @@ public:
 	/**
 	  * GiveCommand
 	  * It is used to execute whatever queued up commands there are.
-	  * @param InputCommand A unique_ptr to a command. The given pointer will be null after this function call.
+	  * @param InputCommand A pointer to a command. The given pointer will be null after this function call.
 	  */
-	virtual void GiveCommand(UCommand* &InputCommand);
+	virtual void GiveCommand(UCommand * const InputCommand);
 
 	/**
 	  *Tick
@@ -72,7 +72,7 @@ private:
 	
 	TArray<UCommand*> Commands;
 	char* Buffer;
-	void* ShouldReadBufferPtr;
+	bool* ShouldReadBufferPtr;
 	UHolodeckServer* Server;
 	AHolodeckGameMode* GameMode;
 	FString BUFFER_NAME = "command_buffer";
@@ -86,7 +86,7 @@ private:
 	  * Used solely for debugging. It is accurate and prints exactly how the json is structured.
 	  * @param Input The JsonValue to print
 	  */
-	void PrintJson(JsonValue Input);
+	void const PrintJson(JsonValue Input);
 
 	/**
 	  * ExctractCommandsFromJson
@@ -95,12 +95,12 @@ private:
 	  * At a lower level, it calls GetCommand on every json object that in an array expected to be a command.
 	  * @param Input the Json to extract commands from.
 	  */
-	void ExtractCommandsFromJson(JsonValue Input);
+	void ExtractCommandsFromJson(const JsonValue &Input);
 
 	/**
 	  * GetCommand
 	  * Traverses a specific json object that is a command.
 	  * Separates the parameters into string parameters and number parameters, then pushes the command to the Commands array. 
 	  */
-	void GetCommand(JsonValue Input);
+	void GetCommand(const JsonValue &Input);
 };
