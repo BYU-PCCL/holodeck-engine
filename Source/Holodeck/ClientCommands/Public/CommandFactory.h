@@ -3,6 +3,7 @@
 #include "Holodeck.h"
 
 #include <vector>
+#include <map>
 
 #include "Command.h"
 #include "SpawnAgentCommand.h"
@@ -10,30 +11,45 @@
 
 class AHolodeckGameMode;
 
+template<typename T> UCommand * CreateT() { return new T; }
+
 /**
   * UCommandFactory
   * This is the class that should be used to instantiate UCommand objects. Feed it the name of the command along with
-  * the parameters that the command will need to execute. If the parameters are not needed, then give it nullptr or 
-  * empty vectors and it will work fine. 
-  * The purpose of this was to make separate knowledge of specific commands from the command center, to remove circular
-  * dependencies, and to give an easy way of spawning commands. 
+  * the parameters that the command will need to execute. If the parameters are not needed, then give it nullptr or
+  * empty vectors and it will work fine.
+  * The purpose of this was to separate knowledge of specific commands from the command center, to remove circular
+  * dependencies, and to give an easy way of spawning commands.
+  * When you make a new command, make sure to add it to the CommandMap in the MakeCommand function in the cpp file
   */
 UCLASS(ClassGroup = (Custom), abstract)
 class HOLODECK_API UCommandFactory : public UObject {
 	GENERATED_BODY()
 
+	typedef std::map<std::string, UCommand*(*)()> UCommandMapType;
+
 public:
 
 	/**
 	  * MakeCommand
-	  * This is the factory method for producing commands. 
+	  * This is the factory method for producing commands.
 	  */
-	static UCommand* MakeCommand(std::string Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterGameMode);
+	static UCommand* MakeCommand(const std::string& Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterGameMode);
+
+protected:
 
 private:
 	/**
 	  * UCommandFactory
-	  * Default constructor. Should not be instantiated, hence it is private. 
+	  * Default constructor. Should not be instantiated, hence it is private.
 	  */
 	UCommandFactory() {};
+
+
+	template<typename T>
+	static UCommand* CreateInstance() {
+		return NewObject<T>();
+	}
+
+	static void InitializeMap();
 };
