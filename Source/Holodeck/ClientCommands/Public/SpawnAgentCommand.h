@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 
+//#include "AgentSpawner.h"
 #include "Android.h"
 #include "Command.h"
 #include "SphereRobot.h"
@@ -25,10 +26,9 @@
 UCLASS(ClassGroup = (Custom))
 class HOLODECK_API USpawnAgentCommand : public UCommand {
 	GENERATED_BODY()
-
 public:
 	//See UCommand for the documentation of this overridden function. 
-	void Execute() override;
+	void const Execute() override;
 
 	/**
 	  * USpawnAgentCommand
@@ -39,13 +39,25 @@ public:
 	USpawnAgentCommand();
 
 private:
-	//These are the names of the agents that are spawnable
-	const FString UAV = "UAV";
-	const FString SphereRobot = "SphereRobot";
-	const FString Android = "Android";
-	//These are their blueprints, and should be correctly initialized the first time a SpawnAgentCommand is instantiated. 
-	static TSubclassOf<class AUAV> UAVBlueprint;
-	static TSubclassOf<class AAndroid> AndroidBlueprint;
-	static TSubclassOf<class ASphereRobot> SphereRobotBlueprint;
-	static bool bFirstInstance;
+
+	typedef std::map<std::string, UClass*> BlueprintMapType;
+	static BlueprintMapType BlueprintMap;
+
+	typedef AHolodeckAgent*(*SpawnFunctionType)(UClass*, const FVector&, UWorld*);
+	typedef std::map<std::string, SpawnFunctionType> SpawnFunctionMapType;
+	static SpawnFunctionMapType SpawnFunctionMap;
+
+	template<typename T>
+	static AHolodeckAgent* SpawnAgent(UClass* Blueprint, const FVector& Location, UWorld* World);
+
+	FORCEINLINE UClass* GetBlueprint(const FString&  Reference) {
+		ConstructorHelpers::FObjectFinder<UBlueprint> BlueprintVar(*Reference);
+		if (BlueprintVar.Object)
+			return (UClass*)BlueprintVar.Object->GeneratedClass;
+		else
+			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find blueprint for %s"), *Reference);
+		return nullptr;
+	}
+	
 };
+

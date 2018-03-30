@@ -1,37 +1,37 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
 
-const static FString UAVReference = "Blueprint'/Game/HolodeckContent/Agents/UAV/UAVBlueprint.UAVBlueprint'";
-const static FString AndroidReference = "Blueprint'/Game/HolodeckContent/Agents/Android/AndroidBlueprint.AndroidBlueprint'";
-const static FString SphereRobotReference = "Blueprint'/Game/HolodeckContent/Agents/SphereRobot/SphereRobotBlueprint.SphereRobotBlueprint'";
-TSubclassOf<class AUAV> USpawnAgentCommand::UAVBlueprint = nullptr;
-TSubclassOf<class AAndroid> USpawnAgentCommand::AndroidBlueprint = nullptr;
-TSubclassOf<class ASphereRobot> USpawnAgentCommand::SphereRobotBlueprint = nullptr;
-bool USpawnAgentCommand::bFirstInstance = true;
+const static FString UAV_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/UAV/UAVBlueprint.UAVBlueprint'";
+const static FString ANDROID_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/Android/AndroidBlueprint.AndroidBlueprint'";
+const static FString SPHERE_ROBOT_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/SphereRobot/SphereRobotBlueprint.SphereRobotBlueprint'";
+USpawnAgentCommand::BlueprintMapType USpawnAgentCommand::BlueprintMap;
+USpawnAgentCommand::SpawnFunctionMapType USpawnAgentCommand::SpawnFunctionMap;
+//These are their blueprints, and should be correctly initialized the first time a SpawnAgentCommand is instantiated. 
+const static std::string UAV = "UAV";
+const static std::string SPHERE_ROBOT = "SphereRobot";
+const static std::string NAV_AGENT = "NavAgent"; //Not yet implemented so can't spawn it!!
+const static std::string ANDROID = "Android";
+
 
 USpawnAgentCommand::USpawnAgentCommand() {
+	static bool bFirstInstance = true;
 	//This is used to find the blueprints for the spawnable agents only the first time a spawnagetncommand is instantiated. 
 	if (bFirstInstance) {
 		bFirstInstance = false;
-		ConstructorHelpers::FObjectFinder<UBlueprint> UAVBlueprintVar(*UAVReference);
-		ConstructorHelpers::FObjectFinder<UBlueprint> AndroidBlueprintVar(*AndroidReference);
-		ConstructorHelpers::FObjectFinder<UBlueprint> SphereRobotBlueprintVar(*SphereRobotReference);
-		if (UAVBlueprintVar.Object)
-			UAVBlueprint = (UClass*)UAVBlueprintVar.Object->GeneratedClass;
-		else
-			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find UAV blueprint"));
-		if (AndroidBlueprintVar.Object)
-			AndroidBlueprint = (UClass*)AndroidBlueprintVar.Object->GeneratedClass;
-		else
-			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find Android blueprint"));
-		if (SphereRobotBlueprintVar.Object)
-			SphereRobotBlueprint = (UClass*)SphereRobotBlueprintVar.Object->GeneratedClass;
-		else
-			UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand unable to find SphereRobot blueprint"));
+		//initialize the SpawnFunctionMap
+		SpawnFunctionMap[UAV] = &SpawnAgent<AUAV>;
+		SpawnFunctionMap[SPHERE_ROBOT] = &SpawnAgent<ASphereRobot>;
+		SpawnFunctionMap[ANDROID] = &SpawnAgent<AAndroid>;
+		//TODO(mitch): Add the nav agent! Your version of Holodeck doesn't currently have it. 
+		
+		//Initialize the BlueprintMap
+		BlueprintMap[UAV] = GetBlueprint(UAV_REFERENCE);
+		BlueprintMap[SPHERE_ROBOT] = GetBlueprint(SPHERE_ROBOT_REFERENCE);
+		BlueprintMap[ANDROID] = GetBlueprint(ANDROID_REFERENCE);
 	}
 }
 
-void USpawnAgentCommand::Execute() {
+void const USpawnAgentCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
 	//Program should throw an error if any of these aren't the correct size. They should always be this size.
 	if (StringParams.size() != 2 || NumberParams.size() != 3) {
@@ -60,16 +60,12 @@ void USpawnAgentCommand::Execute() {
 	AHolodeckAgent* SpawnedAgent = nullptr;
 	AHolodeckPawnController* SpawnedController = nullptr;
 
-	//find out which agent was requested, then spawn that agent at that location!
-	//This is where you should put the spawn command for new agents you are putting into the code. 
-	if (AgentType == UAV)
-		SpawnedAgent = World->SpawnActor<AUAV>(this->UAVBlueprint, Location, Rotation, SpawnParams);
+	auto AgentSpawnFunction = SpawnFunctionMap[StringParams[0]];
+	UClass* Blueprint = BlueprintMap[StringParams[0]];
+	if (AgentSpawnFunction && Blueprint)
+		SpawnedAgent = AgentSpawnFunction(Blueprint, Location, World);
 	else
-	if (AgentType == Android)
-		SpawnedAgent = World->SpawnActor<AAndroid>(this->AndroidBlueprint, Location, Rotation, SpawnParams);
-	else
-	if (AgentType == SphereRobot)
-		SpawnedAgent = World->SpawnActor<ASphereRobot>(this->SphereRobotBlueprint, Location, Rotation, SpawnParams);
+		UE_LOG(LogHolodeck, Warning, TEXT("Maps did not contain requested agent type."));
 
 	//Finalize the initialization of the agent. 
 	if (SpawnedAgent) {
@@ -82,4 +78,11 @@ void USpawnAgentCommand::Execute() {
 	} else {
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand did not spawn a new Agent. Sanity check."));
 	}
+}
+
+template<typename T>
+AHolodeckAgent* USpawnAgentCommand::SpawnAgent(UClass* Blueprint, const FVector& Location, UWorld* World){
+	if (!World)
+		return nullptr;
+	return World->SpawnActor<T>(Blueprint, Location, FRotator(0, 0, 0), FActorSpawnParameters());
 }
