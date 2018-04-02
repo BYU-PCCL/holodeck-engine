@@ -75,11 +75,11 @@ private:
 	bool* ShouldReadBufferPtr;
 	UHolodeckServer* Server;
 	AHolodeckGameMode* GameMode;
-	FString BUFFER_NAME = "command_buffer";
-	FString BUFFER_SHOULD_READ_NAME = "command_bool";
-	const int BUFFER_SHOULD_READ_SIZE = 1;
-	const int BUFFER_SIZE = 1048576; //one megabyte
-	const int BYTE_SIZE = 8;
+	const static FString BUFFER_NAME;
+	const static FString BUFFER_SHOULD_READ_NAME;
+	const static int BUFFER_SHOULD_READ_SIZE;
+	const static int BUFFER_SIZE;
+	const static int BYTE_SIZE;
 
 	/**
 	  * PrintJson

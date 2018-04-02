@@ -2,6 +2,12 @@
 #include "CommandCenter.h"
 #include "HolodeckGameMode.h" // to avoid a circular dependency. 
 
+const FString UCommandCenter::BUFFER_NAME = "command_buffer";
+const FString UCommandCenter::BUFFER_SHOULD_READ_NAME = "command_bool";
+const int UCommandCenter::BUFFER_SHOULD_READ_SIZE = 1;
+const int UCommandCenter::BUFFER_SIZE = 1048576; //one megabyte
+const int UCommandCenter::BYTE_SIZE = 8;
+
 void UCommandCenter::GiveCommand(UCommand * const Input) {
 	if (Input != nullptr)
 		Commands.Add(Input);
@@ -31,7 +37,7 @@ void UCommandCenter::GetCommandBuffer() {
 		if (ShouldReadBufferPtr != nullptr)
 			*ShouldReadBufferPtr = false;
 		else
-			UE_LOG(LogHolodeck, Error, TEXT("ShouldReadBufferPtr is null"));
+			UE_LOG(LogHolodeck, Error, TEXT("UCommandCenter::ShouldReadBufferPtr is null"));
 	}
 }
 
