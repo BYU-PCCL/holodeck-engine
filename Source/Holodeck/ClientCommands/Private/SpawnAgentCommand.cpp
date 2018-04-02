@@ -4,6 +4,7 @@
 const static FString UAV_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/UAV/UAVBlueprint.UAVBlueprint'";
 const static FString ANDROID_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/Android/AndroidBlueprint.AndroidBlueprint'";
 const static FString SPHERE_ROBOT_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/SphereRobot/SphereRobotBlueprint.SphereRobotBlueprint'";
+const static FString NAV_AGENT_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/NavAgent/NavAgentBlueprint.NavAgentBlueprint'";
 USpawnAgentCommand::BlueprintMapType USpawnAgentCommand::BlueprintMap;
 USpawnAgentCommand::SpawnFunctionMapType USpawnAgentCommand::SpawnFunctionMap;
 //These are their blueprints, and should be correctly initialized the first time a SpawnAgentCommand is instantiated. 
@@ -22,12 +23,13 @@ USpawnAgentCommand::USpawnAgentCommand() {
 		SpawnFunctionMap[UAV] = &SpawnAgent<AUAV>;
 		SpawnFunctionMap[SPHERE_ROBOT] = &SpawnAgent<ASphereRobot>;
 		SpawnFunctionMap[ANDROID] = &SpawnAgent<AAndroid>;
-		//TODO(mitch): Add the nav agent! Your version of Holodeck doesn't currently have it. 
-		
+		SpawnFunctionMap[NAV_AGENT] = &SpawnAgent<ANavAgent>;
+
 		//Initialize the BlueprintMap
 		BlueprintMap[UAV] = GetBlueprint(UAV_REFERENCE);
 		BlueprintMap[SPHERE_ROBOT] = GetBlueprint(SPHERE_ROBOT_REFERENCE);
 		BlueprintMap[ANDROID] = GetBlueprint(ANDROID_REFERENCE);
+		BlueprintMap[NAV_AGENT] = GetBlueprint(NAV_AGENT_REFERENCE);
 	}
 }
 
