@@ -41,10 +41,10 @@ public:
 protected:
 	/**
 	  * GetActionSpaceDimension
-	  * The size of the action space for the android is 127.
+	  * The size of the action space for the android is 94.
 	  * @return the size of the action space.
 	  */
-	int GetActionSpaceDimension() override { return 127; };
+	int GetActionSpaceDimension() override { return 94; };
 
 private:
 	/**
@@ -57,6 +57,8 @@ private:
 	* @param Force the force to be applied.
 	*/
 	void SetJointConstraint(FName Joint, float Swing1, float Twist, float Swing2, float Force);
+
+	void ApplyTorque(FName Joint, float Swing1, float Twist, float Swing2);
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
 };
