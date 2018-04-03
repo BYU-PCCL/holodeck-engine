@@ -24,8 +24,6 @@ public:
 	  */
 	AAndroid();
 
-	int count;
-
 	static const int NUM_JOINTS = 48;
 	static const int NUM_3_AXIS_JOINTS = 18;
 	static const int NUM_2_AXIS_JOINTS = 10;
@@ -85,8 +83,6 @@ public:
 	bool GetCollisionsVisible();
 
 	float* CommandArray;
-	TArray<FName> BoneNames;
-	TArray<FConstraintInstance*> Constraints;
 
 	UPROPERTY(BlueprintReadWrite, Category = AndroidMesh)
 		USkeletalMeshComponent* SkeletalMesh;

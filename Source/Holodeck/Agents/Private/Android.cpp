@@ -13,10 +13,7 @@ AAndroid::AAndroid() {
 
 void AAndroid::BeginPlay() {
 	Super::BeginPlay();
-	count = 0;
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
-	BoneNames = SkeletalMesh->GetAllSocketNames();
-	Constraints = SkeletalMesh->Constraints;
 }
 
 void AAndroid::Tick(float DeltaTime) {
@@ -61,54 +58,32 @@ void AAndroid::ApplyTorques() {
 	for (int JointInd = 0; JointInd < NUM_JOINTS; JointInd++) {
 
 		FName JointName = Joints[JointInd];
-		UE_LOG(LogTemp, Warning, TEXT("On Joint %i"),JointInd);
 
 		// Get rotation of that socket
 		FTransform JointTransform = SkeletalMesh->GetSocketTransform(Joints[JointInd]);
 		FQuat RotQuat = SkeletalMesh->GetSocketQuaternion(Joints[JointInd]);
 
-		UE_LOG(LogTemp, Warning, TEXT("Swing1 Com is %f"), CommandArray[ComInd]);
 		// Apply Swing 1 Torque if non zero
 		if (CommandArray[ComInd] != 0) {
 			float RotForce = CommandArray[ComInd] * CM_TORQUE_TO_M_TORQUE;
 			SkeletalMesh->AddTorque(RotQuat.RotateVector(FVector(0.0f, 0.0f, RotForce)), JointName, false);
-
-			UE_LOG(LogTemp, Warning, TEXT("Added Swing 1"));
-			//FVector LocalRotVector = FVector(0.0f, RotForce, 0.0f);
-			//FVector Swing1TorqVec = JointTransform.TransformVector(LocalRotVector);
-			//SkeletalMesh->AddTorque(Swing1TorqVec, Joints[JointInd], false);
 		}
 		ComInd++;
-		UE_LOG(LogTemp, Warning, TEXT("Swing2 Com is %f"), CommandArray[ComInd]);
-
-		UE_LOG(LogTemp, Warning, TEXT("Threshold 1 is %d"), (NUM_3_AXIS_JOINTS + NUM_2_AXIS_JOINTS));
 
 		// Apply Swing 2 if Torque non zero and is 2 or 3 axis joint
 		if (JointInd < (NUM_3_AXIS_JOINTS + NUM_2_AXIS_JOINTS)){
-			UE_LOG(LogTemp, Warning, TEXT("Entered 2nd if"));
 			if (CommandArray[ComInd] != 0) {
 				float RotForce = CommandArray[ComInd] * CM_TORQUE_TO_M_TORQUE;
 				SkeletalMesh->AddTorque(RotQuat.RotateVector(FVector(0.0f, RotForce, 0.0f)), JointName, false);
-				UE_LOG(LogTemp, Warning, TEXT("Added Swing 2"));
-				//FVector LocalRotVector = FVector(0.0f, 0.0f, RotForce);
-				//FVector Swing1TorqVec = JointTransform.TransformVector(LocalRotVector);
-				//SkeletalMesh->AddTorque(Swing1TorqVec, Joints[JointInd], false);
 			}
 			ComInd++;
-			UE_LOG(LogTemp, Warning, TEXT("Twist Com is %f"), CommandArray[ComInd]);
 		}
 
-		UE_LOG(LogTemp, Warning, TEXT("Threshold 2 is %d"), (NUM_3_AXIS_JOINTS ));
 		// Apply Twist if Torque non zero and is 3 axis joint
 		if (JointInd < NUM_3_AXIS_JOINTS) {
-			UE_LOG(LogTemp, Warning, TEXT("Entered 3rd if"));
 			if (CommandArray[ComInd] != 0) {
 				float RotForce = CommandArray[ComInd] * CM_TORQUE_TO_M_TORQUE;
 				SkeletalMesh->AddTorque(RotQuat.RotateVector(FVector(RotForce, 0.0f, 0.0f)), JointName, false);
-				UE_LOG(LogTemp, Warning, TEXT("Added Swing 3"));
-				//FVector LocalRotVector = FVector(RotForce, 0.0f, 0.0f);
-				//FVector Swing1TorqVec = JointTransform.TransformVector(LocalRotVector);
-				//SkeletalMesh->AddTorque(Swing1TorqVec, Joints[JointInd], false);
 			}
 			ComInd++;
 		}
