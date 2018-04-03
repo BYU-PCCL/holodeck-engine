@@ -4,12 +4,9 @@
 
 #include "Holodeck.h"
 
-#include <string>
-
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgent.h"
 #include "PressureSensor.h"
-#include "PhysicsEngine/ConstraintInstance.h"
 
 #include "Android.generated.h"
 
@@ -40,8 +37,6 @@ public:
 	  * @param DeltaSeconds the time since the last tick.
 	  */
 	void Tick(float DeltaSeconds) override;
-
-
 
 	/**
 	  * TODO(joshgreaves) : Explain this function properly.
