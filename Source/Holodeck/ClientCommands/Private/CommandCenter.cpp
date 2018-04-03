@@ -41,7 +41,7 @@ void UCommandCenter::GetCommandBuffer() {
 	}
 }
 
-void UCommandCenter::Init(UHolodeckServer* ParameterServer, AHolodeckGameMode* ParameterGameMode) {
+void UCommandCenter::Init(UHolodeckServer* const ParameterServer, AHolodeckGameMode* const ParameterGameMode) {
 	this->Server = ParameterServer;
 	this->GameMode = ParameterGameMode;
 	GetCommandBuffer();
@@ -98,40 +98,41 @@ void UCommandCenter::GetCommand(const JsonValue &Input) {
 	this->GiveCommand(CommandPtr);
 }
 
-void const UCommandCenter::PrintJson(JsonValue Value) {
+void const UCommandCenter::PrintJson(const JsonValue& Value) {
+	std::string MyString;
+	FString String;
 	switch (Value.getTag()) {
 	case JSON_NUMBER:
-		UE_LOG(LogHolodeck, Log, TEXT("%f"), Value.toNumber());
-					  break;
-	case JSON_STRING: {
-		std::string MyString = Value.toString();
-		FString String = UTF8_TO_TCHAR(MyString.c_str());
-		UE_LOG(LogHolodeck, Log, TEXT("OutputString: %s"), *String);
-	}
-					  break;
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("%f"), Value.toNumber());
+		break;
+	case JSON_STRING: 
+		MyString = Value.toString();
+		String = UTF8_TO_TCHAR(MyString.c_str());
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("OutputString: %s"), *String);
+		break;
 	case JSON_ARRAY:
-		UE_LOG(LogHolodeck, Log, TEXT("[[[Entering JSON_ARRAY]]]"));
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("[[[Entering JSON_ARRAY]]]"));
 		for (const auto& i : Value) {
-			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered array:"));
+			UE_LOG(LogHolodeck, VeryVerbose, TEXT("JSON value of entered array:"));
 			PrintJson(i->value);
 		}
-					 break;
+		break;
 	case JSON_OBJECT:
-		UE_LOG(LogHolodeck, Log, TEXT("@@@Entering JSON_OBJECT@@@"));
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("@@@Entering JSON_OBJECT@@@"));
 		for (auto i : Value) {
-			UE_LOG(LogHolodeck, Log, TEXT("JSON value of entered object:"));
+			UE_LOG(LogHolodeck, VeryVerbose, TEXT("JSON value of entered object:"));
 			PrintJson(i->value);
 		}
-		UE_LOG(LogHolodeck, Log, TEXT("@@@Exiting JSON_OBJECT@@@"));
-					  break;
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("@@@Exiting JSON_OBJECT@@@"));
+		break;
 	case JSON_TRUE:
-		UE_LOG(LogHolodeck, Log, TEXT("true"));
-					break;
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("true"));
+		break;
 	case JSON_FALSE:
-		UE_LOG(LogHolodeck, Log, TEXT("false"));
-					 break;
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("false"));
+		break;
 	case JSON_NULL:
-		UE_LOG(LogHolodeck, Log, TEXT("null"));
-					break;
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("null"));
+		break;
 	}
 }

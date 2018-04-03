@@ -33,7 +33,7 @@ public:
 	  * It is used to execute whatever queued up commands there are.
 	  * @param InputCommand A pointer to a command. The given pointer will be null after this function call.
 	  */
-	virtual void GiveCommand(UCommand * const InputCommand);
+	virtual void GiveCommand(UCommand* const InputCommand);
 
 	/**
 	  *Tick
@@ -52,7 +52,7 @@ public:
   	  * @param Server The holodeck server for the game.
   	  * @param GameMode The game mode for the instance. This pointer is needed for giving commands.
 	  */
-	void Init(UHolodeckServer* Server, AHolodeckGameMode* GameMode);
+	void Init(UHolodeckServer* const Server, AHolodeckGameMode* const GameMode);
 
 private:
 
@@ -86,7 +86,7 @@ private:
 	  * Used solely for debugging. It is accurate and prints exactly how the json is structured.
 	  * @param Input The JsonValue to print
 	  */
-	void const PrintJson(JsonValue Input);
+	void const PrintJson(const JsonValue& Input);
 
 	/**
 	  * ExctractCommandsFromJson
