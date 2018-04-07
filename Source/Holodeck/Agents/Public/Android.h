@@ -33,13 +33,6 @@ public:
 	  * Called when the game starts.
 	  */
 	virtual void BeginPlay() override;
-	
-	/**
-	  * Tick
-	  * Called every frame.
-	  * @param DeltaSeconds the time since the last tick.
-	  */
-	void Tick(float DeltaSeconds) override;
 
 	/**
 	  * TODO(joshgreaves) : Explain this function properly.
@@ -67,13 +60,6 @@ public:
 	void SetCollisionsVisible(bool Visible);
 
 	/**
-	  * GetJoints
-	  * Gets pointer to constant array of FName joints
-	  * @return array of FName corresponding to android joint names
-	  */
-	const FName* GetJoints();
-
-	/**
 	  * GetCollisionsVisible
 	  * @return true if collisions are visible.
 	  */
@@ -86,11 +72,4 @@ public:
 
 private:
 	bool bCollisionsAreVisible;
-
-	/**
-	  * ApplyTorques
-	  * Applies torques for that tick on each joint with a force/direction 
-	  * corresponding to the values in the command array
-	  */
-	void ApplyTorques();
 };
