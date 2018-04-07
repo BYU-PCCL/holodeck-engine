@@ -43,10 +43,10 @@ private:
 	  * Adds a certain joint rotation to the buffer.
 	  * @param JointName the name of the joint to add.
 	  * @param Swing1 true to insert the swing1 value.
-	  * @param Twist true to insert the twist value.
 	  * @param Swing2 true to insert the swing2 value.
+	  * @param Twist true to insert the twist value.
 	  * @param Data a pointer into the data buffer at the point the data should be inserted
 	  * @return a pointer to the next position in the buffer.
 	  */
-	float* AddJointRotationToBuffer(FString JointName, bool Swing1, bool Twist, bool Swing2, float* Data);
+	float* AddJointRotationToBuffer(FString JointName, bool Swing1, bool Swing2, bool Twist, float* Data);
 };

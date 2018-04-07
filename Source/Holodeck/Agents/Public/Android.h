@@ -25,6 +25,9 @@ public:
 	static const int NUM_3_AXIS_JOINTS = 18;
 	static const int NUM_2_AXIS_JOINTS = 10;
 	static const int NUM_1_AXIS_JOINTS = 20;
+	static const int NUM_2_PLUS_3_AXIS_JOINTS = 28;
+
+	const static FName Joints[];
 
 	/**
 	  * Called when the game starts.
@@ -68,7 +71,6 @@ public:
 	  * Gets pointer to constant array of FName joints
 	  * @return array of FName corresponding to android joint names
 	  */
-
 	const FName* GetJoints();
 
 	/**
@@ -84,5 +86,11 @@ public:
 
 private:
 	bool bCollisionsAreVisible;
+
+	/**
+	  * ApplyTorques
+	  * Applies torques for that tick on each joint with a force/direction 
+	  * corresponding to the values in the command array
+	  */
 	void ApplyTorques();
 };

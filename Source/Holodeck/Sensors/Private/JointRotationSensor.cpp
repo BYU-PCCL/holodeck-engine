@@ -23,7 +23,7 @@ void UJointRotationSensor::BeginPlay() {
 void UJointRotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	float* FloatBuffer = static_cast<float*>(Buffer);
 
-	const FName* Joints = Android->GetJoints();
+	const FName* Joints = Android->Joints;
 
 	for (int JointInd = 0; JointInd < Android->NUM_JOINTS; JointInd++) {
 
@@ -31,17 +31,15 @@ void UJointRotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickT
 
 		if (JointInd < Android->NUM_3_AXIS_JOINTS) {
 			FloatBuffer = AddJointRotationToBuffer(JointName, true, true, true, FloatBuffer);
-		}
-		else if (JointInd < (Android->NUM_3_AXIS_JOINTS + Android->NUM_2_AXIS_JOINTS)) {
+		} else if (JointInd < (Android->NUM_2_PLUS_3_AXIS_JOINTS)) {
 			FloatBuffer = AddJointRotationToBuffer(JointName, true, true, false, FloatBuffer);
-		}
-		else {
+		} else {
 			FloatBuffer = AddJointRotationToBuffer(JointName, true, false, false, FloatBuffer);
 		}
 	}
 }
 
-float* UJointRotationSensor::AddJointRotationToBuffer(FString JointName, bool Swing1, bool Twist, bool Swing2, float* Data) {
+float* UJointRotationSensor::AddJointRotationToBuffer(FString JointName, bool Swing1, bool Swing2, bool Twist, float* Data) {
 	FConstraintInstance* Constraint = SkeletalMeshComponent->FindConstraintInstance(FName(*JointName));
 	if (Swing1) {
 		*Data = Constraint->GetCurrentSwing1();
