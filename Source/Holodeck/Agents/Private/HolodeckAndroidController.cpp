@@ -22,11 +22,6 @@ void AHolodeckAndroidController::Possess(APawn* PawnPtr) {
 
 void AHolodeckAndroidController::ExecuteCommand() {
 
-}
-
-void AHolodeckAndroidController::Tick(float DeltaTime) {
-	Super::Tick(DeltaTime);
-
 	if(AndroidPawn == nullptr)
 		AndroidPawn = Cast<AAndroid>(GetPawn());
 

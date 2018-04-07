@@ -32,18 +32,11 @@ public:
 	void Possess(APawn* Pawn) override;
 
 	/**
-	  * ExecuteCommand
-	  * Executes the commands sent from the client.
-	  */
-	void ExecuteCommand() override;
-
-	/**
-	* Tick
-	* Called every frame.
+	* ExecuteCommand 
+	* Called every frame after super:tick
 	* @param DeltaSeconds the time since the last tick.
 	*/
-	void Tick(float DeltaSeconds) override;
-
+	void ExecuteCommand();
 
 protected:
 	/**
