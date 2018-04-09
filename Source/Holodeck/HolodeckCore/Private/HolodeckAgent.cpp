@@ -34,6 +34,20 @@ void AHolodeckAgent::BeginPlay() {
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));
 	}
 
+	//These functions are used in conjunction to give all of the parameters of agents to the python binding. 
+	//It is important that these are called in this order. Each rely on the successful completion of the prior. 
+	if (bShouldExposeSettings) {
+		GetServer();
+		if (Server != nullptr) {
+			GetSettingsBuffer();
+			UploadSettings(); //This is essentially a pure virtual function. It is fine here because BeginPlay() is called after the constructor is called.
+		}
+		else {
+			UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to upload settings due to no server"));
+		}
+	}
+
+
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
 	//This is needed specifically for the collision sensor.
 	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)){
@@ -69,4 +83,29 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation, FRotator NewRotation){
 bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	FRotator DefaultRotation = this->GetActorRotation();
 	return Teleport(NewLocation, DefaultRotation);
+}
+
+void AHolodeckAgent::GetSettingsBuffer() {
+	FString SettingName = AgentName + "_settings";
+	if (Server != nullptr) {
+		SettingsBuffer = static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*SettingName), this->GetNumSettings() * sizeof(float)));
+	}
+	else {
+		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent::GetSettingsBuffer failed due to null Server pointer"));
+	}
+}
+
+void AHolodeckAgent::GetServer() {
+	if (Server != nullptr) return;
+	UHolodeckGameInstance* Instance;
+
+		Instance = static_cast<UHolodeckGameInstance*>(this->GetController()->GetGameInstance());
+		if (Instance != nullptr) {
+			Server = Instance->GetServer();
+		}
+		else {
+			UE_LOG(LogHolodeck, Warning, TEXT("AHolodeckAgent => Game Instance is not UHolodeckGameInstance."));
+		}
+			
+		
 }

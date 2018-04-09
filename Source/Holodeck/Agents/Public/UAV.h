@@ -40,6 +40,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		float ThrustToApply;
 
+protected:
+	//See HolodeckAgent for the documentation of these overridden functions
+	virtual void UploadSettings() override;
+	virtual int GetNumSettings() override;
+
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
 	// PID Controllers
