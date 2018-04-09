@@ -79,38 +79,39 @@ public:
 	bool Teleport(const FVector& NewLocation);
 
 	/**
-	  * GetSettingsBuffer
-	  * Gets the settings buffer for this agent
+	  * SetHyperParameterAddress
+	  * Sets the where the HyperParameters pointer points to
+	  * You must give it a pointer to a place that has the proper memory allocated for it
+	  * @param Input The pointer
 	  */
-	void GetSettingsBuffer();
+	void SetHyperParameterAddress(float* Input);
 
 	/**
-	* UploadSettings 
-	* This is called in HolodeckAgent::BeginPlay
-	* In order to upload settings, this function must be overridden by derived classes. 
-	* It is used to send all of the necessary data to the SettingsBuffer
-	* For this function to be called, make sure to set bShouldExposeSettings to true. 
-	*/
-	virtual void UploadSettings() { check(0 && "You must override AHolodeckAgent::UploadSettings or set bShouldExposeSettings to false"); };
+	  * GetHyperParameterCount
+	  * @return The total number of Hyper parameters.
+	  */
+	virtual int GetHyperParameterCount() const { return 1; };
+	
+	/**
+	  * GetHyperParameters
+	  * This function is pointer safe, you can't access a bad pointer with it unless you 
+	  * gave it a bad pointer to point to via SetHyperParameterAddress().
+	  * @return A const pointer to the HyperParameters Array.
+	  */
+	const float*  GetHyperParameters();
 
 protected:
+	
 	/**
-	* GetNumSettings
-	* Derived classes must override this function.
-	* It is used to represent the total number of settings that need 
-	* to be uploaded to the python binding. 
-	* @return The total number of settings.
+	* GetDefaultHyperParameters
+	* You must override this function iff GetHyperParameterCount() does not return 1 (the default value)
+	* @return a const pointer to the default hyperParameters
 	*/
-	virtual int GetNumSettings() { check(0 && "You must override AHolodeckAgent::GetNumSettings or set bShouldExposeSettings to false"); return 0; };
+	virtual const float* GetDefaultHyperParameters() const; 
 
-	float* SettingsBuffer;
-
-	bool bShouldExposeSettings = false; //The default is false. If you need to expose settings, make sure to set this to true before AHolodeckAgent::BeginPlay() is called. 
 private:
-
-	void GetServer();
+	const float* HyperParameters;
 	float* RewardPtr;
 	bool* TerminalPtr;
 	AHolodeckPawnController* HolodeckController;
-	UHolodeckServer* Server;
 };

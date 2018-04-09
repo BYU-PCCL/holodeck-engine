@@ -30,23 +30,9 @@ void AHolodeckAgent::BeginPlay() {
 			*RewardPtr = 0.0;
 		if (TerminalPtr != nullptr)
 			*TerminalPtr = false;
-		HolodeckController->GetActionBuffer(AgentName);
+		HolodeckController->GetBuffers(AgentName);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent begin play successful"));
 	}
-
-	//These functions are used in conjunction to give all of the parameters of agents to the python binding. 
-	//It is important that these are called in this order. Each rely on the successful completion of the prior. 
-	if (bShouldExposeSettings) {
-		GetServer();
-		if (Server != nullptr) {
-			GetSettingsBuffer();
-			UploadSettings(); //This is essentially a pure virtual function. It is fine here because BeginPlay() is called after the constructor is called.
-		}
-		else {
-			UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to upload settings due to no server"));
-		}
-	}
-
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
 	//This is needed specifically for the collision sensor.
@@ -85,27 +71,21 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	return Teleport(NewLocation, DefaultRotation);
 }
 
-void AHolodeckAgent::GetSettingsBuffer() {
-	FString SettingName = AgentName + "_settings";
-	if (Server != nullptr) {
-		SettingsBuffer = static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*SettingName), this->GetNumSettings() * sizeof(float)));
-	}
-	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent::GetSettingsBuffer failed due to null Server pointer"));
-	}
+void AHolodeckAgent::SetHyperParameterAddress(float* Input) {
+	if (HyperParameters)
+		FMemory::Memcpy(Input, HyperParameters, GetHyperParameterCount() * sizeof(float));
+	HyperParameters = Input;
 }
 
-void AHolodeckAgent::GetServer() {
-	if (Server != nullptr) return;
-	UHolodeckGameInstance* Instance;
+const float* AHolodeckAgent::GetDefaultHyperParameters() const {
+	if (GetHyperParameterCount() > 1)
+		check(0 && "You must override this function if your agent has hyperparameters");
+	static const float DefaultHyperParameter[1] = { 1 };
+	return DefaultHyperParameter;
+}
 
-		Instance = static_cast<UHolodeckGameInstance*>(this->GetController()->GetGameInstance());
-		if (Instance != nullptr) {
-			Server = Instance->GetServer();
-		}
-		else {
-			UE_LOG(LogHolodeck, Warning, TEXT("AHolodeckAgent => Game Instance is not UHolodeckGameInstance."));
-		}
-			
-		
+const float* AHolodeckAgent::GetHyperParameters() {
+	if (!HyperParameters)
+		HyperParameters = GetDefaultHyperParameters();
+	return HyperParameters;
 }
