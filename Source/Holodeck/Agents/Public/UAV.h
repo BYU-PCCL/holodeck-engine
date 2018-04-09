@@ -41,8 +41,8 @@ public:
 		float ThrustToApply;
 
 protected:
-	virtual const float* GetDefaultHyperParameters() const;
-	int GetHyperParameterCount() const;
+	virtual const float* GetDefaultHyperParameters() const override;
+	int GetHyperParameterCount() const override;
 
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
