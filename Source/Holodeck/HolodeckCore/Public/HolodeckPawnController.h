@@ -80,7 +80,7 @@ public:
 	  * Gets the action buffer for this agent.
 	  * @param AgentName the name of the agent to subscribe an action buffer for.
 	  */
-	void GetActionBuffer(const FString& AgentName);
+	void GetBuffers(const FString& AgentName);
 
 	/**
 	  * ExecuteCommand
@@ -111,7 +111,14 @@ private:
 	*/
 	void GetServer();
 
+	/**
+	  * CheckBoolBuffer
+	  * Checks to see if the buffer is true or not, sets the buffer to false,
+	  * then returns the value.
+	  */
+	bool CheckBoolBuffer(void* Buffer);
+
 	UHolodeckServer* Server;
-	const int TELEPORT_BOOL_SIZE = 1;
+	const int SINGLE_BOOL = 1;
 	const int TELEPORT_COMMAND_SIZE = 3;
 };
