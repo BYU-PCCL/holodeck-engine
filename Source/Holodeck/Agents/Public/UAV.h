@@ -41,9 +41,8 @@ public:
 		float ThrustToApply;
 
 protected:
-	//See HolodeckAgent for the documentation of these overridden functions
-	virtual void UploadSettings() override;
-	virtual int GetNumSettings() override;
+	virtual const float* GetDefaultHyperParameters() const;
+	int GetHyperParameterCount() const;
 
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
@@ -71,4 +70,5 @@ private:
 	float CurrentYawRate;
 	// Wind
 	FVector Wind;
+	const static enum ParameterIndeces;
 };
