@@ -21,17 +21,18 @@ public:
 	  */
 	AAndroid();
 
+	static const int NUM_JOINTS = 48;
+	static const int NUM_3_AXIS_JOINTS = 18;
+	static const int NUM_2_AXIS_JOINTS = 10;
+	static const int NUM_1_AXIS_JOINTS = 20;
+	static const int NUM_2_PLUS_3_AXIS_JOINTS = 28;
+
+	const static FName Joints[];
+
 	/**
 	  * Called when the game starts.
 	  */
 	virtual void BeginPlay() override;
-	
-	/**
-	  * Tick
-	  * Called every frame.
-	  * @param DeltaSeconds the time since the last tick.
-	  */
-	void Tick(float DeltaSeconds) override;
 
 	/**
 	  * TODO(joshgreaves) : Explain this function properly.
@@ -63,6 +64,11 @@ public:
 	  * @return true if collisions are visible.
 	  */
 	bool GetCollisionsVisible();
+
+	float* CommandArray;
+
+	UPROPERTY(BlueprintReadWrite, Category = AndroidMesh)
+		USkeletalMeshComponent* SkeletalMesh;
 
 private:
 	bool bCollisionsAreVisible;

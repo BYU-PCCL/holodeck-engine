@@ -10,11 +10,7 @@ AAndroid::AAndroid() {
 
 void AAndroid::BeginPlay() {
 	Super::BeginPlay();
-}
-
-// Called every frame
-void AAndroid::Tick(float DeltaTime) {
-	Super::Tick( DeltaTime );
+	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
 }
 
 void AAndroid::NotifyHit(UPrimitiveComponent* MyComp,
@@ -45,3 +41,64 @@ void AAndroid::SetCollisionsVisible(bool Visible){
 bool AAndroid::GetCollisionsVisible() {
 	return bCollisionsAreVisible;
 }
+
+const FName AAndroid::Joints[] = {
+
+	// Head, Spine, and Arm joints. Each has [swing1, swing2, twist]
+	FName(TEXT("head")),
+	FName(TEXT("neck_01")),
+	FName(TEXT("spine_02")),
+	FName(TEXT("spine_01")),
+	FName(TEXT("upperarm_l")),
+	FName(TEXT("lowerarm_l")),
+	FName(TEXT("hand_l")),
+	FName(TEXT("upperarm_r")),
+	FName(TEXT("lowerarm_r")),
+	FName(TEXT("hand_r")),
+
+	// Leg Joints. Each has [swing1, swing2, twist]
+	FName(TEXT("thigh_l")),
+	FName(TEXT("calf_l")),
+	FName(TEXT("foot_l")),
+	FName(TEXT("ball_l")),
+	FName(TEXT("thigh_r")),
+	FName(TEXT("calf_r")),
+	FName(TEXT("foot_r")),
+	FName(TEXT("ball_r")),
+
+	// First joint of each finger. Has only [swing1, swing2]
+	FName(TEXT("thumb_01_l")),
+	FName(TEXT("index_01_l")),
+	FName(TEXT("middle_01_l")),
+	FName(TEXT("ring_01_l")),
+	FName(TEXT("pinky_01_l")),
+	FName(TEXT("thumb_01_r")),
+	FName(TEXT("index_01_r")),
+	FName(TEXT("middle_01_r")),
+	FName(TEXT("ring_01_r")),
+	FName(TEXT("pinky_01_r")),
+
+	// Second joint of each finger. Has only [swing1]
+	FName(TEXT("thumb_02_l")),
+	FName(TEXT("index_02_l")),
+	FName(TEXT("middle_02_l")),
+	FName(TEXT("ring_02_l")),
+	FName(TEXT("pinky_02_l")),
+	FName(TEXT("thumb_02_r")),
+	FName(TEXT("index_02_r")),
+	FName(TEXT("middle_02_r")),
+	FName(TEXT("ring_02_r")),
+	FName(TEXT("pinky_02_r")),
+
+	// Third joint of each finger. Has only [swing1]
+	FName(TEXT("thumb_03_l")),
+	FName(TEXT("index_03_l")),
+	FName(TEXT("middle_03_l")),
+	FName(TEXT("ring_03_l")),
+	FName(TEXT("pinky_03_l")),
+	FName(TEXT("thumb_03_r")),
+	FName(TEXT("index_03_r")),
+	FName(TEXT("middle_03_r")),
+	FName(TEXT("ring_03_r")),
+	FName(TEXT("pinky_03_r")),
+};
