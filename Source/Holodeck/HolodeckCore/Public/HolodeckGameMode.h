@@ -6,7 +6,7 @@
 
 #include "GameFramework/GameMode.h"
 #include "HolodeckGameInstance.h"
-
+#include "CommandCenter.h"
 #include "HolodeckGameMode.generated.h"
 
 /**
@@ -45,6 +45,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	bool bHolodeckIsOn;
 
+	/**
+	  * GetAssociatedServer
+	  * Returns the private server pointer that the instance contains.
+	  */
+	UHolodeckServer* GetAssociatedServer() { return this->Server; };
+
 private:
 	/**
 	  * RegisterSettings
@@ -58,4 +64,5 @@ private:
 	UPROPERTY()
 	UHolodeckServer* Server;
 	UHolodeckGameInstance* Instance;
+	UCommandCenter* CommandCenter;
 };
