@@ -103,10 +103,10 @@ public:
 protected:
 	
 	/**
-	* GetDefaultHyperParameters
-	* You must override this function iff GetHyperParameterCount() does not return 1 (the default value)
-	* @return a const pointer to the default hyperParameters
-	*/
+	  * GetDefaultHyperParameters
+	  * You must override this function iff GetHyperParameterCount() does not return 1 (the default value)
+	  * @return a const pointer to the default hyperParameters
+	  */
 	virtual const float* GetDefaultHyperParameters() const; 
 
 private:

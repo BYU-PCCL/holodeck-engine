@@ -41,6 +41,7 @@ public:
 		float ThrustToApply;
 
 protected:
+	//See HolodeckAgent.h for descriptions of these overriden functions
 	virtual const float* GetDefaultHyperParameters() const override;
 	int GetHyperParameterCount() const override;
 
