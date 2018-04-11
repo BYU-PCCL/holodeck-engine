@@ -356,6 +356,11 @@ int jsonParse(char *s, char **endptr, JsonValue *value, JsonAllocator &allocator
     return JSON_BREAKING_BAD;
 }
 
+/**
+* PrintJson
+* Used solely for debugging. It is accurate and prints exactly how the json is structured.
+* @param Input The JsonValue to print
+*/
 void const PrintJson(const JsonValue& Value) {
 	std::string MyString;
 	FString String;

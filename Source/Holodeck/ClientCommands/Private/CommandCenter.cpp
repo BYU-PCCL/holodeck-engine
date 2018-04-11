@@ -64,12 +64,11 @@ void UCommandCenter::ExtractCommandsFromJson(const JsonValue &Input){
 	if (Input.getTag() == JSON_OBJECT) {
 		JsonIterator Iter = begin(Input);
 		//check if this is actually the array of commands, and then extract the commands from it.
-		if (Iter->value.getTag() == JSON_ARRAY) {
+		if (Iter->value.getTag() == JSON_ARRAY)
 			for (JsonNode* ArrayIter : Iter->value)
 				GetCommand(ArrayIter->value);
-		} else {
+		else
 			UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
-		}
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("Command Buffer didn't contain the format of JSON we expected. Unable to process command."));
 	}
@@ -97,4 +96,3 @@ void UCommandCenter::GetCommand(const JsonValue &Input) {
 	UCommand* CommandPtr = UCommandFactory::MakeCommand(CommandName, FloatParameters, StringParameters, GameMode);
 	this->GiveCommand(CommandPtr);
 }
-
