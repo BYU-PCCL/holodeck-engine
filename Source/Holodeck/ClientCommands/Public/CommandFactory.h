@@ -31,7 +31,7 @@ public:
 	  * MakeCommand
 	  * This is the factory method for producing commands.
 	  */
-	static UCommand* MakeCommand(const std::string& Name, std::vector<float> NumberParameters, std::vector<std::string> StringParameters, AActor* ParameterGameMode);
+	static UCommand* MakeCommand(const std::string& Name, const std::vector<float>& NumberParameters, const std::vector<std::string>& StringParameters, AActor* ParameterGameMode);
 
 private:
 	/**

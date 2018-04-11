@@ -355,3 +355,42 @@ int jsonParse(char *s, char **endptr, JsonValue *value, JsonAllocator &allocator
     }
     return JSON_BREAKING_BAD;
 }
+
+void const PrintJson(const JsonValue& Value) {
+	std::string MyString;
+	FString String;
+	switch (Value.getTag()) {
+	case JSON_NUMBER:
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("%f"), Value.toNumber());
+		break;
+	case JSON_STRING:
+		MyString = Value.toString();
+		String = UTF8_TO_TCHAR(MyString.c_str());
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("OutputString: %s"), *String);
+		break;
+	case JSON_ARRAY:
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("[[[Entering JSON_ARRAY]]]"));
+		for (const auto& i : Value) {
+			UE_LOG(LogHolodeck, VeryVerbose, TEXT("JSON value of entered array:"));
+			PrintJson(i->value);
+		}
+		break;
+	case JSON_OBJECT:
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("@@@Entering JSON_OBJECT@@@"));
+		for (const auto& i : Value) {
+			UE_LOG(LogHolodeck, VeryVerbose, TEXT("JSON value of entered object:"));
+			PrintJson(i->value);
+		}
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("@@@Exiting JSON_OBJECT@@@"));
+		break;
+	case JSON_TRUE:
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("true"));
+		break;
+	case JSON_FALSE:
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("false"));
+		break;
+	case JSON_NULL:
+		UE_LOG(LogHolodeck, VeryVerbose, TEXT("null"));
+		break;
+	}
+}

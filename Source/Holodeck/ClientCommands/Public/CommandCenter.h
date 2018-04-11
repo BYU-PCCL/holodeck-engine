@@ -108,3 +108,4 @@ private:
 	  */
 	void GetCommand(const JsonValue &Input);
 };
+

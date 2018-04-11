@@ -18,8 +18,7 @@ AHolodeckAgent::AHolodeckAgent() : AgentName("") {
 void AHolodeckAgent::BeginPlay() {
 	Super::BeginPlay();
 	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
-	bool bControllerInitializationSuccessful = InitializeController();
-	if(bControllerInitializationSuccessful)
+	if(InitializeController())
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent BeginPlay was successful"));
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
 	//This is needed specifically for the collision sensor.

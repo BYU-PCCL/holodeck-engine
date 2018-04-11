@@ -30,7 +30,7 @@ USpawnAgentCommand::USpawnAgentCommand() {
 	}
 }
 
-void const USpawnAgentCommand::Execute() {
+void USpawnAgentCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
 	//Program should throw an error if any of these params aren't the correct size. They should always be this size.
 	if (StringParams.size() != 2 || NumberParams.size() != 3) {

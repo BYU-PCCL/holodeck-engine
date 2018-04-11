@@ -25,6 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <stdint.h>
 #include <stddef.h>
 #include <assert.h>
+#include <string>
 
 enum JsonTag {
     JSON_NUMBER = 0,

@@ -25,7 +25,7 @@ class HOLODECK_API USpawnAgentCommand : public UCommand {
 	GENERATED_BODY()
 public:
 	//See UCommand for the documentation of this overridden function. 
-	void const Execute() override;
+	void Execute() override;
 
 	/**
 	  * USpawnAgentCommand

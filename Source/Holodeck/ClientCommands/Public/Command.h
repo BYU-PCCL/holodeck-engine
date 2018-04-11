@@ -28,7 +28,7 @@ public:
 	  * Override this function with what you want the child command to do.
 	  * Use NumberParams, StringParams, and Target as input variables for the execute function. 
 	  */
-	const virtual void Execute() { check( 0 && "You must override UCommand::Execute" ); };
+	virtual void Execute() { check( 0 && "You must override UCommand::Execute" ); };
 
 	/**
 	* UCommand
