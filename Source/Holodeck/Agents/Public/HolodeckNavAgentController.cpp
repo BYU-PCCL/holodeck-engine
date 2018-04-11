@@ -10,8 +10,8 @@ AHolodeckNavAgentController::AHolodeckNavAgentController(const FObjectInitialize
 
 AHolodeckNavAgentController::~AHolodeckNavAgentController() {}
 
-void AHolodeckNavAgentController::Possess(APawn* Pawn) {
-	Super::Possess(Pawn);
+void AHolodeckNavAgentController::Possess(APawn* PawnParam) {
+	Super::Possess(PawnParam);
 }
 
 void AHolodeckNavAgentController::ExecuteCommand() {
