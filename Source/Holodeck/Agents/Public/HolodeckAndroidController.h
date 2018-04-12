@@ -47,18 +47,6 @@ protected:
 	int GetActionSpaceDimension() override { return 94; };
 
 private:
-	/**
-	* SetJointConstraint
-	* Sets the joint constraint. A helper function for ExecuteCommand.
-	* @param Joint the joint to set the constraint on.
-	* @param Swing1 the amount of swing1 to set.
-	* @param Twist the amount of twist to set.
-	* @param Swing2 the amount of swing2 to set.
-	* @param Force the force to be applied.
-	*/
-	void SetJointConstraint(FName Joint, float Swing1, float Twist, float Swing2, float Force);
-
-	void ApplyTorque(FName Joint, float Swing1, float Twist, float Swing2);
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
 };
