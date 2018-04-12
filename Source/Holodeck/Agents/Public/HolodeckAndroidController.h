@@ -37,13 +37,6 @@ public:
 	  */
 	void ExecuteCommand() override;
 
-	/**
-	* Tick
-	* Called every frame.
-	* @param DeltaSeconds the time since the last tick.
-	*/
-	void Tick(float DeltaSeconds) override;
-
 
 protected:
 	/**
@@ -54,17 +47,18 @@ protected:
 	int GetActionSpaceDimension() override { return 94; };
 
 private:
-
 	/**
-	* ApplyTorques
-	* Applies torques for that tick on each joint with a force/direction
-	* corresponding to the values in the command array
+	* SetJointConstraint
+	* Sets the joint constraint. A helper function for ExecuteCommand.
+	* @param Joint the joint to set the constraint on.
+	* @param Swing1 the amount of swing1 to set.
+	* @param Twist the amount of twist to set.
+	* @param Swing2 the amount of swing2 to set.
+	* @param Force the force to be applied.
 	*/
-	void ApplyTorques();
+	void SetJointConstraint(FName Joint, float Swing1, float Twist, float Swing2, float Force);
 
-	USkeletalMeshComponent* SkeletalMesh;
+	void ApplyTorque(FName Joint, float Swing1, float Twist, float Swing2);
 
-	AAndroid* AndroidPawn;
-
-	float* CommandArray;
+	USkeletalMeshComponent* SkeletalMeshComponent;
 };
