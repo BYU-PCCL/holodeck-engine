@@ -14,7 +14,12 @@
   * AHolodeckPawnController
   * A controller for Holodeck Agents.
   * If a HolodeckAgent doesn't contain this controller or a controller which
-  * inherits it, then you will run into problems.
+  * inherits it, then you will run into problems. This class handles the 
+  * subscribing of sensors and setting up action buffer channels. The 
+  * sensors themselves tell the controller to subscribe them. Its base 
+  * classes must report what size of action buffer they need. 
+  * HolodeckPawnControllers get the data from the shared memory and give
+  * the commands to the pawns/agents. 
   */
 UCLASS()
 class AHolodeckPawnController : public AAIController
@@ -31,7 +36,6 @@ public:
 	  * Default Destructor
 	  */
 	~AHolodeckPawnController();
-
 
 	/**
 	* BeginPlay
@@ -76,7 +80,7 @@ public:
 	  * Gets the action buffer for this agent.
 	  * @param AgentName the name of the agent to subscribe an action buffer for.
 	  */
-	void GetActionBuffer(const FString& AgentName);
+	void GetBuffers(const FString& AgentName);
 
 	/**
 	  * ExecuteCommand
@@ -85,6 +89,8 @@ public:
 	  * Is called from the tick on the controlled pawn.
 	  */
 	virtual void ExecuteCommand() { check(0 && "You must override ExecuteCommand"); };
+
+	virtual void ExecuteTeleport();
 
 protected:
 	/**
@@ -95,6 +101,8 @@ protected:
 	virtual int GetActionSpaceDimension() { check(0 && "You must override GetActionSpaceDimension"); return 0; };
 
 	void* ActionBuffer;
+	void* TeleportBuffer;
+	void* ShouldTeleportBuffer;
 
 private:
 	/**
@@ -103,5 +111,14 @@ private:
 	*/
 	void GetServer();
 
+	/**
+	  * CheckBoolBuffer
+	  * Checks to see if the buffer is true or not, sets the buffer to false,
+	  * then returns the value.
+	  */
+	bool CheckBoolBuffer(void* Buffer);
+
 	UHolodeckServer* Server;
+	const int SINGLE_BOOL = 1;
+	const int TELEPORT_COMMAND_SIZE = 3;
 };

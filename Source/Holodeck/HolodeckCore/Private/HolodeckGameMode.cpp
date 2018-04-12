@@ -20,6 +20,7 @@ void AHolodeckGameMode::Tick(float DeltaSeconds) {
 	if (this->Instance)
 		this->Instance->Tick(DeltaSeconds);
 
+	//Check if we should reset, and then reset the level. 
 	if (ResetSignal != nullptr && *ResetSignal) {
 		UGameplayStatics::OpenLevel(this->Instance, FName(*GetWorld()->GetName()), false);
 		*ResetSignal = false;

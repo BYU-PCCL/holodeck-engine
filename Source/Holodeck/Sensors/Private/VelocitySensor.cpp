@@ -14,6 +14,7 @@ void UVelocitySensor::BeginPlay() {
 }
 
 void UVelocitySensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	//check if your parent pointer is valid, and if the sensor is on. Then get the velocity and buffer, then send the data to it. 
 	if (Parent != nullptr && bOn) {
 		FVector Velocity = Parent->GetVelocity();
 		float* FloatBuffer = static_cast<float*>(Buffer);
