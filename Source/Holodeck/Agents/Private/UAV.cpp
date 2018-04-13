@@ -92,9 +92,18 @@ void AUAV::BeginPlay() {
 
 void AUAV::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
+	//if (RootMesh) {
+	//  RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
+	//}
 	UpdateForcesAndMoments(DeltaTime);
 	ApplyForces();
 }
+
+//void AUAV::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
+//{
+//  UpdateForcesAndMoments(DeltaTime);
+//  ApplyForces();
+//}
 
 FVector AUAV::RotatorToEulerInZYX(FRotator Rotator) {
 	FQuat Quaternion = Rotator.Quaternion();
