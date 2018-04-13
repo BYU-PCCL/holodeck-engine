@@ -90,7 +90,17 @@ public:
 	  */
 	virtual void ExecuteCommand() { check(0 && "You must override ExecuteCommand"); };
 
+	/**
+	* ExecuteTeleport
+	* Tells the controlled agent to teleport to the location in the shared memory.
+	*/
 	virtual void ExecuteTeleport();
+
+	/**
+	* SetServer
+	* Sets the server object within this object.
+	*/
+	virtual void SetServer(UHolodeckServer* ServerParam);
 
 protected:
 	/**
