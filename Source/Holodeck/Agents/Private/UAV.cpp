@@ -79,7 +79,6 @@ AUAV::AUAV() {
 }
 
 void AUAV::BeginPlay() {
-	//this->bShouldExposeSettings = true; //This needs to be set before Super::BeginPlay() is called. 
 	Super::BeginPlay();
 
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
