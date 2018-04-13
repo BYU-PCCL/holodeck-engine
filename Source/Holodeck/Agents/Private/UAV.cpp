@@ -166,7 +166,7 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	ThrustToApply = (1 - AlphaThrust) * ThrustToApply + AlphaThrust * ThrustToApply;
 
 	// Calculate Air Resistance
-	Wind = -UAV_MU * CurrentGlobalVelocity;
+	Wind = -HyperParametersPointer[UAV_MU_INDEX] * CurrentGlobalVelocity;
 
 	// Apply the discrete first order filter
 	RollTorqueToApply = FMath::Clamp(RollTorqueToApply, -HyperParametersPointer[UAV_MAX_ROLL_INDEX], HyperParametersPointer[UAV_MAX_ROLL_INDEX]);
