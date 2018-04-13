@@ -40,6 +40,11 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		float ThrustToApply;
 
+protected:
+	//See HolodeckAgent.h for descriptions of these overriden functions
+	virtual const float* GetDefaultHyperParameters() const override;
+	int GetHyperParameterCount() const override;
+
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
 	// PID Controllers
@@ -66,4 +71,5 @@ private:
 	float CurrentYawRate;
 	// Wind
 	FVector Wind;
+	const static enum ParameterIndeces;
 };

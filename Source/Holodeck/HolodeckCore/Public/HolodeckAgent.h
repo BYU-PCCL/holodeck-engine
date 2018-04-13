@@ -60,33 +60,65 @@ public:
 	void SetTerminal(bool Terminal) { if (TerminalPtr != nullptr) *TerminalPtr = Terminal; };
 
 	/**
-	* Teleport
-	* Instantly moves the agent to target location, with the orientation that was given
-	* If no orientation was given, orientation remains unchanged (see overloaded function)
-	* @param NewLocation The location to move to
-	* @param NewRotation The rotation that the object will take on
-	* @return Bool if the teleport was successful.
-	*/
+	  * Teleport
+	  * Instantly moves the agent to target location, with the orientation that was given
+	  * If no orientation was given, orientation remains unchanged (see overloaded function)
+	  * @param NewLocation The location to move to
+	  * @param NewRotation The rotation that the object will take on
+	  * @return Bool if the teleport was successful.
+	  */
 	bool Teleport(const FVector& NewLocation, FRotator NewRotation);
 
 	/**
-	* Teleport
-	* Instantly moves the agent to target location, with the orientation that was given
-	* Orientation remains unchanged
-	* @param NewLocation The location to move to
-	* @return Bool if the teleport was successful.
-	*/
+	  * Teleport
+	  * Instantly moves the agent to target location, with the orientation that was given
+	  * Orientation remains unchanged
+	  * @param NewLocation The location to move to
+	  * @return Bool if the teleport was successful.
+	  */
 	bool Teleport(const FVector& NewLocation);
 
 	/**
+	  * SetHyperParameterAddress
+	  * Sets the where the HyperParameters pointer points to
+	  * You must give it a pointer to a place that has the proper memory allocated for it
+	  * @param Input The pointer
+	  */
+	void SetHyperParameterAddress(float* Input);
+
+	/**
+	  * GetHyperParameterCount
+	  * @return The total number of Hyper parameters.
+	  */
+	virtual int GetHyperParameterCount() const { return 1; };
+	
+	/**
+	  * GetHyperParameters
+	  * This function is pointer safe, you can't access a bad pointer with it unless you 
+	  * gave it a bad pointer to point to via SetHyperParameterAddress().
+	  * @return A const pointer to the HyperParameters Array.
+	  */
+	const float*  GetHyperParameters();
+
+	/**
 	* InitializeController
-	* Hooks up everything with the controller. This is normally called in the beginPlay function, 
+	* Hooks up everything with the controller. This is normally called in the beginPlay function,
 	* but if you have to manually configure a controller, you will have to call this function after
-	* you do it. 
+	* you do it.
 	*/
 	bool InitializeController();
 
+protected:
+	
+	/**
+	  * GetDefaultHyperParameters
+	  * You must override this function iff GetHyperParameterCount() does not return 1 (the default value)
+	  * @return a const pointer to the default hyperParameters
+	  */
+	virtual const float* GetDefaultHyperParameters() const; 
+
 private:
+	const float* HyperParameters;
 	float* RewardPtr;
 	bool* TerminalPtr;
 	AHolodeckPawnController* HolodeckController;
