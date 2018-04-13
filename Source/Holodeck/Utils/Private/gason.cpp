@@ -361,7 +361,7 @@ int jsonParse(char *s, char **endptr, JsonValue *value, JsonAllocator &allocator
 * Used solely for debugging. It is accurate and prints exactly how the json is structured.
 * @param Input The JsonValue to print
 */
-void const PrintJson(const JsonValue& Value) {
+void const JsonValue::printJson(const JsonValue& Value) {
 	std::string MyString;
 	FString String;
 	switch (Value.getTag()) {
@@ -377,14 +377,14 @@ void const PrintJson(const JsonValue& Value) {
 		UE_LOG(LogHolodeck, VeryVerbose, TEXT("[[[Entering JSON_ARRAY]]]"));
 		for (const auto& i : Value) {
 			UE_LOG(LogHolodeck, VeryVerbose, TEXT("JSON value of entered array:"));
-			PrintJson(i->value);
+			printJson(i->value);
 		}
 		break;
 	case JSON_OBJECT:
 		UE_LOG(LogHolodeck, VeryVerbose, TEXT("@@@Entering JSON_OBJECT@@@"));
 		for (const auto& i : Value) {
 			UE_LOG(LogHolodeck, VeryVerbose, TEXT("JSON value of entered object:"));
-			PrintJson(i->value);
+			printJson(i->value);
 		}
 		UE_LOG(LogHolodeck, VeryVerbose, TEXT("@@@Exiting JSON_OBJECT@@@"));
 		break;

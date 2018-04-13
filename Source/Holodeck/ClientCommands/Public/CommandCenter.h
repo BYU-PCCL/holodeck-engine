@@ -86,13 +86,6 @@ private:
 	const static int BYTE_SIZE;
 
 	/**
-	  * PrintJson
-	  * Used solely for debugging. It is accurate and prints exactly how the json is structured.
-	  * @param Input The JsonValue to print
-	  */
-	void const PrintJson(const JsonValue& Input);
-
-	/**
 	  * ExctractCommandsFromJson
 	  * Reads the buffer, parses the resulting json, and gives the commands to the command queue.
 	  * It will not succeed if the json object is not in the ofrmat expected. 
