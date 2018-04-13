@@ -59,7 +59,6 @@ enum AUAV::ParameterIndeces {
 	UAV_ALT_I_INDEX = 25,
 	UAV_ALT_D_INDEX = 26,
 	NUMBER_OF_PARAMETERS = 27 //including this one
-
 };
 
 AUAV::AUAV() {
@@ -93,18 +92,9 @@ void AUAV::BeginPlay() {
 
 void AUAV::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-	//if (RootMesh) {
-	//  RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
-	//}
 	UpdateForcesAndMoments(DeltaTime);
 	ApplyForces();
 }
-
-//void AUAV::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
-//{
-//  UpdateForcesAndMoments(DeltaTime);
-//  ApplyForces();
-//}
 
 FVector AUAV::RotatorToEulerInZYX(FRotator Rotator) {
 	FQuat Quaternion = Rotator.Quaternion();
