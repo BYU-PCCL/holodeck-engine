@@ -63,7 +63,7 @@ void AHolodeckPawnController::GetBuffers(const FString& AgentName) {
 		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), SINGLE_BOOL * sizeof(bool));
 		FString CommandString = AgentName + "_teleport_command";
 		TeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*CommandString), TELEPORT_COMMAND_SIZE * sizeof(float));
-		FString HyperParameterBufferName = AgentName + "_hyper_parameter";
+		FString HyperParameterBufferName = AgentName + "_hyperparameter";
 		UE_LOG(LogHolodeck, Log, TEXT("Buffer name: %s"), *HyperParameterBufferName);
 		AHolodeckAgent* HolodeckPawn = static_cast<AHolodeckAgent*>(this->GetPawn()); 
 		if(HolodeckPawn)
