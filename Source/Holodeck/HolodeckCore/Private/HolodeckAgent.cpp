@@ -73,19 +73,20 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 
 void AHolodeckAgent::SetHyperParameterAddress(float* Input) {
 	if (HyperParameters) {
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent Hyper Parameter Address already existed, so copying information over to new addresss."));
 		FMemory::Memcpy(Input, HyperParameters, GetHyperParameterCount() * sizeof(float));
+		//UE_LOG(LogHolodeck, Log, TEXT("value of index 1 of copied array: %f"), HyperParameters[1]);
 	} else {
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent Hyper Parameter Address given should contain the default values now.."));
 		FMemory::Memcpy(Input, GetDefaultHyperParameters(), GetHyperParameterCount() * sizeof(float));
 	}
+	UE_LOG(LogHolodeck, Log, TEXT("value of index 0 of the new address: %f"), GetDefaultHyperParameters()[0]);
 	HyperParameters = Input;
 	UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent Hyper Parameter Address set successfully."));
 
 }
 
 const float* AHolodeckAgent::GetDefaultHyperParameters() const {
-	UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent GetDefaultHyperParameters"));
-
 	if (GetHyperParameterCount() > 1)
 		check(0 && "You must override this function if your agent has hyperparameters");
 	static const float DefaultHyperParameter[1] = { 1 };
@@ -93,9 +94,9 @@ const float* AHolodeckAgent::GetDefaultHyperParameters() const {
 }
 
 const float* AHolodeckAgent::GetHyperParameters() {
-	UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent GetHyperParameters"));
+	UE_LOG(LogHolodeck, Log, TEXT("value of index 0 of HyperParameters: %f"), HyperParameters[0]);
 	if (!HyperParameters) {
-		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent HyperParameters was null, so setting address equal to defaulthyperperameters"));
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent HyperParameters was null, so setting address equal to DefaultHyperParameters"));
 		HyperParameters = GetDefaultHyperParameters();
 
 	}
