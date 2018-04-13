@@ -399,3 +399,7 @@ void const JsonValue::printJson(const JsonValue& Value) {
 		break;
 	}
 }
+
+void const JsonValue::print() {
+	printJson(*this);
+}

@@ -77,6 +77,13 @@ union JsonValue {
         assert(getTag() == JSON_ARRAY || getTag() == JSON_OBJECT);
         return (JsonNode *)getPayload();
     }
+public:
+	/**
+	* print
+	* Used to start the recursive call to printJson.
+	*/
+	void const print();
+private:
 	/**
 	* printJson
 	* Used solely for debugging. It is accurate and prints exactly how the json is structured.
