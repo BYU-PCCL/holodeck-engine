@@ -31,11 +31,8 @@ void AHolodeckPawnController::UnPossess() {
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	bool* BoolPtr = static_cast<bool*>(ShouldTeleportBuffer);
-	if (BoolPtr && *BoolPtr == true) {
-			ExecuteTeleport();
-			*BoolPtr = false;
-	}
+	if (CheckBoolBuffer(ShouldTeleportBuffer))
+		ExecuteTeleport();
 	ExecuteCommand();
 }
 
@@ -59,13 +56,18 @@ void AHolodeckPawnController::GetServer() {
 		UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
 }
 
-void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
+void AHolodeckPawnController::GetBuffers(const FString& AgentName) {
 	if (Server != nullptr) {
-		FString BoolString = AgentName + "_teleport_bool";
-		FString CommandString = AgentName + "_teleport_command";
 		ActionBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*AgentName), GetActionSpaceDimension() * sizeof(float));
-		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), TELEPORT_BOOL_SIZE * sizeof(bool));
+		FString BoolString = AgentName + "_teleport_bool";
+		ShouldTeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*BoolString), SINGLE_BOOL * sizeof(bool));
+		FString CommandString = AgentName + "_teleport_command";
 		TeleportBuffer = Server->SubscribeActionSpace(TCHAR_TO_UTF8(*CommandString), TELEPORT_COMMAND_SIZE * sizeof(float));
+		FString HyperParameterBufferName = AgentName + "_hyper_parameter";
+		UE_LOG(LogHolodeck, Log, TEXT("Buffer name: %s"), *HyperParameterBufferName);
+		AHolodeckAgent* HolodeckPawn = static_cast<AHolodeckAgent*>(this->GetPawn()); 
+		if(HolodeckPawn)
+			HolodeckPawn->SetHyperParameterAddress(static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*HyperParameterBufferName), HolodeckPawn->GetHyperParameterCount() * sizeof(bool))));
 	}
 }
 
@@ -78,6 +80,14 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	}
 }
 
+bool AHolodeckPawnController::CheckBoolBuffer(void* Buffer) {
+	bool* BoolPtr = static_cast<bool*>(Buffer);
+	if (BoolPtr && *BoolPtr) {
+		*BoolPtr = false;
+		return true;
+	}
+	return false;
+}
 void AHolodeckPawnController::SetServer(UHolodeckServer* ServerParam) {
 	this->Server = ServerParam;
 }
