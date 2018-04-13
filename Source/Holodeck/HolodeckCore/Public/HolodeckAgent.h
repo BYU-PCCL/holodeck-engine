@@ -78,6 +78,14 @@ public:
 	*/
 	bool Teleport(const FVector& NewLocation);
 
+	/**
+	* InitializeController
+	* Hooks up everything with the controller. This is normally called in the beginPlay function, 
+	* but if you have to manually configure a controller, you will have to call this function after
+	* you do it. 
+	*/
+	bool InitializeController();
+
 private:
 	float* RewardPtr;
 	bool* TerminalPtr;

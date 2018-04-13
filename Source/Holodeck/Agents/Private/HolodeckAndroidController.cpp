@@ -9,11 +9,11 @@ AHolodeckAndroidController::AHolodeckAndroidController(const FObjectInitializer&
 
 AHolodeckAndroidController::~AHolodeckAndroidController() {}
 
-void AHolodeckAndroidController::Possess(APawn* Pawn) {
-	Super::Possess(Pawn);
+void AHolodeckAndroidController::Possess(APawn* PawnParam) {
+	Super::Possess(PawnParam);
 
 	TArray<USkeletalMeshComponent*> Components;
-	Pawn->GetComponents<USkeletalMeshComponent>(Components);
+	PawnParam->GetComponents<USkeletalMeshComponent>(Components);
 	SkeletalMeshComponent = Components[0];
 }
 

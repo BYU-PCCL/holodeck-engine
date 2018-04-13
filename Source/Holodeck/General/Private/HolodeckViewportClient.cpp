@@ -13,8 +13,8 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot() {
 	}
 }
 
-void UHolodeckViewportClient::Draw(FViewport * Viewport, FCanvas * SceneCanvas) {
-	Super::Draw(Viewport, SceneCanvas);
+void UHolodeckViewportClient::Draw(FViewport * ViewportParam, FCanvas * SceneCanvas) {
+	Super::Draw(ViewportParam, SceneCanvas);
 	HolodeckTakeScreenShot();
 }
 

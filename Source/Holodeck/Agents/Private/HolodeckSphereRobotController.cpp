@@ -10,8 +10,8 @@ AHolodeckSphereRobotController::AHolodeckSphereRobotController(const FObjectInit
 
 AHolodeckSphereRobotController::~AHolodeckSphereRobotController() {}
 
-void AHolodeckSphereRobotController::Possess(APawn* Pawn) {
-	Super::Possess(Pawn);
+void AHolodeckSphereRobotController::Possess(APawn* PawnParam) {
+	Super::Possess(PawnParam);
 }
 
 void AHolodeckSphereRobotController::ExecuteCommand() {
