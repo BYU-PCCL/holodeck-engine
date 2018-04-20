@@ -52,7 +52,8 @@ void USpawnAgentCommand::Execute() {
 
 	//instantiate variables to be used for spawning the agent.
 	FString AgentType = StringParams[0].c_str();
-	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
+	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
+	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
 	AHolodeckAgent* SpawnedAgent = nullptr;
 	AHolodeckPawnController* SpawnedController = nullptr;
 	auto AgentSpawnFunction = SpawnFunctionMap[StringParams[0]];
