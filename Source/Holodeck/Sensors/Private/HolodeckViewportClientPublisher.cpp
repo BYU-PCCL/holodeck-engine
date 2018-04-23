@@ -12,7 +12,6 @@ void UHolodeckViewportClientPublisher::BeginPlay() {
 	// This must come first, since the HolodeckSensor parent class will
 	// call GetNumItems, which needs the ViewportClient.
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-
 	Super::BeginPlay();
 
 	if (ViewportClient && bOn) {
