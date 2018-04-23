@@ -4,7 +4,7 @@
 #include "HolodeckViewportClientPublisher.h"
 
 // Sets default values for this component's properties
-UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher() : Width(512), Height(512) {
+UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher(){
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
@@ -15,6 +15,9 @@ void UHolodeckViewportClientPublisher::BeginPlay() {
 	Super::BeginPlay();
 
 	if (ViewportClient && bOn) {
+		const FVector2D ViewportSize = FVector2D(ViewportClient->Viewport->GetSizeXY());
+		Width = ViewportSize.X;
+		Height = ViewportSize.Y;
 		ViewportClient->SetBuffer(Buffer);
 	}
 }
