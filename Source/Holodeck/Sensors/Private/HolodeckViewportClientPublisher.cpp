@@ -12,13 +12,13 @@ void UHolodeckViewportClientPublisher::BeginPlay() {
 	// This must come first, since the HolodeckSensor parent class will
 	// call GetNumItems, which needs the ViewportClient.
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-	const FVector2D ViewportSize = FVector2D(ViewportClient->Viewport->GetSizeXY());
-	Width = ViewportSize.X;
-	Height = ViewportSize.Y;
 
 	Super::BeginPlay();
 
 	if (ViewportClient && bOn) {
+		const FVector2D ViewportSize = FVector2D(ViewportClient->Viewport->GetSizeXY());
+		Width = ViewportSize.X;
+		Height = ViewportSize.Y;
 		ViewportClient->SetBuffer(Buffer);
 	}
 }
