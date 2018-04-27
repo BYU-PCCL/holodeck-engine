@@ -168,7 +168,6 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	PitchTorqueToApply = FMath::Clamp(PitchTorqueToApply, -HyperparametersPointer[UAV_MAX_PITCH_INDEX], HyperparametersPointer[UAV_MAX_PITCH_INDEX]);
 	YawTorqueToApply = FMath::Clamp(YawTorqueToApply, -HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX], HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX]);
 	ThrustToApply = FMath::Clamp(ThrustToApply, -HyperparametersPointer[UAV_MAX_FORCE_INDEX], HyperparametersPointer[UAV_MAX_FORCE_INDEX]);
-	UE_LOG(LogHolodeck, Warning, TEXT("The value of the UAV_MAX_FORCE is: %f"), HyperparametersPointer[UAV_MAX_FORCE_INDEX])
 }
 
 float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
@@ -233,7 +232,7 @@ int AUAV::GetHyperparameterCount() const {
 
 void AUAV::SetHyperparameterAddress(float* Input) {
 	Super::SetHyperparameterAddress(Input);
-	InitializePIDControllers(); //Must give the PID Controllers the proper addresses to point to. 
+	InitializePIDControllers(); //Must give the PID Controllers the proper addresses to point to.
 	this->HyperparametersPointer = Input;
 }
 
