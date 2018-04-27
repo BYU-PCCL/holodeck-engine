@@ -69,7 +69,6 @@ void AHolodeckPawnController::GetBuffers(const FString& AgentName) {
 		if (HolodeckPawn) {
 			this->HyperparameterBuffer = static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*HyperParameterBufferName), HolodeckPawn->GetHyperparameterCount() * sizeof(bool)));
 			HolodeckPawn->SetHyperparameterAddress(HyperparameterBuffer);
-
 		}
 	}
 }

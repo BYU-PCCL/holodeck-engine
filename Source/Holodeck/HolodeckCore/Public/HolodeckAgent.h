@@ -98,7 +98,7 @@ public:
 	  * gave it a bad pointer to point to via SetHyperparameterAddress().
 	  * @return A const pointer to the Hyperparameters Array.
 	  */
-	const float*  GetHyperparameters();
+	const float* GetHyperparameters();
 
 	/**
 	* InitializeController
@@ -114,10 +114,6 @@ public:
 	* @return a const pointer to the default hyperParameters
 	*/
 	virtual const float* GetDefaultHyperparameters() const;
-
-protected:
-	
-
 
 private:
 	const float* Hyperparameters;

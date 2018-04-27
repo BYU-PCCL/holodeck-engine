@@ -77,5 +77,9 @@ private:
 	const static enum ParameterIndices;
 	const float* HyperparametersPointer;
 
+	/**
+	  * InitializePIDControllers
+	  * Sets the PID controllers to point to the HyperparametersPointer array, with correct offsets for each variable of the respective controllers.
+	  */
 	void InitializePIDControllers();
 };
