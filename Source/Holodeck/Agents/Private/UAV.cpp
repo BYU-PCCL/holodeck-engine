@@ -239,7 +239,7 @@ void AUAV::SetHyperparameterAddress(float* Input) {
 void AUAV::InitializePIDControllers() {
 	const float* const HyperparametersPointer = GetHyperparameters();
 	RollController.SetGains(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX);
-	PitchController.SetGains(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX);
-	YawController.SetGains(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX);
+	PitchController.SetGains(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX);
+	YawController.SetGains(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX);
 	AltitudeController.SetGains(HyperparametersPointer + UAV_ALT_P_INDEX, HyperparametersPointer + UAV_ALT_I_INDEX, HyperparametersPointer + UAV_ALT_D_INDEX);
 }
