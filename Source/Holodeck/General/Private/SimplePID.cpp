@@ -4,9 +4,6 @@
 #include "SimplePID.h"
 
 SimplePID::SimplePID() {
-	//KP = 0.0f; // in context of our whole program, P is greater when mass is greater. 
-	//KI = 0.0f; // These numbers are tuned to a certain drone. We may need to tune them again for UE4.
-	//KD = 0.0f;
 	Integrator = 0.0f;
 	Differentiator = 0.0f;
 	LastError = 0.0f;

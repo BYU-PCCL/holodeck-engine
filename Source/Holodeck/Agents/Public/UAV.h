@@ -40,6 +40,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		float ThrustToApply;
 
+	//See HolodeckAgent.h for descriptions of these overriden functions
 	void SetHyperparameterAddress(float* Input) override;
 
 protected:

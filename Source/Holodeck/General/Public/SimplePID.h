@@ -65,7 +65,7 @@ public:
 	*/
 	void SetGains(const float* P, const float* I, const float* D);
 
-	private:
+private:
 	float Integrator;
 	float Differentiator;
 	float LastError;

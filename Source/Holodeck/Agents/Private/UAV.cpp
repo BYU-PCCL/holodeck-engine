@@ -62,7 +62,12 @@ const enum AUAV::ParameterIndices {
 	UAV_ALT_D_INDEX = 26
 };
 
-AUAV::AUAV() {
+AUAV::AUAV() 
+		: HyperparametersPointer(GetHyperparameters()),
+		  RollController(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX),
+		  PitchController(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX),
+		  YawController(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX),
+		  AltitudeController(HyperparametersPointer + UAV_ALT_P_INDEX, HyperparametersPointer + UAV_ALT_I_INDEX, HyperparametersPointer + UAV_ALT_D_INDEX) {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -80,11 +85,7 @@ AUAV::AUAV() {
 
 void AUAV::BeginPlay() {
 	Super::BeginPlay();
-	HyperparametersPointer = GetHyperparameters();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
-
-	// Set up the PID Controllers TODO - WHAT TO USE FOR TAU?
-	InitializePIDControllers();
 }
 
 void AUAV::Tick(float DeltaTime) {
@@ -233,11 +234,10 @@ int AUAV::GetHyperparameterCount() const {
 void AUAV::SetHyperparameterAddress(float* Input) {
 	Super::SetHyperparameterAddress(Input);
 	this->HyperparametersPointer = Input;
-	InitializePIDControllers(); //Must give the PID Controllers the proper addresses to point to.
+	InitializePIDControllers(); //Must give the PID Controllers the new addresses to point to.
 }
 
 void AUAV::InitializePIDControllers() {
-	const float* const HyperparametersPointer = GetHyperparameters();
 	RollController.SetGains(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX);
 	PitchController.SetGains(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX);
 	YawController.SetGains(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX);
