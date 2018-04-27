@@ -79,26 +79,26 @@ public:
 	bool Teleport(const FVector& NewLocation);
 
 	/**
-	  * SetHyperParameterAddress
-	  * Sets the where the HyperParameters pointer points to
+	  * SetHyperparameterAddress
+	  * Sets the where the Hyperparameters pointer points to
 	  * You must give it a pointer to a place that has the proper memory allocated for it
 	  * @param Input The pointer
 	  */
-	void SetHyperParameterAddress(float* Input);
+	virtual void SetHyperparameterAddress(float* Input);
 
 	/**
-	  * GetHyperParameterCount
+	  * GetHyperparameterCount
 	  * @return The total number of Hyper parameters.
 	  */
-	virtual int GetHyperParameterCount() const { return 1; };
+	virtual int GetHyperparameterCount() const { return 1; };
 	
 	/**
-	  * GetHyperParameters
+	  * GetHyperparameters
 	  * This function is pointer safe, you can't access a bad pointer with it unless you 
-	  * gave it a bad pointer to point to via SetHyperParameterAddress().
-	  * @return A const pointer to the HyperParameters Array.
+	  * gave it a bad pointer to point to via SetHyperparameterAddress().
+	  * @return A const pointer to the Hyperparameters Array.
 	  */
-	const float*  GetHyperParameters();
+	const float*  GetHyperparameters();
 
 	/**
 	* InitializeController
@@ -108,17 +108,19 @@ public:
 	*/
 	bool InitializeController();
 
+	/**
+	* GetDefaultHyperparameters
+	* You must override this function iff GetHyperparameterCount() does not return 1 (the default value)
+	* @return a const pointer to the default hyperParameters
+	*/
+	virtual const float* GetDefaultHyperparameters() const;
+
 protected:
 	
-	/**
-	  * GetDefaultHyperParameters
-	  * You must override this function iff GetHyperParameterCount() does not return 1 (the default value)
-	  * @return a const pointer to the default hyperParameters
-	  */
-	virtual const float* GetDefaultHyperParameters() const; 
+
 
 private:
-	const float* HyperParameters;
+	const float* Hyperparameters;
 	float* RewardPtr;
 	bool* TerminalPtr;
 	AHolodeckPawnController* HolodeckController;

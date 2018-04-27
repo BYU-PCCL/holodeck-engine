@@ -57,27 +57,25 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	return Teleport(NewLocation, DefaultRotation);
 }
 
-void AHolodeckAgent::SetHyperParameterAddress(float* Input) {
-	if (HyperParameters) {
-		FMemory::Memcpy(Input, HyperParameters, GetHyperParameterCount() * sizeof(float));
-	} else {
-		FMemory::Memcpy(Input, GetDefaultHyperParameters(), GetHyperParameterCount() * sizeof(float));
-	}
-	HyperParameters = Input;
+void AHolodeckAgent::SetHyperparameterAddress(float* Input) {
+	if (Hyperparameters)
+		FMemory::Memcpy(Input, Hyperparameters, GetHyperparameterCount() * sizeof(float));
+	else
+		FMemory::Memcpy(Input, GetDefaultHyperparameters(), GetHyperparameterCount() * sizeof(float));
+	Hyperparameters = Input;
 }
 
-const float* AHolodeckAgent::GetDefaultHyperParameters() const {
-	if (GetHyperParameterCount() > 1)
+const float* AHolodeckAgent::GetDefaultHyperparameters() const {
+	if (GetHyperparameterCount() > 1)
 		check(0 && "You must override this function if your agent has hyperparameters");
 	static const float DefaultHyperParameter[1] = { 1 };
 	return DefaultHyperParameter;
 }
 
-const float* AHolodeckAgent::GetHyperParameters() {
-	if (!HyperParameters) {
-		HyperParameters = GetDefaultHyperParameters();
-	}
-	return HyperParameters;
+const float* AHolodeckAgent::GetHyperparameters() {
+	if (!Hyperparameters)
+		Hyperparameters = GetDefaultHyperparameters();
+	return Hyperparameters;
 }
 
 bool AHolodeckAgent::InitializeController() {
