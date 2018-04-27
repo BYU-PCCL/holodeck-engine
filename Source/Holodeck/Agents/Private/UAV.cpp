@@ -232,8 +232,8 @@ int AUAV::GetHyperparameterCount() const {
 
 void AUAV::SetHyperparameterAddress(float* Input) {
 	Super::SetHyperparameterAddress(Input);
-	InitializePIDControllers(); //Must give the PID Controllers the proper addresses to point to.
 	this->HyperparametersPointer = Input;
+	InitializePIDControllers(); //Must give the PID Controllers the proper addresses to point to.
 }
 
 void AUAV::InitializePIDControllers() {
