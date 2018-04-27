@@ -66,8 +66,11 @@ void AHolodeckPawnController::GetBuffers(const FString& AgentName) {
 		FString HyperParameterBufferName = AgentName + "_hyperparameter";
 		UE_LOG(LogHolodeck, Log, TEXT("Buffer name: %s"), *HyperParameterBufferName);
 		AHolodeckAgent* HolodeckPawn = static_cast<AHolodeckAgent*>(this->GetPawn()); 
-		if(HolodeckPawn)
-			HolodeckPawn->SetHyperParameterAddress(static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*HyperParameterBufferName), HolodeckPawn->GetHyperParameterCount() * sizeof(bool))));
+		if (HolodeckPawn) {
+			this->HyperparameterBuffer = static_cast<float*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*HyperParameterBufferName), HolodeckPawn->GetHyperparameterCount() * sizeof(bool)));
+			HolodeckPawn->SetHyperparameterAddress(HyperparameterBuffer);
+
+		}
 	}
 }
 
@@ -88,6 +91,13 @@ bool AHolodeckPawnController::CheckBoolBuffer(void* Buffer) {
 	}
 	return false;
 }
+
 void AHolodeckPawnController::SetServer(UHolodeckServer* ServerParam) {
 	this->Server = ServerParam;
+}
+
+void AHolodeckPawnController::RestoreDefaultHyperparameters(){
+	AHolodeckAgent* HolodeckPawn = static_cast<AHolodeckAgent*>(this->GetPawn());
+	if(HolodeckPawn)
+		FMemory::Memcpy(HyperparameterBuffer, HolodeckPawn->GetDefaultHyperparameters(), HolodeckPawn->GetHyperparameterCount() * sizeof(float));
 }

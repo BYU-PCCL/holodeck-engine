@@ -102,6 +102,8 @@ public:
 	*/
 	virtual void SetServer(UHolodeckServer* ServerParam);
 
+	void RestoreDefaultHyperparameters();
+
 protected:
 	/**
 	  * GetActionSpaceDimension
@@ -113,6 +115,7 @@ protected:
 	void* ActionBuffer;
 	void* TeleportBuffer;
 	void* ShouldTeleportBuffer;
+	float* HyperparameterBuffer;
 
 private:
 	/**
