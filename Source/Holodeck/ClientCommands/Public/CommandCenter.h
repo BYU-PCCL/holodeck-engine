@@ -74,6 +74,7 @@ private:
 	  */
 	int ReadCommandBuffer();
 	
+	UPROPERTY()
 	TArray<UCommand*> Commands;
 	char* Buffer;
 	bool* ShouldReadBufferPtr;

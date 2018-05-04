@@ -63,6 +63,8 @@ private:
 
 	UPROPERTY()
 	UHolodeckServer* Server;
+	UPROPERTY()
 	UHolodeckGameInstance* Instance;
+	UPROPERTY()
 	UCommandCenter* CommandCenter;
 };
