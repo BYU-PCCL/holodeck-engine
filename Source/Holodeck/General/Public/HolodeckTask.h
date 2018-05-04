@@ -5,7 +5,7 @@
 #include "Holodeck.h"
 
 #include "GameFramework/Actor.h"
-#include "HolodeckAgent.h"
+#include "HolodeckAgentInterface.h"
 
 #include "HolodeckTask.generated.h"
 
@@ -59,5 +59,5 @@ public:
 	bool Terminal;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AHolodeckAgent* MainAgent;
+	AActor* MainAgent;
 };

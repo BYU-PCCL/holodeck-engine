@@ -14,6 +14,97 @@ AAndroid::AAndroid() {
 void AAndroid::BeginPlay() {
 	Super::BeginPlay();
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
+
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+	if (InitializeController())
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent BeginPlay was successful"));
+	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
+	//This is needed specifically for the collision sensor.
+	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)) {
+		PrimitiveComponent->SetNotifyRigidBodyCollision(true);
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent collision events enabled"));
+	} else {
+		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to get UPrimitiveComponent. Collision events disabled."));
+	}
+}
+
+bool AAndroid::Teleport_Implementation(const FVector& NewLocation) {
+	FRotator DefaultRotation = this->GetActorRotation();
+	return TeleportAndRotate(NewLocation, DefaultRotation);
+}
+
+bool AAndroid::TeleportAndRotate_Implementation(const FVector& NewLocation, FRotator NewRotation) {
+	FHitResult DummyHitResult;
+	return this->K2_SetActorLocationAndRotation(
+		NewLocation,
+		NewRotation,
+		false, //will not be blocked by object in between current and new location. 
+		DummyHitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
+		false //the object will not retain its momentum.
+	);
+}
+
+bool AAndroid::InitializeController_Implementation() {
+	PawnController = static_cast<AHolodeckPawnController*>(Controller);
+
+	if (PawnController == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't find controller for HolodeckAgent"));
+		return false;
+	} else {
+
+		//We found the controller, so tell it to set up the action buffers. Also, open up the channels for the reward pointer and terminal pointer.
+		RewardPtr = static_cast<float*>(PawnController->Subscribe(AgentName, REWARD_KEY, REWARD_SIZE, sizeof(float)));
+		TerminalPtr = static_cast<bool*>(PawnController->Subscribe(AgentName, TERMINAL_KEY, TERMINAL_SIZE, sizeof(bool)));
+		if (RewardPtr != nullptr)
+			*RewardPtr = 0.0;
+		if (TerminalPtr != nullptr)
+			*TerminalPtr = false;
+		PawnController->GetActionBuffer(AgentName);
+		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent controller setup was successful"));
+		return true;
+	}
+}
+
+FString AAndroid::GetAgentName_Implementation() {
+	return AgentName;
+}
+
+bool AAndroid::SetAgentName_Implementation(const FString& Name) {
+	AgentName = Name;
+	return true;
+}
+
+bool AAndroid::SpawnController_Implementation() {
+	// TODO add functionality
+	SpawnDefaultController();
+	return true;
+}
+
+AHolodeckPawnController* AAndroid::GetHolodeckPawnController_Implementation() {
+	return PawnController;
+}
+
+bool AAndroid::SetHolodeckPawnController_Implementation(AHolodeckPawnController* HolodeckController) {
+	PawnController = HolodeckController;
+	return true;
+}
+
+bool AAndroid::SetTerminal_Implementation(bool Terminal) {
+	if (TerminalPtr != nullptr) {
+		*TerminalPtr = Terminal;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+bool AAndroid::SetReward_Implementation(int Reward) {
+	if (RewardPtr != nullptr) {
+		*RewardPtr = Reward;
+		return true;
+	} else {
+		return false;
+	}
 }
 
 void AAndroid::Tick(float DeltaTime) {
@@ -33,12 +124,13 @@ void AAndroid::NotifyHit(UPrimitiveComponent* MyComp,
 		UMaterialInstanceDynamic* TheMaterial_Dyn = UMaterialInstanceDynamic::Create(CollisionDecalMaterial, this);
 
 		//FRotator rotator = (HitLocation.Rotation());
-		if (TheMaterial_Dyn != NULL) //FVector needs to be at least around 7,7,7 for some reason
+		if (TheMaterial_Dyn != NULL) { //FVector needs to be at least around 7,7,7 for some reason
 			UGameplayStatics::SpawnDecalAttached(TheMaterial_Dyn, FVector(7.5, 7.5, 7.5),
 				MyComp, Hit.BoneName, HitLocation, HitLocation.Rotation(),
 				EAttachLocation::KeepWorldPosition, 1.0);
-		else
+		} else {
 			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, "Material for decal is null");
+		}
 	}
 }
 

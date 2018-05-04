@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "HolodeckAgent.h"
 #include "HolodeckPawnController.h"
 #include "Components/SceneComponent.h"
 #include "HolodeckSensor.generated.h"
