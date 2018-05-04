@@ -5,13 +5,13 @@
 #include "Holodeck.h"
 
 #include "GameFramework/Pawn.h"
-#include "HolodeckAgent.h"
+#include "HolodeckAgentInterface.h"
 #include "PressureSensor.h"
 
 #include "Android.generated.h"
 
 UCLASS()
-class HOLODECK_API AAndroid : public AHolodeckAgent
+class HOLODECK_API AAndroid : public APawn, public IHolodeckAgentInterface
 {
 	GENERATED_BODY()
 
@@ -42,10 +42,10 @@ public:
 	void Tick(float DeltaSeconds) override;
 
 	/**
-	* TODO(joshgreaves) : Explain this function properly.
-	* NotifyHit
-	* Used for the pressure sensor.
-	*/
+	  * TODO(joshgreaves) : Explain this function properly.
+	  * NotifyHit
+	  * Used for the pressure sensor.
+	  */
 	void NotifyHit(UPrimitiveComponent* MyComp,
 		AActor* Other,
 		UPrimitiveComponent* OtherComp,
@@ -79,18 +79,67 @@ public:
 	*/
 	bool GetCollisionsVisible();
 
+
 	float* CommandArray;
 
 	UPROPERTY(BlueprintReadWrite, Category = AndroidMesh)
 		USkeletalMeshComponent* SkeletalMesh;
 
-private:
-	bool bCollisionsAreVisible;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool TeleportAndRotate(const FVector& NewLocation, FRotator NewRotation);
+		virtual bool TeleportAndRotate_Implementation(const FVector& NewLocation, FRotator NewRotation) override;
 
-	/**
-	* ApplyTorques
-	* Applies torques for that tick on each joint with a force/direction
-	* corresponding to the values in the command array
-	*/
-	void ApplyTorques();
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool Teleport(const FVector& NewLocation);
+		virtual bool Teleport_Implementation(const FVector& NewLocation) override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool InitializeController();
+		virtual bool InitializeController_Implementation() override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		FString GetAgentName();
+		virtual FString GetAgentName_Implementation() override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool SetAgentName(const FString& Name);
+		virtual bool SetAgentName_Implementation(const FString& Name) override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		AHolodeckPawnController* GetHolodeckPawnController();
+		virtual AHolodeckPawnController* GetHolodeckPawnController_Implementation() override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool SetHolodeckPawnController(AHolodeckPawnController* HolodeckController);
+		virtual bool SetHolodeckPawnController_Implementation(AHolodeckPawnController* HolodeckController) override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool SpawnController();
+		virtual bool SpawnController_Implementation() override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool SetTerminal(bool Terminal);
+		virtual bool SetTerminal_Implementation(bool Terminal) override;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "HolodeckAgent")
+		bool SetReward(int Reward);
+		virtual bool SetReward_Implementation(int Reward) override;
+
+	// Must be set in the editor.
+	UPROPERTY(EditAnywhere)
+		FString AgentName;
+
+	private:
+
+		/**
+		* ApplyTorques
+		* Applies torques for that tick on each joint with a force/direction
+		* corresponding to the values in the command array
+		*/
+		void ApplyTorques();
+
+		bool bCollisionsAreVisible;
+		float* RewardPtr;
+		bool* TerminalPtr;
+		AHolodeckPawnController* PawnController;
 };

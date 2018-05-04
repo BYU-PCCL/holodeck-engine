@@ -1,15 +1,15 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #include "Holodeck.h"
-#include "SphereRobot.h"
+#include "NavAgent.h"
 
 // Sets default values
-ASphereRobot::ASphereRobot() {
+ANavAgent::ANavAgent() {
 	PrimaryActorTick.bCanEverTick = true;
 }
 
-void ASphereRobot::BeginPlay() {
+void ANavAgent::BeginPlay() {
 	Super::BeginPlay();
+	Target = this->GetActorLocation();
+
 	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
 	if (InitializeController())
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent BeginPlay was successful"));
@@ -24,16 +24,24 @@ void ASphereRobot::BeginPlay() {
 }
 
 // Called every frame
-void ASphereRobot::Tick(float DeltaSeconds) {
+void ANavAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 }
 
-bool ASphereRobot::Teleport_Implementation(const FVector& NewLocation) {
+FVector ANavAgent::GetTarget() {
+	return Target;
+}
+
+void ANavAgent::SetTarget(float x, float y, float z) {
+	Target = FVector(x, y, z);
+}
+
+bool ANavAgent::Teleport_Implementation(const FVector& NewLocation) {
 	FRotator DefaultRotation = this->GetActorRotation();
 	return TeleportAndRotate(NewLocation, DefaultRotation);
 }
 
-bool ASphereRobot::TeleportAndRotate_Implementation(const FVector& NewLocation, FRotator NewRotation) {
+bool ANavAgent::TeleportAndRotate_Implementation(const FVector& NewLocation, FRotator NewRotation) {
 	FHitResult DummyHitResult;
 	return this->K2_SetActorLocationAndRotation(
 		NewLocation,
@@ -44,7 +52,7 @@ bool ASphereRobot::TeleportAndRotate_Implementation(const FVector& NewLocation, 
 	);
 }
 
-bool ASphereRobot::InitializeController_Implementation() {
+bool ANavAgent::InitializeController_Implementation() {
 	PawnController = static_cast<AHolodeckPawnController*>(Controller);
 
 	if (PawnController == nullptr) {
@@ -64,31 +72,30 @@ bool ASphereRobot::InitializeController_Implementation() {
 	}
 }
 
-FString ASphereRobot::GetAgentName_Implementation() {
+FString ANavAgent::GetAgentName_Implementation() {
 	return AgentName;
 }
 
-bool ASphereRobot::SetAgentName_Implementation(const FString& Name) {
+bool ANavAgent::SetAgentName_Implementation(const FString& Name) {
 	AgentName = Name;
 	return true;
 }
 
-bool ASphereRobot::SpawnController_Implementation() {
-	// TODO add functionality
+bool ANavAgent::SpawnController_Implementation() {
 	SpawnDefaultController();
 	return true;
 }
 
-AHolodeckPawnController* ASphereRobot::GetHolodeckPawnController_Implementation() {
+AHolodeckPawnController* ANavAgent::GetHolodeckPawnController_Implementation() {
 	return PawnController;
 }
 
-bool ASphereRobot::SetHolodeckPawnController_Implementation(AHolodeckPawnController* HolodeckController) {
+bool ANavAgent::SetHolodeckPawnController_Implementation(AHolodeckPawnController* HolodeckController) {
 	PawnController = HolodeckController;
 	return true;
 }
 
-bool ASphereRobot::SetTerminal_Implementation(bool Terminal) {
+bool ANavAgent::SetTerminal_Implementation(bool Terminal) {
 	if (TerminalPtr != nullptr) {
 		*TerminalPtr = Terminal;
 		return true;
@@ -97,7 +104,7 @@ bool ASphereRobot::SetTerminal_Implementation(bool Terminal) {
 	}
 }
 
-bool ASphereRobot::SetReward_Implementation(int Reward) {
+bool ANavAgent::SetReward_Implementation(int Reward) {
 	if (RewardPtr != nullptr) {
 		*RewardPtr = Reward;
 		return true;
@@ -105,5 +112,3 @@ bool ASphereRobot::SetReward_Implementation(int Reward) {
 		return false;
 	}
 }
-
-

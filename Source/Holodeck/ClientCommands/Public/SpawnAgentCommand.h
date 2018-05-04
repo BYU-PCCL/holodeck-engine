@@ -40,7 +40,7 @@ private:
 	typedef std::map<std::string, UClass*> BlueprintMapType;
 	static BlueprintMapType BlueprintMap;
 
-	typedef AHolodeckAgent*(*SpawnFunctionType)(UClass* const, const FVector&, UWorld* const);
+	typedef AActor*(*SpawnFunctionType)(UClass* const, const FVector&, UWorld* const);
 	typedef std::map<std::string, SpawnFunctionType> SpawnFunctionMapType;
 	static SpawnFunctionMapType SpawnFunctionMap;
 	
@@ -50,10 +50,10 @@ private:
 	  * @param Blueprint The blueprint of the agent to spawn.
 	  * @param Location The XYZ coordinate of where to spawn the agent.
 	  * @param World The respective world in which to spawn the agent - usually should just be the world you are in.
-	  * @return A pointer to the spawned AHolodeckAgent, or null if there was an error. 
+	  * @return A pointer to the spawned AAgent, or null if there was an error. 
 	  */
 	template<typename T>
-	static AHolodeckAgent* SpawnAgent(UClass* const Blueprint, const FVector& Location, UWorld* const World);
+	static AActor* SpawnAgent(UClass* const Blueprint, const FVector& Location, UWorld* const World);
 
 	//This is forced inline because using FObjectFinder must be in the constructor.
 	FORCEINLINE UClass* GetBlueprint(const FString&  Reference) {

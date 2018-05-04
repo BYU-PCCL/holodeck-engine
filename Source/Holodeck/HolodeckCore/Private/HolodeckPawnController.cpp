@@ -2,7 +2,6 @@
 
 #include "Holodeck.h"
 #include "HolodeckPawnController.h"
-#include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
 
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
 		: AAIController(ObjectInitializer) {
@@ -71,10 +70,13 @@ void AHolodeckPawnController::GetActionBuffer(const FString& AgentName) {
 
 void AHolodeckPawnController::ExecuteTeleport() {
 	float* FloatPtr = static_cast<float*>(TeleportBuffer);
-	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
+	AActor* PawnVar = Cast<AActor>(this->GetPawn());
 	if (PawnVar && FloatPtr) {
 		FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
-		PawnVar->Teleport(TeleportLocation);
+
+		IHolodeckAgentInterface* AgentInterface = Cast<IHolodeckAgentInterface>(PawnVar);
+		AgentInterface->Execute_Teleport(PawnVar, TeleportLocation);
+
 	}
 }
 

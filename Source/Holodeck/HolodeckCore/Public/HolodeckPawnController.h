@@ -7,6 +7,7 @@
 #include "AIController.h"
 #include "HolodeckGameInstance.h"
 #include "HolodeckServer.h"
+#include "HolodeckAgentInterface.h"
 
 #include "HolodeckPawnController.generated.h"
 

@@ -20,7 +20,10 @@ void AHolodeckTask::BeginPlay() {
 void AHolodeckTask::Tick(float DeltaTime) {
 	Super::Tick( DeltaTime );
 	if (MainAgent != nullptr) {
-		MainAgent->SetReward(Reward);
-		MainAgent->SetTerminal(Terminal);
+		IHolodeckAgentInterface* AgentInterface = Cast<IHolodeckAgentInterface>(MainAgent);
+
+		AgentInterface->Execute_SetReward(MainAgent, Reward);
+		AgentInterface->Execute_SetTerminal(MainAgent, Terminal);
+
 	}
 }

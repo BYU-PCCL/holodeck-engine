@@ -54,7 +54,8 @@ void USpawnAgentCommand::Execute() {
 	FString AgentType = StringParams[0].c_str();
 	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
-	AHolodeckAgent* SpawnedAgent = nullptr;
+	AActor* SpawnedAgent = nullptr;
+
 	AHolodeckPawnController* SpawnedController = nullptr;
 	auto AgentSpawnFunction = SpawnFunctionMap[StringParams[0]];
 	UClass* Blueprint = BlueprintMap[StringParams[0]];
@@ -66,11 +67,14 @@ void USpawnAgentCommand::Execute() {
 
 	//Finalize the initialization of the agent. 
 	if (SpawnedAgent) {
-		SpawnedAgent->AgentName = StringParams[1].c_str();
-		SpawnedAgent->SpawnDefaultController();
-		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
+		IHolodeckAgentInterface* AgentInterface = Cast<IHolodeckAgentInterface>(SpawnedAgent);
+
+		AgentInterface->Execute_SetAgentName(SpawnedAgent, StringParams[1].c_str());
+		AgentInterface->Execute_SpawnController(SpawnedAgent);
+		SpawnedController = static_cast<AHolodeckPawnController*>(AgentInterface->Execute_GetHolodeckPawnController(SpawnedAgent));
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
-		SpawnedAgent->InitializeController();
+		AgentInterface->Execute_InitializeController(SpawnedAgent);
+
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand did not spawn a new Agent."));
@@ -78,7 +82,7 @@ void USpawnAgentCommand::Execute() {
 }
 
 template<typename T>
-AHolodeckAgent* USpawnAgentCommand::SpawnAgent(UClass* const Blueprint, const FVector& Location, UWorld* const World){
+AActor* USpawnAgentCommand::SpawnAgent(UClass* const Blueprint, const FVector& Location, UWorld* const World){
 	if (!World)
 		return nullptr;
 	return World->SpawnActor<T>(Blueprint, Location, FRotator(0, 0, 0), FActorSpawnParameters());
