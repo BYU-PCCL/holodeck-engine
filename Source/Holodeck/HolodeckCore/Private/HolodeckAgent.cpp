@@ -57,6 +57,27 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	return Teleport(NewLocation, DefaultRotation);
 }
 
+void AHolodeckAgent::SetHyperparameterAddress(float* Input) {
+	if (Hyperparameters)
+		FMemory::Memcpy(Input, Hyperparameters, GetHyperparameterCount() * sizeof(float));
+	else
+		FMemory::Memcpy(Input, GetDefaultHyperparameters(), GetHyperparameterCount() * sizeof(float));
+	Hyperparameters = Input;
+}
+
+const float* AHolodeckAgent::GetDefaultHyperparameters() const {
+	if (GetHyperparameterCount() > 1)
+		check(0 && "You must override this function if your agent has hyperparameters");
+	static const float DefaultHyperParameter[1] = { 1 };
+	return DefaultHyperParameter;
+}
+
+const float* AHolodeckAgent::GetHyperparameters() {
+	if (!Hyperparameters)
+		Hyperparameters = GetDefaultHyperparameters();
+	return Hyperparameters;
+}
+
 bool AHolodeckAgent::InitializeController() {
 	HolodeckController = static_cast<AHolodeckPawnController*>(Controller);
 
@@ -72,7 +93,7 @@ bool AHolodeckAgent::InitializeController() {
 			*RewardPtr = 0.0;
 		if (TerminalPtr != nullptr)
 			*TerminalPtr = false;
-		HolodeckController->GetActionBuffer(AgentName);
+		HolodeckController->GetBuffers(AgentName);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent controller setup was successful"));
 		return true;
 	}
