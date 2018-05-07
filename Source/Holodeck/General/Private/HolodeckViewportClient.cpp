@@ -20,13 +20,8 @@ void UHolodeckViewportClient::Draw(FViewport * ViewportParam, FCanvas * SceneCan
 	HolodeckTakeScreenShot();
 	UE_LOG(LogHolodeck, Log, TEXT("@@@@@ Draw called"));
 	int i = 0;
-	while (i < Cameras.size()) {
-		if (Cameras[i] == nullptr) {
-			Cameras.erase(Cameras.begin() + i);
-		} else {
-			Cameras[i]->Capture();
-			i++;
-		}
+	for (std::map<FString, UHolodeckCamera*>::iterator it = Cameras.begin(); it != Cameras.end(); ++it) {
+		it->second->Capture();
 	}
 
 	UE_LOG(LogHolodeck, Log, TEXT("@@@@@ Draw Ended"));
@@ -38,17 +33,6 @@ void UHolodeckViewportClient::SetBuffer(void* NewBuffer) {
 
 void UHolodeckViewportClient::AddCamera(UHolodeckCamera* Camera) {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckViewportClient::AddCamera called"));
-	this->Cameras.push_back(Camera);
+	this->Cameras[Camera->GetAgentName()] = Camera;
 }
 
-//void UHolodeckViewportClient::ClearNullCameras() {
-//	int i = 0;
-//	while( i < Cameras.Num()){
-//		if (Cameras[i] == nullptr) {
-//			Cameras.RemoveAt(i);
-//		}
-//		else {
-//			i++;
-//		}
-//	}
-//}

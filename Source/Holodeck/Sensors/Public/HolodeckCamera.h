@@ -36,11 +36,13 @@ public:
 	  * Used to capture the desired pixel data and export it to the buffer.
 	  * @return True if the capture was successful. 
 	  */
-	virtual bool Capture();
+	virtual void Capture();
+
+	//void PostInitProperties() override;
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
-	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {/*Do nothing*/};
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
 	int CaptureWidth = 512;
 	int CaptureHeight = 512;
@@ -50,7 +52,9 @@ protected:
 
 private:
 
+	bool bPointerGivenToViewport = false;
 	UHolodeckViewportClient* ViewportClient;
 	FColor* Buffer;
+	FTextureRenderTargetResource* RenderTarget;
 
 };

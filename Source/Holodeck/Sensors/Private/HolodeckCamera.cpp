@@ -2,6 +2,7 @@
 #include "HolodeckCamera.h"
 
 UHolodeckCamera::UHolodeckCamera() {
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
 	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent2D"));
 	TargetTexture = CreateDefaultSubobject<UTextureRenderTarget2D>(TEXT("TargetTexture"));
 }
@@ -28,29 +29,49 @@ void UHolodeckCamera::BeginPlay() {
 	this->Buffer = static_cast<FColor*>(Super::Buffer);
 
 	this->ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-	if (ViewportClient != nullptr) {
-		ViewportClient->AddCamera(this);
-	}
-	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::BeginPlay failed to locate HolodeckViewportClient."));
-	}
-	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay ended"));
+		if (ViewportClient != nullptr) {
+			UE_LOG(LogHolodeck, Warning, TEXT("@@@HolodeckCAmera added itself to the viewport Camera list"));
+			ViewportClient->AddCamera(this);
+			this->bPointerGivenToViewport = true;
+		}			
+		else {
+			UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::BeginPlay failed to locate HolodeckViewportClient."));
+		}
+	
 }
 
-bool UHolodeckCamera::Capture() {
+void UHolodeckCamera::Capture() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture called"));
-	FTextureRenderTargetResource* RenderTarget = TargetTexture->GameThread_GetRenderTargetResource();
-	bool bReadWorked = false;
-	if (RenderTarget != nullptr) {
-		bReadWorked = RenderTarget->ReadPixelsPtr(this->Buffer);//, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, Width, Height))
+
+
+	AsyncTask(ENamedThreads::ActualRenderingThread, [&]()
+	{
+		bool bReadWorked = false;
+		UE_LOG(LogHolodeck, Log, TEXT("THE THREAD WORKED! IT IS READING STUFF"));
+		RenderTarget = TargetTexture->GetRenderTargetResource();
+		UE_LOG(LogHolodeck, Log, TEXT("THE THREAD WORKED! IT IS READING STUFF step 2"));
+		bReadWorked = RenderTarget->ReadPixelsPtr(this->Buffer);
 		if (!bReadWorked) {
-			UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::Capture failed to read data to Buffer."));
+			UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture() pixel read unsuccessful"));
 		}
+	});
+	/*
+	if (RenderTarget != nullptr) {
+		
+		
+
+
 	}
 	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::Capture failed to retrieve TargetTexture's RenderTargetResource. Capture failed."));
 	}
-	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture ended"));
-	return bReadWorked;
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture ended"));*/
 }
 
+void UHolodeckCamera::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+
+}
+
+//if (!bReadWorked) {
+//	UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::Capture failed to read data to Buffer."));
+//}
