@@ -17,7 +17,7 @@ public:
 protected:
 	//Check out HolodeckSensor.h for definitions for this overridden functions. 
 	virtual FString GetDataKey() { return "PixelCamera"; };
-	virtual int GetNumItems() { return CaptureWidth*CaptureHeight; };
+	virtual int GetNumItems() { return CaptureWidth * CaptureHeight; };
 	virtual int GetItemSize() { return sizeof(float); };
 
 

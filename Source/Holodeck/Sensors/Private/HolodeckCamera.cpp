@@ -5,14 +5,11 @@ UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
 	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent2D"));
 	TargetTexture = CreateDefaultSubobject<UTextureRenderTarget2D>(TEXT("TargetTexture"));
-	//SceneCapture->AttachTo(this,FName("Camera"), EAttachLocation::KeepRelativeOffset);
 }
 
 void UHolodeckCamera::BeginPlay() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay"));
 	Super::BeginPlay();
-
-	RenderRequest = FRenderRequest();
 
 	//set up everything for the texture that you are using for output. These won't likely change for subclasses.
 	//Note: the format should probably be 512 x 512 because it must be a square shape, and a power of two. If not, then the TargetTexture will cause crashes.
@@ -20,7 +17,7 @@ void UHolodeckCamera::BeginPlay() {
 	TargetTexture->SRGB = false; //No alpha
 	TargetTexture->CompressionSettings = TC_VectorDisplacementmap;
 	TargetTexture->RenderTargetFormat = RTF_RGBA8;
-	TargetTexture->InitCustomFormat(128, 128, PF_FloatRGBA, false);
+	TargetTexture->InitCustomFormat(CaptureWidth, CaptureHeight, PF_FloatRGBA, false);
 
 	//Handle whatever setup of the SceneCapture that won't likely change across different cameras. (These will be the defaults)
 	SceneCapture->ProjectionType = ECameraProjectionMode::Perspective;
@@ -29,7 +26,6 @@ void UHolodeckCamera::BeginPlay() {
 	SceneCapture->TextureTarget = TargetTexture;
 
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
-	
 	this->Buffer = static_cast<FColor*>(Super::Buffer);
 
 	this->ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
@@ -41,13 +37,41 @@ void UHolodeckCamera::BeginPlay() {
 		else {
 			UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::BeginPlay failed to locate HolodeckViewportClient."));
 		}
+	
 }
 
+void UHolodeckCamera::Capture() {
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture called"));
+
+
+	AsyncTask(ENamedThreads::ActualRenderingThread, [&]()
+	{
+		bool bReadWorked = false;
+		UE_LOG(LogHolodeck, Log, TEXT("THE THREAD WORKED! IT IS READING STUFF"));
+		RenderTarget = TargetTexture->GetRenderTargetResource();
+		UE_LOG(LogHolodeck, Log, TEXT("THE THREAD WORKED! IT IS READING STUFF step 2"));
+		bReadWorked = RenderTarget->ReadPixelsPtr(this->Buffer);
+		if (!bReadWorked) {
+			UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture() pixel read unsuccessful"));
+		}
+	});
+	/*
+	if (RenderTarget != nullptr) {
+		
+		
+
+
+	}
+	else {
+		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::Capture failed to retrieve TargetTexture's RenderTargetResource. Capture failed."));
+	}
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::Capture ended"));*/
+}
 
 void UHolodeckCamera::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 
 }
 
-void UHolodeckCamera::Capture() {
-	RenderRequest.RetrievePixels(Buffer, TargetTexture);
-}
+//if (!bReadWorked) {
+//	UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::Capture failed to read data to Buffer."));
+//}
