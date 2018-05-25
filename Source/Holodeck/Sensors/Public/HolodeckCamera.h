@@ -4,6 +4,7 @@
 
 #include "HolodeckSensor.h"
 #include "HolodeckViewportClient.h"
+#include "RenderRequest.h"
 #include "HolodeckCamera.generated.h"
 
 /**
@@ -30,31 +31,22 @@ public:
 	  */
 	virtual void BeginPlay() override;
 
-	/**
-	  * Capture
-	  * Can safely be overridden
-	  * Used to capture the desired pixel data and export it to the buffer.
-	  * @return True if the capture was successful. 
-	  */
-	virtual void Capture();
-
-	//void PostInitProperties() override;
+	void Capture();
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
-	int CaptureWidth = 512;
-	int CaptureHeight = 512;
-
 	USceneCaptureComponent2D* SceneCapture;
 	UTextureRenderTarget2D* TargetTexture;
+
+	int CaptureWidth = 128;
+	int CaptureHeight = 128;
 
 private:
 
 	bool bPointerGivenToViewport = false;
 	UHolodeckViewportClient* ViewportClient;
 	FColor* Buffer;
-	FTextureRenderTargetResource* RenderTarget;
-
+	FRenderRequest RenderRequest;
 };
