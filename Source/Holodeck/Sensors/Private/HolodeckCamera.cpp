@@ -5,7 +5,7 @@ UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
 	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent2D"));
 	TargetTexture = CreateDefaultSubobject<UTextureRenderTarget2D>(TEXT("TargetTexture"));
-	//SceneCapture->AttachTo(this,FName("Camera"), EAttachLocation::KeepRelativeOffset);
+	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void UHolodeckCamera::BeginPlay() {
@@ -18,9 +18,9 @@ void UHolodeckCamera::BeginPlay() {
 	//Note: the format should probably be 512 x 512 because it must be a square shape, and a power of two. If not, then the TargetTexture will cause crashes.
 	TargetTexture->MipGenSettings = TMGS_NoMipmaps;
 	TargetTexture->SRGB = false; //No alpha
-	TargetTexture->CompressionSettings = TC_VectorDisplacementmap;
+	TargetTexture->CompressionSettings = TC_VectorDisplacementmap;D
 	TargetTexture->RenderTargetFormat = RTF_RGBA8;
-	TargetTexture->InitCustomFormat(128, 128, PF_FloatRGBA, false);
+	TargetTexture->InitCustomFormat(CaptureWidth, CaptureHeight, PF_FloatRGBA, false);
 
 	//Handle whatever setup of the SceneCapture that won't likely change across different cameras. (These will be the defaults)
 	SceneCapture->ProjectionType = ECameraProjectionMode::Perspective;

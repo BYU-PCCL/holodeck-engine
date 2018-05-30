@@ -40,7 +40,10 @@ protected:
 	USceneCaptureComponent2D* SceneCapture;
 	UTextureRenderTarget2D* TargetTexture;
 
+	UPROPERTY(EditAnywhere)
 	int CaptureWidth = 128;
+
+	UPROPERTY(EditAnywhere)
 	int CaptureHeight = 128;
 
 private:
