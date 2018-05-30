@@ -18,7 +18,7 @@ void UHolodeckCamera::BeginPlay() {
 	//Note: the format should probably be 512 x 512 because it must be a square shape, and a power of two. If not, then the TargetTexture will cause crashes.
 	TargetTexture->MipGenSettings = TMGS_NoMipmaps;
 	TargetTexture->SRGB = false; //No alpha
-	TargetTexture->CompressionSettings = TC_VectorDisplacementmap;D
+	TargetTexture->CompressionSettings = TC_VectorDisplacementmap;
 	TargetTexture->RenderTargetFormat = RTF_RGBA8;
 	TargetTexture->InitCustomFormat(CaptureWidth, CaptureHeight, PF_FloatRGBA, false);
 
