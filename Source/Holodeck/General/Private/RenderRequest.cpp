@@ -4,7 +4,7 @@
 void FRenderRequest::RetrievePixels(FColor* PixelBuffer, UTextureRenderTarget2D* Texture) {
 	this->Buffer = PixelBuffer;
 	this->TargetTexture = Texture;
-	CheckNotBlockedOnRenderThread();
+	CheckNotBlockedOnRenderThread(); // not the issue
 
 	// Queue up the task of rendering the scene in the render thread
 	TGraphTask<FRenderRequest>::CreateTask().ConstructAndDispatchWhenReady(*this);
@@ -27,6 +27,6 @@ void FRenderRequest::ExecuteTask()
 			SurfaceData,
 			flags);
 
-		FMemory::Memcpy(this->Buffer, &SurfaceData[0], SurfaceData.Num() * sizeof(FColor));
+		FMemory::Memcpy(this->Buffer, &SurfaceData[0], SurfaceData.Num() * sizeof(FColor)); // this line isn't the problem
 	}
 }

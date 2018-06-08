@@ -13,7 +13,7 @@
 * A camera is anything that needs to access visual information.
 * Two examples include a depth sensor and a standard camera.
 */
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), abstract)
+UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UHolodeckCamera : public UHolodeckSensor
 {
 	GENERATED_BODY()
@@ -36,6 +36,9 @@ public:
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
+
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	//TSubclassOf<USceneComponent> SceneCap;
 
 	USceneCaptureComponent2D* SceneCapture;
 	UTextureRenderTarget2D* TargetTexture;

@@ -27,6 +27,7 @@ void UHolodeckCamera::BeginPlay() {
 	SceneCapture->CompositeMode = SCCM_Overwrite;
 	SceneCapture->FOVAngle = 90; //90 degrees for field of view.
 	SceneCapture->TextureTarget = TargetTexture;
+	TargetTexture->bHDR_DEPRECATED = false;
 
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
 
