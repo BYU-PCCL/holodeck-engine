@@ -3,7 +3,8 @@
 #include "UAV.h"
 #include <math.h>
 
-const float UAV_MASS = 3.856;
+//All in radians. (rad/s, rad/s^2, etc.)
+const float UAV_MASS = 3.856; //Kilograms
 const float UAV_MU = 1;
 const float UAV_MAX_ROLL = 6.5080;
 const float UAV_MAX_PITCH = 5.087;
@@ -29,8 +30,44 @@ const float UAV_YAW_D = 5.0;
 const float UAV_ALT_P = 305.0;
 const float UAV_ALT_I = 100.0;
 const float UAV_ALT_D = 600.0;
+const static int NUMBER_OF_PARAMETERS = 27;
 
-AUAV::AUAV() {
+const enum AUAV::ParameterIndices {
+	TOTAL_PARAMETERS_INDEX = 0, //This is an index, not the actual count. 
+	UAV_MASS_INDEX = 1,
+	UAV_MU_INDEX = 2,
+	UAV_MAX_ROLL_INDEX = 3,
+	UAV_MAX_PITCH_INDEX = 4,
+	UAV_MAX_YAW_RATE_INDEX = 5,
+	UAV_MAX_FORCE_INDEX = 6,
+	UAV_TAU_UP_ROLL_INDEX = 7,
+	UAV_TAU_UP_PITCH_INDEX = 8,
+	UAV_TAU_UP_YAW_RATE_INDEX = 9,
+	UAV_TAU_UP_FORCE_INDEX = 10,
+	UAV_TAU_DOWN_ROLL_INDEX = 11,
+	UAV_TAU_DOWN_PITCH_INDEX = 12,
+	UAV_TAU_DOWN_YAW_RATE_INDEX = 13,
+	UAV_TAU_DOWN_FORCE_INDEX = 14,
+	UAV_ROLL_P_INDEX = 15,
+	UAV_ROLL_I_INDEX = 16,
+	UAV_ROLL_D_INDEX = 17,
+	UAV_PITCH_P_INDEX = 18,
+	UAV_PITCH_I_INDEX = 19,
+	UAV_PITCH_D_INDEX = 20,
+	UAV_YAW_P_INDEX = 21,
+	UAV_YAW_I_INDEX = 22,
+	UAV_YAW_D_INDEX = 23,
+	UAV_ALT_P_INDEX = 24,
+	UAV_ALT_I_INDEX = 25,
+	UAV_ALT_D_INDEX = 26
+};
+
+AUAV::AUAV() 
+		: HyperparametersPointer(GetHyperparameters()),
+		  RollController(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX),
+		  PitchController(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX),
+		  YawController(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX),
+		  AltitudeController(HyperparametersPointer + UAV_ALT_P_INDEX, HyperparametersPointer + UAV_ALT_I_INDEX, HyperparametersPointer + UAV_ALT_D_INDEX) {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -48,14 +85,7 @@ AUAV::AUAV() {
 
 void AUAV::BeginPlay() {
 	Super::BeginPlay();
-
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
-
-	// Set up the PID Controllers TODO - WHAT TO USE FOR TAU?
-	RollController.SetGains(UAV_ROLL_P, UAV_ROLL_I, UAV_ROLL_D);
-	PitchController.SetGains(UAV_PITCH_P, UAV_ROLL_I, UAV_ROLL_D);
-	YawController.SetGains(UAV_YAW_P, UAV_YAW_I, UAV_PITCH_D);
-	AltitudeController.SetGains(UAV_ALT_P, UAV_ALT_I, UAV_ALT_D);
 }
 
 void AUAV::Tick(float DeltaTime) {
@@ -110,7 +140,6 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	CurrentRollRate *= -1;
 	CurrentPitchRate *= -1;
 
-
 	// Calculate the force and torques from the PID controller
 	RollTorqueToApply = RollController.ComputePIDDirect(DesiredRoll, CurrentRoll, CurrentRollRate, DeltaTime);
 	PitchTorqueToApply = PitchController.ComputePIDDirect(DesiredPitch, CurrentPitch, CurrentPitchRate, DeltaTime);
@@ -119,10 +148,10 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	ThrustToApply = AltitudeController.ComputePIDDirect(DesiredAltitude, CurrentPositionZ, CurrentGlobalVelocityZ, DeltaTime) + HoverThrust;
 
 	// Calculate first-order filter
-	float TauRoll = (RollTorqueToApply > CurrentRollTorque) ? UAV_TAU_UP_ROLL : UAV_TAU_DOWN_ROLL;
-	float TauPitch = (PitchTorqueToApply > CurrentPitchTorque) ? UAV_TAU_UP_PITCH : UAV_TAU_DOWN_PITCH;
-	float TauYawRate = (YawTorqueToApply > CurrentYawTorque) ? UAV_TAU_UP_YAW_RATE : UAV_TAU_DOWN_YAW_RATE;
-	float TauThrust = (ThrustToApply > CurrentThrust) ? UAV_TAU_UP_FORCE : UAV_TAU_DOWN_FORCE;
+	float TauRoll = (RollTorqueToApply > CurrentRollTorque) ? HyperparametersPointer[UAV_TAU_UP_ROLL_INDEX] : HyperparametersPointer[UAV_TAU_DOWN_ROLL_INDEX];
+	float TauPitch = (PitchTorqueToApply > CurrentPitchTorque) ? HyperparametersPointer[UAV_TAU_UP_PITCH_INDEX] : HyperparametersPointer[UAV_TAU_DOWN_PITCH_INDEX];
+	float TauYawRate = (YawTorqueToApply > CurrentYawTorque) ? HyperparametersPointer[UAV_TAU_UP_YAW_RATE_INDEX] : HyperparametersPointer[UAV_TAU_DOWN_YAW_RATE_INDEX];
+	float TauThrust = (ThrustToApply > CurrentThrust) ? HyperparametersPointer[UAV_TAU_UP_FORCE_INDEX] : HyperparametersPointer[UAV_TAU_DOWN_FORCE_INDEX];
 	float AlphaRoll = DeltaTime / (TauRoll + DeltaTime);
 	float AlphaPitch = DeltaTime / (TauPitch + DeltaTime);
 	float AlphaYaw = DeltaTime / (TauYawRate + DeltaTime);
@@ -133,13 +162,13 @@ void AUAV::UpdateForcesAndMoments(float DeltaTime) {
 	ThrustToApply = (1 - AlphaThrust) * ThrustToApply + AlphaThrust * ThrustToApply;
 
 	// Calculate Air Resistance
-	Wind = -UAV_MU * CurrentGlobalVelocity;
+	Wind = -HyperparametersPointer[UAV_MU_INDEX] * CurrentGlobalVelocity;
 
 	// Apply the discrete first order filter
-	RollTorqueToApply = FMath::Clamp(RollTorqueToApply, -UAV_MAX_ROLL, UAV_MAX_ROLL);
-	PitchTorqueToApply = FMath::Clamp(PitchTorqueToApply, -UAV_MAX_PITCH, UAV_MAX_PITCH);
-	YawTorqueToApply = FMath::Clamp(YawTorqueToApply, -UAV_MAX_YAW_RATE, UAV_MAX_YAW_RATE);
-	ThrustToApply = FMath::Clamp(ThrustToApply, -UAV_MAX_FORCE, UAV_MAX_FORCE);
+	RollTorqueToApply = FMath::Clamp(RollTorqueToApply, -HyperparametersPointer[UAV_MAX_ROLL_INDEX], HyperparametersPointer[UAV_MAX_ROLL_INDEX]);
+	PitchTorqueToApply = FMath::Clamp(PitchTorqueToApply, -HyperparametersPointer[UAV_MAX_PITCH_INDEX], HyperparametersPointer[UAV_MAX_PITCH_INDEX]);
+	YawTorqueToApply = FMath::Clamp(YawTorqueToApply, -HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX], HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX]);
+	ThrustToApply = FMath::Clamp(ThrustToApply, -HyperparametersPointer[UAV_MAX_FORCE_INDEX], HyperparametersPointer[UAV_MAX_FORCE_INDEX]);
 }
 
 float AUAV::UEUnitsToMeters(float ValueInUnrealUnits) {
@@ -163,4 +192,54 @@ void AUAV::ApplyForces() {
 	CurrentPitchTorque = PitchTorqueToApply;
 	CurrentYawTorque = YawTorqueToApply;
 	CurrentThrust = ThrustToApply;
+}
+
+const float* AUAV::GetDefaultHyperparameters() const {
+	static const float DefaultHyperparameters[NUMBER_OF_PARAMETERS] = {
+			NUMBER_OF_PARAMETERS,
+			UAV_MASS,
+			UAV_MU,
+			UAV_MAX_ROLL,
+			UAV_MAX_PITCH,
+			UAV_MAX_YAW_RATE,
+			UAV_MAX_FORCE,
+			UAV_TAU_UP_ROLL,
+			UAV_TAU_UP_PITCH,
+			UAV_TAU_UP_YAW_RATE,
+			UAV_TAU_UP_FORCE,
+			UAV_TAU_DOWN_ROLL,
+			UAV_TAU_DOWN_PITCH,
+			UAV_TAU_DOWN_YAW_RATE,
+			UAV_TAU_DOWN_FORCE,
+			UAV_ROLL_P,
+			UAV_ROLL_I,
+			UAV_ROLL_D,
+			UAV_PITCH_P,
+			UAV_PITCH_I,
+			UAV_PITCH_D,
+			UAV_YAW_P,
+			UAV_YAW_I,
+			UAV_YAW_D,
+			UAV_ALT_P,
+			UAV_ALT_I,
+			UAV_ALT_D,
+		};
+	return DefaultHyperparameters;
+}
+
+int AUAV::GetHyperparameterCount() const {
+	return NUMBER_OF_PARAMETERS;
+}
+
+void AUAV::SetHyperparameterAddress(float* Input) {
+	Super::SetHyperparameterAddress(Input);
+	this->HyperparametersPointer = Input;
+	InitializePIDControllers(); //Must give the PID Controllers the new addresses to point to.
+}
+
+void AUAV::InitializePIDControllers() {
+	RollController.SetGains(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX);
+	PitchController.SetGains(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX);
+	YawController.SetGains(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX);
+	AltitudeController.SetGains(HyperparametersPointer + UAV_ALT_P_INDEX, HyperparametersPointer + UAV_ALT_I_INDEX, HyperparametersPointer + UAV_ALT_D_INDEX);
 }
