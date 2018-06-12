@@ -15,7 +15,7 @@ public class Holodeck : ModuleRules
              "Holodeck/ClientCommands/Public"
          });
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "JsonUtilities"});
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "JsonUtilities", "RenderCore", "RHI" });
 
         PrivateDependencyModuleNames.AddRange(new string[] {  });
 
