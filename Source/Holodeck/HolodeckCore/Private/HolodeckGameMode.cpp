@@ -35,7 +35,7 @@ void AHolodeckGameMode::StartPlay() {
 	// To prevent crashing in standalone games, check the HolodeckOn command is supplied.
 	// This overrides the bHolodeckIsOff value supplied in the editor.
 	if (GetWorld()->WorldType == EWorldType::Game)
-		bHolodeckIsOff = FParse::Param(FCommandLine::Get(), TEXT("HolodeckOn"));
+		bHolodeckIsOff = FParse::Param(FCommandLine::Get(), TEXT("HolodeckOff"));
 
 	if (!bHolodeckIsOff) {
 		this->Instance = (UHolodeckGameInstance*)(GetGameInstance());
