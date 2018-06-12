@@ -11,9 +11,8 @@ UHolodeckCamera::UHolodeckCamera() {
 void UHolodeckCamera::BeginPlay() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay"));
 	Super::BeginPlay();
-
 	RenderRequest = FRenderRequest();
-
+	
 	//set up everything for the texture that you are using for output. These won't likely change for subclasses.
 	//Note: the format should probably be 512 x 512 because it must be a square shape, and a power of two. If not, then the TargetTexture will cause crashes.
 	TargetTexture->MipGenSettings = TMGS_NoMipmaps;
@@ -26,24 +25,18 @@ void UHolodeckCamera::BeginPlay() {
 	SceneCapture->ProjectionType = ECameraProjectionMode::Perspective;
 	SceneCapture->CompositeMode = SCCM_Overwrite;
 	SceneCapture->FOVAngle = 90; //90 degrees for field of view.
+	SceneCapture->CaptureSource = SCS_SceneColorHDR;
 	SceneCapture->TextureTarget = TargetTexture;
-	TargetTexture->bHDR_DEPRECATED = false;
+	SceneCapture->PostProcessSettings.bOverride_AutoExposureBias = 1;
+
+	// Higher = brighter captured image. Lower = darker
+	SceneCapture->PostProcessSettings.AutoExposureBias = 2.5;
 
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
-
 	this->Buffer = static_cast<FColor*>(Super::Buffer);
-
 	this->ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-	if (ViewportClient != nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("@@@HolodeckCAmera added itself to the viewport Camera list"));
-		ViewportClient->AddCamera(this);
-		this->bPointerGivenToViewport = true;
-	}
-	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::BeginPlay failed to locate HolodeckViewportClient."));
-	}
+	ViewportClient->AddCamera(this);
 }
-
 
 void UHolodeckCamera::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 
