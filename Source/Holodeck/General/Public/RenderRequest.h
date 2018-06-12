@@ -11,13 +11,15 @@
 
 class FRenderRequest : public FRenderCommand
 {
-
 	private:
 		FColor* Buffer;
 		UTextureRenderTarget2D* TargetTexture;
 
 	public:
 
+		/**
+		* Retrieves the rendered texture from the GPU without flushing the GPU like ReadPixels() does. 
+		*/
 		virtual void RetrievePixels(FColor* Buffer, UTextureRenderTarget2D* TargetTexture);
 
 		void DoTask(ENamedThreads::Type CurrentThread, const FGraphEventRef& MyCompletionGraphEvent)

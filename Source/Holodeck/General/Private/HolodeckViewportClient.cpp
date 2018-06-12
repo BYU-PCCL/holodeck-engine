@@ -12,7 +12,6 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot() {
 		if (ViewportSize.X <= 0 || ViewportSize.Y <= 0) return;
 		bool bGotScreenshot = Viewport->ReadPixelsPtr(Buffer, FReadSurfaceDataFlags(RCM_UNorm, CubeFace_MAX), FIntRect(0, 0, ViewportSize.X, ViewportSize.Y));
 	}
-
 }
 
 void UHolodeckViewportClient::Draw(FViewport * ViewportParam, FCanvas * SceneCanvas) {
@@ -34,4 +33,3 @@ void UHolodeckViewportClient::AddCamera(UHolodeckCamera* Camera) {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckViewportClient::AddCamera called"));
 	this->Cameras.Add(Camera->GetAgentName(), Camera);
 }
-
