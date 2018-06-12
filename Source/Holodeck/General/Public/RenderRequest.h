@@ -5,8 +5,6 @@
 #include "CoreMinimal.h"
 #include "Engine/TextureRenderTarget2D.h"
 
-#include <memory>
-
 // Adapted from Microsoft Airsim Open Source Project
 // https://github.com/Microsoft/AirSim/blob/7bddd5857791f9c164e8eba80c229f199c0babf8/Unreal/Plugins/AirSim/Source/RenderRequest.h
 

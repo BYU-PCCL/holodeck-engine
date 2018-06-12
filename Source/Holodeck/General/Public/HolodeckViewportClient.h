@@ -4,8 +4,6 @@
 
 #include "Holodeck.h"
 
-#include <map>
-
 #include "Engine/GameViewportClient.h"
 #include "HolodeckViewportClient.generated.h"
 
@@ -67,5 +65,5 @@ private:
 
 	FColor* Buffer;
 	FVector2D ViewportSize;
-	std::map<FString, UHolodeckCamera*> Cameras;
+	TMap<FString, UHolodeckCamera*> Cameras;
 };
