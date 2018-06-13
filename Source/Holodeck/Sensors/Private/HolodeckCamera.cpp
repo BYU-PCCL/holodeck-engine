@@ -3,14 +3,16 @@
 
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
-	SceneCapture = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("SceneCaptureComponent2D"));
-	TargetTexture = CreateDefaultSubobject<UTextureRenderTarget2D>(TEXT("TargetTexture"));
+	SceneCapture = this->CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCap");
 	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 void UHolodeckCamera::BeginPlay() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay"));
 	Super::BeginPlay();
+	
+	TargetTexture = NewObject<UTextureRenderTarget2D>(this);
+
 	RenderRequest = FRenderRequest();
 	
 	//set up everything for the texture that you are using for output. These won't likely change for subclasses.

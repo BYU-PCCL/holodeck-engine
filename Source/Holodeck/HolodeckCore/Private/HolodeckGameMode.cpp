@@ -6,7 +6,7 @@
 const char RESET_KEY[] = "RESET";
 const int RESET_BYTES = 1;
 
-AHolodeckGameMode::AHolodeckGameMode(const FObjectInitializer& ObjectInitializer) : AGameMode(ObjectInitializer), bHolodeckIsOff(true) {
+AHolodeckGameMode::AHolodeckGameMode(const FObjectInitializer& ObjectInitializer) : AGameMode(ObjectInitializer), bHolodeckIsOn(true) {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics;
 	UE_LOG(LogHolodeck, Log, TEXT("HolodeckGameMode initialized"));
@@ -15,7 +15,7 @@ AHolodeckGameMode::AHolodeckGameMode(const FObjectInitializer& ObjectInitializer
 void AHolodeckGameMode::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
-	// If !bHolodeckIsOff, then we never got instance or reset signal,
+	// If !bHolodeckIsOn, then we never got instance or reset signal,
 	// so we don't need to check bOn here.
 	if (this->Instance)
 		this->Instance->Tick(DeltaSeconds);
@@ -33,11 +33,11 @@ void AHolodeckGameMode::StartPlay() {
 	UE_LOG(LogHolodeck, Log, TEXT("HolodeckGameMode starting play"));
 
 	// To prevent crashing in standalone games, check the HolodeckOn command is supplied.
-	// This overrides the bHolodeckIsOff value supplied in the editor.
+	// This overrides the bHolodeckIsOn value supplied in the editor.
 	if (GetWorld()->WorldType == EWorldType::Game)
-		bHolodeckIsOff = FParse::Param(FCommandLine::Get(), TEXT("HolodeckOff"));
+		bHolodeckIsOn = FParse::Param(FCommandLine::Get(), TEXT("HolodeckOn"));
 
-	if (!bHolodeckIsOff) {
+	if (bHolodeckIsOn) {
 		this->Instance = (UHolodeckGameInstance*)(GetGameInstance());
 		if (this->Instance) {
 			this->Instance->StartServer();
