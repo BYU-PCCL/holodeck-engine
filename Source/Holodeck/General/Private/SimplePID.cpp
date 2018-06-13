@@ -41,9 +41,8 @@ float SimplePID::ComputePID(float Desired, float Current, float Delta) {
 	LastError = Error;
 	LastState = Current;
 
-	return 5.0; // TEST CODE
 	// Note the negative der. term.  This is because now the differentiator is in the feedback loop rather than the forward loop
-	//return (*KP) * Error + (*KI) * Integrator - (*KD) * Differentiator;
+	return (*KP) * Error + (*KI) * Integrator - (*KD) * Differentiator;
 }
 
 float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
@@ -59,8 +58,7 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
 
 	LastError = Error;
 	LastState = X;
-	return 5.0; //TEST CODE
-	//return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
+	return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
 }
 
 float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bool bIsAngle) {
