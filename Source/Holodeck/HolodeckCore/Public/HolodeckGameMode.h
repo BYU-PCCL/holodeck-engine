@@ -43,7 +43,7 @@ public:
 
 	// Can be set off to turn off holodeck functionality.
 	UPROPERTY(EditAnywhere)
-	bool bHolodeckIsOff;
+	bool bHolodeckIsOn;
 
 	/**
 	  * GetAssociatedServer

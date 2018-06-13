@@ -41,6 +41,7 @@ protected:
 	//TSubclassOf<USceneComponent> SceneCap;
 
 	USceneCaptureComponent2D* SceneCapture;
+
 	UTextureRenderTarget2D* TargetTexture;
 
 	UPROPERTY(EditAnywhere)
