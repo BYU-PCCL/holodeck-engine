@@ -58,7 +58,6 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
 
 	LastError = Error;
 	LastState = X;
-
 	return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
 }
 

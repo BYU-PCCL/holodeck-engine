@@ -5,8 +5,9 @@
 #include "Holodeck.h"
 
 #include "Engine/GameViewportClient.h"
-
 #include "HolodeckViewportClient.generated.h"
+
+class UHolodeckCamera; //Must forward declare instead of include to avoid cyclic dependency. 
 
 /**
   * UHolodeckViewportClient
@@ -17,8 +18,7 @@
   * GameViewportClientClassName = /Script/Holodeck.HolodeckViewportClient
   */
 UCLASS()
-class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient
-{
+class HOLODECK_API UHolodeckViewportClient : public UGameViewportClient{
 	GENERATED_BODY()
 
 public:
@@ -55,6 +55,9 @@ private:
 	  */
 	void HolodeckTakeScreenShot();
 
+	//void ClearNullCameras();
+
 	FColor* Buffer;
 	FVector2D ViewportSize;
+	TMap<FString, UHolodeckCamera*> Cameras;
 };

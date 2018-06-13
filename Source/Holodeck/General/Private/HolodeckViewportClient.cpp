@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckViewportClient.h"
+#include "HolodeckCamera.h" //Included here to avoid cyclic dependency. 
 
 UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer& PCIP) : Super(PCIP) {}
 
