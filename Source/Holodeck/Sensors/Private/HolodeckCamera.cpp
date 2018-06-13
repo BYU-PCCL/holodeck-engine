@@ -37,13 +37,8 @@ void UHolodeckCamera::BeginPlay() {
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
 	this->Buffer = static_cast<FColor*>(Super::Buffer);
 	this->ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
-	ViewportClient->AddCamera(this);
 }
 
 void UHolodeckCamera::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-
-}
-
-void UHolodeckCamera::Capture() {
 	RenderRequest.RetrievePixels(Buffer, TargetTexture);
 }

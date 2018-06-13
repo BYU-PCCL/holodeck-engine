@@ -47,12 +47,6 @@ public:
 	  */
 	bool BufferIsSet() { return Buffer != nullptr; };
 
-	/**
-	  *
-	  *
-	  */
-	void AddCamera(UHolodeckCamera* Camera);
-
 private:
 	/**
 	  * HolodeckTakeScreenShot
