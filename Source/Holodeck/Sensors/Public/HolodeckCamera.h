@@ -38,9 +38,11 @@ protected:
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	//TSubclassOf<USceneComponent> SceneCap;
 
-	USceneCaptureComponent2D* SceneCapture;
-
+	UPROPERTY()
 	UTextureRenderTarget2D* TargetTexture;
+
+	UPROPERTY()
+	USceneCaptureComponent2D* SceneCapture;
 
 	UPROPERTY(EditAnywhere)
 	int CaptureWidth = 256;
