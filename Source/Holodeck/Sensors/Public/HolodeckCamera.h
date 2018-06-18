@@ -35,9 +35,6 @@ protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 
-	//UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	//TSubclassOf<USceneComponent> SceneCap;
-
 	UPROPERTY()
 	UTextureRenderTarget2D* TargetTexture;
 

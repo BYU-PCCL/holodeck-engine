@@ -6,6 +6,7 @@
 #include "Command.h"
 #include "SphereRobot.h"
 #include "UAV.h"
+#include "NavAgent.h"
 #include "SpawnAgentCommand.generated.h"
 
 /**
