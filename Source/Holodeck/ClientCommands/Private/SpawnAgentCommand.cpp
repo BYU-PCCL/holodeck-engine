@@ -1,10 +1,6 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
 
-const static FString UAV_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/UAV/UAVBlueprint.UAVBlueprint'";
-const static FString ANDROID_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/Android/AndroidBlueprint.AndroidBlueprint'";
-const static FString SPHERE_ROBOT_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/SphereRobot/SphereRobotBlueprint.SphereRobotBlueprint'";
-const static FString NAV_AGENT_REFERENCE = "Blueprint'/Game/HolodeckContent/Agents/NavAgent/NavAgentBlueprint.NavAgentBlueprint'";
 const static std::string UAV = "UAV";
 const static std::string SPHERE_ROBOT = "SphereRobot";
 const static std::string NAV_AGENT = "NavAgent";
@@ -23,10 +19,10 @@ USpawnAgentCommand::USpawnAgentCommand() {
 		SpawnFunctionMap[ANDROID] = &SpawnAgent<AAndroid>;
 		SpawnFunctionMap[NAV_AGENT] = &SpawnAgent<ANavAgent>;
 		//Initialize the BlueprintMap
-		BlueprintMap[UAV] = GetBlueprint(UAV_REFERENCE);
-		BlueprintMap[SPHERE_ROBOT] = GetBlueprint(SPHERE_ROBOT_REFERENCE);
-		BlueprintMap[ANDROID] = GetBlueprint(ANDROID_REFERENCE);
-		BlueprintMap[NAV_AGENT] = GetBlueprint(NAV_AGENT_REFERENCE);
+		BlueprintMap[UAV] = AUAV::StaticClass();
+		BlueprintMap[SPHERE_ROBOT] = ASphereRobot::StaticClass();
+		BlueprintMap[ANDROID] = AAndroid::StaticClass();
+		BlueprintMap[NAV_AGENT] = ANavAgent::StaticClass();
 	}
 }
 
