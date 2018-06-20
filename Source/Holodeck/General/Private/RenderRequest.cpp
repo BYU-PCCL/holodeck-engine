@@ -30,3 +30,5 @@ void FRenderRequest::ExecuteTask()
 		FMemory::Memcpy(this->Buffer, &SurfaceData[0], SurfaceData.Num() * sizeof(FColor)); // this line isn't the problem
 	}
 }
+
+FRenderRequest::~FRenderRequest() {};
