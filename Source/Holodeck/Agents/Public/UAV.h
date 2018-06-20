@@ -7,6 +7,14 @@
 #include "UAV.generated.h"
 
 UCLASS()
+/**
+* AUAV
+* Inherits from the HolodeckAgent class
+* On any tick this object will:
+*     Calculate the forces to apply using PID controllers, desired values, and current values.
+*     Apply the given forces. 
+* Desired values must be set by a controller. 
+*/
 class HOLODECK_API AUAV : public AHolodeckAgent
 {
 	GENERATED_BODY()
@@ -31,6 +39,14 @@ public:
 		UStaticMeshComponent* RootMesh;
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		float ThrustToApply;
+
+	//See HolodeckAgent.h for descriptions of these overriden functions
+	void SetHyperparameterAddress(float* Input) override;
+
+protected:
+	//See HolodeckAgent.h for descriptions of these overriden functions
+	virtual const float* GetDefaultHyperparameters() const override;
+	int GetHyperparameterCount() const override;
 
 private:
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
@@ -58,4 +74,11 @@ private:
 	float CurrentYawRate;
 	// Wind
 	FVector Wind;
+	const float* HyperparametersPointer;
+
+	/**
+	  * InitializePIDControllers
+	  * Sets the PID controllers to point to the HyperparametersPointer array, with correct offsets for each variable of the respective controllers.
+	  */
+	void InitializePIDControllers();
 };

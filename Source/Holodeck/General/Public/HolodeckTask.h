@@ -42,6 +42,17 @@ public:
 	  */
 	void Tick(float DeltaSeconds) override;
 
+	/**
+	  * TaskInit
+	  * Starts the task. Should be called by the task master.
+	  * Must be overidden by the child task!
+	  * @param bOn true if this task should be on.
+	  */
+	UFUNCTION(BlueprintImplementableEvent)
+	void TaskInit(bool bOn);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString TaskKey;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Reward;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

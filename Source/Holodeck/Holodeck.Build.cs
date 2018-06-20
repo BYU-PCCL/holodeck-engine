@@ -6,34 +6,20 @@ public class Holodeck : ModuleRules
 {
 	public Holodeck(ReadOnlyTargetRules Target) : base(Target)
 	{
-        PrivateIncludePaths.AddRange(new string[] {
+        PrivateIncludePaths.AddRange(new [] {
              "Holodeck/Agents/Public",
              "Holodeck/General/Public",
              "Holodeck/Sensors/Public",
              "Holodeck/Utils/Public",
-             "Holodeck/HolodeckCore/Public"
+             "Holodeck/HolodeckCore/Public",
+             "Holodeck/ClientCommands/Public"
          });
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "JsonUtilities"});
-
-        PrivateDependencyModuleNames.AddRange(new string[] {  });
+        PublicDependencyModuleNames.AddRange(new [] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "JsonUtilities", "RenderCore", "RHI" });
 
 #if PLATFORM_LINUX
-        PublicDependencyModuleNames.AddRange(new string[] { "rt", "pthread" };
+        PublicDependencyModuleNames.AddRange(new [] { "rt", "pthread" };
         //TARGET_LINK_LIBRARIES(UHolodeckServer rt pthread)
 #endif
 
-        // Uncomment if you are using Slate UI
-        // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
-
-        // Uncomment if you are using online features
-        // PrivateDependencyModuleNames.Add("OnlineSubsystem");
-        // if ((Target.Platform == UnrealTargetPlatform.Win32) || (Target.Platform == UnrealTargetPlatform.Win64))
-        // {
-        //		if (UEBuildConfiguration.bCompileSteamOSS == true)
-        //		{
-        //			DynamicallyLoadedModuleNames.Add("OnlineSubsystemSteam");
-        //		}
-        // }
-    }
 }

@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckViewportClient.h"
+#include "HolodeckCamera.h" //Included here to avoid cyclic dependency. 
 
 UHolodeckViewportClient::UHolodeckViewportClient(const class FObjectInitializer& PCIP) : Super(PCIP) {}
 
@@ -13,8 +14,8 @@ void UHolodeckViewportClient::HolodeckTakeScreenShot() {
 	}
 }
 
-void UHolodeckViewportClient::Draw(FViewport * Viewport, FCanvas * SceneCanvas) {
-	Super::Draw(Viewport, SceneCanvas);
+void UHolodeckViewportClient::Draw(FViewport * ViewportParam, FCanvas * SceneCanvas) {
+	Super::Draw(ViewportParam, SceneCanvas);
 	HolodeckTakeScreenShot();
 }
 

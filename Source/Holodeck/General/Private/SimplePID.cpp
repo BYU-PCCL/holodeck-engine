@@ -4,9 +4,6 @@
 #include "SimplePID.h"
 
 SimplePID::SimplePID() {
-	KP = 0.0f; // in context of our whole program, P is greater when mass is greater. 
-	KI = 0.0f; // These numbers are tuned to a certain drone. We may need to tune them again for UE4.
-	KD = 0.0f;
 	Integrator = 0.0f;
 	Differentiator = 0.0f;
 	LastError = 0.0f;
@@ -14,7 +11,7 @@ SimplePID::SimplePID() {
 	Tau = 0.0f; // Connor: What does tau represent?
 }
 
-SimplePID::SimplePID(double P, double I, double D)
+SimplePID::SimplePID(const float* P, const float* I, const float* D)
 		: KP(P), KI(I), KD(D), Tau(0.05) {
 	Integrator = 0.0f;
 	Differentiator = 0.0f;
@@ -45,7 +42,7 @@ float SimplePID::ComputePID(float Desired, float Current, float Delta) {
 	LastState = Current;
 
 	// Note the negative der. term.  This is because now the differentiator is in the feedback loop rather than the forward loop
-	return KP * Error + KI * Integrator - KD * Differentiator;
+	return (*KP) * Error + (*KI) * Integrator - (*KD) * Differentiator;
 }
 
 float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
@@ -61,8 +58,7 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
 
 	LastError = Error;
 	LastState = X;
-
-	return KP * Error + KI * Integrator - KD * XDot;
+	return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
 }
 
 float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bool bIsAngle) {
@@ -85,10 +81,10 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bo
 	LastError = Error;
 	LastState = X;
 
-	return KP * Error + KI * Integrator - KD * XDot;
+	return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
 }
 
-void SimplePID::SetGains(float P, float I, float D) {
+void SimplePID::SetGains(const float* P, const float* I, const float* D) {
 	KP = P;
 	KI = I;
 	KD = D;

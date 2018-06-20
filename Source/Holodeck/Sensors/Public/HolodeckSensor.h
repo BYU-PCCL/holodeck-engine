@@ -11,6 +11,8 @@
   * HolodeckSensor
   * Abstract base class for sensors within holodeck
   * Handles publishing sensor data
+  * To function properly, HolodeckSensors must be attached to an agent that is controlled by 
+  * a holodeck controller. 
   * To override, you must implement:
   *		GetDataKey
   *		GetDataLength
@@ -45,6 +47,8 @@ public:
 	  */
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	virtual FString GetAgentName() { return this->AgentName; }
+
 protected:
 
 	/**
@@ -69,6 +73,8 @@ protected:
 	virtual int GetItemSize() { check(0 && "You must override getItemSize"); return 0; };
 
 	/**
+	  * TickSensorComponent
+	  * Mimics Unreal Engine's UActorComponent::TickComponent function. See it's documentation for what the parameters are. 
 	  * Must be overridden by subclass
 	  * Handles the logic for ticking the sensor
 	  * Make sure to set the data,

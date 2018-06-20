@@ -8,6 +8,10 @@
 
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
+/**
+* UPressureSensor
+* This class is currently broken. 
+*/
 class HOLODECK_API UPressureSensor : public UHolodeckSensor
 {
 	GENERATED_BODY()
