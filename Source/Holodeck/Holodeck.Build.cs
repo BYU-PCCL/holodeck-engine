@@ -17,8 +17,6 @@ public class Holodeck : ModuleRules
 
         PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "JsonUtilities", "RenderCore", "RHI" });
 
-        PrivateDependencyModuleNames.AddRange(new string[] {  });
-
 #if PLATFORM_LINUX
         PublicDependencyModuleNames.AddRange(new string[] { "rt", "pthread" };
         //TARGET_LINK_LIBRARIES(UHolodeckServer rt pthread)
