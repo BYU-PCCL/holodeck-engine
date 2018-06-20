@@ -74,7 +74,6 @@ private:
 	float CurrentYawRate;
 	// Wind
 	FVector Wind;
-	const static enum ParameterIndices;
 	const float* HyperparametersPointer;
 
 	/**
