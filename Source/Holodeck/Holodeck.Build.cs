@@ -21,5 +21,5 @@ public class Holodeck : ModuleRules
         PublicDependencyModuleNames.AddRange(new [] { "rt", "pthread" };
         //TARGET_LINK_LIBRARIES(UHolodeckServer rt pthread)
 #endif
-
+	}
 }
