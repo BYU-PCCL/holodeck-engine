@@ -36,8 +36,7 @@ void UPressureSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, 
 	float* FloatBuffer = static_cast<float*>(Buffer);
 
 	// Reset buffer to 0
-	memset(FloatBuffer, 0, GetNumItems() * sizeof(float));
-
+	//memset(FloatBuffer, 0, GetNumItems() * sizeof(float));
 }
 
 void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
@@ -53,10 +52,13 @@ void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norma
 	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, HitWorldLocation, HitWorldRotation, HitBoneLocation, HitBoneRotation);
 	float force = NormalImpulse.Size();
 
-	AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, force, FloatBuffer);
+	if(JointMap.Contains(Hit.BoneName.ToString()))
+		AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, force, FloatBuffer);
 }
 
 float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation, float force, float* Data) {
+
+	UE_LOG(LogHolodeck, Warning, TEXT("BoneHit is %s"), *BoneName);
 
 	Data[JointMap[BoneName]] = HitBoneLocation.X;
 	Data[JointMap[BoneName]+1] = HitBoneLocation.Y;
