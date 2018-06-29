@@ -26,6 +26,7 @@ public:
 	static const int NUM_2_AXIS_JOINTS = 10;
 	static const int NUM_1_AXIS_JOINTS = 20;
 	static const int NUM_2_PLUS_3_AXIS_JOINTS = 28;
+	static const int TOTAL_DOF = NUM_3_AXIS_JOINTS * 3 + NUM_2_AXIS_JOINTS * 2 + NUM_1_AXIS_JOINTS; // 94 DOF in total
 
 	const static FName Joints[];
 

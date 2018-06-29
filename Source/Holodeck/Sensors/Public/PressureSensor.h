@@ -2,15 +2,20 @@
 
 #pragma once
 
-#include "Components/SceneComponent.h"
 #include "HolodeckSensor.h"
+#include "Android.h"
+
+#include "Components/SceneComponent.h"
+
 #include "PressureSensor.generated.h"
 
+// 94 DOF each with 2 length 3 vectors containing impulse normal info and hit location
+static const int NUM_JOINTS = 48;
+const static int NUM_PRESSURE_ITEMS = NUM_JOINTS * (3 + 1);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 /**
 * UPressureSensor
-* This class is currently broken. 
 */
 class HOLODECK_API UPressureSensor : public UHolodeckSensor
 {
@@ -23,21 +28,26 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
-
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
 protected:
 	FString GetDataKey() override { return "PressureSensor"; };
-	int GetNumItems() override { return 10000; };
+
+	// 94 DOF each with 2 length 3 vectors containing impulse normal info and hit location
+	int GetNumItems() override { return NUM_PRESSURE_ITEMS; };
 	int GetItemSize() override { return sizeof(float); };
 
 	// Called every frame
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-private:
-	TMap<FString, TArray<FString>> HitsMap;
+	//float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, float force, float* Data);
+
+	//AAndroid* Android;
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
+
+	void InitJointMap();
+	const TMap<FName, int> JointMap;
 	
 };

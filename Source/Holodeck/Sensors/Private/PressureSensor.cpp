@@ -3,7 +3,6 @@
 #include "Holodeck.h"
 #include "PressureSensor.h"
 
-
 // Sets default values for this component's properties
 UPressureSensor::UPressureSensor() {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
@@ -18,6 +17,9 @@ UPressureSensor::UPressureSensor() {
 void UPressureSensor::BeginPlay() {
 	Super::BeginPlay();
 
+	Android = Cast<AAndroid>(this->GetOwner());
+	InitJointMap();
+
 	//set hit delegate
 	FScriptDelegate hitDelegate;
 	hitDelegate.BindUFunction(this, TEXT("OnHit"));
@@ -31,55 +33,46 @@ void UPressureSensor::BeginPlay() {
 
 // Called every frame
 void UPressureSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-/*
-	//build json from hitsmap
-	FString DataString = "";
-	for (auto& BoneHitArray : HitsMap)
-	{
-		DataString += "{\"" + BoneHitArray.Key + "\":[";
-		for (int i = 0; i < BoneHitArray.Value.Num(); i++) {
-			DataString += BoneHitArray.Value[i];
-			if (i+1 < BoneHitArray.Value.Num())
-				DataString += ",";
-		}
-		DataString += "]},";
-	}
-	if (DataString.Len() > 0)
-		DataString.RemoveAt(DataString.Len() - 1);
-	DataString.InsertAt(0, "[");
-	DataString += "]";
-	ResultData.Data = DataString;
+	float* FloatBuffer = static_cast<float*>(Buffer);
 
-	//Empty the hits map
-	HitsMap.Empty();*/
+	// Reset buffer to 0
+	memset(FloatBuffer, 0, GetNumItems() * sizeof(float));
+
 }
 
 void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
-	FVector hit_world_location;
-	FVector hit_bone_location;
-	FRotator hit_bone_rotation;
+	float* FloatBuffer = static_cast<float*>(Buffer);
 
-	hit_world_location = Hit.Location;
-	FRotator hit_world_rotation = SkeletalMeshComponent->GetSocketRotation(Hit.BoneName);
+	FVector HitWorldLocation;
+	FVector HitBoneLocation;
+	FRotator HitBoneRotation;
 
-	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, hit_world_location, hit_world_rotation, hit_bone_location, hit_bone_rotation);
+	HitWorldLocation = Hit.Location;
+	FRotator HitWorldLocation = SkeletalMeshComponent->GetSocketRotation(Hit.BoneName);
 
-	FString HitInformation = "{\"x\":";
-	HitInformation += FString::SanitizeFloat(hit_bone_location.X);
-	HitInformation += ",";
+	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, HitWorldLocation, HitWorldLocation, HitBoneLocation, HitBoneRotation);
 
-	HitInformation += "\"y\":";
-	HitInformation += FString::SanitizeFloat(hit_bone_location.Y);
-	HitInformation += ",";
+	AddHitToBuffer(Hit.BoneName, HitBoneLocation, force, FloatBuffer);
+}
 
-	HitInformation += "\"z\":";
-	HitInformation += FString::SanitizeFloat(hit_bone_location.Z);
-	HitInformation += ",";
+float* UPressureSensor::AddHitToBuffer(FName BoneName,FVector HitBoneLocation, float force, float* Data) {
+	
+	FName* AndroidJoints = Android->GetAndroidJoints();
 
-	HitInformation += "\"force\":";
-	float force = NormalImpulse.Size();
-	HitInformation += FString::SanitizeFloat(force);
-	HitInformation += "}";
+	Data[JointMap[BoneName]] = HitBoneLocation.X;
+	Data[JointMap[BoneName]+1] = HitBoneLocation.Y;
+	Data[JointMap[BoneName]+2] = HitBoneLocation.Z;
+	Data[JointMap[BoneName]+3] = force;
 
-	HitsMap.FindOrAdd(Hit.BoneName.ToString()).Add(HitInformation);
+	return Data;
+}
+
+const void UPressureSensor::InitJointMap() {
+
+	FName* Joints = Android->GeAndroidtJoints();
+
+	for (int JointInd = 0; JointInd < Android->NUM_JOINTS; JointInd++) {
+
+		JointMap.Add(Joints[JointInd],JointInd);
+	}
 }
