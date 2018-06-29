@@ -6,7 +6,6 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgent.h"
-#include "PressureSensor.h"
 
 #include "Android.generated.h"
 
@@ -41,20 +40,6 @@ public:
 	* @param DeltaSeconds the time since the last tick.
 	*/
 	void Tick(float DeltaSeconds) override;
-
-	/**
-	* TODO(joshgreaves) : Explain this function properly.
-	* NotifyHit
-	* Used for the pressure sensor.
-	*/
-	void NotifyHit(UPrimitiveComponent* MyComp,
-		AActor* Other,
-		UPrimitiveComponent* OtherComp,
-		bool bSelfMoved,
-		FVector HitLocation,
-		FVector HitNormal,
-		FVector NormalImpulse,
-		const FHitResult& Hit) override;
 
 	//Decal material. This is used to show collisions on the Android. It is to be left blank and is set programmatically
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)

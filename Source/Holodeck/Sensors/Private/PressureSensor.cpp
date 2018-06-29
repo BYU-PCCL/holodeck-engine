@@ -48,16 +48,15 @@ void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norma
 	FRotator HitBoneRotation;
 
 	HitWorldLocation = Hit.Location;
-	FRotator HitWorldLocation = SkeletalMeshComponent->GetSocketRotation(Hit.BoneName);
+	FRotator HitWorldRotation = SkeletalMeshComponent->GetSocketRotation(Hit.BoneName);
 
-	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, HitWorldLocation, HitWorldLocation, HitBoneLocation, HitBoneRotation);
+	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, HitWorldLocation, HitWorldRotation, HitBoneLocation, HitBoneRotation);
+	float force = NormalImpulse.Size();
 
-	AddHitToBuffer(Hit.BoneName, HitBoneLocation, force, FloatBuffer);
+	AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, force, FloatBuffer);
 }
 
-float* UPressureSensor::AddHitToBuffer(FName BoneName,FVector HitBoneLocation, float force, float* Data) {
-	
-	FName* AndroidJoints = Android->GetAndroidJoints();
+float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation, float force, float* Data) {
 
 	Data[JointMap[BoneName]] = HitBoneLocation.X;
 	Data[JointMap[BoneName]+1] = HitBoneLocation.Y;
@@ -67,12 +66,11 @@ float* UPressureSensor::AddHitToBuffer(FName BoneName,FVector HitBoneLocation, f
 	return Data;
 }
 
-const void UPressureSensor::InitJointMap() {
-
-	FName* Joints = Android->GeAndroidtJoints();
+void UPressureSensor::InitJointMap() {
+	const FName* Joints = Android->Joints;
 
 	for (int JointInd = 0; JointInd < Android->NUM_JOINTS; JointInd++) {
-
-		JointMap.Add(Joints[JointInd],JointInd);
+		FString Joint = Joints[JointInd].ToString();
+		JointMap.Add(Joint, JointInd);
 	}
 }

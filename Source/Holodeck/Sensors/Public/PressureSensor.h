@@ -41,13 +41,13 @@ protected:
 	// Called every frame
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	//float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, float force, float* Data);
+	float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, float force, float* Data);
 
-	//AAndroid* Android;
+	AAndroid* Android;
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
 
 	void InitJointMap();
-	const TMap<FName, int> JointMap;
+	TMap<FString, int> JointMap;
 	
 };
