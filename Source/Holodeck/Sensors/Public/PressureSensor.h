@@ -28,6 +28,9 @@ public:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 	
+	/**
+	 * Callback function that is called whenever part of the actor is hit. 
+	 */
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
