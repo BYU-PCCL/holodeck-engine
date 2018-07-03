@@ -26,9 +26,9 @@ void UPressureSensor::BeginPlay() {
 	this->GetAttachmentRootActor()->OnActorHit.AddUnique(hitDelegate);
 
 	//assign skeletal mesh component
-	TArray<USkeletalMeshComponent*> components;
-	this->GetAttachmentRootActor()->GetComponents<USkeletalMeshComponent>(components);
-	SkeletalMeshComponent = components[0];
+	TArray<USkeletalMeshComponent*> Components;
+	this->GetAttachmentRootActor()->GetComponents<USkeletalMeshComponent>(Components);
+	SkeletalMeshComponent = Components[0];
 }
 
 // Called every frame
