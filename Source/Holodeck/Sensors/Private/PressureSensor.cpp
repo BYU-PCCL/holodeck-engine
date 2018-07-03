@@ -34,9 +34,8 @@ void UPressureSensor::BeginPlay() {
 // Called every frame
 void UPressureSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	float* FloatBuffer = static_cast<float*>(Buffer);
-
-	// Reset buffer to 0
-	//memset(FloatBuffer, 0, GetNumItems() * sizeof(float));
+	memcpy(FloatBuffer, PrivateData, GetNumItems() * sizeof(float));
+	memset(PrivateData, 0, GetNumItems() * sizeof(float));
 }
 
 void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
@@ -53,17 +52,17 @@ void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norma
 	float force = NormalImpulse.Size();
 
 	if(JointMap.Contains(Hit.BoneName.ToString()))
-		AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, force, FloatBuffer);
+		AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, force, PrivateData);
 }
 
 float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation, float force, float* Data) {
 
-	UE_LOG(LogHolodeck, Warning, TEXT("BoneHit is %s"), *BoneName);
+	int JointInd = JointMap[BoneName] * 4;
 
-	Data[JointMap[BoneName]] = HitBoneLocation.X;
-	Data[JointMap[BoneName]+1] = HitBoneLocation.Y;
-	Data[JointMap[BoneName]+2] = HitBoneLocation.Z;
-	Data[JointMap[BoneName]+3] = force;
+	Data[JointInd] = HitBoneLocation.X;
+	Data[JointInd+1] = HitBoneLocation.Y;
+	Data[JointInd+2] = HitBoneLocation.Z;
+	Data[JointInd+3] = force;
 
 	return Data;
 }

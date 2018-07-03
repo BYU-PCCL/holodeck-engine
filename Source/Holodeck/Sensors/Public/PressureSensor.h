@@ -31,6 +31,10 @@ public:
 	UFUNCTION()
 	void OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit);
 
+private:
+
+	float PrivateData[NUM_PRESSURE_ITEMS];
+
 protected:
 	FString GetDataKey() override { return "PressureSensor"; };
 
@@ -49,5 +53,7 @@ protected:
 
 	void InitJointMap();
 	TMap<FString, int> JointMap;
+
+
 	
 };
