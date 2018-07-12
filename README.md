@@ -23,6 +23,12 @@ This repository contains everything you need to build environments in the unreal
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.17
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
 
+## Usage
+
+* A description of currently implemented sensors can be found [here](Docs/sensors.md)
+* Agent descriptions can be found [here](Docs/agents.md)
+* Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
+
 ## Building For Linux
 For a great tutorial, see the [wiki page](https://github.com/BYU-PCCL/Holodeck/wiki/Cross-Compiling-for-Linux)
 
