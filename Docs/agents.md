@@ -20,22 +20,21 @@ The UAV's action space is:
 [roll_target, pitch_target, yaw_rate_target, altitude_target]
 ```
 It contains the following sensors:
-* PrimaryPlayerCamera
+* PixelCamera
 * OrientationSensor
 * LocationSensor
 * VelocitySensor
 * IMUSensor
 
 
-## DiscreteSphereRobot
-The DiscreteSphereRobot action space is a single integer index of one of four actions:
-* 0: Move Forward
-* 1: Move Backward
-* 2: Turn Right
-* 3: Turn Left
+## SphereRobot
+The Sphere Robot action space is:
+```
+[forward_speed, rot_speed]
+```
 
 It contains the following sensors:
-* PrimaryPlayerCamera
+* PixelCamera
 * OrientationSensor
 * LocationSensor
 
@@ -43,9 +42,19 @@ It contains the following sensors:
 The Android action space is a 94 dimensional vector containing values for the torques to be applied at each of the Android's 48 joints.
 There are 10 joints with 3 DOF, 18 joints with 2 DOF, and 10 joints with just 1 DOF.
 
+The Android has the following sensors:
+* PixelCamera
+* OrientationSensor
+* LocationSensor
+* VelocitySensor
+* IMUSensor
+* JointRotationSensor
+* PressureSensor
+* RelativeSkeletalPositionSensor
 
 The order of joints is the following:
 
+```
 // Head, Spine, and Arm joints. Each has [swing1, swing2, twist]
 	FName(TEXT("head")),
 	FName(TEXT("neck_01")),
@@ -103,3 +112,4 @@ The order of joints is the following:
 	FName(TEXT("middle_03_r")),
 	FName(TEXT("ring_03_r")),
 	FName(TEXT("pinky_03_r")),
+```
