@@ -38,6 +38,18 @@ It contains the following sensors:
 * OrientationSensor
 * LocationSensor
 
+## NavAgent
+The NavAgent is a character that given a position in the world will try to get to that position. 
+It's action space is:
+```
+[x_pos, y_pos, z_pos]
+```
+
+It contains the following sensors:
+* PixelCamera
+* OrientationSensor
+* LocationSensor
+
 ## Android
 The Android action space is a 94 dimensional vector containing values for the torques to be applied at each of the Android's 48 joints.
 There are 10 joints with 3 DOF, 18 joints with 2 DOF, and 10 joints with just 1 DOF.
