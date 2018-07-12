@@ -18,8 +18,8 @@ This repository contains everything you need to build environments in the Unreal
 * Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
 
 ## Installation
-* Install Unreal Engine (through the Epic Games Launcher) from here https://www.unrealengine.com/en-US/download
-    * Click on the Unreal Engine tab, then the Library option
+* [Install Unreal Engine](https://www.unrealengine.com/en-US/download)
+    * After starting the Epic Games Launcher click on the Unreal Engine tab, then the Library option
     * Select add a new engine version and then version 4.17 and install
 * Run the following:
 `git clone https://github.com/BYU-PCCL/Holodeck`
