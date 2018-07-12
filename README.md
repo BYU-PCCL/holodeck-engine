@@ -11,15 +11,18 @@ We publish source code for Holodeck in two main branches:
 Several other branches will come and go as needed, like hotfix or feature branches. Specifically, once we have a group of features working on the develop branch, we will debug and test them on a release branch. Once the release branch is stable, we will merge it back into both the devleop and master branch. A great guide for the workflow we emulate can be found [here](http://nvie.com/posts/a-successful-git-branching-model/).
 
 ## Usage
-This repository contains everything you need to build environments in the unreal engine. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
+This repository contains everything you need to build environments in the Unreal Engine for Holodeck. If you want to use worlds that have already been built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
 
-## Prerequisites
-* git lfs
-* Unreal Engine 4.17
+* A description of currently implemented sensors can be found [here](Docs/sensors.md).
+* Agent descriptions can be found [here](Docs/agents.md).
+* Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
 
 ## Installation
-* Run the following:
-`git lfs clone https://github.com/BYU-PCCL/Holodeck`
+* If not installed, [Install Unreal Engine 4.17](https://www.unrealengine.com/en-US/download)
+    * After starting the Epic Games Launcher click on the Unreal Engine tab, then the Library option
+    * Select add a new engine version and then version 4.17 and install
+* Clone the repository:
+`git clone https://github.com/BYU-PCCL/Holodeck`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.17
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)

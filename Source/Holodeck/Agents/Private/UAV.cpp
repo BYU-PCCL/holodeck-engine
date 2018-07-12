@@ -32,7 +32,7 @@ const float UAV_ALT_I = 100.0;
 const float UAV_ALT_D = 600.0;
 const static int NUMBER_OF_PARAMETERS = 27;
 
-const enum AUAV::ParameterIndices {
+enum ParameterIndices {
 	TOTAL_PARAMETERS_INDEX = 0, //This is an index, not the actual count. 
 	UAV_MASS_INDEX = 1,
 	UAV_MU_INDEX = 2,
@@ -63,11 +63,13 @@ const enum AUAV::ParameterIndices {
 };
 
 AUAV::AUAV() 
-		: HyperparametersPointer(GetHyperparameters()),
-		  RollController(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX),
-		  PitchController(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX),
-		  YawController(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX),
-		  AltitudeController(HyperparametersPointer + UAV_ALT_P_INDEX, HyperparametersPointer + UAV_ALT_I_INDEX, HyperparametersPointer + UAV_ALT_D_INDEX) {
+		: HyperparametersPointer(GetHyperparameters())
+{
+	RollController = SimplePID(HyperparametersPointer + UAV_ROLL_P_INDEX, HyperparametersPointer + UAV_ROLL_I_INDEX, HyperparametersPointer + UAV_ROLL_D_INDEX);
+	PitchController = SimplePID(HyperparametersPointer + UAV_PITCH_P_INDEX, HyperparametersPointer + UAV_PITCH_I_INDEX, HyperparametersPointer + UAV_PITCH_D_INDEX);
+	YawController = SimplePID(HyperparametersPointer + UAV_YAW_P_INDEX, HyperparametersPointer + UAV_YAW_I_INDEX, HyperparametersPointer + UAV_YAW_D_INDEX);
+	AltitudeController = SimplePID(HyperparametersPointer + UAV_ALT_P_INDEX, HyperparametersPointer + UAV_ALT_I_INDEX, HyperparametersPointer + UAV_ALT_D_INDEX);
+
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
