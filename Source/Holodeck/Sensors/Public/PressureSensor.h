@@ -56,7 +56,4 @@ protected:
 
 	void InitJointMap();
 	TMap<FString, int> JointMap;
-
-
-	
 };
