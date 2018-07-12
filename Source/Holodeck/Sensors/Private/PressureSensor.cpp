@@ -39,8 +39,6 @@ void UPressureSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, 
 }
 
 void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
-	float* FloatBuffer = static_cast<float*>(Buffer);
-
 	FVector HitWorldLocation;
 	FVector HitBoneLocation;
 	FRotator HitBoneRotation;
