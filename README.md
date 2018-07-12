@@ -11,7 +11,7 @@ We publish source code for Holodeck in two main branches:
 Several other branches will come and go as needed, like hotfix or feature branches. Specifically, once we have a group of features working on the develop branch, we will debug and test them on a release branch. Once the release branch is stable, we will merge it back into both the devleop and master branch. A great guide for the workflow we emulate can be found [here](http://nvie.com/posts/a-successful-git-branching-model/).
 
 ## Usage
-This repository contains everything you need to build environments in the unreal engine. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
+This repository contains everything you need to build environments in the Unreal Engine for Holodeck. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
 
 * A description of currently implemented sensors can be found [here](Docs/sensors.md).
 * Agent descriptions can be found [here](Docs/agents.md).
