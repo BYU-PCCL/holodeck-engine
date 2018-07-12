@@ -13,6 +13,10 @@ Several other branches will come and go as needed, like hotfix or feature branch
 ## Usage
 This repository contains everything you need to build environments in the unreal engine. If you want to use worlds that have already built that you can communicate with in python, look at https://github.com/BYU-PCCL/HolodeckPythonBinding.
 
+* A description of currently implemented sensors can be found [here](Docs/sensors.md).
+* Agent descriptions can be found [here](Docs/agents.md).
+* Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
+
 ## Installation
 * Install Unreal Engine (through the Epic Games Launcher) from here https://www.unrealengine.com/en-US/download
     * Click on the Unreal Engine tab, then the Library option
@@ -22,12 +26,6 @@ This repository contains everything you need to build environments in the unreal
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.17
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
-
-## Usage
-
-* A description of currently implemented sensors can be found [here](Docs/sensors.md)
-* Agent descriptions can be found [here](Docs/agents.md)
-* Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
 
 ## Building For Linux
 For a great tutorial, see the [wiki page](https://github.com/BYU-PCCL/Holodeck/wiki/Cross-Compiling-for-Linux)
