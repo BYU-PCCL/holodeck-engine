@@ -6,7 +6,6 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgent.h"
-#include "PressureSensor.h"
 
 #include "Android.generated.h"
 
@@ -26,6 +25,7 @@ public:
 	static const int NUM_2_AXIS_JOINTS = 10;
 	static const int NUM_1_AXIS_JOINTS = 20;
 	static const int NUM_2_PLUS_3_AXIS_JOINTS = 28;
+	static const int TOTAL_DOF = NUM_3_AXIS_JOINTS * 3 + NUM_2_AXIS_JOINTS * 2 + NUM_1_AXIS_JOINTS; // 94 DOF in total
 
 	const static FName Joints[];
 
@@ -40,20 +40,6 @@ public:
 	* @param DeltaSeconds the time since the last tick.
 	*/
 	void Tick(float DeltaSeconds) override;
-
-	/**
-	* TODO(joshgreaves) : Explain this function properly.
-	* NotifyHit
-	* Used for the pressure sensor.
-	*/
-	void NotifyHit(UPrimitiveComponent* MyComp,
-		AActor* Other,
-		UPrimitiveComponent* OtherComp,
-		bool bSelfMoved,
-		FVector HitLocation,
-		FVector HitNormal,
-		FVector NormalImpulse,
-		const FHitResult& Hit) override;
 
 	//Decal material. This is used to show collisions on the Android. It is to be left blank and is set programmatically
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Materials)
