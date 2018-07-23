@@ -13,11 +13,11 @@
   * NumberParameters are expected to be X, Y, then Z coords of the location to spawn at.
   * 
   * To enable it to spawn other agents you will need to: 
-  * 1. Add its respective variables to both of the maps in the constructor. 
-  * 2. Add its reference to the const static variable in the cpp file.
-  *		-Right click on the blueprint in the content browser of the unreal editor, and click on Copy reference. Paste that as the value of the variable.
+  * 1. Go to the HolodeckGameModeBlueprint in editor
+  * 2. Go to the SpawnAgent Function and select the AgentBpMap data field
+  * 3. Add the agent's name and bp reference to the map
   */
-UCLASS(ClassGroup = (Custom), Blueprintable)
+UCLASS(ClassGroup = (Custom))
 class HOLODECK_API USpawnAgentCommand : public UCommand {
 	GENERATED_BODY()
 public:

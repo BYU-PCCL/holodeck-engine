@@ -53,6 +53,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 		AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location);
+	UFUNCTION(BlueprintImplementableEvent)
+		bool ChangeFogDensity(const float& density);
 
 private:
 	/**

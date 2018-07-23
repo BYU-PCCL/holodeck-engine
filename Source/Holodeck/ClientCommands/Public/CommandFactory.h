@@ -7,6 +7,7 @@
 
 #include "Command.h"
 #include "SpawnAgentCommand.h"
+#include "ChangeFogDensityCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;
