@@ -1,32 +1,8 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
 
-const static std::string UAV = "UAV";
-const static std::string SPHERE_ROBOT = "SphereRobot";
-const static std::string NAV_AGENT = "NavAgent";
-const static std::string ANDROID = "Android";
-USpawnAgentCommand::BlueprintMapType USpawnAgentCommand::BlueprintMap;
-USpawnAgentCommand::SpawnFunctionMapType USpawnAgentCommand::SpawnFunctionMap;
-
-USpawnAgentCommand::USpawnAgentCommand() {
-	static bool bFirstInstance = true;
-	//This is used to find the blueprints for the spawnable agents only the first time a USpawnAgentCommand is instantiated. 
-	if (bFirstInstance) {
-		bFirstInstance = false;
-		//initialize the SpawnFunctionMap
-		SpawnFunctionMap[UAV] = &SpawnAgent<AUAV>;
-		SpawnFunctionMap[SPHERE_ROBOT] = &SpawnAgent<ASphereRobot>;
-		SpawnFunctionMap[ANDROID] = &SpawnAgent<AAndroid>;
-		SpawnFunctionMap[NAV_AGENT] = &SpawnAgent<ANavAgent>;
-		//Initialize the BlueprintMap
-		BlueprintMap[UAV] = AUAV::StaticClass();
-		BlueprintMap[SPHERE_ROBOT] = ASphereRobot::StaticClass();
-		BlueprintMap[ANDROID] = AAndroid::StaticClass();
-		BlueprintMap[NAV_AGENT] = ANavAgent::StaticClass();
-	}
-}
-
 void USpawnAgentCommand::Execute() {
+
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
 	//Program should throw an error if any of these params aren't the correct size. They should always be this size.
 	if (StringParams.size() != 2 || NumberParams.size() != 3) {
@@ -46,21 +22,16 @@ void USpawnAgentCommand::Execute() {
 		return;
 	}
 
-	//instantiate variables to be used for spawning the agent.
 	FString AgentType = StringParams[0].c_str();
 	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
 	AHolodeckAgent* SpawnedAgent = nullptr;
 	AHolodeckPawnController* SpawnedController = nullptr;
-	auto AgentSpawnFunction = SpawnFunctionMap[StringParams[0]];
-	UClass* Blueprint = BlueprintMap[StringParams[0]];
 
-	if (AgentSpawnFunction && Blueprint)
-		SpawnedAgent = AgentSpawnFunction(Blueprint, Location, World);
-	else
-		UE_LOG(LogHolodeck, Warning, TEXT("Maps did not contain requested agent type."));
+	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, AgentType);
 
-	//Finalize the initialization of the agent. 
+	SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
+
 	if (SpawnedAgent) {
 		SpawnedAgent->AgentName = StringParams[1].c_str();
 		SpawnedAgent->SpawnDefaultController();
@@ -71,11 +42,4 @@ void USpawnAgentCommand::Execute() {
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand did not spawn a new Agent."));
 	}
-}
-
-template<typename T>
-AHolodeckAgent* USpawnAgentCommand::SpawnAgent(UClass* const Blueprint, const FVector& Location, UWorld* const World){
-	if (!World)
-		return nullptr;
-	return World->SpawnActor<T>(Blueprint, Location, FRotator(0, 0, 0), FActorSpawnParameters());
 }

@@ -51,6 +51,9 @@ public:
 	  */
 	UHolodeckServer* GetAssociatedServer() { return this->Server; };
 
+	UFUNCTION(BlueprintImplementableEvent)
+		AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location);
+
 private:
 	/**
 	  * RegisterSettings
