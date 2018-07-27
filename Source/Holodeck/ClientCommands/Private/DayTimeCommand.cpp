@@ -22,7 +22,8 @@ void UDayTimeCommand::Execute() {
 	int32 angle = GetAngle(hour);
 
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
-	bool success = Game->ChangeSunHeight(angle);
+	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
+	bool success = WeatherMaster->ChangeSunHeight(angle);
 }
 
 int32 UDayTimeCommand::GetAngle(int32 hour) {

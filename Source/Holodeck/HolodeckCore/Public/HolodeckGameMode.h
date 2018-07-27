@@ -7,6 +7,7 @@
 #include "GameFramework/GameMode.h"
 #include "HolodeckGameInstance.h"
 #include "CommandCenter.h"
+#include "WeatherMaster.h"
 #include "HolodeckGameMode.generated.h"
 
 /**
@@ -54,12 +55,8 @@ public:
 	// These functions allow the Holodeck to do things which cannot normally be done from pure c++ code
 	UFUNCTION(BlueprintImplementableEvent)
 		AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location);
-	UFUNCTION(BlueprintImplementableEvent)
-		bool ChangeFogDensity(const float& density);
-	UFUNCTION(BlueprintImplementableEvent)
-		bool ChangeSunHeight(const float& angle);
-	UFUNCTION(BlueprintImplementableEvent)
-		bool MakeRain();
+	UPROPERTY(BlueprintReadWrite)
+		AWeatherMaster* WeatherMaster;
 
 private:
 	/**

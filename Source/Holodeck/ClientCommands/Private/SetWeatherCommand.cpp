@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
+#include "WeatherMaster.h"
 #include "SetWeatherCommand.h"
 
 void USetWeatherCommand::Execute() {
@@ -19,5 +20,6 @@ void USetWeatherCommand::Execute() {
 		return;
 	}
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
-	bool success = Game->MakeRain();
+	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
+	bool success = WeatherMaster->MakeRain();
 }

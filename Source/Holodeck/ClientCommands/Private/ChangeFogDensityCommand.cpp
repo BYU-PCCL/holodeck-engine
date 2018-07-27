@@ -13,7 +13,8 @@ void UChangeFogDensityCommand::Execute() {
 	}
 
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
-	bool success = Game->ChangeFogDensity(NumberParams[0]);
+	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
+	bool success = WeatherMaster->ChangeFogDensity(NumberParams[0]);
 
 	if (!success) {
 		UE_LOG(LogHolodeck, Warning, TEXT("ChangeFogDensityCommand failed!"));
