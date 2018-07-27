@@ -58,6 +58,8 @@ public:
 		bool ChangeFogDensity(const float& density);
 	UFUNCTION(BlueprintImplementableEvent)
 		bool ChangeSunHeight(const float& angle);
+	UFUNCTION(BlueprintImplementableEvent)
+		bool MakeRain();
 
 private:
 	/**

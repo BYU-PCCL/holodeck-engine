@@ -9,6 +9,7 @@
 #include "SpawnAgentCommand.h"
 #include "ChangeFogDensityCommand.h"
 #include "DayTimeCommand.h"
+#include "SetWeatherCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;

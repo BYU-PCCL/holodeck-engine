@@ -3,7 +3,6 @@
 #include "Holodeck.h"
 
 #include "Command.h"
-#include "HolodeckGameMode.h"
 #include "ChangeFogDensityCommand.generated.h"
 
 /**

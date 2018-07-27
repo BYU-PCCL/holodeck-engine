@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Holodeck.h"
+#include "HolodeckGameMode.h"
 #include "DayTimeCommand.h"
 
 void UDayTimeCommand::Execute() {
