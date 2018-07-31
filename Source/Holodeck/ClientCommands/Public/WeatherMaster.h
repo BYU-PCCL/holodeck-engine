@@ -22,8 +22,11 @@ public:
 		bool ChangeSunHeight(const float& angle);
 	UFUNCTION(BlueprintImplementableEvent)
 		bool MakeRain();
-	UPROPERTY(BlueprintReadWrite)
-		AWeatherMaster* WeatherMaster;
+	UFUNCTION(BlueprintImplementableEvent)
+		bool MakeCloudy();
+	/*UPROPERTY(BlueprintReadWrite)
+		AWeatherMaster* WeatherMaster;*/
+
 
 protected:
 	// Called when the game starts or when spawned

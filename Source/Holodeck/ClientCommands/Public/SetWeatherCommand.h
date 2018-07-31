@@ -15,6 +15,9 @@ class HOLODECK_API USetWeatherCommand : public UCommand
 	
 public:
 	//See UCommand for the documentation of this overridden function. 
+	USetWeatherCommand();
 	void Execute() override;
-	
+
+private:
+	//std::map<std::string, bool> FunctionMap;
 };

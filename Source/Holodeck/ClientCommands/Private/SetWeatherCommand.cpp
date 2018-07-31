@@ -2,8 +2,15 @@
 
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
-#include "WeatherMaster.h"
 #include "SetWeatherCommand.h"
+
+USetWeatherCommand::USetWeatherCommand() {
+	//AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
+	//AWeatherMaster* WeatherMaster = Game->WeatherMaster;
+	//WeatherMaster->MakeRain();
+	//FunctionMap.insert("hello", false);
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
+}
 
 void USetWeatherCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("SetWeatherCommand::Execute weather change"));
@@ -15,11 +22,13 @@ void USetWeatherCommand::Execute() {
 
 	std::string type = StringParams[0];
 
-	if (type != "Rain") {
-		UE_LOG(LogHolodeck, Error, TEXT("SetWeatherCommand was not given a valid weather type. Command not executed."));
-		return;
-	}
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
 	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
-	bool success = WeatherMaster->MakeRain();
+	bool success = false;
+	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message 2!"));
+	//success = WeatherMaster->MakeRain();
+	if (type == "rain") 
+		success = WeatherMaster->MakeRain();
+	else if (type == "cloudy") 
+		success = WeatherMaster->MakeCloudy();
 }
