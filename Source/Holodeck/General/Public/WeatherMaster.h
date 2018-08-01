@@ -14,7 +14,6 @@ class HOLODECK_API AWeatherMaster : public AActor
 public:	
 	AWeatherMaster();
 
-	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintImplementableEvent)
 		bool ChangeFogDensity(const float& density);
@@ -24,8 +23,6 @@ public:
 		bool MakeRain();
 	UFUNCTION(BlueprintImplementableEvent)
 		bool MakeCloudy();
-	/*UPROPERTY(BlueprintReadWrite)
-		AWeatherMaster* WeatherMaster;*/
 
 
 protected:

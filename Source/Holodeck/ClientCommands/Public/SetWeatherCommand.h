@@ -19,5 +19,5 @@ public:
 	void Execute() override;
 
 private:
-	//std::map<std::string, bool> FunctionMap;
+	std::map<std::string, bool (*)()> FunctionMap;
 };

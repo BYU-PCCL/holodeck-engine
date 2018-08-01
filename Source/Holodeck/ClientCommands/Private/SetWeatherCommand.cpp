@@ -5,10 +5,10 @@
 #include "SetWeatherCommand.h"
 
 USetWeatherCommand::USetWeatherCommand() {
-	//AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
-	//AWeatherMaster* WeatherMaster = Game->WeatherMaster;
+	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
+	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
 	//WeatherMaster->MakeRain();
-	//FunctionMap.insert("hello", false);
+	//FunctionMap.insert("hello ", &AWeatherMaster::MakeCloudy);
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message!"));
 }
 
@@ -27,8 +27,10 @@ void USetWeatherCommand::Execute() {
 	bool success = false;
 	//GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, TEXT("Some debug message 2!"));
 	//success = WeatherMaster->MakeRain();
-	if (type == "rain") 
+	if (type == "rain") {
 		success = WeatherMaster->MakeRain();
+		//FunctionMap["hello"]();
+	}
 	else if (type == "cloudy") 
 		success = WeatherMaster->MakeCloudy();
 }
