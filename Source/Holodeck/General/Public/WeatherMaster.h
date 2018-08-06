@@ -14,7 +14,6 @@ class HOLODECK_API AWeatherMaster : public AActor
 public:	
 	AWeatherMaster();
 
-
 	UFUNCTION(BlueprintImplementableEvent)
 		bool ChangeFogDensity(const float& density);
 	UFUNCTION(BlueprintImplementableEvent)
@@ -23,6 +22,8 @@ public:
 		bool MakeRain();
 	UFUNCTION(BlueprintImplementableEvent)
 		bool MakeCloudy();
+
+	//AWeatherMaster* AWeatherMaster::instance;
 
 
 protected:

@@ -35,5 +35,5 @@ private:
 	              function to see some corresponding values of hours to angles.
 	* @return int32 The angle between 0 and 360.
 	*/
-	int32 GetAngle(int32 hour);
+	int32 HourToAngle(int32 hour);
 };

@@ -19,14 +19,14 @@ void UDayTimeCommand::Execute() {
 		return;
 	}
 
-	int32 angle = GetAngle(hour);
+	int32 angle = HourToAngle(hour);
 
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
 	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
 	bool success = WeatherMaster->ChangeSunHeight(angle);
 }
 
-int32 UDayTimeCommand::GetAngle(int32 hour) {
+int32 UDayTimeCommand::HourToAngle(int32 hour) {
 	// Hour to Angle cheat-sheet:
 	// 6  =    6am    =  0*
 	// 0  =  midnight =  90*
