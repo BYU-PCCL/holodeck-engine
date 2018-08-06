@@ -32,7 +32,7 @@ private:
 	* GetAngle
 	* Gets the required origin
 	* @param hour The hour to convert to an angle. See the implementation of this 
-	              function to see some corresponding values of hours to angles.
+	*             function to see some corresponding values of hours to angles.
 	* @return int32 The angle between 0 and 360.
 	*/
 	int32 HourToAngle(int32 hour);

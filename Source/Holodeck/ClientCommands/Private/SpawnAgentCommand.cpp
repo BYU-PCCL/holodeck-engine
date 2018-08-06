@@ -28,8 +28,6 @@ void USpawnAgentCommand::Execute() {
 	AHolodeckAgent* SpawnedAgent = nullptr;
 	AHolodeckPawnController* SpawnedController = nullptr;
 
-	GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, AgentType);
-
 	SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
 
 	if (SpawnedAgent) {
