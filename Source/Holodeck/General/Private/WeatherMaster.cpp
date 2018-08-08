@@ -5,7 +5,7 @@
 // Sets default values
 AWeatherMaster::AWeatherMaster()
 {
- 	// Should not tick every frame
+ 	// Should not tick every frame unless the day cycle is turned on
 	PrimaryActorTick.bCanEverTick = false;
 }
 
@@ -13,5 +13,17 @@ AWeatherMaster::AWeatherMaster()
 void AWeatherMaster::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	SetActorTickEnabled(false);
+}
+
+void AWeatherMaster::StartDayCycle(const int32& DayLength)
+{
+	//enable tick and tell the blueprint to alter the day length
+	SetActorTickEnabled(true);
+	SetDayCycleLength(DayLength);
+}
+
+void AWeatherMaster::StopDayCycle()
+{
+	SetActorTickEnabled(false);
 }

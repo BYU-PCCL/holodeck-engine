@@ -8,7 +8,8 @@ UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vecto
 	static UCommandMapType CommandMap = { { "SpawnAgent", &CreateInstance<USpawnAgentCommand>},
 										  { "ChangeFogDensity", &CreateInstance<UChangeFogDensityCommand> },
 										  { "DayTime", &CreateInstance<UDayTimeCommand> },
-										  { "SetWeather", &CreateInstance<USetWeatherCommand> }};
+										  { "SetWeather", &CreateInstance<USetWeatherCommand> },
+										  { "DayCycle", &CreateInstance<UDayCycleCommand> } };
 	UCommand*(*CreateCommandFunction)()  = CommandMap[Name];
 	UCommand* ToReturn = nullptr;
 	if (CreateCommandFunction) {

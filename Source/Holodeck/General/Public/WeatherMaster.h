@@ -31,10 +31,14 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 		bool MakeCloudy();
 
-	//AWeatherMaster* AWeatherMaster::instance;
+	void StartDayCycle(const int32& DayLength);
+	void StopDayCycle();
 
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION(BlueprintImplementableEvent)
+		void SetDayCycleLength(const int32& DayLength);
 };
