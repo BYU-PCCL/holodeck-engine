@@ -25,10 +25,8 @@ void USpawnAgentCommand::Execute() {
 	FString AgentType = StringParams[0].c_str();
 	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
-	AHolodeckAgent* SpawnedAgent = nullptr;
+	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
 	AHolodeckPawnController* SpawnedController = nullptr;
-
-	SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
 
 	if (SpawnedAgent) {
 		SpawnedAgent->AgentName = StringParams[1].c_str();

@@ -24,6 +24,8 @@ void UDayTimeCommand::Execute() {
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
 	AWeatherMaster* WeatherMaster = Game->WeatherMaster;
 	bool success = WeatherMaster->ChangeSunHeight(angle);
+	if(!success)
+		UE_LOG(LogHolodeck, Error, TEXT("DayTimeCommand did not behave correctly. There is probably a missing skysphere or skylight"));
 }
 
 int32 UDayTimeCommand::HourToAngle(int32 hour) {

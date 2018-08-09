@@ -23,4 +23,7 @@ void USetWeatherCommand::Execute() {
 	}
 	else if (type == "cloudy") 
 		success = WeatherMaster->MakeCloudy();
+
+	if (!success)
+		UE_LOG(LogHolodeck, Error, TEXT("SetWeatherCommand did not behave correctly. There is probably a missing skysphere or skylight."));
 }
