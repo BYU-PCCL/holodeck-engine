@@ -55,6 +55,15 @@ public:
 	  */
 	void Init();
 
+	UPROPERTY(BlueprintReadWrite)
+		bool SpectatorMode;
+
+	UPROPERTY(BlueprintReadWrite)
+		FTransform SpectatorTransform;
+
+	UPROPERTY(BlueprintReadWrite)
+		FVector ViewRotation;
+
 private:
 	UPROPERTY()
 		UHolodeckServer* Server;
