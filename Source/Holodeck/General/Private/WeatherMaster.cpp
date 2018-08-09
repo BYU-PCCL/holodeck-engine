@@ -5,8 +5,8 @@
 // Sets default values
 AWeatherMaster::AWeatherMaster()
 {
- 	// Should not tick every frame unless the day cycle is turned on
-	PrimaryActorTick.bCanEverTick = false;
+ 	// Should not tick on start but might eventually tick
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 // Called when the game starts or when spawned
@@ -16,7 +16,7 @@ void AWeatherMaster::BeginPlay()
 	SetActorTickEnabled(false);
 }
 
-void AWeatherMaster::StartDayCycle(const int32& DayLength)
+void AWeatherMaster::StartDayCycle(const int32 DayLength)
 {
 	//enable tick and tell the blueprint to alter the day length
 	SetActorTickEnabled(true);

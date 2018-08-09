@@ -23,15 +23,15 @@ public:
 	AWeatherMaster();
 
 	UFUNCTION(BlueprintImplementableEvent)
-		bool ChangeFogDensity(const float& density);
+		bool ChangeFogDensity(const float density);
 	UFUNCTION(BlueprintImplementableEvent)
-		bool ChangeSunHeight(const float& angle);
+		bool ChangeSunHeight(const float angle);
 	UFUNCTION(BlueprintImplementableEvent)
 		bool MakeRain();
 	UFUNCTION(BlueprintImplementableEvent)
 		bool MakeCloudy();
 
-	void StartDayCycle(const int32& DayLength);
+	void StartDayCycle(const int32 DayLength);
 	void StopDayCycle();
 
 
@@ -40,5 +40,5 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintImplementableEvent)
-		void SetDayCycleLength(const int32& DayLength);
+		void SetDayCycleLength(const int32 DayLength);
 };

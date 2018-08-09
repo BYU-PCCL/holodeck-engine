@@ -25,8 +25,8 @@ public:
 	void Execute() override;
 	
 private:
-	int32 degrees_per_hour = 15; // the angle is 0 - 360 and corresponds to hours 0 - 24. This is the degrees for each hour (360/24)
-	int32 hour_offset = 6; // hour should be increased by this value to sync with angle of lightsource 
+	const int32 degrees_per_hour = 15; // the angle is 0 - 360 and corresponds to hours 0 - 24. This is the degrees for each hour (360/24)
+	const int32 hour_offset = 6; // hour should be increased by this value to sync with angle of lightsource 
 
 	/**
 	* GetAngle
