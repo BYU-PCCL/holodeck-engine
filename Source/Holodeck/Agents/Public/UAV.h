@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
 
-#include "SimplePID.h"
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgent.h"
 #include "UAV.generated.h"
@@ -25,8 +24,6 @@ public:
 	void SubstepTick(float DeltaTime, FBodyInstance* BodyInstance);
 	void UpdateForcesAndMoments(float DeltaTime);
 	void ApplyForces();
-	float UEUnitsToMeters(float ValueInUnrealUnits);
-	FVector RotatorToEulerInZYX(FRotator quat);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
 		float DesiredAltitude;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
@@ -37,11 +34,17 @@ public:
 		float DesiredRoll;
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		UStaticMeshComponent* RootMesh;
-	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
-		float ThrustToApply;
 
 	//See HolodeckAgent.h for descriptions of these overriden functions
 	void SetHyperparameterAddress(float* Input) override;
+
+	float GetRollTorqueToApply() { return CommandArray[0]; };
+	float GetPitchTorqueToApply() { return CommandArray[1]; };
+	float GetYawTorqueToApply() { return CommandArray[2]; };
+	float GetThrustToApply() { return CommandArray[3]; };
+
+	unsigned int GetRawActionSizeInBytes() const override { return 4 * sizeof(float); };
+	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
 protected:
 	//See HolodeckAgent.h for descriptions of these overriden functions
@@ -49,31 +52,16 @@ protected:
 	int GetHyperparameterCount() const override;
 
 private:
+	/**
+	  * 0: RollTorqueToApply
+	  * 1: PitchTorqueToApply
+	  * 2: YawTorqueToApply
+	  * 3: ThrustToApply
+	  */
+	float CommandArray[4];
+
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
-	// PID Controllers
-	SimplePID RollController;
-	SimplePID PitchController;
-	SimplePID YawController;
-	SimplePID AltitudeController;
-	// TODO: move these out of the class and to arguments on ApplyForces, rename ApplyForces to ApplyTorquesAndForces
-	float RollTorqueToApply;
-	float PitchTorqueToApply;
-	float YawTorqueToApply;
-	// State
-	float CurrentThrust;
-	float CurrentRollTorque;
-	float CurrentPitchTorque;
-	float CurrentYawTorque;
-	float CurrentPositionX;
-	float CurrentPositionY;
-	float CurrentPositionZ;
-	float CurrentRoll;
-	float CurrentPitch;
-	float CurrentYaw;
-	float CurrentGlobalVelocityZ;
-	float CurrentYawRate;
-	// Wind
-	FVector Wind;
+
 	const float* HyperparametersPointer;
 
 	/**

@@ -7,7 +7,7 @@
 
 const char HOLODECK_BASE_PATH[] = "/HOLODECK_MEM";
 
-HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSize, const std::string& UUID) :
+HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int BufferSize, const std::string& UUID) :
 		MemPath(HOLODECK_BASE_PATH + UUID + "_" + Name), MemSize(BufferSize) {
 
 	#if PLATFORM_WINDOWS

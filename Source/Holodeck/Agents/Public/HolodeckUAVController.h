@@ -4,6 +4,7 @@
 
 #include "Holodeck.h"
 
+#include "UAVControlSchemeTargetRollPitch.h"
 #include "HolodeckPawnController.h"
 #include "UAV.h"
 
@@ -30,19 +31,9 @@ public:
 	  */
 	~AHolodeckUAVController();
 
-	/**
-	  * ExecuteCommand
-	  * Executes the command issued by the client.
-	  */
-	void ExecuteCommand() override;
-
-protected:
-	/**
-	  * GetActionSpaceDimension
-	  * Gets the action space dimension for the UAV.
-	  * @return the dimension.
-	  */
-	int GetActionSpaceDimension() override { return 4; };
+	void AddControlSchemes() {
+		ControlSchemes.Add(UUAVControlSchemeTargetRollPitch(static_cast<AUAV*>(GetPawn())));
+	}
 
 private:
 	float desiredHeight, currentHeight;

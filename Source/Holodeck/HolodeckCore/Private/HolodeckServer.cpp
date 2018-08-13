@@ -15,7 +15,10 @@ UHolodeckServer::~UHolodeckServer() {
 
 void UHolodeckServer::Start() {
 	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckServer"));
-	if (bIsRunning) Kill();
+	if (bIsRunning) {
+		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckServer is already running! Bringing it down and up"));
+		Kill();
+	}
 
 	if (!FParse::Value(FCommandLine::Get(), TEXT("HolodeckUUID="), UUID))
 		UUID = "";
@@ -37,15 +40,14 @@ void UHolodeckServer::Start() {
 	#endif
 
 	bIsRunning = true;
+	UE_LOG(LogHolodeck, Log, "HolodeckServer started successfully");
 }
 
 void UHolodeckServer::Kill() {
 	UE_LOG(LogHolodeck, Log, TEXT("Killing HolodeckServer"));
 	if (!bIsRunning) return;
 
-	Sensors.clear();
-	ActionSpaces.clear();
-	Settings.clear();
+	Memory.clear();
 
 	#if PLATFORM_WINDOWS
 	CloseHandle(this->LockingSemaphore1);
@@ -56,27 +58,17 @@ void UHolodeckServer::Kill() {
 	#endif
 
 	bIsRunning = false;
+	UE_LOG(LogHolodeck, Log, TEXT("HolodeckServer successfully shut down"));
 }
 
-void* UHolodeckServer::SubscribeSensor(const std::string& AgentName, const std::string& SensorKey, int BufferSize) {
-	UE_LOG(LogHolodeck, Log, TEXT("Subscribing sensor %s for agent %s"), UTF8_TO_TCHAR(SensorKey.c_str()), UTF8_TO_TCHAR(AgentName.c_str()));
-	std::string Key = MakeKey(AgentName, SensorKey);
-	Sensors[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize, TCHAR_TO_UTF8(*UUID)));
-	return Sensors[Key]->GetPtr();
-}
-
-void* UHolodeckServer::SubscribeActionSpace(const std::string& AgentName, int BufferSize) {
-	UE_LOG(LogHolodeck, Log, TEXT("Subscribing action space for %s"), UTF8_TO_TCHAR(AgentName.c_str()));
-	ActionSpaces[AgentName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(AgentName, BufferSize, TCHAR_TO_UTF8(*UUID)));
-	return ActionSpaces[AgentName]->GetPtr();
-}
-
-void* UHolodeckServer::SubscribeSetting(const std::string& SettingName, int BufferSize) {
-	Settings[SettingName] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(SettingName, BufferSize, TCHAR_TO_UTF8(*UUID)));
-	return Settings[SettingName]->GetPtr();
+void* UHolodeckServer::Malloc(const std::string& Key, unsigned int BufferSize) {
+	UE_LOG(LogHolodeck, LOG, TEXT("Mallocing %d bytes for key %s"), &BufferSize, UTF8_TO_TCHAR(Key.c_str()));
+	Memory[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize, TCHAR_TO_UTF8(*UUID)));
+	return Memory[Key]->GetPtr();
 }
 
 void UHolodeckServer::Acquire() {
+	UE_LOG(LogHolodeck, VeryVerbose, "HolodeckServer Acquiring");
 	#if PLATFORM_WINDOWS
 	WaitForSingleObject(this->LockingSemaphore1, INFINITE);
 	#elif PLATFORM_LINUX
@@ -85,6 +77,7 @@ void UHolodeckServer::Acquire() {
 }
 
 void UHolodeckServer::Release() {
+	UE_LOG(LogHolodeck, VeryVerbose, "HolodeckServer Releasing");
 	#if PLATFORM_WINDOWS
 	ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
 	#elif PLATFORM_LINUX
@@ -94,8 +87,4 @@ void UHolodeckServer::Release() {
 
 bool UHolodeckServer::IsRunning() const {
 	return bIsRunning;
-}
-
-std::string UHolodeckServer::MakeKey(const std::string& AgentName, const std::string& SensorName) const {
-	return AgentName + "_" + SensorName;
 }

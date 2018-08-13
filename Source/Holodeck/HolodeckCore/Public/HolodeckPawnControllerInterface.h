@@ -5,16 +5,12 @@
 #include "Holodeck.h"
 
 #include "AIController.h"
-#include "HolodeckPawnControllerInterface.h"
-#include "HolodeckAgentInterface.h"
-#include "HolodeckControlScheme.h"
-#include "HolodeckGameInstance.h"
 #include "HolodeckServer.h"
 
-#include "HolodeckPawnController.generated.h"
+#include "HolodeckPawnControllerInterface.generated.h"
 
 /**
-  * AHolodeckPawnController
+  * AHolodeckPawnControllerInterface
   * A controller for Holodeck Agents.
   * If a HolodeckAgent doesn't contain this controller or a controller which
   * inherits it, then you will run into problems. This class handles the 
@@ -25,7 +21,7 @@
   * the commands to the pawns/agents. 
   */
 UCLASS()
-class HOLODECK_API AHolodeckPawnController : public AHolodeckPawnControllerInterface
+class HOLODECK_API AHolodeckPawnControllerInterface : public AAIController
 {
 	GENERATED_BODY()
 
@@ -33,19 +29,22 @@ public:
 	/**
 	  * Default Constructor
 	  */
-	AHolodeckPawnController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	AHolodeckPawnControllerInterface(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()) :
+		AAIController(ObjectInitializer) {};
 
 	/**
 	  * Default Destructor
 	  */
-	~AHolodeckPawnController();
+	~AHolodeckPawnControllerInterface() {};
 
 	/**
 	* BeginPlay
 	* Called when the game starts.
 	* Registers the reward and terminal signals.
 	*/
-	void BeginPlay() override;
+	virtual void BeginPlay() override {
+		Super::BeginPlay();
+	};
 
 	/**
 	* Tick
@@ -53,19 +52,25 @@ public:
 	* If it is overridden, it must be called by the child class!
 	* @param DeltaSeconds the time since the last tick.
 	*/
-	void Tick(float DeltaSeconds) override;
+	virtual void Tick(float DeltaSeconds) override {
+		Super::Tick(DeltaSeconds);
+	};
 	
 	/**
 	  * Possess
 	  * Called to Possess a pawn.
 	  */
-	void Possess(APawn* InPawn) override;
+	virtual void Possess(APawn* InPawn) override {
+		Super::Possess(InPawn);
+	};
 
 	/**
 	  * UnPossess
 	  * Called to Unpossess a pawn
 	  */
-	void UnPossess() override;
+	virtual void UnPossess() override {
+		Super::UnPossess();
+	};
 
 	/**
 	  * Subscribe
@@ -76,7 +81,9 @@ public:
 	  * @param ItemSize the size of each item in the data buffer.
 	  * @return a pointer to the data buffer.
 	  */
-	void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) override;
+	virtual void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
+		check(0 && "You must override Subscribe");
+	};
 
 	/**
 	  * GetActionBuffer
@@ -84,50 +91,31 @@ public:
 	  * @param AgentName the name of the agent to subscribe an action buffer for.
 
 	  */
-	void AllocateBuffers(const FString& AgentName);
+	virtual void AllocateBuffers(const FString& AgentName) {
+		check(0 && "You must override AllocateBuffers");
+	};
 
-	virtual void AddControlSchemes() override { check(0 && "You must override AddControlSchemes"); };
+	virtual void AddControlSchemes() {
+		check(0 && "You must override AddControlSchemes");
+	};
 
 	/**
 	* ExecuteTeleport
 	* Tells the controlled agent to teleport to the location in the shared memory.
 	*/
-	virtual void ExecuteTeleport() override;
+	virtual void ExecuteTeleport() {
+		check(0 && "You must override ExecuteTeleport");
+	};
 
 	/**
 	* SetServer
 	* Sets the server object within this object.
 	*/
-	virtual void SetServer(UHolodeckServer* const ServerParam) override;
+	virtual void SetServer(UHolodeckServer* const ServerParam) {
+		check(0 && "You must override SetServer");
+	};
 
-	void RestoreDefaultHyperparameters() override;
-
-protected:
-	void* ActionBuffer;
-	uint8* ControlSchemeIdBuffer;
-	float* TeleportBuffer;
-	bool* ShouldTeleportBuffer;
-	float* HyperparameterBuffer;
-
-	TArray<UHolodeckControlScheme> ControlSchemes;
-	AHolodeckAgentInterface* ControlledAgent;
-
-private:
-	/**
-	* GetServer
-	* Sets the server object within this object.
-	*/
-	void UpdateServerInfo();
-
-	/**
-	  * CheckBoolBuffer
-	  * Checks to see if the buffer is true or not, sets the buffer to false,
-	  * then returns the value.
-	  */
-	bool CheckBoolBuffer(void* Buffer);
-
-	UHolodeckServer* Server;
-	const int SINGLE_BOOL = 1;
-	const int TELEPORT_COMMAND_SIZE = 3;
-
+	virtual void RestoreDefaultHyperparameters() {
+		check(0 && "You must override RestoreDefaultHyperparameters");
+	};
 };

@@ -31,7 +31,7 @@ public:
 	  * @param BufferSize the number of bytes to allocated for the file.
 	  * @param UUID a UUID for the Holodeck instance to allow multiple shared blocks on one machine.
 	  */
-    explicit HolodeckSharedMemory(const std::string& Name, int BufferSize, const std::string& UUID);
+    explicit HolodeckSharedMemory(const std::string& Name, unsigned int BufferSize, const std::string& UUID);
 
 	/**
 	  * GetPtr
@@ -49,7 +49,7 @@ public:
 
 private:
     std::string MemPath;
-    int MemSize;
+    unsigned int MemSize;
 	void* MemPointer;
 
 	#if PLATFORM_WINDOWS

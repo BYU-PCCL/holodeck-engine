@@ -16,4 +16,6 @@ void ASphereRobot::BeginPlay() {
 // Called every frame
 void ASphereRobot::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+	ForwardSpeed = CommandArray[0];
+	RotSpeed = CommandArray[1];
 }

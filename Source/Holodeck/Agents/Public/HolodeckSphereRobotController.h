@@ -35,12 +35,7 @@ public:
 	  */
 	void Possess(APawn* Pawn);
 
-	/**
-	  * ExecuteCommand
-	  * Executes the commands issued from the client.
-	  */
-	void ExecuteCommand() override;
-
-protected:
-	int GetActionSpaceDimension() override { return 2; };
+	void AddControlSchemes() override {
+		// No control schemes
+	}
 };

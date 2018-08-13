@@ -13,13 +13,3 @@ AHolodeckSphereRobotController::~AHolodeckSphereRobotController() {}
 void AHolodeckSphereRobotController::Possess(APawn* PawnParam) {
 	Super::Possess(PawnParam);
 }
-
-void AHolodeckSphereRobotController::ExecuteCommand() {
-	ASphereRobot* SpherePawn = static_cast<ASphereRobot*>(this->GetPawn());
-	float* FloatBuffer = static_cast<float*>(ActionBuffer);
-	
-    if (FloatBuffer != nullptr) {
-        SpherePawn->ForwardSpeed = FloatBuffer[0];
-        SpherePawn->RotSpeed = FloatBuffer[1];
-    }
-}

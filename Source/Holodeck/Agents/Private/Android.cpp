@@ -13,6 +13,7 @@ AAndroid::AAndroid() {
 
 void AAndroid::BeginPlay() {
 	Super::BeginPlay();
+	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::BeginPlay"));
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
 }
 
@@ -30,7 +31,7 @@ bool AAndroid::GetCollisionsVisible() {
 }
 
 void AAndroid::ApplyTorques() {
-
+	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::ApplyTorques"));
 	int ComInd = 0;
 
 	for (int JointInd = 0; JointInd < NUM_JOINTS; JointInd++) {

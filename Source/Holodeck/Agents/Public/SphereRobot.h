@@ -38,4 +38,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float RotSpeed;
+
+	unsigned int GetRawActionSizeInBytes() const override { return 2; };
+	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
+
+private:
+	float CommandArray[2];
 };

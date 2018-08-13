@@ -13,11 +13,3 @@ AHolodeckNavAgentController::~AHolodeckNavAgentController() {}
 void AHolodeckNavAgentController::Possess(APawn* PawnParam) {
 	Super::Possess(PawnParam);
 }
-
-void AHolodeckNavAgentController::ExecuteCommand() {
-	ANavAgent* NavPawn = static_cast<ANavAgent*>(this->GetPawn());
-	float* FloatBuffer = static_cast<float*>(ActionBuffer);
-	if (NavPawn != nullptr && FloatBuffer != nullptr) {
-		NavPawn->SetTarget(FloatBuffer[0], FloatBuffer[1], FloatBuffer[2]);
-	}
-}

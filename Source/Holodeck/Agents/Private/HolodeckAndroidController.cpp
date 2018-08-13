@@ -4,25 +4,23 @@
 #include "HolodeckAndroidController.h"
 
 AHolodeckAndroidController::AHolodeckAndroidController(const FObjectInitializer& ObjectInitializer) : AHolodeckPawnController(ObjectInitializer) {
-	UE_LOG(LogTemp, Warning, TEXT("Android Controller Initialized"));
+	UE_LOG(LogHolodeck, Log, TEXT("Android Controller Initialized"));
 }
 
 AHolodeckAndroidController::~AHolodeckAndroidController() {}
 
 void AHolodeckAndroidController::Possess(APawn* PawnParam) {
 	Super::Possess(PawnParam);
+	UE_LOG(LogHolodeck, Log, TEXT("Android Controller possessing pawn"));
 
 	TArray<USkeletalMeshComponent*> Components;
 	PawnParam->GetComponents<USkeletalMeshComponent>(Components);
-	SkeletalMeshComponent = Components[0];
-}
 
-void AHolodeckAndroidController::ExecuteCommand() {
-
-	float* FloatPtr = static_cast<float*>(ActionBuffer);
-
-	AAndroid* AndroidPawn = Cast<AAndroid>(GetPawn());
-	if (AndroidPawn != nullptr && FloatPtr != nullptr) {
-		AndroidPawn->CommandArray = FloatPtr;
+	if (Components.Num() < 1) {
+		UE_LOG(LogHolodeck, Error, TEXT("Couldn't find USkeletelMeshComponent for PawnParam"));
+	} else {
+		SkeletalMeshComponent = Components[0];
 	}
+
+	ActionBufferFloatPtr = static_cast<float*>(ActionBuffer);
 }

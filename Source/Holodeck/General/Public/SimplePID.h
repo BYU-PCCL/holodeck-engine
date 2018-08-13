@@ -16,7 +16,7 @@ public:
 	  * Full Constructor.
 	  * Constructs the PID controller with values for P, I, D, and Tau.
 	  */
-	SimplePID(const float* P, const float* I, const float* D);
+	SimplePID(const float P, const float I, const float D);
 
 	/**
 	  * Default Destructor.
@@ -63,7 +63,7 @@ public:
 	*
 	* Used for late initialization or a redo
 	*/
-	void SetGains(const float* P, const float* I, const float* D);
+	void SetGains(const float P, const float I, const float D);
 
 private:
 	float Integrator;
@@ -71,9 +71,9 @@ private:
 	float LastError;
 	float LastState;
 
-	const float* KP;
-	const float* KI;
-	const float* KD;
+	const float KP;
+	const float KI;
+	const float KD;
 	float Tau;
 
 	float MyAbs(float I);

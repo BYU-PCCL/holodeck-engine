@@ -31,22 +31,13 @@ public:
 	*/
 	void Possess(APawn* Pawn) override;
 
-	/**
-	* ExecuteCommand
-	* Executes the commands sent from the client.
-	*/
-	void ExecuteCommand() override;
-
-
-protected:
-	/**
-	* GetActionSpaceDimension
-	* The size of the action space for the android is 94.
-	* @return the size of the action space.
-	*/
-	int GetActionSpaceDimension() override { return 94; };
+	void AddControlSchemes() override {
+		// No other control schemes
+	};
 
 private:
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
+	float* ActionBufferFloatPtr;
+	AHolodeckAgent* ControlledAndroid;
 };
