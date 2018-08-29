@@ -18,39 +18,22 @@ public:
 	GENERATED_BODY()
 
 	// Required constructor, shouldn't be used.
-	UUAVControlSchemeTargetRollPitch() {};
+	UUAVControlSchemeTargetRollPitch(const FObjectInitializer& ObjectInitializer);
 
 	UUAVControlSchemeTargetRollPitch(AUAV* ControlledUav);
 
-	void Execute(void* const CommandArray, void* const InputCommand) const override;
+	void Execute(void* const CommandArray, void* const InputCommand) override;
 
 	unsigned int GetControlSchemeSizeInBytes() const override {
 		return 4 * sizeof(float);
 	}
 
 private:
-	FVector RotatorToEulerInZYX(const FRotator& Rotator);
+	FVector RotatorToEulerInZYX(const FRotator& Rotator) const;
 
-	float UEUnitsToMeters(float ValueInUnrealUnits);
+	float UEUnitsToMeters(float ValueInUnrealUnits) const;
 
 	AUAV* UAV;
-
-	// State
-	float CurrentPositionX;
-	float CurrentPositionY;
-	float CurrentPositionZ;
-
-	float CurrentRollTorque;
-	float CurrentPitchTorque;
-	float CurrentYawTorque;
-	float CurrentThrust;
-
-	float CurrentRoll;
-	float CurrentPitch;
-	float CurrentYaw;
-
-	float CurrentGlobalVelocityZ;
-	float CurrentYawRate;
 
 	// PID Controllers
 	SimplePID RollController;

@@ -4,6 +4,12 @@
 #include "HolodeckPawnController.h"
 #include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
 
+const std::string CONTROL_SCHEME_KEY = "control_scheme";
+const std::string TELEPORT_BOOL_KEY = "teleport_bool";
+const std::string TELEPORT_COMMAND_KEY = "teleport_command";
+const std::string HYPERPARAMETERS_KEY = "hyperparameters";
+
+
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
 		: AHolodeckPawnControllerInterface(ObjectInitializer) {
 	PrimaryActorTick.bCanEverTick = true;
@@ -19,7 +25,7 @@ void AHolodeckPawnController::BeginPlay() {
 
 void AHolodeckPawnController::Possess(APawn* InPawn) {
 	Super::Possess(InPawn);
-	ControlledAgent = static_cast<AHolodeckAgent*>(this->GetPawn());
+	ControlledAgent = static_cast<AHolodeckAgentInterface*>(InPawn);
 	if (ControlledAgent == nullptr)
 		UE_LOG(LogHolodeck, Error, TEXT("HolodeckPawnController attached to non-HolodeckAgent!"));
 
@@ -28,7 +34,9 @@ void AHolodeckPawnController::Possess(APawn* InPawn) {
 	if (Server == nullptr)
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckPawnController couldn't find server..."));
 
-	ControlSchemes.Add(URawControlScheme(ControlledAgent));
+	URawControlScheme* RawControlScheme = NewObject<URawControlScheme>();
+	RawControlScheme->Agent = ControlledAgent;
+	ControlSchemes.Add(RawControlScheme);
 	AddControlSchemes();
 }
 
@@ -42,7 +50,7 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 		ExecuteTeleport();
 
 	unsigned int index = *ControlSchemeIdBuffer % ControlSchemes.Num();
-	ControlSchemes[index].Execute(ControlledAgent->GetRawActionBuffer(), ActionBuffer);
+	ControlSchemes[index]->Execute(ControlledAgent->GetRawActionBuffer(), ActionBuffer);
 }
 
 void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
@@ -52,7 +60,7 @@ void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString
 		UE_LOG(LogHolodeck, Warning, TEXT("Sensor could not find server..."));
 		return nullptr;
 	} else {
-		return Server->Malloc(TCHAR_TO_UTF8(*AgentName), TCHAR_TO_UTF8(*SensorName), NumItems * ItemSize);
+		return Server->Malloc(UHolodeckServer::MakeKey(AgentName, SensorName), NumItems * ItemSize);
 	}
 }
 
@@ -74,28 +82,32 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 		}
 
 		unsigned int MaxControlSize = 0;
-		for (const UHolodeckControlScheme& ControlScheme : ControlSchemes) {
-			if (ControlScheme.GetControlSchemeByteSize() > MaxControlSize)
-				MaxControlSize = ControlScheme.GetControlSchemeByteSize();
+		for (UHolodeckControlScheme* const ControlScheme : ControlSchemes) {
+			if (ControlScheme->GetControlSchemeSizeInBytes() > MaxControlSize)
+				MaxControlSize = ControlScheme->GetControlSchemeSizeInBytes();
 		}
 
 		void* TempBuffer;
 		ActionBuffer = Server->Malloc(TCHAR_TO_UTF8(*AgentName),
 									  MaxControlSize);
 
-		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, "control_scheme"),
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, CONTROL_SCHEME_KEY),
 											   sizeof(uint8));
 		ControlSchemeIdBuffer = static_cast<uint8*>(TempBuffer);
+		*ControlSchemeIdBuffer = 0;
 
-		ShouldTeleportBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, "teleport_bool"),
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_BOOL_KEY),
 											  SINGLE_BOOL * sizeof(bool));
-		TeleportBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, "teleport_command"),
-										TELEPORT_COMMAND_SIZE * sizeof(float));
+		ShouldTeleportBuffer = static_cast<bool*>(TempBuffer);
 
-		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, "hyperparameters"),
-			ControlledAgent->GetHyperparameterBufferSizeInBytes());
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_COMMAND_KEY),
+										TELEPORT_COMMAND_SIZE * sizeof(float));
+		TeleportBuffer = static_cast<float*>(TempBuffer);
+
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, HYPERPARAMETERS_KEY),
+			ControlledAgent->GetHyperparameterCount() * sizeof(float));
 		HyperparameterBuffer = static_cast<float*>(TempBuffer);
-		HolodeckPawn->SetHyperparameterAddress(HyperparameterBuffer);
+		ControlledAgent->SetHyperparameterAddress(HyperparameterBuffer);
 	}
 }
 
@@ -121,7 +133,7 @@ void AHolodeckPawnController::SetServer(UHolodeckServer* const ServerParam) {
 	this->Server = ServerParam;
 }
 
-void AHolodeckPawnController::RestoreDefaultHyperparameters(){
+void AHolodeckPawnController::RestoreDefaultHyperparameters() {
 	AHolodeckAgent* HolodeckPawn = static_cast<AHolodeckAgent*>(this->GetPawn());
 	if(HolodeckPawn)
 		FMemory::Memcpy(HyperparameterBuffer, HolodeckPawn->GetDefaultHyperparameters(), HolodeckPawn->GetHyperparameterCount() * sizeof(float));

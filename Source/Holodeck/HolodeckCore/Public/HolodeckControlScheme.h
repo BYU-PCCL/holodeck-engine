@@ -12,7 +12,10 @@ class HOLODECK_API UHolodeckControlScheme : public UObject {
 	GENERATED_BODY()
 
 public:
-	virtual void Execute(void* const CommandArray, void* const InputCommand) const;
+	UHolodeckControlScheme();
+	UHolodeckControlScheme(const FObjectInitializer& ObjectInitializer);
+
+	virtual void Execute(void* const CommandArray, void* const InputCommand);
 
 	virtual unsigned int GetControlSchemeSizeInBytes() const;
 };

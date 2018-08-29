@@ -32,7 +32,7 @@ public:
 	~AHolodeckUAVController();
 
 	void AddControlSchemes() {
-		ControlSchemes.Add(UUAVControlSchemeTargetRollPitch(static_cast<AUAV*>(GetPawn())));
+		ControlSchemes.Add(NewObject<UUAVControlSchemeTargetRollPitch>(static_cast<AUAV*>(GetPawn())));
 	}
 
 private:

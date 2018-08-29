@@ -22,3 +22,12 @@ HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int
                                          MAP_SHARED, MemFile, 0));
 	#endif
 }
+
+HolodeckSharedMemory::~HolodeckSharedMemory() {
+	#if PLATFORM_WINDOWS
+	// TODO: Correctly close these files
+	#elif PLATFORM_LINUX
+	// TODO: Correctly close these files
+	close(MemFile);
+	#endif
+}

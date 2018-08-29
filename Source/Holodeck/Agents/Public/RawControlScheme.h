@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 
+#include "HolodeckAgentInterface.h"
 #include "HolodeckControlScheme.h"
 
 #include "RawControlScheme.generated.h"
@@ -13,18 +14,19 @@ UCLASS()
 class HOLODECK_API URawControlScheme : public UHolodeckControlScheme {
 	GENERATED_BODY()
 
-	// Constructor required by engine. Shouldn't be used
-	URawControlScheme() {};
-
 public:
-	URawControlScheme(AHolodeckAgent* const ControlledAgent);
+	// Constructor required by engine. Shouldn't be used
+	URawControlScheme(const FObjectInitializer& ObjectInitializer);
 
-	void Execute(void* const CommandArray, void* const InputCommand) const override;
+	URawControlScheme(AHolodeckAgentInterface* const ControlledAgent);
+
+	void Execute(void* const CommandArray, void* const InputCommand) override;
 
 	unsigned int GetControlSchemeSizeInBytes() const {
 		return Agent->GetRawActionSizeInBytes();
 	}
 
-private:
-	AHolodeckAgent* Agent;
+	// Cannot be private and be added to TArray
+	UPROPERTY()
+	AHolodeckAgentInterface* Agent;
 };

@@ -63,6 +63,7 @@ public:
 	*/
 	virtual bool Teleport(const FVector& NewLocation, const FRotator& NewRotation) {
 		check(0 && "You must override Teleport");
+		return false;
 	};
 
 	/**
@@ -74,6 +75,7 @@ public:
 	*/
 	virtual bool Teleport(const FVector& NewLocation) {
 		check(0 && "You must override Teleport");
+		return false;
 	};
 
 	/**
@@ -92,6 +94,7 @@ public:
 	*/
 	virtual int GetHyperparameterCount() const {
 		check(0 && "You must override GetHypderparameterCount");
+		return 0;
 	};
 
 	/**
@@ -102,6 +105,7 @@ public:
 	*/
 	virtual const float* GetHyperparameters() {
 		check(0 && "You must override GetHyperparameters");
+		return nullptr;
 	};
 
 	/**
@@ -112,6 +116,7 @@ public:
 	*/
 	virtual bool InitializeController() {
 		check(0 && "You must override InitializeController");
+		return false;
 	};
 
 	/**
@@ -121,6 +126,7 @@ public:
 	*/
 	virtual const float* GetDefaultHyperparameters() const {
 		check(0 && "You must override GetDefaultHyperparameters");
+		return nullptr;
 	};
 
 	/**
@@ -129,6 +135,7 @@ public:
 	*/
 	virtual unsigned int GetRawActionSizeInBytes() const {
 		check(0 && "You must override GetRawActionSizeInBytes");
+		return 0;
 	};
 
 	/**
@@ -137,6 +144,7 @@ public:
 	*/
 	virtual void* GetRawActionBuffer() const {
 		check(0 && "You must override GetRawActionBuffer");
+		return nullptr;
 	};
 
 	// Must be set in the editor.

@@ -3,10 +3,16 @@
 #include "HolodeckControlScheme.h"
 
 
-void UHolodeckControlScheme::Execute(void* const CommandArray, void* const InputCommand) const {
+UHolodeckControlScheme::UHolodeckControlScheme() {}
+
+UHolodeckControlScheme::UHolodeckControlScheme(const FObjectInitializer& ObjectInitializer) :
+		Super(ObjectInitializer) {}
+
+void UHolodeckControlScheme::Execute(void* const CommandArray, void* const InputCommand) {
 	check(0 && "You must override Execute");
 }
 
-unsigned int UHolodeckControlScheme::GetControlSchemeByteSize() const {
+unsigned int UHolodeckControlScheme::GetControlSchemeSizeInBytes() const {
 	check(0 && "You must override GetControlSchemeByteSize");
+	return 0;
 }

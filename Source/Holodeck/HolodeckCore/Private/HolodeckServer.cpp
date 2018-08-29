@@ -40,7 +40,7 @@ void UHolodeckServer::Start() {
 	#endif
 
 	bIsRunning = true;
-	UE_LOG(LogHolodeck, Log, "HolodeckServer started successfully");
+	UE_LOG(LogHolodeck, Log, TEXT("HolodeckServer started successfully"));
 }
 
 void UHolodeckServer::Kill() {
@@ -62,13 +62,16 @@ void UHolodeckServer::Kill() {
 }
 
 void* UHolodeckServer::Malloc(const std::string& Key, unsigned int BufferSize) {
-	UE_LOG(LogHolodeck, LOG, TEXT("Mallocing %d bytes for key %s"), &BufferSize, UTF8_TO_TCHAR(Key.c_str()));
-	Memory[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize, TCHAR_TO_UTF8(*UUID)));
+	// If this key doesn't already exist, or the buffer size has changed, allocate the memory.
+	if (!Memory.count(Key) || Memory[Key]->Size() != BufferSize) {
+		UE_LOG(LogHolodeck, Log, TEXT("Mallocing %u bytes for key %s"), BufferSize, UTF8_TO_TCHAR(Key.c_str()));
+		Memory[Key] = std::unique_ptr<HolodeckSharedMemory>(new HolodeckSharedMemory(Key, BufferSize, TCHAR_TO_UTF8(*UUID)));
+	}
 	return Memory[Key]->GetPtr();
 }
 
 void UHolodeckServer::Acquire() {
-	UE_LOG(LogHolodeck, VeryVerbose, "HolodeckServer Acquiring");
+	UE_LOG(LogHolodeck, VeryVerbose, TEXT("HolodeckServer Acquiring"));
 	#if PLATFORM_WINDOWS
 	WaitForSingleObject(this->LockingSemaphore1, INFINITE);
 	#elif PLATFORM_LINUX
@@ -77,7 +80,7 @@ void UHolodeckServer::Acquire() {
 }
 
 void UHolodeckServer::Release() {
-	UE_LOG(LogHolodeck, VeryVerbose, "HolodeckServer Releasing");
+	UE_LOG(LogHolodeck, VeryVerbose, TEXT("HolodeckServer Releasing"));
 	#if PLATFORM_WINDOWS
 	ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
 	#elif PLATFORM_LINUX

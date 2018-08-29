@@ -83,6 +83,7 @@ public:
 	  */
 	virtual void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
 		check(0 && "You must override Subscribe");
+		return nullptr;
 	};
 
 	/**

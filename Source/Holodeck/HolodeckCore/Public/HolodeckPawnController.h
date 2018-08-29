@@ -4,6 +4,8 @@
 
 #include "Holodeck.h"
 
+#include <string>
+
 #include "AIController.h"
 #include "HolodeckPawnControllerInterface.h"
 #include "HolodeckAgentInterface.h"
@@ -109,7 +111,7 @@ protected:
 	bool* ShouldTeleportBuffer;
 	float* HyperparameterBuffer;
 
-	TArray<UHolodeckControlScheme> ControlSchemes;
+	TArray<UHolodeckControlScheme*> ControlSchemes;
 	AHolodeckAgentInterface* ControlledAgent;
 
 private:

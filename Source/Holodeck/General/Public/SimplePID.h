@@ -71,9 +71,9 @@ private:
 	float LastError;
 	float LastState;
 
-	const float KP;
-	const float KI;
-	const float KD;
+	float P;
+	float I;
+	float D;
 	float Tau;
 
 	float MyAbs(float I);

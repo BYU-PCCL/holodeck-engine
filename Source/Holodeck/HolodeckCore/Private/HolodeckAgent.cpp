@@ -8,7 +8,7 @@ const int REWARD_SIZE = 1;
 const char TERMINAL_KEY[] = "Terminal";
 const int TERMINAL_SIZE = 1;
 
-AHolodeckAgent::AHolodeckAgent() : AgentName("") {
+AHolodeckAgent::AHolodeckAgent() {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.TickGroup = TG_PrePhysics; //The tick function will we called before any physics simulation. 
 	AddTickPrerequisiteActor(GetController()); //The agent's controller will always tick before the agent.
@@ -44,7 +44,7 @@ void AHolodeckAgent::SetReward(float Reward) {
 
 void AHolodeckAgent::SetTerminal(bool bTerminal) {
 	if (TerminalPtr != nullptr)
-		*Terminalptr = bTerminal;
+		*TerminalPtr = bTerminal;
 	else
 		UE_LOG(LogHolodeck, Warning, TEXT("Trying to set terminal for HolodeckAgent without a HolodeckController"));
 }
@@ -60,10 +60,11 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation, const FRotator& NewRot
 		false //the object will not retain its momentum.
 	);
 
-	if (bWasSuccessful)
+	if (bWasSuccessful) {
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent %s teleported successfully"), *AgentName);
-	else
+	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent %s did not teleport successfully"), *AgentName);
+	}
 	
 	return bWasSuccessful;
 }

@@ -118,6 +118,7 @@ public:
 	  */
 	virtual unsigned int GetRawActionSizeInBytes() const override {
 		check(0 && "You must override GetRawActionSizeInBytes");
+		return 0;
 	};
 
 	/**
@@ -126,7 +127,9 @@ public:
 	  */
 	virtual void* GetRawActionBuffer() const override {
 		check(0 && "You must override GetRawActionBuffer");
+		return nullptr;
 	};
+
 private:
 	float* RewardPtr;
 	bool* TerminalPtr;

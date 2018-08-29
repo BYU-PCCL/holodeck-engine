@@ -34,6 +34,11 @@ public:
     explicit HolodeckSharedMemory(const std::string& Name, unsigned int BufferSize, const std::string& UUID);
 
 	/**
+	  * Destructor
+	  */
+	~HolodeckSharedMemory();
+
+	/**
 	  * GetPtr
 	  * Gets a pointer to the start of the memory mapped file.
 	  * @return a void pointer to the start of the memory buffer.
