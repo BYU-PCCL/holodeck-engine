@@ -5,6 +5,10 @@
 // Sets default values
 ANavAgent::ANavAgent() {
 	PrimaryActorTick.bCanEverTick = true;
+
+	// Set the defualt controller
+	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.NavAgentController"), NULL, LOAD_None, NULL);
+	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
 void ANavAgent::BeginPlay() {

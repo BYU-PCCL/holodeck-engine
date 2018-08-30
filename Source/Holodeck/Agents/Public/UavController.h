@@ -8,7 +8,7 @@
 #include "HolodeckPawnController.h"
 #include "UAV.h"
 
-#include "HolodeckUAVController.generated.h"
+#include "UavController.generated.h"
 
 /**
   * AHolodeckUAVController
@@ -17,19 +17,19 @@
   * Sets the desired commands on the UAV. 
   */
 UCLASS()
-class HOLODECK_API AHolodeckUAVController : public AHolodeckPawnController {
+class HOLODECK_API AUavController : public AHolodeckPawnController {
 	GENERATED_BODY()
 
 public:
 	/**
 	  * Default Constructor.
 	  */
-	AHolodeckUAVController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	AUavController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	  * Default Destructor.
 	  */
-	~AHolodeckUAVController();
+	~AUavController();
 
 	void AddControlSchemes() {
 		ControlSchemes.Add(NewObject<UUAVControlSchemeTargetRollPitch>(static_cast<AUAV*>(GetPawn())));

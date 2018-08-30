@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Holodeck.h"
-#include "HolodeckAndroidController.h"
+#include "AndroidController.h"
 
-AHolodeckAndroidController::AHolodeckAndroidController(const FObjectInitializer& ObjectInitializer) : AHolodeckPawnController(ObjectInitializer) {
+AAndroidController::AAndroidController(const FObjectInitializer& ObjectInitializer) : AHolodeckPawnController(ObjectInitializer) {
 	UE_LOG(LogHolodeck, Log, TEXT("Android Controller Initialized"));
 }
 
-AHolodeckAndroidController::~AHolodeckAndroidController() {}
+AAndroidController::~AAndroidController() {}
 
-void AHolodeckAndroidController::Possess(APawn* PawnParam) {
+void AAndroidController::Possess(APawn* PawnParam) {
 	Super::Possess(PawnParam);
 	UE_LOG(LogHolodeck, Log, TEXT("Android Controller possessing pawn"));
 

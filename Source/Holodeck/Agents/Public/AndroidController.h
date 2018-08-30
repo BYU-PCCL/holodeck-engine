@@ -6,10 +6,10 @@
 #include "HolodeckPawnController.h"
 #include "PhysicsEngine/ConstraintInstance.h"
 
-#include "HolodeckAndroidController.generated.h"
+#include "AndroidController.generated.h"
 
 UCLASS()
-class HOLODECK_API AHolodeckAndroidController : public AHolodeckPawnController
+class HOLODECK_API AAndroidController : public AHolodeckPawnController
 {
 	GENERATED_BODY()
 
@@ -17,12 +17,12 @@ public:
 	/**
 	* Default Constructor
 	*/
-	AHolodeckAndroidController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	AAndroidController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	* Default Destructor
 	*/
-	~AHolodeckAndroidController();
+	~AAndroidController();
 
 	/**
 	* Possess

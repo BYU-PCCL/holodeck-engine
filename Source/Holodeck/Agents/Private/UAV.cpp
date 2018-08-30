@@ -26,7 +26,7 @@ AUAV::AUAV() : HyperparametersPointer(GetHyperparameters()) {
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set the defualt controller
-	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.HolodeckUAVController"), NULL, LOAD_None, NULL);
+	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.UavController"), NULL, LOAD_None, NULL);
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 
 	// TODO: the unreal unit conversion should be derived via global settings

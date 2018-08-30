@@ -9,6 +9,10 @@ const float CM_TORQUE_TO_M_TORQUE = 10000;
 AAndroid::AAndroid() {
 	PrimaryActorTick.bCanEverTick = true;
 	bCollisionsAreVisible = false;
+
+	// Set the defualt controller
+	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.AndroidController"), NULL, LOAD_None, NULL);
+	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
 void AAndroid::BeginPlay() {

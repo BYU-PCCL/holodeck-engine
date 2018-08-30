@@ -7,13 +7,13 @@
 #include "HolodeckPawnController.h"
 #include "NavAgent.h"
 
-#include "HolodeckNavAgentController.generated.h"
+#include "NavAgentController.generated.h"
 
 /**
 * A Holodeck Nav Agent Controller
 */
 UCLASS()
-class HOLODECK_API AHolodeckNavAgentController : public AHolodeckPawnController
+class HOLODECK_API ANavAgentController : public AHolodeckPawnController
 {
 	GENERATED_BODY()
 
@@ -21,12 +21,12 @@ public:
 	/**
 	* Default Constructor
 	*/
-	AHolodeckNavAgentController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ANavAgentController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	* Default Destructor
 	*/
-	~AHolodeckNavAgentController();
+	~ANavAgentController();
 
 	/**
 	* Possess

@@ -7,13 +7,13 @@
 #include "HolodeckPawnController.h"
 #include "SphereRobot.h"
 
-#include "HolodeckSphereRobotController.generated.h"
+#include "SphereRobotController.generated.h"
 
 /**
  * A Holodeck Sphere Robot Controller
  */
 UCLASS()
-class HOLODECK_API AHolodeckSphereRobotController : public AHolodeckPawnController
+class HOLODECK_API ASphereRobotController : public AHolodeckPawnController
 {
 	GENERATED_BODY()
 	
@@ -21,12 +21,12 @@ public:
 	/**
 	  * Default Constructor
 	  */
-	AHolodeckSphereRobotController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ASphereRobotController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	  * Default Destructor
 	  */
-	~AHolodeckSphereRobotController();
+	~ASphereRobotController();
 
 	/**
 	  * Possess
