@@ -14,12 +14,12 @@ USpawnAgentCommand::USpawnAgentCommand() {
 	if (bFirstInstance) {
 		bFirstInstance = false;
 		//initialize the SpawnFunctionMap
-		SpawnFunctionMap[UAV] = &SpawnAgent<AUAV>;
+		SpawnFunctionMap[UAV] = &SpawnAgent<AUav>;
 		SpawnFunctionMap[SPHERE_ROBOT] = &SpawnAgent<ASphereRobot>;
 		SpawnFunctionMap[ANDROID] = &SpawnAgent<AAndroid>;
 		SpawnFunctionMap[NAV_AGENT] = &SpawnAgent<ANavAgent>;
 		//Initialize the BlueprintMap
-		BlueprintMap[UAV] = AUAV::StaticClass();
+		BlueprintMap[UAV] = AUav::StaticClass();
 		BlueprintMap[SPHERE_ROBOT] = ASphereRobot::StaticClass();
 		BlueprintMap[ANDROID] = AAndroid::StaticClass();
 		BlueprintMap[NAV_AGENT] = ANavAgent::StaticClass();

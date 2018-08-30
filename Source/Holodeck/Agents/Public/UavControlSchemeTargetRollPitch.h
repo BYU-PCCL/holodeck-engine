@@ -7,20 +7,20 @@
 #include "SimplePID.h"
 #include <math.h>
 
-#include "UAVControlSchemeTargetRollPitch.generated.h"
+#include "UavControlSchemeTargetRollPitch.generated.h"
 
 /**
-* UUAVControlSchemeTargetRollPitch
+* UUavControlSchemeTargetRollPitch
 */
 UCLASS()
-class HOLODECK_API UUAVControlSchemeTargetRollPitch : public UHolodeckControlScheme {
+class HOLODECK_API UUavControlSchemeTargetRollPitch : public UHolodeckControlScheme {
 public:
 	GENERATED_BODY()
 
 	// Required constructor, shouldn't be used.
-	UUAVControlSchemeTargetRollPitch(const FObjectInitializer& ObjectInitializer);
+	UUavControlSchemeTargetRollPitch(const FObjectInitializer& ObjectInitializer);
 
-	UUAVControlSchemeTargetRollPitch(AUAV* ControlledUav);
+	UUavControlSchemeTargetRollPitch(AUav* ControlledUav);
 
 	void Execute(void* const CommandArray, void* const InputCommand) override;
 
@@ -33,7 +33,7 @@ private:
 
 	float UEUnitsToMeters(float ValueInUnrealUnits) const;
 
-	AUAV* UAV;
+	AUav* UAV;
 
 	// PID Controllers
 	SimplePID RollController;

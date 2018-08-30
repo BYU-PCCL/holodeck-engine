@@ -1,5 +1,5 @@
 #include "Holodeck.h"
-#include "UAVControlSchemeTargetRollPitch.h"
+#include "UavControlSchemeTargetRollPitch.h"
 
 constexpr float DELTA_TIME = 1 / 30;  // Quick fix: Each tick is fixed to 1/30th second. Should update this.
 const float UAV_TAU_UP_ROLL = 0.1904;
@@ -23,10 +23,10 @@ const float UAV_ALT_P = 305.0;
 const float UAV_ALT_I = 100.0;
 const float UAV_ALT_D = 600.0;
 
-UUAVControlSchemeTargetRollPitch::UUAVControlSchemeTargetRollPitch(const FObjectInitializer& ObjectInitializer) :
+UUavControlSchemeTargetRollPitch::UUavControlSchemeTargetRollPitch(const FObjectInitializer& ObjectInitializer) :
 		Super(ObjectInitializer) {}
 
-UUAVControlSchemeTargetRollPitch::UUAVControlSchemeTargetRollPitch(AUAV* ControlledUAV) :
+UUavControlSchemeTargetRollPitch::UUavControlSchemeTargetRollPitch(AUav* ControlledUAV) :
 		RollController(UAV_ROLL_P, UAV_ROLL_I, UAV_ROLL_D),
 		PitchController(UAV_PITCH_P, UAV_PITCH_I, UAV_PITCH_D),
 		YawController(UAV_YAW_P, UAV_YAW_I, UAV_YAW_D),
@@ -34,7 +34,7 @@ UUAVControlSchemeTargetRollPitch::UUAVControlSchemeTargetRollPitch(AUAV* Control
 	UAV = ControlledUAV;
 }
 
-void UUAVControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* const InputCommand) {
+void UUavControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* const InputCommand) {
 	float* CommandArrayFloat = static_cast<float*>(CommandArray);
 	float* InputCommandFloat = static_cast<float*>(InputCommand);
 
@@ -93,7 +93,7 @@ void UUAVControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* c
 	CommandArrayFloat[3] = (1 - AlphaThrust) * ThrustToApply + AlphaThrust * ThrustToApply;
 }
 
-FVector UUAVControlSchemeTargetRollPitch::RotatorToEulerInZYX(const FRotator& Rotator) const {
+FVector UUavControlSchemeTargetRollPitch::RotatorToEulerInZYX(const FRotator& Rotator) const {
 	FQuat Quaternion = Rotator.Quaternion();
 	float Roll = atan2(2.0 * (Quaternion.W * Quaternion.X + Quaternion.Y * Quaternion.Z), 1.0 - 2.0 * (Quaternion.X * Quaternion.X + Quaternion.Y * Quaternion.Y));
 	float Pitch = asin(2.0 * (Quaternion.W * Quaternion.Y - Quaternion.Z * Quaternion.X));
@@ -101,6 +101,6 @@ FVector UUAVControlSchemeTargetRollPitch::RotatorToEulerInZYX(const FRotator& Ro
 	return FVector(Roll, Pitch, Yaw);
 }
 
-float UUAVControlSchemeTargetRollPitch::UEUnitsToMeters(float ValueInUnrealUnits) const {
+float UUavControlSchemeTargetRollPitch::UEUnitsToMeters(float ValueInUnrealUnits) const {
 	return ValueInUnrealUnits / 100.0;
 }

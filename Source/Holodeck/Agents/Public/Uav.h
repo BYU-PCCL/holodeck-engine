@@ -3,22 +3,22 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgent.h"
-#include "UAV.generated.h"
+#include "Uav.generated.h"
 
 UCLASS()
 /**
-* AUAV
+* AUav
 * Inherits from the HolodeckAgent class
 * On any tick this object will:
 *     Calculate the forces to apply using PID controllers, desired values, and current values.
 *     Apply the given forces. 
 * Desired values must be set by a controller. 
 */
-class HOLODECK_API AUAV : public AHolodeckAgent
+class HOLODECK_API AUav : public AHolodeckAgent
 {
 	GENERATED_BODY()
 public:
-	AUAV();
+	AUav();
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	void SubstepTick(float DeltaTime, FBodyInstance* BodyInstance);

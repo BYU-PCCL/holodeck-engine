@@ -1,6 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Holodeck.h"
-#include "UAV.h"
+#include "Uav.h"
 
 //All in radians. (rad/s, rad/s^2, etc.)
 const float UAV_MASS = 3.856; //Kilograms
@@ -21,7 +21,7 @@ enum ParameterIndices {
 	UAV_MAX_FORCE_INDEX = 6,
 };
 
-AUAV::AUAV() : HyperparametersPointer(GetHyperparameters()) {
+AUav::AUav() : HyperparametersPointer(GetHyperparameters()) {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -34,15 +34,15 @@ AUAV::AUAV() : HyperparametersPointer(GetHyperparameters()) {
 	// TODO: add changes seen in https://answers.unrealengine.com/questions/7459/question-is-120-the-engine-max-frame-rate.html
 	// TODO: set deltaTick to 1/40th of a second
 	SetActorEnableCollision(true);
-	// OnCalculateCustomPhysics.BindUObject(this, &AUAV::SubstepTick);
+	// OnCalculateCustomPhysics.BindUObject(this, &AUav::SubstepTick);
 }
 
-void AUAV::BeginPlay() {
+void AUav::BeginPlay() {
 	Super::BeginPlay();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
 }
 
-void AUAV::Tick(float DeltaTime) {
+void AUav::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	//if (RootMesh) {
 	//  RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
@@ -50,13 +50,13 @@ void AUAV::Tick(float DeltaTime) {
 	ApplyForces();
 }
 
-//void AUAV::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
+//void AUav::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
 //{
 //  UpdateForcesAndMoments(DeltaTime);
 //  ApplyForces();
 //}
 
-void AUAV::ApplyForces() {
+void AUav::ApplyForces() {
 	// Calculate Air Resistance
 	FVector Wind = -HyperparametersPointer[UAV_MU_INDEX] * GetVelocity();
 
@@ -84,7 +84,7 @@ void AUAV::ApplyForces() {
 	//CurrentThrust = ThrustToApply;
 }
 
-const float* AUAV::GetDefaultHyperparameters() const {
+const float* AUav::GetDefaultHyperparameters() const {
 	static const float DefaultHyperparameters[NUMBER_OF_PARAMETERS] = {
 			NUMBER_OF_PARAMETERS,
 			UAV_MASS,
@@ -97,11 +97,11 @@ const float* AUAV::GetDefaultHyperparameters() const {
 	return DefaultHyperparameters;
 }
 
-int AUAV::GetHyperparameterCount() const {
+int AUav::GetHyperparameterCount() const {
 	return NUMBER_OF_PARAMETERS;
 }
 
-void AUAV::SetHyperparameterAddress(float* Input) {
+void AUav::SetHyperparameterAddress(float* Input) {
 	Super::SetHyperparameterAddress(Input);
 	this->HyperparametersPointer = Input;
 	// InitializePIDControllers(); //Must give the PID Controllers the new addresses to point to.

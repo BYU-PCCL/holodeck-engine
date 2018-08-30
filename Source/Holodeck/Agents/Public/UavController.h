@@ -4,7 +4,7 @@
 
 #include "Holodeck.h"
 
-#include "UAVControlSchemeTargetRollPitch.h"
+#include "UavControlSchemeTargetRollPitch.h"
 #include "HolodeckPawnController.h"
 #include "UAV.h"
 
@@ -32,7 +32,7 @@ public:
 	~AUavController();
 
 	void AddControlSchemes() {
-		ControlSchemes.Add(NewObject<UUAVControlSchemeTargetRollPitch>(static_cast<AUAV*>(GetPawn())));
+		ControlSchemes.Add(NewObject<UUavControlSchemeTargetRollPitch>(static_cast<AUav*>(GetPawn())));
 	}
 
 private:
