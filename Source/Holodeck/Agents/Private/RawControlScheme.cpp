@@ -12,6 +12,6 @@ URawControlScheme::URawControlScheme(AHolodeckAgentInterface* const ControlledAg
 	}
 }
 
-void URawControlScheme::Execute(void* const CommandArray, void* const InputCommand) {
+void URawControlScheme::Execute(void* const CommandArray, void* const InputCommand, float DeltaSeconds) {
 	memcpy(CommandArray, InputCommand, Agent->GetRawActionSizeInBytes());
 }

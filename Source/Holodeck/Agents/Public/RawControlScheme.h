@@ -20,7 +20,7 @@ public:
 
 	URawControlScheme(AHolodeckAgentInterface* const ControlledAgent);
 
-	void Execute(void* const CommandArray, void* const InputCommand) override;
+	void Execute(void* const CommandArray, void* const InputCommand, float DeltaSeconds) override;
 
 	unsigned int GetControlSchemeSizeInBytes() const {
 		return Agent->GetRawActionSizeInBytes();

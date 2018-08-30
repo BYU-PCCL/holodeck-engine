@@ -32,7 +32,9 @@ public:
 	~AUavController();
 
 	void AddControlSchemes() {
-		ControlSchemes.Add(NewObject<UUavControlSchemeTargetRollPitch>(static_cast<AUav*>(GetPawn())));
+		UUavControlSchemeTargetRollPitch* ControlScheme = NewObject<UUavControlSchemeTargetRollPitch>();
+		ControlScheme->SetController(this);
+		ControlSchemes.Add(ControlScheme);
 	}
 
 private:

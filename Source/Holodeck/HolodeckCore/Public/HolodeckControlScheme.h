@@ -15,7 +15,7 @@ public:
 	UHolodeckControlScheme();
 	UHolodeckControlScheme(const FObjectInitializer& ObjectInitializer);
 
-	virtual void Execute(void* const CommandArray, void* const InputCommand);
+	virtual void Execute(void* const CommandArray, void* const InputCommand, float DeltaSeconds);
 
 	virtual unsigned int GetControlSchemeSizeInBytes() const;
 };

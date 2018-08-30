@@ -2,7 +2,8 @@
 
 #include "Holodeck.h"
 
-#include "UAV.h"
+#include "HolodeckPawnController.h"
+#include "Uav.h"
 #include "HolodeckControlScheme.h"
 #include "SimplePID.h"
 #include <math.h>
@@ -17,23 +18,23 @@ class HOLODECK_API UUavControlSchemeTargetRollPitch : public UHolodeckControlSch
 public:
 	GENERATED_BODY()
 
-	// Required constructor, shouldn't be used.
 	UUavControlSchemeTargetRollPitch(const FObjectInitializer& ObjectInitializer);
 
-	UUavControlSchemeTargetRollPitch(AUav* ControlledUav);
-
-	void Execute(void* const CommandArray, void* const InputCommand) override;
+	void Execute(void* const CommandArray, void* const InputCommand, float DeltaSeconds) override;
 
 	unsigned int GetControlSchemeSizeInBytes() const override {
 		return 4 * sizeof(float);
 	}
+
+	void SetController(AHolodeckPawnController* const Controller) { UavController = Controller; };
 
 private:
 	FVector RotatorToEulerInZYX(const FRotator& Rotator) const;
 
 	float UEUnitsToMeters(float ValueInUnrealUnits) const;
 
-	AUav* UAV;
+	AHolodeckPawnController* UavController;
+	AUav* Uav;
 
 	// PID Controllers
 	SimplePID RollController;

@@ -50,7 +50,7 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 		ExecuteTeleport();
 
 	unsigned int index = *ControlSchemeIdBuffer % ControlSchemes.Num();
-	ControlSchemes[index]->Execute(ControlledAgent->GetRawActionBuffer(), ActionBuffer);
+	ControlSchemes[index]->Execute(ControlledAgent->GetRawActionBuffer(), ActionBuffer, DeltaSeconds);
 }
 
 void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
@@ -94,7 +94,6 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, CONTROL_SCHEME_KEY),
 											   sizeof(uint8));
 		ControlSchemeIdBuffer = static_cast<uint8*>(TempBuffer);
-		*ControlSchemeIdBuffer = 0;
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_BOOL_KEY),
 											  SINGLE_BOOL * sizeof(bool));

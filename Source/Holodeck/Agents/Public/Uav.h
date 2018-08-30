@@ -38,8 +38,8 @@ public:
 	//See HolodeckAgent.h for descriptions of these overriden functions
 	void SetHyperparameterAddress(float* Input) override;
 
-	float GetRollTorqueToApply() { return CommandArray[0]; };
-	float GetPitchTorqueToApply() { return CommandArray[1]; };
+	float GetRollTorqueToApply() { return -CommandArray[0]; };
+	float GetPitchTorqueToApply() { return -CommandArray[1]; };
 	float GetYawTorqueToApply() { return CommandArray[2]; };
 	float GetThrustToApply() { return CommandArray[3]; };
 
