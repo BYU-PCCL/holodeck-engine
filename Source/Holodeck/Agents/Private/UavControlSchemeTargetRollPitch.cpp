@@ -47,9 +47,6 @@ void UUavControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* c
 	float DesiredAltitude = InputCommandFloat[3];
 
 	// Update forces and movements function
-	// Get the current locations
-	float CurrentPositionX = UEUnitsToMeters(Uav->GetActorLocation().X);
-	float CurrentPositionY = UEUnitsToMeters(Uav->GetActorLocation().Y);
 	float CurrentPositionZ = UEUnitsToMeters(Uav->GetActorLocation().Z);
 
 	// Get the rotator to get state and transform from world to local coordinates
@@ -60,7 +57,6 @@ void UUavControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* c
 
 	float CurrentRoll = EulerRotation.X;
 	float CurrentPitch = EulerRotation.Y;
-	float CurrentYaw = EulerRotation.Z;
 	float CurrentGlobalVelocityZ = UEUnitsToMeters(CurrentGlobalVelocity.Z);
 
 	float CurrentRollRate = FMath::DegreesToRadians(LocalAngularVelocity.X);
