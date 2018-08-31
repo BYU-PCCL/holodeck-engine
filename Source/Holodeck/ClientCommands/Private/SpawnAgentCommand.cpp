@@ -1,6 +1,30 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
 
+const static std::string UAV = "UAV";
+const static std::string SPHERE_ROBOT = "SphereRobot";
+const static std::string NAV_AGENT = "NavAgent";
+const static std::string ANDROID = "Android";
+USpawnAgentCommand::BlueprintMapType USpawnAgentCommand::BlueprintMap;
+USpawnAgentCommand::SpawnFunctionMapType USpawnAgentCommand::SpawnFunctionMap;
+
+USpawnAgentCommand::USpawnAgentCommand() {
+	static bool bFirstInstance = true;
+	//This is used to find the blueprints for the spawnable agents only the first time a USpawnAgentCommand is instantiated. 
+	if (bFirstInstance) {
+		bFirstInstance = false;
+		//initialize the SpawnFunctionMap
+		SpawnFunctionMap[UAV] = &SpawnAgent<AUav>;
+		SpawnFunctionMap[SPHERE_ROBOT] = &SpawnAgent<ASphereRobot>;
+		SpawnFunctionMap[ANDROID] = &SpawnAgent<AAndroid>;
+		SpawnFunctionMap[NAV_AGENT] = &SpawnAgent<ANavAgent>;
+		//Initialize the BlueprintMap
+		BlueprintMap[UAV] = AUav::StaticClass();
+		BlueprintMap[SPHERE_ROBOT] = ASphereRobot::StaticClass();
+		BlueprintMap[ANDROID] = AAndroid::StaticClass();
+		BlueprintMap[NAV_AGENT] = ANavAgent::StaticClass();
+	}
+}
 void USpawnAgentCommand::Execute() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));

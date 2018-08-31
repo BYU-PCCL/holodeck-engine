@@ -2,8 +2,8 @@
 #include "CommandCenter.h"
 #include "HolodeckGameMode.h" // to avoid a circular dependency. 
 
-const FString UCommandCenter::BUFFER_NAME = "command_buffer";
-const FString UCommandCenter::BUFFER_SHOULD_READ_NAME = "command_bool";
+const std::string UCommandCenter::BUFFER_NAME = "command_buffer";
+const std::string UCommandCenter::BUFFER_SHOULD_READ_NAME = "command_bool";
 const int UCommandCenter::BUFFER_SHOULD_READ_SIZE = 1;
 const int UCommandCenter::BUFFER_SIZE = 1048576; //one megabyte
 const int UCommandCenter::BYTE_SIZE = 8;
@@ -32,8 +32,8 @@ void UCommandCenter::GetCommandBuffer() {
 	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("CommandCenter could not find server..."));
 	} else {
-		Buffer = static_cast<char*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_NAME), BUFFER_SIZE * BYTE_SIZE));
-		ShouldReadBufferPtr = static_cast<bool*>(Server->SubscribeSetting(TCHAR_TO_UTF8(*BUFFER_SHOULD_READ_NAME), BUFFER_SHOULD_READ_SIZE * sizeof(bool)));
+		Buffer = static_cast<char*>(Server->Malloc(BUFFER_NAME, BUFFER_SIZE * BYTE_SIZE));
+		ShouldReadBufferPtr = static_cast<bool*>(Server->Malloc(BUFFER_SHOULD_READ_NAME, BUFFER_SHOULD_READ_SIZE * sizeof(bool)));
 		if (ShouldReadBufferPtr != nullptr)
 			*ShouldReadBufferPtr = false;
 		else

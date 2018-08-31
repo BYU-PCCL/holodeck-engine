@@ -40,7 +40,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Holodeck")
 	void SetTarget(float x, float y, float z);
 
+	unsigned int GetRawActionSizeInBytes() const override { return 3 * sizeof(float); };
+	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
+
 private:
+	float CommandArray[3];
 	FVector Target;
 
 };

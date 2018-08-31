@@ -7,7 +7,7 @@
 
 const char HOLODECK_BASE_PATH[] = "/HOLODECK_MEM";
 
-HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSize, const std::string& UUID) :
+HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int BufferSize, const std::string& UUID) :
 		MemPath(HOLODECK_BASE_PATH + UUID + "_" + Name), MemSize(BufferSize) {
 
 	#if PLATFORM_WINDOWS
@@ -20,5 +20,14 @@ HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, int BufferSi
     ftruncate(MemFile, this->MemSize);
     MemPointer = static_cast<void*>(mmap(nullptr, this->MemSize, PROT_READ | PROT_WRITE,
                                          MAP_SHARED, MemFile, 0));
+	#endif
+}
+
+HolodeckSharedMemory::~HolodeckSharedMemory() {
+	#if PLATFORM_WINDOWS
+	// TODO: Correctly close these files
+	#elif PLATFORM_LINUX
+	// TODO: Correctly close these files
+	close(MemFile);
 	#endif
 }

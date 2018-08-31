@@ -7,13 +7,13 @@
 #include "HolodeckPawnController.h"
 #include "NavAgent.h"
 
-#include "HolodeckNavAgentController.generated.h"
+#include "NavAgentController.generated.h"
 
 /**
 * A Holodeck Nav Agent Controller
 */
 UCLASS()
-class HOLODECK_API AHolodeckNavAgentController : public AHolodeckPawnController
+class HOLODECK_API ANavAgentController : public AHolodeckPawnController
 {
 	GENERATED_BODY()
 
@@ -21,12 +21,12 @@ public:
 	/**
 	* Default Constructor
 	*/
-	AHolodeckNavAgentController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	ANavAgentController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	* Default Destructor
 	*/
-	~AHolodeckNavAgentController();
+	~ANavAgentController();
 
 	/**
 	* Possess
@@ -35,12 +35,7 @@ public:
 	*/
 	void Possess(APawn* Pawn);
 
-	/**
-	* ExecuteCommand
-	* Executes the commands issued from the client.
-	*/
-	void ExecuteCommand() override;
-
-protected:
-	int GetActionSpaceDimension() override { return 3; };
+	void AddControlSchemes() override {
+		// No Extra Control Schemes
+	}
 };

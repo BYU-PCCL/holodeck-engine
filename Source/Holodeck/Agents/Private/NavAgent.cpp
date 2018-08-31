@@ -5,6 +5,10 @@
 // Sets default values
 ANavAgent::ANavAgent() {
 	PrimaryActorTick.bCanEverTick = true;
+
+	// Set the defualt controller
+	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.NavAgentController"), NULL, LOAD_None, NULL);
+	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
 void ANavAgent::BeginPlay() {
@@ -15,6 +19,7 @@ void ANavAgent::BeginPlay() {
 // Called every frame
 void ANavAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+	Target = FVector(CommandArray[0], CommandArray[1], CommandArray[2]);
 }
 
 FVector ANavAgent::GetTarget() {

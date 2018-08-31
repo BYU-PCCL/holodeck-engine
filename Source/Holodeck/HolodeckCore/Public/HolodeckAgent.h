@@ -5,19 +5,21 @@
 #include "Holodeck.h"
 
 #include "GameFramework/Pawn.h"
-#include "HolodeckPawnController.h"
+#include "HolodeckAgentInterface.h"
+#include "HolodeckPawnControllerInterface.h"
 
 #include "HolodeckAgent.generated.h"
 
 /**
 * AHolodeckAgent
 * The base class for holodeck agents. 
-* HolodeckAgents are what are controllable from the python side of the code. HolodeckAgents will 
-* tell their controller to open up the channels needed for giving commands across the python binding.
+* HolodeckAgents are controllable from python.
+* A HolodeckAgent contains the logic for how it acts at a low level.
+* To get to a higher level of control, the logic should be implemented in
+* a HolodeckControlScheme.
 */
 UCLASS()
-class AHolodeckAgent : public APawn
-{
+class HOLODECK_API AHolodeckAgent : public AHolodeckAgentInterface {
 	GENERATED_BODY()
 
 public:
@@ -29,9 +31,8 @@ public:
 	/**
 	  * BeginPlay
 	  * Called when the game starts.
-	  * Registers the reward and terminal signals.
 	  */
-	void BeginPlay() override;
+	virtual void BeginPlay() override;
 
 	/**
 	  * Tick
@@ -39,25 +40,21 @@ public:
 	  * If it is overridden, it must be called by the child class!
 	  * @param DeltaSeconds the time since the last tick.
 	  */
-	void Tick(float DeltaSeconds) override;
-
-	// Must be set in the editor.
-	UPROPERTY(EditAnywhere)
-	FString AgentName;
+	virtual void Tick(float DeltaSeconds) override;
 
 	/**
 	  * SetReward
 	  * Sets the reward in the server for this agent.
 	  * @param Reward the value of the reward.
 	  */
-	void SetReward(int Reward) { if (RewardPtr != nullptr) *RewardPtr = Reward; };
+	void SetReward(float Reward) override;
 
 	/**
 	  * SetTerminal
 	  * Sets the terminal in the server for this agent.
 	  * @param Terminal the value of the terminal signal.
 	  */
-	void SetTerminal(bool Terminal) { if (TerminalPtr != nullptr) *TerminalPtr = Terminal; };
+	void SetTerminal(bool bTerminal) override;
 
 	/**
 	  * Teleport
@@ -67,7 +64,7 @@ public:
 	  * @param NewRotation The rotation that the object will take on
 	  * @return Bool if the teleport was successful.
 	  */
-	bool Teleport(const FVector& NewLocation, FRotator NewRotation);
+	bool Teleport(const FVector& NewLocation, const FRotator& NewRotation) override;
 
 	/**
 	  * Teleport
@@ -76,7 +73,7 @@ public:
 	  * @param NewLocation The location to move to
 	  * @return Bool if the teleport was successful.
 	  */
-	bool Teleport(const FVector& NewLocation);
+	bool Teleport(const FVector& NewLocation) override;
 
 	/**
 	  * SetHyperparameterAddress
@@ -84,13 +81,13 @@ public:
 	  * You must give it a pointer to a place that has the proper memory allocated for it
 	  * @param Input The pointer
 	  */
-	virtual void SetHyperparameterAddress(float* Input);
+	void SetHyperparameterAddress(float* Input) override;
 
 	/**
 	  * GetHyperparameterCount
 	  * @return The total number of Hyper parameters.
 	  */
-	virtual int GetHyperparameterCount() const { return 1; };
+	int GetHyperparameterCount() const override { return 1; };
 	
 	/**
 	  * GetHyperparameters
@@ -98,7 +95,7 @@ public:
 	  * gave it a bad pointer to point to via SetHyperparameterAddress().
 	  * @return A const pointer to the Hyperparameters Array.
 	  */
-	const float* GetHyperparameters();
+	virtual const float* GetHyperparameters() override;
 
 	/**
 	* InitializeController
@@ -106,18 +103,36 @@ public:
 	* but if you have to manually configure a controller, you will have to call this function after
 	* you do it.
 	*/
-	bool InitializeController();
+	bool InitializeController() override;
 
 	/**
 	* GetDefaultHyperparameters
 	* You must override this function iff GetHyperparameterCount() does not return 1 (the default value)
 	* @return a const pointer to the default hyperParameters
 	*/
-	virtual const float* GetDefaultHyperparameters() const;
+	virtual const float* GetDefaultHyperparameters() const override;
+
+	/**
+	  * GetRawActionSizeInBytes
+	  * @return the number of bytes used by the action space.
+	  */
+	virtual unsigned int GetRawActionSizeInBytes() const override {
+		check(0 && "You must override GetRawActionSizeInBytes");
+		return 0;
+	};
+
+	/**
+	  * GetRawActionBuffer
+	  * @return a pointer to the start of the action buffer.
+	  */
+	virtual void* GetRawActionBuffer() const override {
+		check(0 && "You must override GetRawActionBuffer");
+		return nullptr;
+	};
 
 private:
-	const float* Hyperparameters;
 	float* RewardPtr;
 	bool* TerminalPtr;
-	AHolodeckPawnController* HolodeckController;
+	const float* Hyperparameters;
+	AHolodeckPawnControllerInterface* HolodeckController;
 };

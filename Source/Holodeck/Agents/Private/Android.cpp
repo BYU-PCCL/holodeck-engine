@@ -9,10 +9,15 @@ const float CM_TORQUE_TO_M_TORQUE = 10000;
 AAndroid::AAndroid() {
 	PrimaryActorTick.bCanEverTick = true;
 	bCollisionsAreVisible = false;
+
+	// Set the defualt controller
+	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.AndroidController"), NULL, LOAD_None, NULL);
+	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
 void AAndroid::BeginPlay() {
 	Super::BeginPlay();
+	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::BeginPlay"));
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
 }
 
@@ -30,7 +35,7 @@ bool AAndroid::GetCollisionsVisible() {
 }
 
 void AAndroid::ApplyTorques() {
-
+	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::ApplyTorques"));
 	int ComInd = 0;
 
 	for (int JointInd = 0; JointInd < NUM_JOINTS; JointInd++) {

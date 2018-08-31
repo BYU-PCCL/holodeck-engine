@@ -4,10 +4,11 @@
 
 #include "Holodeck.h"
 
+#include "UavControlSchemeTargetRollPitch.h"
 #include "HolodeckPawnController.h"
 #include "UAV.h"
 
-#include "HolodeckUAVController.generated.h"
+#include "UavController.generated.h"
 
 /**
   * AHolodeckUAVController
@@ -16,33 +17,25 @@
   * Sets the desired commands on the UAV. 
   */
 UCLASS()
-class HOLODECK_API AHolodeckUAVController : public AHolodeckPawnController {
+class HOLODECK_API AUavController : public AHolodeckPawnController {
 	GENERATED_BODY()
 
 public:
 	/**
 	  * Default Constructor.
 	  */
-	AHolodeckUAVController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	AUavController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	/**
 	  * Default Destructor.
 	  */
-	~AHolodeckUAVController();
+	~AUavController();
 
-	/**
-	  * ExecuteCommand
-	  * Executes the command issued by the client.
-	  */
-	void ExecuteCommand() override;
-
-protected:
-	/**
-	  * GetActionSpaceDimension
-	  * Gets the action space dimension for the UAV.
-	  * @return the dimension.
-	  */
-	int GetActionSpaceDimension() override { return 4; };
+	void AddControlSchemes() {
+		UUavControlSchemeTargetRollPitch* ControlScheme = NewObject<UUavControlSchemeTargetRollPitch>();
+		ControlScheme->SetController(this);
+		ControlSchemes.Add(ControlScheme);
+	}
 
 private:
 	float desiredHeight, currentHeight;

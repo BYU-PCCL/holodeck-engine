@@ -11,8 +11,8 @@ SimplePID::SimplePID() {
 	Tau = 0.0f; // Connor: What does tau represent?
 }
 
-SimplePID::SimplePID(const float* P, const float* I, const float* D)
-		: KP(P), KI(I), KD(D), Tau(0.05) {
+SimplePID::SimplePID(const float P, const float I, const float D)
+		: P(P), I(I), D(D), Tau(0.05) {
 	Integrator = 0.0f;
 	Differentiator = 0.0f;
 	LastError = 0.0f;
@@ -42,7 +42,7 @@ float SimplePID::ComputePID(float Desired, float Current, float Delta) {
 	LastState = Current;
 
 	// Note the negative der. term.  This is because now the differentiator is in the feedback loop rather than the forward loop
-	return (*KP) * Error + (*KI) * Integrator - (*KD) * Differentiator;
+	return P * Error + I * Integrator - D * Differentiator;
 }
 
 float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
@@ -58,7 +58,7 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta) {
 
 	LastError = Error;
 	LastState = X;
-	return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
+	return P * Error + I * Integrator - D * XDot;
 }
 
 float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bool bIsAngle) {
@@ -81,21 +81,21 @@ float SimplePID::ComputePIDDirect(float XC, float X, float XDot, float Delta, bo
 	LastError = Error;
 	LastState = X;
 
-	return (*KP) * Error + (*KI) * Integrator - (*KD) * XDot;
+	return P * Error + I * Integrator - D * XDot;
 }
 
-void SimplePID::SetGains(const float* P, const float* I, const float* D) {
-	KP = P;
-	KI = I;
-	KD = D;
+void SimplePID::SetGains(const float NewP, const float NewI, const float NewD) {
+	P = NewP;
+	I = NewI;
+	D = NewD;
 
 	Tau = 0.05; // time for force to go from 0 to 63.2% of maximum desired force
 	return;
 }
 
-float SimplePID::MyAbs(float I) {
-	if (I < 0)
-		return -I;
+float SimplePID::MyAbs(float x) {
+	if (x < 0)
+		return -x;
 	else
-		return I;
+		return x;
 }

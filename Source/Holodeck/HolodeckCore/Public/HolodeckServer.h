@@ -63,35 +63,15 @@ public:
 	void Kill();
 
 	/**
-	  * SubscribeSensor
-	  * Subscribes a sensor. Creates a shared memory block for the sensor.
-	  * If a sensor already exists in this project with the same name and
-	  * same agent, the block is overwritten with the new sensor.
-	  * @param AgentName the name of the agent this sensor belongs to.
-	  * @param SensorKey the name of the sensor.
+	  * Malloc
+	  * Mallocs shared memory.
+	  * If memory has already been malloc'ed with the same key,
+	  * the block is overwritten.
+	  * @param Key the key for this block of memory.
 	  * @param BufferSize the size to allocate in bytes.
 	  * @return a pointer to the start of the assigned memory.
 	  */
-	void* SubscribeSensor(const std::string& AgentName, const std::string& SensorKey, int BufferSize);
-
-	/**
-	  * SubscribeActionSpace
-	  * Subscribes an action space. Creates a shared memory block for the
-	  * action space.
-	  * @param AgentName the agent to subscribe space for.
-	  * @param BufferSize the size of the buffer to allocate in bytes.
-	  * @return a poitner to the start of the assigned memory.
-	  */
-	void* SubscribeActionSpace(const std::string& AgentName, int BufferSize);
-
-	/**
-	  * SubscribeSetting
-	  * Subscribes a setting. Creates a shared memory block for the setting.
-	  * @param SettingName the name of the setting.
-	  * @param BufferSize the size of the buffer to allocate in bytes.
-	  * @return a pointer to the start of the assigned memory.
-	  */
-	void* SubscribeSetting(const std::string& SettingName, int BufferSize);
+	void* Malloc(const std::string& Key, unsigned int BufferSize);
 
 	/**
 	  * Acquire
@@ -113,22 +93,27 @@ public:
 	  */
 	bool IsRunning() const;
 
+	/**
+	* MakeKey
+	* Makes a key for mallocing a specific item for a specific agent.
+	* @param AgentName the name of the agent.
+	* @param ItemName the name of the item.
+	* @return a key for this agent/item.
+	*/
+	static const std::string MakeKey(const std::string& AgentName, const std::string& ItemName) {
+		return AgentName + "_" + ItemName;
+	}
+	static const std::string MakeKey(const FString& AgentName, const std::string& ItemName) {
+		return std::string(TCHAR_TO_UTF8(*AgentName)) + "_" + ItemName;
+	}
+	static const std::string MakeKey(const FString& AgentName, const FString& ItemName) {
+		return std::string(TCHAR_TO_UTF8(*AgentName)) + "_" + std::string(TCHAR_TO_UTF8(*ItemName));
+	}
+
 private:
 
-	/**
-	  * MakeKey
-	  * Makes the key for subscribing sensors.
-	  * @param AgentName the name of the agent.
-	  * @param SensorName the name of the sensor.
-	  * @return a key for this agent/sensor for the map.
-	  */
-	std::string MakeKey(const std::string& AgentName, const std::string& SensorName) const;
-
-	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> Sensors;
-	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> ActionSpaces;
-	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> Settings;
-
-	UPROPERTY()
+	FString UUID;
+	std::map<std::string, std::unique_ptr<HolodeckSharedMemory>> Memory;
 	bool bIsRunning;
 
 	#if PLATFORM_WINDOWS
@@ -138,6 +123,4 @@ private:
 	sem_t* LockingSemaphore1;
 	sem_t* LockingSemaphore2;
 	#endif
-
-	FString UUID;
 };
