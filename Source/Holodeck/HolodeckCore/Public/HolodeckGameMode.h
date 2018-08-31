@@ -7,6 +7,7 @@
 #include "GameFramework/GameMode.h"
 #include "HolodeckGameInstance.h"
 #include "CommandCenter.h"
+#include "WeatherMaster.h"
 #include "HolodeckGameMode.generated.h"
 
 /**
@@ -50,6 +51,18 @@ public:
 	  * Returns the private server pointer that the instance contains.
 	  */
 	UHolodeckServer* GetAssociatedServer() { return this->Server; };
+
+	// These functions allow the Holodeck to do things which cannot normally be done from pure c++ code
+	UFUNCTION(BlueprintImplementableEvent)
+	AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location);
+
+
+	UFUNCTION(BlueprintImplementableEvent)
+	bool SpawnBot(const FString& Type, const FVector& Location);
+
+
+	UPROPERTY(BlueprintReadWrite)
+	AWeatherMaster* WeatherMaster;
 
 private:
 	/**
