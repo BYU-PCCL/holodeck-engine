@@ -3,6 +3,19 @@
 
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
+
+	int CameraWidth;
+	int CameraHeight;
+	if(FParse::Value(FCommandLine::Get(), TEXT("CamResX="), CameraWidth)) {
+		CaptureWidth = CameraWidth;
+	}
+	if (FParse::Value(FCommandLine::Get(), TEXT("CamResY="), CameraHeight)) {
+		CaptureHeight = CameraHeight;
+	}
+
+	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
+	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
+
 	SceneCapture = this->CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCap");
 	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }

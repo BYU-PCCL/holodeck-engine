@@ -5,8 +5,9 @@
 #include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
 
 const std::string CONTROL_SCHEME_KEY = "control_scheme";
-const std::string TELEPORT_BOOL_KEY = "teleport_bool";
+const std::string TELEPORT_BOOL_KEY = "teleport_flag";
 const std::string TELEPORT_COMMAND_KEY = "teleport_command";
+const std::string ROTATE_COMMAND_KEY = "rotation_command";
 const std::string HYPERPARAMETERS_KEY = "hyperparameters";
 
 
@@ -46,8 +47,9 @@ void AHolodeckPawnController::UnPossess() {
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	if (CheckBoolBuffer(ShouldTeleportBuffer))
+	if (ShouldTeleportBuffer && *ShouldTeleportBuffer) {
 		ExecuteTeleport();
+	}
 
 	unsigned int index = *ControlSchemeIdBuffer % ControlSchemes.Num();
 	ControlSchemes[index]->Execute(ControlledAgent->GetRawActionBuffer(), ActionBuffer, DeltaSeconds);
@@ -97,11 +99,15 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_BOOL_KEY),
 											  SINGLE_BOOL * sizeof(bool));
-		ShouldTeleportBuffer = static_cast<bool*>(TempBuffer);
+		ShouldTeleportBuffer = static_cast<uint8*>(TempBuffer);
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_COMMAND_KEY),
 										TELEPORT_COMMAND_SIZE * sizeof(float));
 		TeleportBuffer = static_cast<float*>(TempBuffer);
+
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, ROTATE_COMMAND_KEY),
+										ROTATE_COMMAND_SIZE * sizeof(float));
+		RotationBuffer = static_cast<float*>(TempBuffer);
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, HYPERPARAMETERS_KEY),
 			ControlledAgent->GetHyperparameterCount() * sizeof(float));
@@ -111,12 +117,31 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 }
 
 void AHolodeckPawnController::ExecuteTeleport() {
-	float* FloatPtr = static_cast<float*>(TeleportBuffer);
+	UE_LOG(LogHolodeck, Log, TEXT("Executing teleport"));
 	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
-	if (PawnVar && FloatPtr) {
-		FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
-		PawnVar->Teleport(TeleportLocation);
+	if (PawnVar == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
+		return;
 	}
+
+	FVector TeleportLocation;
+	if (*ShouldTeleportBuffer & 0x1) {
+		float* FloatPtr = static_cast<float*>(TeleportBuffer);
+		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+	} else {
+		TeleportLocation = PawnVar->GetActorLocation();
+	}
+
+	FRotator NewRotation;
+	if (*ShouldTeleportBuffer & 0x2) {
+		float* FloatPtr = static_cast<float*>(RotationBuffer);
+		NewRotation = FRotator(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+	} else {
+		NewRotation = PawnVar->GetActorRotation();
+	}
+
+	PawnVar->Teleport(TeleportLocation, NewRotation);
+	*ShouldTeleportBuffer = 0;
 }
 
 bool AHolodeckPawnController::CheckBoolBuffer(void* Buffer) {
