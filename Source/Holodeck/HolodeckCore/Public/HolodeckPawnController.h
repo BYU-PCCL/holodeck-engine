@@ -108,7 +108,8 @@ protected:
 	void* ActionBuffer;
 	uint8* ControlSchemeIdBuffer;
 	float* TeleportBuffer;
-	bool* ShouldTeleportBuffer;
+	float* RotationBuffer;
+	uint8* ShouldTeleportBuffer;
 	float* HyperparameterBuffer;
 
 	TArray<UHolodeckControlScheme*> ControlSchemes;
@@ -131,5 +132,6 @@ private:
 	UHolodeckServer* Server;
 	const int SINGLE_BOOL = 1;
 	const int TELEPORT_COMMAND_SIZE = 3;
+	const int ROTATE_COMMAND_SIZE = 3;
 
 };
