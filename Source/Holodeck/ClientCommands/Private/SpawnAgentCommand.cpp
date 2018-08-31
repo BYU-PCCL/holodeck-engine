@@ -25,8 +25,8 @@ USpawnAgentCommand::USpawnAgentCommand() {
 		BlueprintMap[NAV_AGENT] = ANavAgent::StaticClass();
 	}
 }
-
 void USpawnAgentCommand::Execute() {
+
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
 	//Program should throw an error if any of these params aren't the correct size. They should always be this size.
 	if (StringParams.size() != 2 || NumberParams.size() != 3) {
@@ -46,21 +46,12 @@ void USpawnAgentCommand::Execute() {
 		return;
 	}
 
-	//instantiate variables to be used for spawning the agent.
 	FString AgentType = StringParams[0].c_str();
 	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
-	AHolodeckAgent* SpawnedAgent = nullptr;
+	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
 	AHolodeckPawnController* SpawnedController = nullptr;
-	auto AgentSpawnFunction = SpawnFunctionMap[StringParams[0]];
-	UClass* Blueprint = BlueprintMap[StringParams[0]];
 
-	if (AgentSpawnFunction && Blueprint)
-		SpawnedAgent = AgentSpawnFunction(Blueprint, Location, World);
-	else
-		UE_LOG(LogHolodeck, Warning, TEXT("Maps did not contain requested agent type."));
-
-	//Finalize the initialization of the agent. 
 	if (SpawnedAgent) {
 		SpawnedAgent->AgentName = StringParams[1].c_str();
 		SpawnedAgent->SpawnDefaultController();
@@ -71,11 +62,4 @@ void USpawnAgentCommand::Execute() {
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand did not spawn a new Agent."));
 	}
-}
-
-template<typename T>
-AHolodeckAgent* USpawnAgentCommand::SpawnAgent(UClass* const Blueprint, const FVector& Location, UWorld* const World){
-	if (!World)
-		return nullptr;
-	return World->SpawnActor<T>(Blueprint, Location, FRotator(0, 0, 0), FActorSpawnParameters());
 }
