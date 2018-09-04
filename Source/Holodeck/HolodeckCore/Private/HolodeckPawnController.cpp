@@ -4,11 +4,11 @@
 #include "HolodeckPawnController.h"
 #include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
 
-const std::string CONTROL_SCHEME_KEY = "control_scheme";
-const std::string TELEPORT_BOOL_KEY = "teleport_flag";
-const std::string TELEPORT_COMMAND_KEY = "teleport_command";
-const std::string ROTATE_COMMAND_KEY = "rotation_command";
-const std::string HYPERPARAMETERS_KEY = "hyperparameters";
+const FString CONTROL_SCHEME_KEY = "control_scheme";
+const FString TELEPORT_BOOL_KEY = "teleport_flag";
+const FString TELEPORT_COMMAND_KEY = "teleport_command";
+const FString ROTATE_COMMAND_KEY = "rotation_command";
+const FString HYPERPARAMETERS_KEY = "hyperparameters";
 
 
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
@@ -46,7 +46,9 @@ void AHolodeckPawnController::UnPossess() {
 }
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
+	static int val = 0;
 	Super::Tick(DeltaSeconds);
+
 	if (ShouldTeleportBuffer && *ShouldTeleportBuffer) {
 		ExecuteTeleport();
 	}
