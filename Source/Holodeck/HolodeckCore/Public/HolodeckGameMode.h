@@ -56,11 +56,6 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location);
 
-
-	UFUNCTION(BlueprintImplementableEvent)
-	bool SpawnBot(const FString& Type, const FVector& Location);
-
-
 	UPROPERTY(BlueprintReadWrite)
 	AWeatherMaster* WeatherMaster;
 
