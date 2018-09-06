@@ -46,7 +46,6 @@ void AHolodeckPawnController::UnPossess() {
 }
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
-	static int val = 0;
 	Super::Tick(DeltaSeconds);
 
 	if (ShouldTeleportBuffer && *ShouldTeleportBuffer) {
