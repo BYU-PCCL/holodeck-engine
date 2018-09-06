@@ -57,9 +57,6 @@ void AUav::Tick(float DeltaTime) {
 //}
 
 void AUav::ApplyForces() {
-	// Calculate Air Resistance
-	//FVector Wind = -HyperparametersPointer[UAV_MU_INDEX] * GetVelocity();
-
 	float RollTorqueToApply = FMath::Clamp(GetRollTorqueToApply(), -HyperparametersPointer[UAV_MAX_ROLL_INDEX], HyperparametersPointer[UAV_MAX_ROLL_INDEX]);
 	float PitchTorqueToApply = FMath::Clamp(GetPitchTorqueToApply(), -HyperparametersPointer[UAV_MAX_PITCH_INDEX], HyperparametersPointer[UAV_MAX_PITCH_INDEX]);
 	float YawTorqueToApply = FMath::Clamp(GetYawTorqueToApply(), -HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX], HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX]);
@@ -69,19 +66,10 @@ void AUav::ApplyForces() {
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply);
 	LocalThrust *= 100;
 	LocalTorque *= 10000;
-	// Scale force for substepping
-	//LocalThrust /= 16;
-	// LocalTorque /= 16;
-	// Wind /= 16
+
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
-	//RootMesh->AddForce(Wind);
-
-	//CurrentRollTorque = RollTorqueToApply;
-	//CurrentPitchTorque = PitchTorqueToApply;
-	//CurrentYawTorque = YawTorqueToApply;
-	//CurrentThrust = ThrustToApply;
 }
 
 const float* AUav::GetDefaultHyperparameters() const {
