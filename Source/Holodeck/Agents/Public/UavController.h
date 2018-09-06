@@ -6,7 +6,6 @@
 
 #include "UavControlSchemeTargetRollPitch.h"
 #include "HolodeckPawnController.h"
-#include "UAV.h"
 
 #include "UavController.generated.h"
 

@@ -1,7 +1,6 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
 
-
 void USpawnAgentCommand::Execute() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));

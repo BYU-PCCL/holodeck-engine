@@ -2,7 +2,6 @@
 
 #include "Holodeck.h"
 
-#include <string>
 #include <tuple>
 #include <vector>
 
@@ -81,8 +80,8 @@ private:
 	bool* ShouldReadBufferPtr;
 	UHolodeckServer* Server;
 	AHolodeckGameMode* GameMode;
-	const static std::string BUFFER_NAME;
-	const static std::string BUFFER_SHOULD_READ_NAME;
+	const static FString BUFFER_NAME;
+	const static FString BUFFER_SHOULD_READ_NAME;
 	const static int BUFFER_SHOULD_READ_SIZE;
 	const static int BUFFER_SIZE;
 	const static int BYTE_SIZE;
