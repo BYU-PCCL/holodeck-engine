@@ -57,6 +57,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 		bool SpectatorMode;
+	UPROPERTY(BlueprintReadWrite)
+		bool DirectAttachMode;
 
 	UPROPERTY(BlueprintReadWrite)
 		FTransform SpectatorTransform;
