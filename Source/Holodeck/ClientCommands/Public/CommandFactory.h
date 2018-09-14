@@ -11,6 +11,7 @@
 #include "DayTimeCommand.h"
 #include "DayCycleCommand.h"
 #include "SetWeatherCommand.h"
+#include "TeleportCameraCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;
