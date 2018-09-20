@@ -9,7 +9,8 @@ UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vecto
 										  { "ChangeFogDensity", &CreateInstance<UChangeFogDensityCommand> },
 										  { "DayTime", &CreateInstance<UDayTimeCommand> },
 										  { "SetWeather", &CreateInstance<USetWeatherCommand> },
-										  { "DayCycle", &CreateInstance<UDayCycleCommand> } };
+										  { "DayCycle", &CreateInstance<UDayCycleCommand> },
+										  { "TeleportCamera", &CreateInstance<UTeleportCameraCommand> } };
 	UCommand*(*CreateCommandFunction)()  = CommandMap[Name];
 	UCommand* ToReturn = nullptr;
 	if (CreateCommandFunction) {
