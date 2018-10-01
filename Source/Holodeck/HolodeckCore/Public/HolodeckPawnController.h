@@ -5,6 +5,9 @@
 #include "Holodeck.h"
 
 #include "AIController.h"
+#include "HolodeckPawnControllerInterface.h"
+#include "HolodeckAgentInterface.h"
+#include "HolodeckControlScheme.h"
 #include "HolodeckGameInstance.h"
 #include "HolodeckServer.h"
 
@@ -22,7 +25,7 @@
   * the commands to the pawns/agents. 
   */
 UCLASS()
-class AHolodeckPawnController : public AAIController
+class HOLODECK_API AHolodeckPawnController : public AHolodeckPawnControllerInterface
 {
 	GENERATED_BODY()
 
@@ -73,56 +76,50 @@ public:
 	  * @param ItemSize the size of each item in the data buffer.
 	  * @return a pointer to the data buffer.
 	  */
-	void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize);
+	void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) override;
 
 	/**
 	  * GetActionBuffer
 	  * Gets the action buffer for this agent.
 	  * @param AgentName the name of the agent to subscribe an action buffer for.
-	  */
-	void GetBuffers(const FString& AgentName);
 
-	/**
-	  * ExecuteCommand
-	  * Carries out the command for the agent, as contained in the action buffer.
-	  * Must be overidden by the child class.
-	  * Is called from the tick on the controlled pawn.
 	  */
-	virtual void ExecuteCommand() { check(0 && "You must override ExecuteCommand"); };
+	void AllocateBuffers(const FString& AgentName);
+
+	virtual void AddControlSchemes() override { check(0 && "You must override AddControlSchemes"); };
 
 	/**
 	* ExecuteTeleport
 	* Tells the controlled agent to teleport to the location in the shared memory.
 	*/
-	virtual void ExecuteTeleport();
+	virtual void ExecuteTeleport() override;
 
 	/**
 	* SetServer
 	* Sets the server object within this object.
 	*/
-	virtual void SetServer(UHolodeckServer* ServerParam);
+	virtual void SetServer(UHolodeckServer* const ServerParam) override;
 
-	void RestoreDefaultHyperparameters();
+	void RestoreDefaultHyperparameters() override;
 
 protected:
-	/**
-	  * GetActionSpaceDimension
-	  * Gets the dimension of the action space.
-	  * @return the size of the action space.
-	  */
-	virtual int GetActionSpaceDimension() { check(0 && "You must override GetActionSpaceDimension"); return 0; };
-
 	void* ActionBuffer;
-	void* TeleportBuffer;
-	void* ShouldTeleportBuffer;
+	uint8* ControlSchemeIdBuffer;
+	float* TeleportBuffer;
+	float* RotationBuffer;
+	uint8* ShouldTeleportBuffer;
 	float* HyperparameterBuffer;
+
+	UPROPERTY()
+	TArray<UHolodeckControlScheme*> ControlSchemes;
+	AHolodeckAgentInterface* ControlledAgent;
 
 private:
 	/**
 	* GetServer
 	* Sets the server object within this object.
 	*/
-	void GetServer();
+	void UpdateServerInfo();
 
 	/**
 	  * CheckBoolBuffer
@@ -134,4 +131,6 @@ private:
 	UHolodeckServer* Server;
 	const int SINGLE_BOOL = 1;
 	const int TELEPORT_COMMAND_SIZE = 3;
+	const int ROTATE_COMMAND_SIZE = 3;
+
 };

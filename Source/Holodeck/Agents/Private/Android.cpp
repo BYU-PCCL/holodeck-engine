@@ -9,37 +9,21 @@ const float CM_TORQUE_TO_M_TORQUE = 10000;
 AAndroid::AAndroid() {
 	PrimaryActorTick.bCanEverTick = true;
 	bCollisionsAreVisible = false;
+
+	// Set the defualt controller
+	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.AndroidController"), NULL, LOAD_None, NULL);
+	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
 void AAndroid::BeginPlay() {
 	Super::BeginPlay();
+	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::BeginPlay"));
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
 }
 
 void AAndroid::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	ApplyTorques();
-}
-
-void AAndroid::NotifyHit(UPrimitiveComponent* MyComp,
-	AActor* Other,
-	UPrimitiveComponent* OtherComp,
-	bool bSelfMoved,
-	FVector HitLocation,
-	FVector HitNormal,
-	FVector NormalImpulse,
-	const FHitResult& Hit) {
-	if (bCollisionsAreVisible) {
-		UMaterialInstanceDynamic* TheMaterial_Dyn = UMaterialInstanceDynamic::Create(CollisionDecalMaterial, this);
-
-		//FRotator rotator = (HitLocation.Rotation());
-		if (TheMaterial_Dyn != NULL) //FVector needs to be at least around 7,7,7 for some reason
-			UGameplayStatics::SpawnDecalAttached(TheMaterial_Dyn, FVector(7.5, 7.5, 7.5),
-				MyComp, Hit.BoneName, HitLocation, HitLocation.Rotation(),
-				EAttachLocation::KeepWorldPosition, 1.0);
-		else
-			GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Green, "Material for decal is null");
-	}
 }
 
 void AAndroid::SetCollisionsVisible(bool Visible) {
@@ -51,7 +35,7 @@ bool AAndroid::GetCollisionsVisible() {
 }
 
 void AAndroid::ApplyTorques() {
-
+	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::ApplyTorques"));
 	int ComInd = 0;
 
 	for (int JointInd = 0; JointInd < NUM_JOINTS; JointInd++) {
