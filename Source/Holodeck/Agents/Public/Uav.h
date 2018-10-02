@@ -36,7 +36,6 @@ public:
 		UStaticMeshComponent* RootMesh;
 
 	//See HolodeckAgent.h for descriptions of these overriden functions
-	void SetHyperparameterAddress(float* Input) override;
 
 	float GetRollTorqueToApply() { return -CommandArray[0]; };
 	float GetPitchTorqueToApply() { return -CommandArray[1]; };
@@ -48,8 +47,6 @@ public:
 
 protected:
 	//See HolodeckAgent.h for descriptions of these overriden functions
-	virtual const float* GetDefaultHyperparameters() const override;
-	int GetHyperparameterCount() const override;
 
 private:
 	/**
@@ -62,11 +59,8 @@ private:
 
 	FCalculateCustomPhysics OnCalculateCustomPhysics;
 
-	const float* HyperparametersPointer;
-
 	/**
 	  * InitializePIDControllers
-	  * Sets the PID controllers to point to the HyperparametersPointer array, with correct offsets for each variable of the respective controllers.
 	  */
 	void InitializePIDControllers();
 };

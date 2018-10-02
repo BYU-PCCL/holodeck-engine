@@ -115,8 +115,4 @@ public:
 	virtual void SetServer(UHolodeckServer* const ServerParam) {
 		check(0 && "You must override SetServer");
 	};
-
-	virtual void RestoreDefaultHyperparameters() {
-		check(0 && "You must override RestoreDefaultHyperparameters");
-	};
 };
