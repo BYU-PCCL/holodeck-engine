@@ -76,41 +76,12 @@ public:
 	bool Teleport(const FVector& NewLocation) override;
 
 	/**
-	  * SetHyperparameterAddress
-	  * Sets the where the Hyperparameters pointer points to
-	  * You must give it a pointer to a place that has the proper memory allocated for it
-	  * @param Input The pointer
-	  */
-	void SetHyperparameterAddress(float* Input) override;
-
-	/**
-	  * GetHyperparameterCount
-	  * @return The total number of Hyper parameters.
-	  */
-	int GetHyperparameterCount() const override { return 1; };
-	
-	/**
-	  * GetHyperparameters
-	  * This function is pointer safe, you can't access a bad pointer with it unless you 
-	  * gave it a bad pointer to point to via SetHyperparameterAddress().
-	  * @return A const pointer to the Hyperparameters Array.
-	  */
-	virtual const float* GetHyperparameters() override;
-
-	/**
 	* InitializeController
 	* Hooks up everything with the controller. This is normally called in the beginPlay function,
 	* but if you have to manually configure a controller, you will have to call this function after
 	* you do it.
 	*/
 	bool InitializeController() override;
-
-	/**
-	* GetDefaultHyperparameters
-	* You must override this function iff GetHyperparameterCount() does not return 1 (the default value)
-	* @return a const pointer to the default hyperParameters
-	*/
-	virtual const float* GetDefaultHyperparameters() const override;
 
 	/**
 	  * GetRawActionSizeInBytes
@@ -133,6 +104,5 @@ public:
 private:
 	float* RewardPtr;
 	bool* TerminalPtr;
-	const float* Hyperparameters;
 	AHolodeckPawnControllerInterface* HolodeckController;
 };

@@ -9,19 +9,8 @@ const float UAV_MAX_ROLL = 6.5080;
 const float UAV_MAX_PITCH = 5.087;
 const float UAV_MAX_YAW_RATE = .8;
 const float UAV_MAX_FORCE = 59.844;
-const static int NUMBER_OF_PARAMETERS = 7;
 
-enum ParameterIndices {
-	TOTAL_PARAMETERS_INDEX = 0, //This is an index, not the actual count. 
-	UAV_MASS_INDEX = 1,
-	UAV_MU_INDEX = 2,
-	UAV_MAX_ROLL_INDEX = 3,
-	UAV_MAX_PITCH_INDEX = 4,
-	UAV_MAX_YAW_RATE_INDEX = 5,
-	UAV_MAX_FORCE_INDEX = 6,
-};
-
-AUav::AUav() : HyperparametersPointer(GetHyperparameters()) {
+AUav::AUav() {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -44,23 +33,14 @@ void AUav::BeginPlay() {
 
 void AUav::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-	//if (RootMesh) {
-	//  RootMesh->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
-	//}
 	ApplyForces();
 }
 
-//void AUav::SubstepTick(float DeltaTime, FBodyInstance* BodyInstance)
-//{
-//  UpdateForcesAndMoments(DeltaTime);
-//  ApplyForces();
-//}
-
 void AUav::ApplyForces() {
-	float RollTorqueToApply = FMath::Clamp(GetRollTorqueToApply(), -HyperparametersPointer[UAV_MAX_ROLL_INDEX], HyperparametersPointer[UAV_MAX_ROLL_INDEX]);
-	float PitchTorqueToApply = FMath::Clamp(GetPitchTorqueToApply(), -HyperparametersPointer[UAV_MAX_PITCH_INDEX], HyperparametersPointer[UAV_MAX_PITCH_INDEX]);
-	float YawTorqueToApply = FMath::Clamp(GetYawTorqueToApply(), -HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX], HyperparametersPointer[UAV_MAX_YAW_RATE_INDEX]);
-	float ThrustToApply = FMath::Clamp(GetThrustToApply(), -HyperparametersPointer[UAV_MAX_FORCE_INDEX], HyperparametersPointer[UAV_MAX_FORCE_INDEX]);
+	float RollTorqueToApply = FMath::Clamp(GetRollTorqueToApply(), -UAV_MAX_ROLL, UAV_MAX_ROLL);
+	float PitchTorqueToApply = FMath::Clamp(GetPitchTorqueToApply(), -UAV_MAX_PITCH, UAV_MAX_PITCH);
+	float YawTorqueToApply = FMath::Clamp(GetYawTorqueToApply(), -UAV_MAX_YAW_RATE, UAV_MAX_YAW_RATE);
+	float ThrustToApply = FMath::Clamp(GetThrustToApply(), -UAV_MAX_FORCE, UAV_MAX_FORCE);
 
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply);
@@ -70,27 +50,4 @@ void AUav::ApplyForces() {
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
-}
-
-const float* AUav::GetDefaultHyperparameters() const {
-	static const float DefaultHyperparameters[NUMBER_OF_PARAMETERS] = {
-			NUMBER_OF_PARAMETERS,
-			UAV_MASS,
-			UAV_MU,
-			UAV_MAX_ROLL,
-			UAV_MAX_PITCH,
-			UAV_MAX_YAW_RATE,
-			UAV_MAX_FORCE
-		};
-	return DefaultHyperparameters;
-}
-
-int AUav::GetHyperparameterCount() const {
-	return NUMBER_OF_PARAMETERS;
-}
-
-void AUav::SetHyperparameterAddress(float* Input) {
-	Super::SetHyperparameterAddress(Input);
-	this->HyperparametersPointer = Input;
-	// InitializePIDControllers(); //Must give the PID Controllers the new addresses to point to.
 }

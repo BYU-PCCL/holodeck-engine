@@ -8,7 +8,6 @@ const FString CONTROL_SCHEME_KEY = "control_scheme";
 const FString TELEPORT_BOOL_KEY = "teleport_flag";
 const FString TELEPORT_COMMAND_KEY = "teleport_command";
 const FString ROTATE_COMMAND_KEY = "rotation_command";
-const FString HYPERPARAMETERS_KEY = "hyperparameters";
 
 
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
@@ -109,11 +108,6 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, ROTATE_COMMAND_KEY),
 										ROTATE_COMMAND_SIZE * sizeof(float));
 		RotationBuffer = static_cast<float*>(TempBuffer);
-
-		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, HYPERPARAMETERS_KEY),
-			ControlledAgent->GetHyperparameterCount() * sizeof(float));
-		HyperparameterBuffer = static_cast<float*>(TempBuffer);
-		ControlledAgent->SetHyperparameterAddress(HyperparameterBuffer);
 	}
 }
 
@@ -156,10 +150,4 @@ bool AHolodeckPawnController::CheckBoolBuffer(void* Buffer) {
 
 void AHolodeckPawnController::SetServer(UHolodeckServer* const ServerParam) {
 	this->Server = ServerParam;
-}
-
-void AHolodeckPawnController::RestoreDefaultHyperparameters() {
-	AHolodeckAgent* HolodeckPawn = static_cast<AHolodeckAgent*>(this->GetPawn());
-	if(HolodeckPawn)
-		FMemory::Memcpy(HyperparameterBuffer, HolodeckPawn->GetDefaultHyperparameters(), HolodeckPawn->GetHyperparameterCount() * sizeof(float));
 }

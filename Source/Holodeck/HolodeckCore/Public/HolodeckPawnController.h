@@ -100,15 +100,12 @@ public:
 	*/
 	virtual void SetServer(UHolodeckServer* const ServerParam) override;
 
-	void RestoreDefaultHyperparameters() override;
-
 protected:
 	void* ActionBuffer;
 	uint8* ControlSchemeIdBuffer;
 	float* TeleportBuffer;
 	float* RotationBuffer;
 	uint8* ShouldTeleportBuffer;
-	float* HyperparameterBuffer;
 
 	UPROPERTY()
 	TArray<UHolodeckControlScheme*> ControlSchemes;
