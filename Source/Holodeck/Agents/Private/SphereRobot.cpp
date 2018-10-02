@@ -5,7 +5,7 @@
 
 
 // Sets default values
-ASphereRobot::ASphereRobot() {
+ASphereRobot::ASphereRobot() : ForwardSensitivity(10.0), RotSensitivity(5.0) {
 	PrimaryActorTick.bCanEverTick = true;
 
 	// Set the defualt controller
@@ -22,4 +22,9 @@ void ASphereRobot::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	ForwardSpeed = CommandArray[0];
 	RotSpeed = CommandArray[1];
+
+	FVector DeltaLocation = GetActorForwardVector() * ForwardSpeed * ForwardSensitivity;
+	AddActorWorldOffset(DeltaLocation, true);
+	FRotator DeltaRotation(0, RotSpeed * RotSensitivity, 0);
+	AddActorWorldRotation(DeltaRotation);
 }
