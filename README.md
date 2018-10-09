@@ -24,7 +24,7 @@ This repository contains everything you need to build environments in the Unreal
 For a great tutorial, see the [wiki page](https://github.com/byu-pccl/holodeck-engine/wiki/Cross-Compiling-for-Linux)
 
 ## Usage
-BYU does not own the world assets used in the packaged binary version of holodeck so we are not able to offer them in non binary format. However by migrating a level into holodeck any unreal world can be built into a holodeck environment. 
+BYU does not own the world assets used in the packaged binary version of holodeck so we are not able to offer them in non binary format. However by migrating a level into holodeck, any unreal world can be built into a holodeck environment. To do so follow [this guide.](https://github.com/BYU-PCCL/holodeck-engine/wiki/Packaging-and-Using-Custom-Worlds)
 
 ## Troubleshooting
 If you are having problems with holodeck, open the project in visual studio, then in the explorer right click on Holodeck, and click clean, then try to build again.
