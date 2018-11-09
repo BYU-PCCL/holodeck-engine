@@ -7,8 +7,6 @@
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
 #include "HolodeckPawnControllerInterface.h"
-#include "HolodeckGameInstance.h"
-#include "HolodeckServer.h"
 
 #include "HolodeckAgent.generated.h"
 
@@ -110,12 +108,6 @@ public:
 	TMap<FString, UHolodeckSensor*> SensorMap;
 
 private:
-
-	/**
-	* GetServer
-	* Sets the server object within this object.
-	*/
-	void UpdateServerInfo();
 
 	float* RewardPtr;
 	bool* TerminalPtr;

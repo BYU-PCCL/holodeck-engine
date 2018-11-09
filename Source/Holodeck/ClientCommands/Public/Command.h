@@ -45,6 +45,11 @@ public:
 	*/
 	virtual void Init(const std::vector<float>& NumberParameters, const std::vector<std::string>& StringParameters, AActor* const TargetParameter);
 
+	/**
+	* GetAgent
+	* This returns a pointer to a HolodeckAgent from the HolodeckServer given an AgentName
+	* @param AgentName The FString name of the agent to grab
+	*/
 	AHolodeckAgent* GetAgent(FString AgentName);
 
 protected:
