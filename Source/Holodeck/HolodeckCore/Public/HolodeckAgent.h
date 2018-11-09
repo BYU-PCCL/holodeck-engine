@@ -7,8 +7,13 @@
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
 #include "HolodeckPawnControllerInterface.h"
+#include "HolodeckGameInstance.h"
+#include "HolodeckServer.h"
 
 #include "HolodeckAgent.generated.h"
+
+/* Forward declare Holodeck Sensor Class. */
+class UHolodeckSensor;
 
 /**
 * AHolodeckAgent
@@ -101,8 +106,19 @@ public:
 		return nullptr;
 	};
 
+	/* Stores pointers to all the sensors on the agent. */
+	TMap<FString, UHolodeckSensor*> SensorMap;
+
 private:
+
+	/**
+	* GetServer
+	* Sets the server object within this object.
+	*/
+	void UpdateServerInfo();
+
 	float* RewardPtr;
 	bool* TerminalPtr;
 	AHolodeckPawnControllerInterface* HolodeckController;
+	UHolodeckServer* Server;
 };

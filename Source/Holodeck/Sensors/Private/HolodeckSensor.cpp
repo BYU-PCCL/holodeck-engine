@@ -18,10 +18,13 @@ void UHolodeckSensor::BeginPlay() {
 	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 
 	if (bOn && Controller != nullptr) {
-		AHolodeckAgent* Agent = (AHolodeckAgent*)(Controller->GetPawn());
-		if (Agent != nullptr)
-			AgentName = Agent->AgentName;
 		SensorName = GetDataKey();
+		AHolodeckAgent* Agent = (AHolodeckAgent*)(Controller->GetPawn());
+		if (Agent != nullptr) {
+			AgentName = Agent->AgentName;
+			Agent->SensorMap.Add(SensorName, this);
+		}
+		
 
 		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetNumItems() * GetItemSize());
 		Buffer = Controller->Subscribe(AgentName, SensorName, GetNumItems(), GetItemSize());

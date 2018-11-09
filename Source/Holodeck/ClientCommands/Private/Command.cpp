@@ -10,3 +10,15 @@ void UCommand::Init(const std::vector<float>& NumberParameters, const std::vecto
 	this->StringParams = StringParameters;
 	this->Target = ParameterTarget;
 }
+
+AHolodeckAgent* UCommand::GetAgent(FString AgentName) {
+
+	AHolodeckGameMode* GameTarget = static_cast<AHolodeckGameMode*>(Target);
+	UHolodeckServer* Server = GameTarget->GetAssociatedServer();
+	if (Server->AgentMap.Contains(AgentName)) {
+		return Server->AgentMap[AgentName];
+	} else {
+		UE_LOG(LogHolodeck, Error, TEXT("Unable to parse command buffer as a json file"));
+		return nullptr;
+	}
+}

@@ -29,6 +29,16 @@ void AHolodeckAgent::BeginPlay() {
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to get UPrimitiveComponent. Collision events disabled."));
 	}
+
+	UpdateServerInfo();
+	UE_LOG(LogHolodeck, Log, TEXT("Adding Agent %s to Server"), *AgentName);
+	if (Server == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Agent could not find server..."));
+	}
+	else {
+		Server->AgentMap.Add(*AgentName, this);
+	}
+
 }
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
@@ -100,4 +110,13 @@ bool AHolodeckAgent::InitializeController() {
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent controller setup was successful"));
 		return true;
 	}
+}
+
+void AHolodeckAgent::UpdateServerInfo() {
+	if (Server != nullptr) return;
+	UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
+	if (Instance != nullptr)
+		Server = Instance->GetServer();
+	else
+		UE_LOG(LogHolodeck, Warning, TEXT("Game Instance is not UHolodeckGameInstance."));
 }
