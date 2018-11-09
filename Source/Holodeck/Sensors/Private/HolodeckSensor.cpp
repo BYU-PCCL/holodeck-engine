@@ -24,7 +24,6 @@ void UHolodeckSensor::BeginPlay() {
 			AgentName = Agent->AgentName;
 			Agent->SensorMap.Add(SensorName, this);
 		}
-		
 
 		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetNumItems() * GetItemSize());
 		Buffer = Controller->Subscribe(AgentName, SensorName, GetNumItems(), GetItemSize());
