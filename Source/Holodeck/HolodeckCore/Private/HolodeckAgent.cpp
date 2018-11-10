@@ -34,12 +34,12 @@ void AHolodeckAgent::BeginPlay() {
 	Server = Instance->GetServer();
 
 	UE_LOG(LogHolodeck, Log, TEXT("Adding Agent %s to Server"), *AgentName);
-	if (Server == nullptr)
+	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Agent could not find server..."));
-
-	else
+	}
+	else {
 		Server->AgentMap.Add(*AgentName, this);
-
+	}
 }
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
