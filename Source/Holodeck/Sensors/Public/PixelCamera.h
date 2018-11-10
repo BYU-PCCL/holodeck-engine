@@ -12,7 +12,11 @@ class HOLODECK_API UPixelCamera : public UHolodeckCamera {
 public:
 		UPixelCamera();
 
-		virtual void BeginPlay() override;
+		/**
+		* InitializeSensor
+		* Sets up the class
+		*/
+		virtual void InitializeSensor() override;
 
 protected:
 	//Check out HolodeckSensor.h for definitions for this overridden functions. 

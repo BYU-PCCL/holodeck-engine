@@ -20,9 +20,9 @@ UHolodeckCamera::UHolodeckCamera() {
 	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-void UHolodeckCamera::BeginPlay() {
-	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay"));
-	Super::BeginPlay();
+void UHolodeckCamera::InitializeSensor() {
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::InitializeSensor"));
+	Super::InitializeSensor();
 	
 	TargetTexture = NewObject<UTextureRenderTarget2D>(this);
 

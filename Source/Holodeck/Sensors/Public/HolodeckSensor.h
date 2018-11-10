@@ -35,9 +35,16 @@ public:
 
 	/**
 	  * Gets the controller and sets up
-	  * Subclasses should make sure to call Super::BeginPlay()
+	  * Subclasses should make sure to call Super::InitializeSensor()
 	  */
-	virtual void BeginPlay() override;
+	virtual void InitializeSensor();
+
+	/**
+	* BeginPlay
+	* Should only call Super::BeginPlay() and InitializeSensor() all other initialization
+	*	code should be called from within that function
+	*/
+	virtual void BeginPlay() final;
 	
 	/**
 	  * Publishes sensor data each tick

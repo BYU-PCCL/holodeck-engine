@@ -20,10 +20,10 @@ public:
 	UJointRotationSensor();
 
 	/**
-	* BeginPlay
-	* Called when the games starts.
+	* InitializeSensor
+	* Sets up the class
 	*/
-	void BeginPlay() override;
+	virtual void InitializeSensor() override;
 
 protected:
 	// See HolodeckSensor for information on these classes.

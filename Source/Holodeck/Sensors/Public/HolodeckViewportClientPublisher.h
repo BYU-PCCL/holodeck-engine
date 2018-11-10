@@ -20,10 +20,10 @@ public:
 	UHolodeckViewportClientPublisher();
 
 	/**
-	  * BeginPlay
-	  * Called at the start of the game.
-	  */
-	void BeginPlay() override;
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 	
 protected:
 	// See HolodeckSensor for documentation for these overridden functions.

@@ -7,8 +7,8 @@ URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void URelativeSkeletalPositionSensor::BeginPlay() {
-	Super::BeginPlay();
+void URelativeSkeletalPositionSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	AActor* Android = this->GetOwner();
 	TArray<USkeletalMeshComponent*> Components;

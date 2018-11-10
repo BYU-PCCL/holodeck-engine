@@ -14,11 +14,15 @@ AHolodeckAgent::AHolodeckAgent() {
 	AddTickPrerequisiteActor(GetController()); //The agent's controller will always tick before the agent.
 }
 
-void AHolodeckAgent::BeginPlay() {
-	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+void AHolodeckAgent::BeginPlay(){
 	Super::BeginPlay();
+	InitializeAgent();
+}
 
-	if(!InitializeController())
+void AHolodeckAgent::InitializeAgent() {
+
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+	if (!InitializeController())
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't initialize HolodeckPawnController for HolodeckAgent."));
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
@@ -26,20 +30,21 @@ void AHolodeckAgent::BeginPlay() {
 	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)) {
 		PrimitiveComponent->SetNotifyRigidBodyCollision(true);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent collision events enabled"));
-	} else {
+	}
+	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to get UPrimitiveComponent. Collision events disabled."));
 	}
 
-	UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
+	Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
 	Server = Instance->GetServer();
 
 	UE_LOG(LogHolodeck, Log, TEXT("Adding Agent %s to Server"), *AgentName);
-	if (Server == nullptr)
+	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Agent could not find server..."));
-
-	else
+	}
+	else {
 		Server->AgentMap.Add(*AgentName, this);
-
+	}
 }
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {

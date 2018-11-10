@@ -8,7 +8,9 @@ UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher(){
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UHolodeckViewportClientPublisher::BeginPlay() {
+void UHolodeckViewportClientPublisher::InitializeSensor() {
+	UE_LOG(LogHolodeck, Log, TEXT("UViewPortClientPublisher::InitializeSensor"));
+	Super::InitializeSensor();
 	// This must come first, since the HolodeckSensor parent class will
 	// call GetNumItems, which needs the ViewportClient.
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
@@ -18,7 +20,7 @@ void UHolodeckViewportClientPublisher::BeginPlay() {
 		Height = ViewportSize.Y;
 		ViewportClient->SetBuffer(Buffer);
 	}
-	Super::BeginPlay();
+	
 }
 
 void UHolodeckViewportClientPublisher::TickSensorComponent(float DeltaTime,

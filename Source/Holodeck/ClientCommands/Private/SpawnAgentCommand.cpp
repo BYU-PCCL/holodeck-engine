@@ -1,5 +1,6 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
+#include "HolodeckSensor.h"
 
 void USpawnAgentCommand::Execute() {
 
@@ -34,8 +35,16 @@ void USpawnAgentCommand::Execute() {
 		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
 		SpawnedAgent->InitializeController();
+		SpawnedAgent->InitializeAgent();
+		for (auto& elem : SpawnedAgent->SensorMap) {
+			UHolodeckSensor* Sensor = elem.Value;
+			Sensor->InitializeSensor();
+		}
+		
+
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
-	} else {
+	}
+	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand did not spawn a new Agent."));
 	}
 }
