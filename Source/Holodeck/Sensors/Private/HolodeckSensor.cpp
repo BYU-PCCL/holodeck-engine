@@ -7,27 +7,28 @@ UHolodeckSensor::UHolodeckSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 	//Sensors should tick after physics is processed, so that the data
 	//they collect is current. 
-	PrimaryComponentTick.TickGroup = TG_PostPhysics; 
+	PrimaryComponentTick.TickGroup = TG_PostPhysics;
 	bOn = true;
 }
 
-// Called when the game starts
-void UHolodeckSensor::BeginPlay() {
-	Super::BeginPlay();
+void UHolodeckSensor::SetAgentAndController(AHolodeckPawnControllerInterface* ControllerParam, FString AgentNameParam) {
+	Controller = ControllerParam;
+	AgentName = AgentNameParam;
+}
 
-	Controller = (AHolodeckPawnController*)(this->GetAttachmentRootActor()->GetInstigator()->Controller);
+void UHolodeckSensor::InitializeSensor() {
 
 	if (bOn && Controller != nullptr) {
-		SensorName = GetDataKey();
-		AHolodeckAgent* Agent = (AHolodeckAgent*)(Controller->GetPawn());
-		if (Agent != nullptr) {
-			AgentName = Agent->AgentName;
-			Agent->SensorMap.Add(SensorName, this);
-		}
-
 		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetNumItems() * GetItemSize());
 		Buffer = Controller->Subscribe(AgentName, SensorName, GetNumItems(), GetItemSize());
+	} else {
+		UE_LOG(LogTemp, Warning, TEXT("Getting Controller Failed. Sensor not "));
 	}
+}
+
+void UHolodeckSensor::BeginPlay() {
+	Super::BeginPlay();
+	SensorName = GetDataKey();
 }
 
 void UHolodeckSensor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

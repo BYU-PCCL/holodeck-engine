@@ -15,9 +15,8 @@ AAndroid::AAndroid() {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
-void AAndroid::BeginPlay() {
-	Super::BeginPlay();
-	UE_LOG(LogHolodeck, Verbose, TEXT("AAndroid::BeginPlay"));
+void AAndroid::InitializeAgent() {
+	Super::InitializeAgent();
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
 }
 

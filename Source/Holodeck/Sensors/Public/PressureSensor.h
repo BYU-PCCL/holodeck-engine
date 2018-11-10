@@ -25,8 +25,11 @@ public:
 	// Sets default values for this component's properties
 	UPressureSensor();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 	
 	/**
 	 * Callback function that is called whenever part of the actor is hit. 

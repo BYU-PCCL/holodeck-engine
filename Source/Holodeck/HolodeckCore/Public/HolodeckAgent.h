@@ -7,7 +7,7 @@
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
 #include "HolodeckPawnControllerInterface.h"
-
+#include "HolodeckGameInstance.h"
 #include "HolodeckAgent.generated.h"
 
 /* Forward declare Holodeck Sensor Class. */
@@ -33,9 +33,16 @@ public:
 
 	/**
 	  * BeginPlay
-	  * Called when the game starts.
+	  * Should only call Super() and InitializeAgent() all other initialization 
+	  * code should be called from within that function
 	  */
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() final;
+
+	/**
+	* InitializeAgent
+	* All agent initialization code should go in here. 
+	*/
+	virtual void InitializeAgent();
 
 	/**
 	  * Tick
@@ -109,6 +116,7 @@ public:
 
 private:
 
+	UHolodeckGameInstance* Instance;
 	float* RewardPtr;
 	bool* TerminalPtr;
 	AHolodeckPawnControllerInterface* HolodeckController;

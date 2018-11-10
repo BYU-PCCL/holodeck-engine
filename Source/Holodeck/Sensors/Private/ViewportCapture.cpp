@@ -1,14 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Holodeck.h"
-#include "HolodeckViewportClientPublisher.h"
+#include "ViewportCapture.h"
 
 // Sets default values for this component's properties
-UHolodeckViewportClientPublisher::UHolodeckViewportClientPublisher(){
+UViewportCapture::UViewportCapture(){
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UHolodeckViewportClientPublisher::BeginPlay() {
+void UViewportCapture::InitializeSensor() {
+	UE_LOG(LogHolodeck, Log, TEXT("UViewportCapture::InitializeSensor"));
+	Super::InitializeSensor();
 	// This must come first, since the HolodeckSensor parent class will
 	// call GetNumItems, which needs the ViewportClient.
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);
@@ -18,10 +20,9 @@ void UHolodeckViewportClientPublisher::BeginPlay() {
 		Height = ViewportSize.Y;
 		ViewportClient->SetBuffer(Buffer);
 	}
-	Super::BeginPlay();
 }
 
-void UHolodeckViewportClientPublisher::TickSensorComponent(float DeltaTime,
+void UViewportCapture::TickSensorComponent(float DeltaTime,
 														   ELevelTick TickType,
 														   FActorComponentTickFunction* ThisTickFunction) {
 	// The pixel data is captured on the rendering thread.

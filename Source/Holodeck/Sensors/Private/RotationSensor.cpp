@@ -5,8 +5,8 @@ URotationSensor::URotationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void URotationSensor::BeginPlay() {
-	Super::BeginPlay();
+void URotationSensor::InitializeSensor() {
+	Super::InitializeSensor();
 	//You need to get the pointer to the object the sensor is attached to. 
 	Parent = this->GetAttachmentRootActor();
 }

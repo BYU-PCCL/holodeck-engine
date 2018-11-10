@@ -5,8 +5,8 @@ UJointRotationSensor::UJointRotationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UJointRotationSensor::BeginPlay() {
-	Super::BeginPlay();
+void UJointRotationSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	Android = Cast<AAndroid>(this->GetOwner());
 	TArray<USkeletalMeshComponent*> Components;

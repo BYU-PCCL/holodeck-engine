@@ -24,10 +24,10 @@ public:
 	URotationSensor	();
 
 	/**
-	* BeginPlay
-	* Called at the start of the game.
+	* InitializeSensor
+	* Sets up the class
 	*/
-	void BeginPlay() override;
+	virtual void InitializeSensor() override;
 
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
