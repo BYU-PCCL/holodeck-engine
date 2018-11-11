@@ -22,7 +22,7 @@ void AHolodeckAgent::BeginPlay(){
 
 void AHolodeckAgent::InitializeAgent() {
 
-	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent %s"), *AgentName);
 	if (!InitializeController())
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't initialize HolodeckPawnController for HolodeckAgent."));
 
@@ -31,8 +31,7 @@ void AHolodeckAgent::InitializeAgent() {
 	if (UPrimitiveComponent* PrimitiveComponent = Cast<UPrimitiveComponent>(RootComponent)) {
 		PrimitiveComponent->SetNotifyRigidBodyCollision(true);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent collision events enabled"));
-	}
-	else {
+	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to get UPrimitiveComponent. Collision events disabled."));
 	}
 
@@ -42,8 +41,7 @@ void AHolodeckAgent::InitializeAgent() {
 	UE_LOG(LogHolodeck, Log, TEXT("Adding Agent %s to Server"), *AgentName);
 	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Agent could not find server..."));
-	}
-	else {
+	} else {
 		Server->AgentMap.Add(*AgentName, this);
 	}
 

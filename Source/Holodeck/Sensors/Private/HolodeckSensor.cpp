@@ -16,14 +16,12 @@ void UHolodeckSensor::SetAgentAndController(AHolodeckPawnControllerInterface* Co
 	AgentName = AgentNameParam;
 }
 
-// Called when the game starts
 void UHolodeckSensor::InitializeSensor() {
 
 	if (bOn && Controller != nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetNumItems() * GetItemSize());
 		Buffer = Controller->Subscribe(AgentName, SensorName, GetNumItems(), GetItemSize());
-	}
-	else {
+	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Getting Controller Failed. Sensor not "));
 	}
 }

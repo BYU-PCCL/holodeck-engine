@@ -1,12 +1,11 @@
 #include "Holodeck.h"
-#include "PixelCamera.h"
+#include "RGBCamera.h"
 
-UPixelCamera::UPixelCamera() {
-
+URGBCamera::URGBCamera() {
 }
 
 
-void UPixelCamera::InitializeSensor() {
+void URGBCamera::InitializeSensor() {
 	Super::InitializeSensor();
 
 	//Set up everything for the scenecapturecomponent2d
