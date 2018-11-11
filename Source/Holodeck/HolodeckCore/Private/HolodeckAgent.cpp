@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckAgent.h"
+#include "HolodeckSensor.h"
 
 const char REWARD_KEY[] = "Reward";
 const int REWARD_SIZE = 1;
@@ -44,6 +45,17 @@ void AHolodeckAgent::InitializeAgent() {
 	}
 	else {
 		Server->AgentMap.Add(*AgentName, this);
+	}
+
+	// Initialize Sensors
+	TArray<UActorComponent*> Sensors;
+	Sensors = this->GetComponentsByClass(UHolodeckSensor::StaticClass());
+
+	for (auto& ActorSensor : Sensors) {
+		UHolodeckSensor* Sensor = Cast<UHolodeckSensor>(ActorSensor);
+		Sensor->SetAgentAndController(HolodeckController, AgentName);
+		Sensor->InitializeSensor();
+		this->SensorMap.Add(Sensor->SensorName, Sensor);
 	}
 }
 
