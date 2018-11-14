@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckAgent.h"
+#include "HolodeckSensor.h"
 
 const char REWARD_KEY[] = "Reward";
 const int REWARD_SIZE = 1;
@@ -14,11 +15,15 @@ AHolodeckAgent::AHolodeckAgent() {
 	AddTickPrerequisiteActor(GetController()); //The agent's controller will always tick before the agent.
 }
 
-void AHolodeckAgent::BeginPlay() {
-	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+void AHolodeckAgent::BeginPlay(){
 	Super::BeginPlay();
+	InitializeAgent();
+}
 
-	if(!InitializeController())
+void AHolodeckAgent::InitializeAgent() {
+
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent %s"), *AgentName);
+	if (!InitializeController())
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't initialize HolodeckPawnController for HolodeckAgent."));
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
@@ -28,6 +33,27 @@ void AHolodeckAgent::BeginPlay() {
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent collision events enabled"));
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to get UPrimitiveComponent. Collision events disabled."));
+	}
+
+	Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
+	Server = Instance->GetServer();
+
+	UE_LOG(LogHolodeck, Log, TEXT("Adding Agent %s to Server"), *AgentName);
+	if (Server == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Agent could not find server..."));
+	} else {
+		Server->AgentMap.Add(*AgentName, this);
+	}
+
+	// Initialize Sensors
+	TArray<UActorComponent*> Sensors;
+	Sensors = this->GetComponentsByClass(UHolodeckSensor::StaticClass());
+
+	for (auto& ActorSensor : Sensors) {
+		UHolodeckSensor* Sensor = Cast<UHolodeckSensor>(ActorSensor);
+		Sensor->SetAgentAndController(HolodeckController, AgentName);
+		Sensor->InitializeSensor();
+		this->SensorMap.Add(Sensor->SensorName, Sensor);
 	}
 }
 

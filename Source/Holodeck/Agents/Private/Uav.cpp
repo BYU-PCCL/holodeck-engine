@@ -26,8 +26,8 @@ AUav::AUav() {
 	// OnCalculateCustomPhysics.BindUObject(this, &AUav::SubstepTick);
 }
 
-void AUav::BeginPlay() {
-	Super::BeginPlay();
+void AUav::InitializeAgent() {
+	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
 }
 

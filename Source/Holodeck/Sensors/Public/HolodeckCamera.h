@@ -25,11 +25,10 @@ public:
 	UHolodeckCamera();
 
 	/**
-	* BeginPlay
-	* Sets up the class, and gives a reference of itself to the viewport client.
-	* Subclasses must call Super::BeginPlay()
+	* InitializeSensor
+	* Sets up the class
 	*/
-	virtual void BeginPlay() override;
+	virtual void InitializeSensor() override;
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.

@@ -2,7 +2,6 @@
 
 #include "Holodeck.h"
 #include "HolodeckPawnController.h"
-#include "HolodeckAgent.h" //Must forward declare this so that you can access its teleport function. 
 
 const FString CONTROL_SCHEME_KEY = "control_scheme";
 const FString TELEPORT_BOOL_KEY = "teleport_flag";

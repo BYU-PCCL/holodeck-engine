@@ -19,7 +19,7 @@ class HOLODECK_API AUav : public AHolodeckAgent
 	GENERATED_BODY()
 public:
 	AUav();
-	virtual void BeginPlay() override;
+	virtual void InitializeAgent() override;
 	virtual void Tick(float DeltaSeconds) override;
 	void SubstepTick(float DeltaTime, FBodyInstance* BodyInstance);
 	void UpdateForcesAndMoments(float DeltaTime);

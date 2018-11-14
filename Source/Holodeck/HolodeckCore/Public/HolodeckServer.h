@@ -26,6 +26,9 @@
 
 #include "HolodeckServer.generated.h"
 
+/* Forward declare HolodeckAgent Class*/
+class AHolodeckAgent;
+
 /**
   * UHolodeckServer
   * This class resides in Holodeck, and handles the passing of messages through
@@ -109,6 +112,9 @@ public:
 	static const std::string MakeKey(const FString& AgentName, const FString& ItemName) {
 		return std::string(TCHAR_TO_UTF8(*AgentName)) + "_" + std::string(TCHAR_TO_UTF8(*ItemName));
 	}
+
+	/* Stores pointers to all the agents within the world. */
+	TMap<FString, AHolodeckAgent*> AgentMap;
 
 private:
 

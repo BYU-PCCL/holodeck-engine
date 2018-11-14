@@ -14,8 +14,8 @@ UPressureSensor::UPressureSensor() {
 
 
 // Called when the game starts
-void UPressureSensor::BeginPlay() {
-	Super::BeginPlay();
+void UPressureSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	Android = Cast<AAndroid>(this->GetOwner());
 	InitJointMap();

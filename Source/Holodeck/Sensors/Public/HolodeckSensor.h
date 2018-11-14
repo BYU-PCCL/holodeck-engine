@@ -3,7 +3,7 @@
 #pragma once
 
 #include "HolodeckAgent.h"
-#include "HolodeckPawnController.h"
+#include "HolodeckPawnControllerInterface.h"
 #include "Components/SceneComponent.h"
 #include "HolodeckSensor.generated.h"
 
@@ -34,10 +34,24 @@ public:
 	UHolodeckSensor();
 
 	/**
-	  * Gets the controller and sets up
-	  * Subclasses should make sure to call Super::BeginPlay()
+	  * Contains all sensor initialization code and subscribes the sensor
+	  * Subclasses should make sure to call Super::InitializeSensor()
 	  */
-	virtual void BeginPlay() override;
+	virtual void InitializeSensor();
+
+	/**
+	* SetAgentAndController 
+	* Sets the agent and controller
+	* Should be called before InitializeSensor()
+	*/
+	virtual void SetAgentAndController(AHolodeckPawnControllerInterface* ControllerParam, FString AgentName);
+
+	/**
+	* BeginPlay
+	* Should only call Super::BeginPlay() and InitializeSensor() all other initialization
+	*	code should be called from within that function
+	*/
+	virtual void BeginPlay() final;
 	
 	/**
 	  * Publishes sensor data each tick
@@ -48,6 +62,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual FString GetAgentName() { return this->AgentName; }
+
+	FString AgentName;
+	FString SensorName;
 
 protected:
 
@@ -87,9 +104,6 @@ protected:
 	UPROPERTY(EditAnywhere)
 	bool bOn;
 
-	FString AgentName;
-	FString SensorName;
-
-	AHolodeckPawnController* Controller;
+	AHolodeckPawnControllerInterface* Controller;
 	void* Buffer;
 };

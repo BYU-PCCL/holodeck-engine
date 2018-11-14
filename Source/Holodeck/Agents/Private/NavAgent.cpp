@@ -11,8 +11,8 @@ ANavAgent::ANavAgent() {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
-void ANavAgent::BeginPlay() {
-	Super::BeginPlay();
+void ANavAgent::InitializeAgent() {
+	Super::InitializeAgent();
 	Target = this->GetActorLocation();
 }
 

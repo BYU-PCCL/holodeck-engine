@@ -7,8 +7,8 @@ UOrientationSensor::UOrientationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UOrientationSensor::BeginPlay() {
-	Super::BeginPlay();
+void UOrientationSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	Controller = static_cast<AHolodeckPawnController*>(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 	Parent = static_cast<UPrimitiveComponent*>(this->GetAttachParent());

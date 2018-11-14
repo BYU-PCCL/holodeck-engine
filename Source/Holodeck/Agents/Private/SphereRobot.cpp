@@ -13,8 +13,8 @@ ASphereRobot::ASphereRobot() : ForwardSensitivity(10.0), RotSensitivity(5.0) {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
-void ASphereRobot::BeginPlay() {
-	Super::BeginPlay();
+void ASphereRobot::InitializeAgent() {
+	Super::InitializeAgent();
 }
 
 // Called every frame
