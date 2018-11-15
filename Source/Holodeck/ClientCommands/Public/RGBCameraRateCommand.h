@@ -3,14 +3,14 @@
 #include "Holodeck.h"
 
 #include "Command.h"
-#include "PixelCameraRateCommand.generated.h"
+#include "RGBCameraRateCommand.generated.h"
 
 /**
-* PixelCameraRateCommand
+* RGBCameraRateCommand
 * 
 */
 UCLASS(ClassGroup = (Custom))
-class HOLODECK_API UPixelCameraRateCommand : public UCommand {
+class HOLODECK_API URGBCameraRateCommand : public UCommand {
 	GENERATED_BODY()
 public:
 	//See UCommand for the documentation of this overridden function. 
