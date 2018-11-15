@@ -19,5 +19,3 @@ void UTeleportCameraCommand::Execute() {
 
 	Game->TeleportCamera(Location, Rotation);
 }
-
-

@@ -1,13 +1,12 @@
 #include "Holodeck.h"
-#include "PixelCamera.h"
+#include "RGBCamera.h"
 
-UPixelCamera::UPixelCamera() {
-
+URGBCamera::URGBCamera() {
 }
 
 
-void UPixelCamera::BeginPlay() {
-	Super::BeginPlay();
+void URGBCamera::InitializeSensor() {
+	Super::InitializeSensor();
 
 	//Set up everything for the scenecapturecomponent2d
 	SceneCapture->CaptureSource = SCS_FinalColorLDR; //Pick what type of output you want to be sent to the texture target. 	

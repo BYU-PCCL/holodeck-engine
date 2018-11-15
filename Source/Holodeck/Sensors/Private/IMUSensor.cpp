@@ -7,8 +7,8 @@ UIMUSensor::UIMUSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void UIMUSensor::BeginPlay() {
-	Super::BeginPlay();
+void UIMUSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	// Cache important variables
 	Parent = Cast<UPrimitiveComponent>(this->GetAttachParent());

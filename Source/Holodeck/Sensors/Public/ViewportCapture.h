@@ -7,27 +7,27 @@
 #include "HolodeckViewportClient.h"
 #include "HolodeckSensor.h"
 
-#include "HolodeckViewportClientPublisher.generated.h"
+#include "ViewportCapture.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
-class HOLODECK_API UHolodeckViewportClientPublisher : public UHolodeckSensor {
+class HOLODECK_API UViewportCapture : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:	
 	/**
 	  * Default Constructor.
 	  */
-	UHolodeckViewportClientPublisher();
+	UViewportCapture();
 
 	/**
-	  * BeginPlay
-	  * Called at the start of the game.
-	  */
-	void BeginPlay() override;
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 	
 protected:
 	// See HolodeckSensor for documentation for these overridden functions.
-	FString GetDataKey() override { return "PrimaryPlayerCamera"; };
+	FString GetDataKey() override { return "ViewportCapture"; };
 	int GetNumItems() override { return Width * Height; };
 	int GetItemSize() override { return sizeof(FColor); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

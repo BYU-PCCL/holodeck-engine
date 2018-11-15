@@ -5,8 +5,8 @@ ULocationSensor::ULocationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-void ULocationSensor::BeginPlay() {
-	Super::BeginPlay();
+void ULocationSensor::InitializeSensor() {
+	Super::InitializeSensor();
 	//You need to get the pointer to the object you are attached to. 
 	Parent = this->GetAttachParent();
 
