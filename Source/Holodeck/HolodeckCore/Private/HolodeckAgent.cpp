@@ -102,16 +102,21 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 
 bool AHolodeckAgent::SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) {
 
+	FHitResult HitResult;
 	bool bWasSuccessful = this->K2_SetActorLocationAndRotation(
 		NewLocation,
 		NewRotation,
 		true, // will sweep and be blocked by an object in the path
-		DummyHitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
+		HitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
 		false //the object will not retain its momentum.
 	);
 
-	this->GetRootComponent()->SetAllPhysicsLinearVelocity(NewVelocity, false);
-	this->GetRootComponent()->SetAllPhysicsAngularVelocity(NewAngVelocity, false);
+	UPrimitiveComponent* RootComponent = (UPrimitiveComponent*)this->GetRootComponent();
+
+	RootComponent->SetAllPhysicsLinearVelocity(NewVelocity, false);
+	RootComponent->SetAllPhysicsAngularVelocity(NewAngVelocity, false);
+
+	return bWasSuccessful;
 }
 
 bool AHolodeckAgent::InitializeController() {
