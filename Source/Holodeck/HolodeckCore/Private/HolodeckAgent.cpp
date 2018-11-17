@@ -100,6 +100,20 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	return Teleport(NewLocation, DefaultRotation);
 }
 
+bool AHolodeckAgent::SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) {
+
+	bool bWasSuccessful = this->K2_SetActorLocationAndRotation(
+		NewLocation,
+		NewRotation,
+		true, // will sweep and be blocked by an object in the path
+		DummyHitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
+		false //the object will not retain its momentum.
+	);
+
+	this->GetRootComponent()->SetAllPhysicsLinearVelocity(NewVelocity, false);
+	this->GetRootComponent()->SetAllPhysicsAngularVelocity(NewAngVelocity, false);
+}
+
 bool AHolodeckAgent::InitializeController() {
 	UE_LOG(LogHolodeck, Log, TEXT("Attempting to initialize controller for HolodeckAgent"));
 

@@ -85,6 +85,9 @@ public:
 	  */
 	bool Teleport(const FVector& NewLocation) override;
 
+
+	bool SetState(const FVector& NewLocation, constFRotator& NewRotation, constFVector& NewVelocity, const FVector& NewAngVelocity);
+
 	/**
 	* InitializeController
 	* Hooks up everything with the controller. This is normally called in the beginPlay function,
