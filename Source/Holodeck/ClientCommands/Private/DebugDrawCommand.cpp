@@ -22,7 +22,7 @@ void UDebugDrawCommand::Execute() {
 		DrawDebugLine(World, Vec1, Vec2, Color, false, 1.f, 0, NumberParams[10]);
 	// Draw debug arrow
 	else if(NumberParams[0] == 1)
-		DrawDebugDirectionalArrow(World, Vec1, Vec2, NumberParams[10], Color, false, 1.f, 0, NumberParams[10]);
+		DrawDebugDirectionalArrow(World, Vec1, Vec2, (NumberParams[10]*10+Vec1.Dist(Vec1, Vec2)), Color, false, 1.f, 0, NumberParams[10]); // First float param is arrow size, second is thickness
 	// Draw debug box
 	else if (NumberParams[0] == 2)
 		DrawDebugBox(World, Vec1, Vec2, Color, false, 1.f, 0, NumberParams[10]);
