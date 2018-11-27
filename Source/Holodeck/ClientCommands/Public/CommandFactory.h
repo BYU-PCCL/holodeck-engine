@@ -12,6 +12,7 @@
 #include "DayCycleCommand.h"
 #include "SetWeatherCommand.h"
 #include "TeleportCameraCommand.h"
+#include "RGBCameraRateCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;

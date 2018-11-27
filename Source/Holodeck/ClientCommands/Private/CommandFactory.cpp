@@ -10,7 +10,8 @@ UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vecto
 										  { "DayTime", &CreateInstance<UDayTimeCommand> },
 										  { "SetWeather", &CreateInstance<USetWeatherCommand> },
 										  { "DayCycle", &CreateInstance<UDayCycleCommand> },
-										  { "TeleportCamera", &CreateInstance<UTeleportCameraCommand> } };
+										  { "TeleportCamera", &CreateInstance<UTeleportCameraCommand> },
+										  { "RGBCameraRate", &CreateInstance<URGBCameraRateCommand> } };
 	UCommand*(*CreateCommandFunction)()  = CommandMap[Name];
 	UCommand* ToReturn = nullptr;
 	if (CreateCommandFunction) {
