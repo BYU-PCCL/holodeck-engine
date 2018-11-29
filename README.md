@@ -1,7 +1,7 @@
 # HOLODECK
 
 ## About
-Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.17, with bindings for python to communicate with the agents in the environments. For best results, use windows.
+Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.21, with bindings for python to communicate with the agents in the environments. For best results, use windows.
 
 ## Usage
 This repository contains everything you need to build environments in the Unreal Engine for Holodeck. If you want to use worlds that have already been built that you can communicate with in python, look at the [holodeck repo](https://github.com/byu-pccl/holodeck).
@@ -11,14 +11,14 @@ This repository contains everything you need to build environments in the Unreal
 * Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
 
 ## Installation
-* If not installed, [Install Unreal Engine 4.17](https://www.unrealengine.com/en-US/download)
+* If not installed, [Install Unreal Engine 4.21](https://www.unrealengine.com/en-US/download)
     * After starting the Epic Games Launcher click on the Unreal Engine tab, then the Library option
-    * Select add a new engine version and then version 4.17 and install
+    * Select add a new engine version and then version 4.21 and install
 * Install Git LFS
 * Clone the repository:
 `git clone https://github.com/byu-pccl/holodeck-engine`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
-* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.17
+* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.21
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
 
 ## Building For Linux
