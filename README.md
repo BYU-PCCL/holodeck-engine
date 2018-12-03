@@ -15,7 +15,7 @@ This repository contains everything you need to build environments in the Unreal
     * After starting the Epic Games Launcher click on the Unreal Engine tab, then the Library option
     * Select add a new engine version and then version 4.17 and install
 * [Install Git LFS](https://git-lfs.github.com/)
-* Visual Studio 2017 including "Game development with C++" and "Unreal Engine installer" modules as outlined [here].(https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)
+* Visual Studio 2017 including "Game development with C++" and "Unreal Engine installer" modules as outlined [here.](https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)
 
 ## Installation
 * Clone the repository:
