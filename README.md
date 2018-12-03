@@ -10,11 +10,14 @@ This repository contains everything you need to build environments in the Unreal
 * Agent descriptions can be found [here](Docs/agents.md).
 * Holodeck can be run either from editor or by selecting run from standalone game, however nothing will happen until the python client begins.
 
-## Installation
-* If not installed, [Install Unreal Engine 4.17](https://www.unrealengine.com/en-US/download)
+## Requirements
+* [Install Unreal Engine 4.17](https://www.unrealengine.com/en-US/download)
     * After starting the Epic Games Launcher click on the Unreal Engine tab, then the Library option
     * Select add a new engine version and then version 4.17 and install
-* Install Git LFS
+* [Install Git LFS](https://git-lfs.github.com/)
+* Visual Studio 2017 including "Game development with C++" and "Unreal Engine installer" modules as outlined [here].(https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)
+
+## Installation
 * Clone the repository:
 `git clone https://github.com/byu-pccl/holodeck-engine`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
