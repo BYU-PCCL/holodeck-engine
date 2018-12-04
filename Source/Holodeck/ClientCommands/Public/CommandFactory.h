@@ -14,6 +14,7 @@
 #include "TeleportCameraCommand.h"
 #include "DebugDrawCommand.h"
 #include "RenderViewportCommand.h"
+#include "AdjustRenderQualityCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;
