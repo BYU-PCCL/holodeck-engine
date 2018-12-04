@@ -11,6 +11,7 @@ UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vecto
 										  { "SetWeather", &CreateInstance<USetWeatherCommand> },
 										  { "DayCycle", &CreateInstance<UDayCycleCommand> },
 										  { "TeleportCamera", &CreateInstance<UTeleportCameraCommand> },
+										  { "DebugDraw", &CreateInstance<UDebugDrawCommand> },
 										  { "RenderViewport", &CreateInstance<URenderViewportCommand> } };
 	UCommand*(*CreateCommandFunction)()  = CommandMap[Name];
 	UCommand* ToReturn = nullptr;
