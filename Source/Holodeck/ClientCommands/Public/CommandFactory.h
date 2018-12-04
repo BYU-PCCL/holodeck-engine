@@ -13,6 +13,7 @@
 #include "SetWeatherCommand.h"
 #include "TeleportCameraCommand.h"
 #include "DebugDrawCommand.h"
+#include "RenderViewportCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;
