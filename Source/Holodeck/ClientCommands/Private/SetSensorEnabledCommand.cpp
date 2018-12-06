@@ -29,5 +29,6 @@ void USetSensorEnabledCommand::Execute() {
 	int Enabled = NumberParams[0];
 
 	AHolodeckAgent* Agent = GetAgent(AgentName);
-	Agent->SensorMap[SensorName]->bOn = Enabled == 1
+	UHolodeckSensor* Sensor = Agent->SensorMap[SensorName];
+	Sensor->bOn = Enabled == 1;
 }
