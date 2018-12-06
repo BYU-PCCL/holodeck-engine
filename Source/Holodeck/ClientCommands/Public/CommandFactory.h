@@ -15,6 +15,7 @@
 #include "DebugDrawCommand.h"
 #include "RenderViewportCommand.h"
 #include "AdjustRenderQualityCommand.h"
+#include "SetSensorEnabledCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;
