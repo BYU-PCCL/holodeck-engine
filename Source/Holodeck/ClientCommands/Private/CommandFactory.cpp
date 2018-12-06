@@ -14,7 +14,8 @@ UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vecto
 										  { "RGBCameraRate", &CreateInstance<URGBCameraRateCommand> },
 										  { "AdjustRenderQuality", &CreateInstance<UAdjustRenderQualityCommand> },
 										  { "DebugDraw", &CreateInstance<UDebugDrawCommand> },
-										  { "RenderViewport", &CreateInstance<URenderViewportCommand> } };
+										  { "RenderViewport", &CreateInstance<URenderViewportCommand> },
+										  { "SetSensorEnabled", &CreateInstance<USetSensorEnabledCommand> } };
 
 	UCommand*(*CreateCommandFunction)()  = CommandMap[Name];
 	UCommand* ToReturn = nullptr;
