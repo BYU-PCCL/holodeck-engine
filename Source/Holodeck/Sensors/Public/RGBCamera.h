@@ -18,14 +18,18 @@ public:
 	*/
 	virtual void InitializeSensor() override;
 
+	UPROPERTY(EditAnywhere)
+	int TicksPerCapture = 1;
+
 protected:
-	//Check out HolodeckSensor.h for definitions for this overridden functions. 
+	//Checkout HolodeckSensor.h for the documentation on these overridden functions.
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
 	virtual FString GetDataKey() { return "RGBCamera"; };
+
 	virtual int GetNumItems() { return CaptureWidth * CaptureHeight; };
 	virtual int GetItemSize() { return sizeof(float); };
 
-
 private:
-	
+	int TickCounter = 0;
 
 };
