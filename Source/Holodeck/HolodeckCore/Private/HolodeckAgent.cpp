@@ -108,7 +108,7 @@ bool AHolodeckAgent::SetState(const FVector& NewLocation, const FRotator& NewRot
 		NewRotation,
 		true, // will sweep and be blocked by an object in the path
 		HitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
-		false //the object will not retain its momentum.
+		false 
 	);
 
 	UPrimitiveComponent* RootComponent = (UPrimitiveComponent*)this->GetRootComponent();

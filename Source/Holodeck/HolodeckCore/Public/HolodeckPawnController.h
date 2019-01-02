@@ -94,6 +94,8 @@ public:
 	*/
 	virtual void ExecuteTeleport() override;
 
+	virtual void ExecuteSetState() override;
+
 	/**
 	* SetServer
 	* Sets the server object within this object.
@@ -127,7 +129,6 @@ private:
 
 	UHolodeckServer* Server;
 	const int SINGLE_BOOL = 1;
-	const int TELEPORT_COMMAND_SIZE = 3;
-	const int ROTATE_COMMAND_SIZE = 3;
+	const int TELEPORT_COMMAND_SIZE = 12;
 
 };

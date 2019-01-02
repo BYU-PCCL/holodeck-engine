@@ -6,7 +6,6 @@
 const FString CONTROL_SCHEME_KEY = "control_scheme";
 const FString TELEPORT_BOOL_KEY = "teleport_flag";
 const FString TELEPORT_COMMAND_KEY = "teleport_command";
-const FString ROTATE_COMMAND_KEY = "rotation_command";
 
 
 AHolodeckPawnController::AHolodeckPawnController(const FObjectInitializer& ObjectInitializer)
@@ -46,7 +45,10 @@ void AHolodeckPawnController::UnPossess() {
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
-	if (ShouldTeleportBuffer && *ShouldTeleportBuffer) {
+	if (ShouldTeleportBuffer && *ShouldTeleportBuffer & 0x4) {
+		ExecuteSetState();
+	}
+	else if (ShouldTeleportBuffer && *ShouldTeleportBuffer) {
 		ExecuteTeleport();
 	}
 
@@ -103,10 +105,6 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_COMMAND_KEY),
 										TELEPORT_COMMAND_SIZE * sizeof(float));
 		TeleportBuffer = static_cast<float*>(TempBuffer);
-
-		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, ROTATE_COMMAND_KEY),
-										ROTATE_COMMAND_SIZE * sizeof(float));
-		RotationBuffer = static_cast<float*>(TempBuffer);
 	}
 }
 
@@ -118,9 +116,10 @@ void AHolodeckPawnController::ExecuteTeleport() {
 		return;
 	}
 
+	float* FloatPtr = static_cast<float*>(TeleportBuffer);
+
 	FVector TeleportLocation;
 	if (*ShouldTeleportBuffer & 0x1) {
-		float* FloatPtr = static_cast<float*>(TeleportBuffer);
 		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 	} else {
 		TeleportLocation = PawnVar->GetActorLocation();
@@ -128,13 +127,30 @@ void AHolodeckPawnController::ExecuteTeleport() {
 
 	FRotator NewRotation;
 	if (*ShouldTeleportBuffer & 0x2) {
-		float* FloatPtr = static_cast<float*>(RotationBuffer);
-		NewRotation = FRotator(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+		NewRotation = FRotator(FloatPtr[3], FloatPtr[4], FloatPtr[5]);
 	} else {
 		NewRotation = PawnVar->GetActorRotation();
 	}
 
 	PawnVar->Teleport(TeleportLocation, NewRotation);
+	*ShouldTeleportBuffer = 0;
+}
+
+
+void AHolodeckPawnController::ExecuteSetState() {
+	UE_LOG(LogHolodeck, Log, TEXT("Executing set state"));
+	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
+	if (PawnVar == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
+		return;
+	}
+	float* FloatPtr = static_cast<float*>(TeleportBuffer);
+	FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+	FRotator NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
+	FVector NewVelocity = FVector(FloatPtr[6], FloatPtr[7], FloatPtr[8]);
+	FVector NewAngVelocity = FVector(FloatPtr[9], FloatPtr[10], FloatPtr[11]);
+
+	PawnVar->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
 	*ShouldTeleportBuffer = 0;
 }
 

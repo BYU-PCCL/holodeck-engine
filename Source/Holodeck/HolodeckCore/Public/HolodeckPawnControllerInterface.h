@@ -109,6 +109,14 @@ public:
 	};
 
 	/**
+	* ExecuteSetState
+	* Sets a new state for the controller agent.
+	*/
+	virtual void ExecuteSetState() {
+		check(0 && "You must override ExecuteSetState");
+	};
+
+	/**
 	* SetServer
 	* Sets the server object within this object.
 	*/

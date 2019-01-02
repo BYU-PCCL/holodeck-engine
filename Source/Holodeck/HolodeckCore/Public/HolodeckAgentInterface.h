@@ -54,6 +54,14 @@ public:
 	};
 
 	/**
+	* SetState
+	*/
+	virtual bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity){
+		check(0 && "You must override SetState");
+		return false;
+	};
+
+	/**
 	* Teleport
 	* Instantly moves the agent to target location, with the orientation that was given
 	* If no orientation was given, orientation remains unchanged (see overloaded function)
@@ -65,6 +73,8 @@ public:
 		check(0 && "You must override Teleport");
 		return false;
 	};
+
+
 
 	/**
 	* Teleport
