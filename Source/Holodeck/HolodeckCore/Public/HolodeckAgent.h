@@ -86,7 +86,7 @@ public:
 	bool Teleport(const FVector& NewLocation) override;
 
 
-	bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity);
+	bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) override;
 
 	/**
 	* InitializeController
