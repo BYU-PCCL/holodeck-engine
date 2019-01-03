@@ -80,8 +80,6 @@ public:
 		return false;
 	};
 
-
-
 	/**
 	* Teleport
 	* Instantly moves the agent to target location, with the orientation that was given
@@ -93,7 +91,6 @@ public:
 		check(0 && "You must override Teleport");
 		return false;
 	};
-
 
 	/**
 	* InitializeController
