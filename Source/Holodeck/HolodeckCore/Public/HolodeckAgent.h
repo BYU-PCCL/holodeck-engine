@@ -85,7 +85,15 @@ public:
 	  */
 	bool Teleport(const FVector& NewLocation) override;
 
-
+	/**
+	* SetState
+	* Sets the state of the agent (pos,rot,vel,ang_vel)
+	* @param NewLocation The location to move to
+	* @param NewRotation The rotation that the object will take on
+	* @param NewVelocity The new linear velocity
+	* @param NewAngVelocity The new angular velocity
+	* @return Bool if the teleport was successful.
+	*/
 	bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) override;
 
 	/**
