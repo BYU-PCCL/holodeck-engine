@@ -94,6 +94,10 @@ public:
 	*/
 	virtual void ExecuteTeleport() override;
 
+	/**
+	* ExecuteSetState
+	* Sets a new state for the controlled agent
+	*/
 	virtual void ExecuteSetState() override;
 
 	/**
@@ -106,7 +110,6 @@ protected:
 	void* ActionBuffer;
 	uint8* ControlSchemeIdBuffer;
 	float* TeleportBuffer;
-	float* RotationBuffer;
 	uint8* ShouldTeleportBuffer;
 
 	UPROPERTY()

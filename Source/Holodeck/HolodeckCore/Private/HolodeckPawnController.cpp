@@ -138,7 +138,6 @@ void AHolodeckPawnController::ExecuteTeleport() {
 
 
 void AHolodeckPawnController::ExecuteSetState() {
-	UE_LOG(LogHolodeck, Log, TEXT("Executing set state"));
 	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
 	if (PawnVar == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
