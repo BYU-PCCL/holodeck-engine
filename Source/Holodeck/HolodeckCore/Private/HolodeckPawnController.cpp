@@ -45,10 +45,10 @@ void AHolodeckPawnController::UnPossess() {
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
-	if (ShouldTeleportBuffer && *ShouldTeleportBuffer & 0x4) {
+	if (ShouldChangeStateBuffer && *ShouldChangeStateBuffer & 0xF) {
 		ExecuteSetState();
 	}
-	else if (ShouldTeleportBuffer && *ShouldTeleportBuffer) {
+	else if (ShouldChangeStateBuffer && *ShouldChangeStateBuffer) {
 		ExecuteTeleport();
 	}
 
@@ -100,7 +100,7 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_BOOL_KEY),
 											  SINGLE_BOOL * sizeof(bool));
-		ShouldTeleportBuffer = static_cast<uint8*>(TempBuffer);
+		ShouldChangeStateBuffer = static_cast<uint8*>(TempBuffer);
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_COMMAND_KEY),
 										TELEPORT_COMMAND_SIZE * sizeof(float));
@@ -119,21 +119,21 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	float* FloatPtr = static_cast<float*>(TeleportBuffer);
 
 	FVector TeleportLocation;
-	if (*ShouldTeleportBuffer & 0x1) {
+	if (*ShouldChangeStateBuffer & 0x1) {
 		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 	} else {
 		TeleportLocation = PawnVar->GetActorLocation();
 	}
 
 	FRotator NewRotation;
-	if (*ShouldTeleportBuffer & 0x2) {
+	if (*ShouldChangeStateBuffer & 0x2) {
 		NewRotation = FRotator(FloatPtr[3], FloatPtr[4], FloatPtr[5]);
 	} else {
 		NewRotation = PawnVar->GetActorRotation();
 	}
 
 	PawnVar->Teleport(TeleportLocation, NewRotation);
-	*ShouldTeleportBuffer = 0;
+	*ShouldChangeStateBuffer = 0;
 }
 
 
@@ -150,7 +150,7 @@ void AHolodeckPawnController::ExecuteSetState() {
 	FVector NewAngVelocity = FVector(FloatPtr[9], FloatPtr[10], FloatPtr[11]);
 
 	PawnVar->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
-	*ShouldTeleportBuffer = 0;
+	*ShouldChangeStateBuffer = 0;
 }
 
 bool AHolodeckPawnController::CheckBoolBuffer(void* Buffer) {
