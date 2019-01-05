@@ -110,7 +110,7 @@ protected:
 	void* ActionBuffer;
 	uint8* ControlSchemeIdBuffer;
 	float* TeleportBuffer;
-	uint8* ShouldTeleportBuffer;
+	uint8* ShouldChangeStateBuffer;
 
 	UPROPERTY()
 	TArray<UHolodeckControlScheme*> ControlSchemes;
