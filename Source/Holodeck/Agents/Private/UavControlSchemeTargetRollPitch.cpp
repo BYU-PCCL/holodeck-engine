@@ -101,5 +101,5 @@ FVector UUavControlSchemeTargetRollPitch::RotatorToEulerInZYX(const FRotator& Ro
 }
 
 float UUavControlSchemeTargetRollPitch::UEUnitsToMeters(float ValueInUnrealUnits) const {
-	return ValueInUnrealUnits / UnitsToMeters;
+	return ValueInUnrealUnits / UnitsPerMeter;
 }

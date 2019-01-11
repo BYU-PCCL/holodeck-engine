@@ -23,7 +23,6 @@ void USpawnAgentCommand::Execute() {
 	}
 
 	FString AgentType = StringParams[0].c_str();
-	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint

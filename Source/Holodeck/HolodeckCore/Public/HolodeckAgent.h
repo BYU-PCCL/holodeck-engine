@@ -125,8 +125,6 @@ public:
 	/* Stores pointers to all the sensors on the agent. */
 	TMap<FString, UHolodeckSensor*> SensorMap;
 
-	float UnitsPerMeter;
-
 private:
 
 	UHolodeckGameInstance* Instance;

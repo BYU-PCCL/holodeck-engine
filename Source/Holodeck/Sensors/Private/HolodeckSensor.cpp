@@ -24,8 +24,6 @@ void UHolodeckSensor::InitializeSensor() {
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Getting Controller Failed. Sensor not "));
 	}
-
-	UnitsPerMeter = GetWorld()->GetWorldSettings()->WorldToMeters;
 }
 
 void UHolodeckSensor::BeginPlay() {

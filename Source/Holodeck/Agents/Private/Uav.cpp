@@ -29,7 +29,6 @@ AUav::AUav() {
 void AUav::InitializeAgent() {
 	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
-	TorqueConversion = UnitsToMeters * UnitsToMeters;
 }
 
 void AUav::Tick(float DeltaTime) {
@@ -45,8 +44,8 @@ void AUav::ApplyForces() {
 
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply);
-	LocalThrust *= UnitsToMeters;
-	LocalTorque *= TorqueConversion;
+	LocalThrust *= UnitsPerNewton;
+	LocalTorque *= UnitsPerNewton;
 
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));

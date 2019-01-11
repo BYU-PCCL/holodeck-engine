@@ -50,9 +50,8 @@ void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
 	LinearAccelerationVector = VelocityNow - VelocityThen;
 	LinearAccelerationVector /= DeltaTime;
 
-	LinearAccelerationVector += FVector(0.0, 0.0, -WorldGravity * WorldToMetersRatio);
+	LinearAccelerationVector += FVector(0.0, 0.0, -WorldGravity);
 	LinearAccelerationVector = RotationNow.UnrotateVector(LinearAccelerationVector); //changes world axis to local axis
-	LinearAccelerationVector /= WorldToMetersRatio;
 }
 
 void UIMUSensor::CalculateAngularVelocityVector() {
