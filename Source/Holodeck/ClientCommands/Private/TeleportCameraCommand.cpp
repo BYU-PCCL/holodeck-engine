@@ -11,8 +11,7 @@ void UTeleportCameraCommand::Execute() {
 	}
 
 	UWorld* World = Target->GetWorld();
-	float UnitsToMeter = World->GetWorldSettings()->WorldToMeters;
-	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsToMeter;
+	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
 	FVector Rotation = FVector(NumberParams[3], NumberParams[4], NumberParams[5]);
 
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
