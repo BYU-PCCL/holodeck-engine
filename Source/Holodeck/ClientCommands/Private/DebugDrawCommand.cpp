@@ -22,8 +22,9 @@ void UDebugDrawCommand::Execute() {
 		NumberParams[7-9] are the RGB color values
 		NumberParams[10] is the size
 	*/
-	FVector Vec1 = FVector(NumberParams[1], NumberParams[2], NumberParams[3]);
-	FVector Vec2 = FVector(NumberParams[4], NumberParams[5], NumberParams[6]);
+	float UnitsToMeter = World->GetWorldSettings()->WorldToMeters;
+	FVector Vec1 = FVector(NumberParams[1], NumberParams[2], NumberParams[3]) * UnitsToMeter;
+	FVector Vec2 = FVector(NumberParams[4], NumberParams[5], NumberParams[6]) * UnitsToMeter;
 	FColor Color = FColor(NumberParams[7], NumberParams[8], NumberParams[9]);
 
 	// Draw debug line

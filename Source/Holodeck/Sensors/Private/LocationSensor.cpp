@@ -9,8 +9,6 @@ void ULocationSensor::InitializeSensor() {
 	Super::InitializeSensor();
 	//You need to get the pointer to the object you are attached to. 
 	Parent = this->GetAttachParent();
-
-	UnitsPerMeter = GetWorld()->GetWorldSettings()->WorldToMeters;
 }
 
 void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

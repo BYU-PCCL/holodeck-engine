@@ -42,5 +42,4 @@ protected:
 private:
 	UPrimitiveComponent* Parent;
 	UStaticMeshComponent* RootMesh;
-	UWorld* World;
 };

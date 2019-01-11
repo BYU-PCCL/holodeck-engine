@@ -9,8 +9,6 @@ void UVelocitySensor::InitializeSensor() {
 	Super::InitializeSensor();
 	//You need to get the pointer to the object the sensor is attached to. 
 	Parent = this->GetAttachmentRootActor();
-
-	UnitsPerMeter = GetWorld()->GetWorldSettings()->WorldToMeters;
 }
 
 void UVelocitySensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

@@ -86,4 +86,5 @@ private:
 	*/
 	void ApplyTorques();
 	float CommandArray[TOTAL_DOF];
+	float TorqueConversion;
 };

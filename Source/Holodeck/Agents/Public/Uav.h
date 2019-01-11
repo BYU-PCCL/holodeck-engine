@@ -63,4 +63,6 @@ private:
 	  * InitializePIDControllers
 	  */
 	void InitializePIDControllers();
+
+	float TorqueConversion;
 };

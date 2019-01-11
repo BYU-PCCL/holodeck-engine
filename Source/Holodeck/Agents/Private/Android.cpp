@@ -3,9 +3,6 @@
 #include "Holodeck.h"
 #include "Android.h"
 
-// Used to convert unreal torque unit (kg*cm^2/s^2) to (kg*m^2/s^2)
-const float CM_TORQUE_TO_M_TORQUE = 10000;
-
 AAndroid::AAndroid() {
 	PrimaryActorTick.bCanEverTick = true;
 	bCollisionsAreVisible = false;
@@ -18,6 +15,7 @@ AAndroid::AAndroid() {
 void AAndroid::InitializeAgent() {
 	Super::InitializeAgent();
 	SkeletalMesh = Cast<USkeletalMeshComponent>(RootComponent);
+	float TorqueConversion = UnitsPerMeter * UnitsPerMeter;
 }
 
 void AAndroid::Tick(float DeltaTime) {
@@ -46,7 +44,7 @@ void AAndroid::ApplyTorques() {
 
 		// Apply Swing 1 Torque if non zero
 		if (CommandArray[ComInd] != 0) {
-			float RotForce = CommandArray[ComInd] * CM_TORQUE_TO_M_TORQUE;
+			float RotForce = CommandArray[ComInd] * TorqueConversion;
 			SkeletalMesh->AddTorque(RotQuat.RotateVector(FVector(0.0f, 0.0f, RotForce)), JointName, false);
 		}
 		ComInd++;
@@ -54,7 +52,7 @@ void AAndroid::ApplyTorques() {
 		// Apply Swing 2 if Torque non zero and is 2 or 3 axis joint
 		if (JointInd < (NUM_2_PLUS_3_AXIS_JOINTS)) {
 			if (CommandArray[ComInd] != 0) {
-				float RotForce = CommandArray[ComInd] * CM_TORQUE_TO_M_TORQUE;
+				float RotForce = CommandArray[ComInd] * TorqueConversion;
 				SkeletalMesh->AddTorque(RotQuat.RotateVector(FVector(0.0f, RotForce, 0.0f)), JointName, false);
 			}
 			ComInd++;
@@ -62,7 +60,7 @@ void AAndroid::ApplyTorques() {
 			// Apply Twist if Torque non zero and is 3 axis joint
 			if (JointInd < NUM_3_AXIS_JOINTS) {
 				if (CommandArray[ComInd] != 0) {
-					float RotForce = CommandArray[ComInd] * CM_TORQUE_TO_M_TORQUE;
+					float RotForce = CommandArray[ComInd] * TorqueConversion;
 					SkeletalMesh->AddTorque(RotQuat.RotateVector(FVector(RotForce, 0.0f, 0.0f)), JointName, false);
 				}
 				ComInd++;

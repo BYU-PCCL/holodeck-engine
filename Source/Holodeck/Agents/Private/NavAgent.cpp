@@ -19,7 +19,7 @@ void ANavAgent::InitializeAgent() {
 // Called every frame
 void ANavAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	Target = FVector(CommandArray[0], CommandArray[1], CommandArray[2]);
+	Target = FVector(CommandArray[0], CommandArray[1], CommandArray[2]) * UnitsToMeters;
 }
 
 FVector ANavAgent::GetTarget() {

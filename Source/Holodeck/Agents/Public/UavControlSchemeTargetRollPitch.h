@@ -41,6 +41,4 @@ private:
 	SimplePID PitchController;
 	SimplePID YawController;
 	SimplePID AltitudeController;
-
-
 };

@@ -13,8 +13,6 @@ void UOrientationSensor::InitializeSensor() {
 	Controller = static_cast<AHolodeckPawnController*>(this->GetAttachmentRootActor()->GetInstigator()->Controller);
 	Parent = static_cast<UPrimitiveComponent*>(this->GetAttachParent());
 	RootMesh = static_cast<UStaticMeshComponent*>(this->GetAttachParent());
-
-	World = Parent->GetWorld();
 }
 
 // Called every frame

@@ -106,4 +106,8 @@ protected:
 
 	AHolodeckPawnControllerInterface* Controller;
 	void* Buffer;
+
+
+private:
+	float UnitsPerMeter;
 };

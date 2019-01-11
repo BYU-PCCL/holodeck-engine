@@ -22,6 +22,7 @@ void AHolodeckAgent::BeginPlay(){
 
 void AHolodeckAgent::InitializeAgent() {
 
+	UnitsPerMeter = GetWorld()->GetWorldSettings()->WorldToMeters;
 	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent %s"), *AgentName);
 	if (!InitializeController())
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't initialize HolodeckPawnController for HolodeckAgent."));

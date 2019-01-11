@@ -15,8 +15,7 @@ void UIMUSensor::InitializeSensor() {
 
 	World = Parent->GetWorld();
 	WorldSettings = World->GetWorldSettings(false, false);
-	WorldToMetersRatio = WorldSettings->WorldToMeters;
-	WorldGravity = WorldSettings->GetGravityZ() / WorldToMetersRatio;
+	WorldGravity = WorldSettings->GetGravityZ() / UnitsPerMeter;
 
 	VelocityThen = FVector();
 	VelocityNow = FVector();
