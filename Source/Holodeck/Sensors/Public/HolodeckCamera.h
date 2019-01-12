@@ -33,6 +33,8 @@ public:
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
+	FColor* Buffer;
+	FRenderRequest RenderRequest;
 
 	UPROPERTY()
 	UTextureRenderTarget2D* TargetTexture;
@@ -50,6 +52,4 @@ private:
 
 	bool bPointerGivenToViewport = false;
 	UHolodeckViewportClient* ViewportClient;
-	FColor* Buffer;
-	FRenderRequest RenderRequest;
 };

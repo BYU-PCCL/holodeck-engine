@@ -95,6 +95,12 @@ public:
 	virtual void ExecuteTeleport() override;
 
 	/**
+	* ExecuteSetState
+	* Sets a new state for the controlled agent
+	*/
+	virtual void ExecuteSetState() override;
+
+	/**
 	* SetServer
 	* Sets the server object within this object.
 	*/
@@ -104,8 +110,7 @@ protected:
 	void* ActionBuffer;
 	uint8* ControlSchemeIdBuffer;
 	float* TeleportBuffer;
-	float* RotationBuffer;
-	uint8* ShouldTeleportBuffer;
+	uint8* ShouldChangeStateBuffer;
 
 	UPROPERTY()
 	TArray<UHolodeckControlScheme*> ControlSchemes;
@@ -127,7 +132,6 @@ private:
 
 	UHolodeckServer* Server;
 	const int SINGLE_BOOL = 1;
-	const int TELEPORT_COMMAND_SIZE = 3;
-	const int ROTATE_COMMAND_SIZE = 3;
+	const int TELEPORT_COMMAND_SIZE = 12;
 
 };
