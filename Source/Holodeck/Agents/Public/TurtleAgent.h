@@ -19,12 +19,7 @@ public:
 	*/
 	ATurtleAgent();
 
-	/**
-	* BeginPlay
-	* Called when the game starts.
-	* Registers the reward and terminal signals.
-	*/
-	void BeginPlay() override;
+	void InitializeAgent() override;
 
 	/**
 	* Tick

@@ -13,8 +13,8 @@ ATurtleAgent::ATurtleAgent() : ForwardSensitivity(10.0), RotSensitivity(5.0) {
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
 
-void ATurtleAgent::BeginPlay() {
-	Super::BeginPlay();
+void ATurtleAgent::InitializeAgent() {
+	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
 }
 
