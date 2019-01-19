@@ -57,6 +57,8 @@ public:
 	AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location);
 	UFUNCTION(BlueprintImplementableEvent)
 	void TeleportCamera(const FVector& Location, const FVector& Rotation);
+	UFUNCTION(BlueprintImplementableEvent)
+	void ExecuteCustomCommand(const FString& Name, const TArray<float>& NumberParameters, const TArray<FString>& StringParameters);
 
 	UPROPERTY(BlueprintReadWrite)
 	AWeatherMaster* WeatherMaster;
