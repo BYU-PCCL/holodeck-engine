@@ -2,7 +2,7 @@
 
 #include "Holodeck.h"
 
-#include "HolodeckTask.h"
+#include "TaskSensor.h"
 
 #include "DistanceTask.generated.h"
 
@@ -12,7 +12,7 @@
 * Calculates a distance based reward.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HOLODECK_API UDistanceTask : public UHolodeckTask
+class HOLODECK_API UDistanceTask : public UTaskSensor
 {
 	GENERATED_BODY()
 
@@ -41,7 +41,7 @@ public:
 		bool UseDistanceReward;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USceneComponent* GoalObject;
+		AActor* GoalObject;
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.

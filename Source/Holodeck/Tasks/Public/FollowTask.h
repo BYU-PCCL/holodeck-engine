@@ -2,7 +2,7 @@
 
 #include "Holodeck.h"
 
-#include "HolodeckTask.h"
+#include "TaskSensor.h"
 
 #include "FollowTask.generated.h"
 
@@ -12,7 +12,7 @@
 * Calculates follow reward based on distance and line of sight.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HOLODECK_API UFollowTask : public UHolodeckTask
+class HOLODECK_API UFollowTask : public UTaskSensor
 {
 	GENERATED_BODY()
 
@@ -30,7 +30,7 @@ public:
 
 	// Actor to follow
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		USceneComponent* ToFollow;
+		AActor* ToFollow;
 
 	// Only give reward if target is in sight
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
