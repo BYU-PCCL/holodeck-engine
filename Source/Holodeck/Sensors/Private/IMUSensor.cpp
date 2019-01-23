@@ -15,7 +15,7 @@ void UIMUSensor::InitializeSensor() {
 
 	World = Parent->GetWorld();
 	WorldSettings = World->GetWorldSettings(false, false);
-	WorldGravity = WorldSettings->GetGravityZ() / UnitsPerMeter;
+	WorldGravity = WorldSettings->GetGravityZ();
 
 	VelocityThen = FVector();
 	VelocityNow = FVector();
@@ -32,9 +32,9 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 		float* FloatBuffer = static_cast<float*>(Buffer);
 
 		//Some negative values are given so they obey Unreal's coordinate frame. 
-		FloatBuffer[0] = -LinearAccelerationVector.X;
-		FloatBuffer[1] = -LinearAccelerationVector.Y;
-		FloatBuffer[2] = LinearAccelerationVector.Z;
+		FloatBuffer[0] = -LinearAccelerationVector.X / UEUnitsPerMeter;
+		FloatBuffer[1] = -LinearAccelerationVector.Y / UEUnitsPerMeter;
+		FloatBuffer[2] = LinearAccelerationVector.Z / UEUnitsPerMeter;
 		FloatBuffer[3] = AngularVelocityVector.X;
 		FloatBuffer[4] = AngularVelocityVector.Y;
 		FloatBuffer[5] = AngularVelocityVector.Z;
@@ -51,8 +51,7 @@ void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
 	LinearAccelerationVector /= DeltaTime;
 
 	LinearAccelerationVector += FVector(0.0, 0.0, -WorldGravity);
-	LinearAccelerationVector = RotationNow.UnrotateVector(LinearAccelerationVector) * UnitsPerMeter; //changes world axis to local axis
-	LinearAccelerationVector /= UnitsPerMeter;
+	LinearAccelerationVector = RotationNow.UnrotateVector(LinearAccelerationVector); //changes world axis to local axis
 }
 
 void UIMUSensor::CalculateAngularVelocityVector() {
