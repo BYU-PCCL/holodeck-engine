@@ -4,7 +4,7 @@
 void UDistanceTask::InitializeSensor() {
 	Super::InitializeSensor();
 
-	StartDistance = (GoalObject->GetComponentLocation() - Parent->GetComponentLocation()).Size();
+	StartDistance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size();
 	NextDistance = StartDistance - Interval;
 	LastDistance = 1;
 }
@@ -23,7 +23,7 @@ void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 
 // Sets the reward if UseDistanceReward is false
 void UDistanceTask::SetUnitReward() {
-	float Distance = (GoalObject->GetComponentLocation() - Parent->GetComponentLocation()).Size();
+	float Distance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size();
 	if (Distance < NextDistance) {
 		Reward = 1;
 		NextDistance -= Interval;
@@ -35,7 +35,7 @@ void UDistanceTask::SetUnitReward() {
 
 // Sets the reward if UseDistanceReward is true
 void UDistanceTask::SetDistanceReward() {
-	float Distance = (GoalObject->GetComponentLocation() - Parent->GetComponentLocation()).Size() / StartDistance;
+	float Distance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size() / StartDistance;
 	Reward = LastDistance - Distance;
 	LastDistance = Distance;
 	Terminal = Distance < GoalDistance;
