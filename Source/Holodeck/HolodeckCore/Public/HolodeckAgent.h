@@ -53,20 +53,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	/**
-	  * SetReward
-	  * Sets the reward in the server for this agent.
-	  * @param Reward the value of the reward.
-	  */
-	void SetReward(float Reward) override;
-
-	/**
-	  * SetTerminal
-	  * Sets the terminal in the server for this agent.
-	  * @param Terminal the value of the terminal signal.
-	  */
-	void SetTerminal(bool bTerminal) override;
-
-	/**
 	  * Teleport
 	  * Instantly moves the agent to target location, with the orientation that was given
 	  * If no orientation was given, orientation remains unchanged (see overloaded function)
@@ -128,8 +114,6 @@ public:
 private:
 
 	UHolodeckGameInstance* Instance;
-	float* RewardPtr;
-	bool* TerminalPtr;
 	AHolodeckPawnControllerInterface* HolodeckController;
 	UHolodeckServer* Server;
 };

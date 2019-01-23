@@ -36,24 +36,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override { Super::Tick(DeltaSeconds); };
 
 	/**
-	* SetReward
-	* Sets the reward in the server for this agent.
-	* @param Reward the value of the reward.
-	*/
-	virtual void SetReward(float Reward) {
-		check(0 && "You must override SetReward");
-	};
-
-	/**
-	* SetTerminal
-	* Sets the terminal in the server for this agent.
-	* @param Terminal the value of the terminal signal.
-	*/
-	virtual void SetTerminal(bool bTerminal) {
-		check(0 && "You must override SetTerminal");
-	};
-
-	/**
 	* SetState
 	* Sets the state of the agent (pos, rot, vel, ang_vel)
 	* @param NewLocation The location to move to
