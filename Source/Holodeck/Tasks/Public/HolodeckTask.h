@@ -4,13 +4,12 @@
 
 #include "Holodeck.h"
 
-#include "GameFramework/Actor.h"
-#include "HolodeckAgent.h"
+#include "HolodeckSensor.h"
 
 #include "HolodeckTask.generated.h"
 
 /**
-  * AHolodeckTask
+  * UHolodeckTask
   * A base class for tasks within Holodeck.
   * This class chooses a HolodeckAgent which is trying to perform the task.
   * The task logic then sets the reward and terminal each tick.
@@ -18,46 +17,36 @@
   * setting the reward and terminal. This allows the parent class to set those
   * variables in the shared memory.
   */
-UCLASS()
-class HOLODECK_API AHolodeckTask : public AActor
-{
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+class HOLODECK_API UHolodeckTask : public UHolodeckSensor {
 	GENERATED_BODY()
 	
 public:	
 	/**
 	  * Default Constructor.
 	  */
-	AHolodeckTask();
+	UHolodeckTask();
 
 	/**
-	  * BeginPlay
-	  * Called at the beginning of the game.
-	  */
-	void BeginPlay() override;
-	
-	/**
-	  * Tick
-	  * Called each frame.
-	  * @param DeltaSeconds time since last frame.
-	  */
-	void Tick(float DeltaSeconds) override;
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 
-	/**
-	  * TaskInit
-	  * Starts the task. Should be called by the task master.
-	  * Must be overidden by the child task!
-	  * @param bOn true if this task should be on.
-	  */
-	UFUNCTION(BlueprintImplementableEvent)
-	void TaskInit(bool bOn);
+protected:
+	//See HolodeckSensor for the documentation of these overridden functions.
+	FString GetDataKey() override { return "HolodeckTask"; };
+	int GetNumItems() override { return 2; };
+	int GetItemSize() override { return sizeof(float); };
+	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString TaskKey;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Reward;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool Terminal;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AHolodeckAgent* MainAgent;
+private:
+	/*
+	 * Parent
+	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
+	 */
+	USceneComponent* Parent;
 };

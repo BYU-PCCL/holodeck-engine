@@ -5,22 +5,21 @@
 
 
 // Sets default values
-AHolodeckTask::AHolodeckTask() {
-	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
-	MainAgent = nullptr;
+UHolodeckTask::UHolodeckTask() {
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
-void AHolodeckTask::BeginPlay() {
-	Super::BeginPlay();
+void UHolodeckTask::InitializeSensor() {
+	Super::InitializeSensor();
+	//You need to get the pointer to the object you are attached to. 
+	Parent = this->GetAttachParent();
 }
 
 // Called every frame
-void AHolodeckTask::Tick(float DeltaTime) {
-	Super::Tick( DeltaTime );
-	if (MainAgent != nullptr) {
-		MainAgent->SetReward(Reward);
-		MainAgent->SetTerminal(Terminal);
+void UHolodeckTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	if (Parent != nullptr && bOn) {
+		float* FloatBuffer = static_cast<float*>(Buffer);
+		FloatBuffer[0] = Reward;
+		FloatBuffer[1] = Terminal;
 	}
 }
