@@ -11,7 +11,7 @@
 * Inherits from the HolodeckTask class.
 * Calculates a distance based reward.
 */
-UCLASS()
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UDistanceTask : public UHolodeckTask
 {
 	GENERATED_BODY()
@@ -23,10 +23,10 @@ public:
 	UDistanceTask() : UseDistanceReward(true), Interval(1), GoalDistance(.1) {}
 
 	/**
-	* InitializeHolodeckComponent
+	* InitializeSensor
 	* Sets up the class
 	*/
-	virtual void InitializeHolodeckComponent() override;
+	virtual void InitializeSensor() override;
 
 	// Distance to next reward
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -45,7 +45,7 @@ public:
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
-	virtual void TickHolodeckComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	/**
@@ -63,6 +63,4 @@ private:
 	float NextDistance;
 	float StartDistance;
 	float LastDistance;
-
-	const FString TASK_NAME = "DistanceTask";
 };

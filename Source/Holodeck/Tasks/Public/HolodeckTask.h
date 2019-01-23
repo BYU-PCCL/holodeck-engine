@@ -17,7 +17,7 @@
   * setting the reward and terminal. This allows the parent class to set those
   * variables in the shared memory.
   */
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UHolodeckTask : public UHolodeckSensor {
 	GENERATED_BODY()
 	
@@ -40,13 +40,13 @@ protected:
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	float Reward;
-	bool Terminal;
-
-private:
 	/*
 	 * Parent
 	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
 	 */
 	USceneComponent* Parent;
+
+	float Reward;
+	bool Terminal;
+
 };
