@@ -1,14 +1,12 @@
 #include "Holodeck.h"
 #include "FollowTask.h"
 
-void UFollowTask::InitializeHolodeckComponent() {
-	Super::InitializeHolodeckComponent();
-	
-	ComponentName = TASK_NAME;
+void UFollowTask::InitializeSensor() {
+	Super::InitializeSensor();
 }
 
 // Called every frame
-void UFollowTask::TickHolodeckComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	FVector AgentLocation = Parent->GetComponentLocation();
 	FVector TargetLocation = ToFollow->GetComponentLocation();
 	FVector DistanceVec = TargetLocation - AgentLocation;
@@ -30,5 +28,5 @@ void UFollowTask::TickHolodeckComponent(float DeltaTime, ELevelTick TickType, FA
 		Reward = MaxScore * (MinDistance - Distance) / MinDistance;
 	}
 
-	Super::TickHolodeckComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }

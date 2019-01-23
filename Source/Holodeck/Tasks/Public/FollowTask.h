@@ -11,7 +11,7 @@
 * Inherits from the HolodeckTask class.
 * Calculates follow reward based on distance and line of sight.
 */
-UCLASS()
+UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UFollowTask : public UHolodeckTask
 {
 	GENERATED_BODY()
@@ -23,10 +23,10 @@ public:
 	UFollowTask() : MaxScore(100) {}
 
 	/**
-	* InitializeHolodeckComponent
+	* InitializeSensor
 	* Sets up the class
 	*/
-	virtual void InitializeHolodeckComponent() override;
+	virtual void InitializeSensor() override;
 
 	// Actor to follow
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -50,10 +50,9 @@ public:
 	
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
-	virtual void TickHolodeckComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
 	// Scales score between 0-1 to 0-100
 	int MaxScore;
-	const FString TASK_NAME = "FollowTask";
 };

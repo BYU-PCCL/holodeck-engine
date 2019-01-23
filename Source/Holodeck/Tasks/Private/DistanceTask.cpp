@@ -1,10 +1,8 @@
 #include "Holodeck.h"
 #include "DistanceTask.h"
 
-void UDistanceTask::InitializeHolodeckComponent() {
-	Super::InitializeHolodeckComponent();
-
-	ComponentName = TASK_NAME;
+void UDistanceTask::InitializeSensor() {
+	Super::InitializeSensor();
 
 	StartDistance = (GoalObject->GetComponentLocation() - Parent->GetComponentLocation()).Size();
 	NextDistance = StartDistance - Interval;
@@ -12,7 +10,7 @@ void UDistanceTask::InitializeHolodeckComponent() {
 }
 
 // Called every frame
-void UDistanceTask::TickHolodeckComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	if (IsValid(Parent)) {
 		if (UseDistanceReward)
 			SetDistanceReward();
@@ -20,7 +18,7 @@ void UDistanceTask::TickHolodeckComponent(float DeltaTime, ELevelTick TickType, 
 			SetUnitReward();
 	}
 
-	Super::TickHolodeckComponent(DeltaTime, TickType, ThisTickFunction);
+	Super::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 // Sets the reward if UseDistanceReward is false
