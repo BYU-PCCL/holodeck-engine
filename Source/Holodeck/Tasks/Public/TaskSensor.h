@@ -10,6 +10,7 @@
 /**
   * UTaskSensor
   * A base class for tasks within Holodeck.
+  * This class is a Holodeck Sensor.
   * This class chooses a HolodeckAgent which is trying to perform the task.
   * The task logic then sets the reward and terminal each tick.
   * The child class must remember to call the parent tick class at the end of
@@ -33,11 +34,12 @@ public:
 	virtual void InitializeSensor() override;
 
 protected:
-	//See HolodeckSensor for the documentation of these overridden functions.
+	// See HolodeckSensor.h for the documentation of these overridden functions.
+	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	// Child tasks should not need to override these three methods
 	FString GetDataKey() override { return "TaskSensor"; };
 	int GetNumItems() override { return 2; };
 	int GetItemSize() override { return sizeof(float); };
-	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	/*
 	 * Parent

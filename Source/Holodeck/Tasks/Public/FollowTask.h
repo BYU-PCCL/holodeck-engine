@@ -8,7 +8,7 @@
 
 /**
 * UFollowTask
-* Inherits from the HolodeckTask class.
+* Inherits from the TaskSensor class.
 * Calculates follow reward based on distance and line of sight.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -44,9 +44,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MinDistance;
 
-	// Defines the agent's height
+	// Defines the target's height
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float AgentHeight;
+		float TargetHeight;
 	
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
