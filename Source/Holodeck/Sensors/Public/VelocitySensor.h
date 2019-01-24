@@ -43,5 +43,4 @@ private:
 	  * Not owned.
 	  */
 	AActor* Parent;
-	float UnitsPerMeter;
 };
