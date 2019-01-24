@@ -1,6 +1,7 @@
 #include "Holodeck.h"
 #include "DistanceTask.h"
 
+// Set default values
 void UDistanceTask::InitializeSensor() {
 	Super::InitializeSensor();
 
@@ -18,6 +19,7 @@ void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 			SetUnitReward();
 	}
 
+	// Call TaskSensor's Tick to store Reward and Terminal
 	Super::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }
 

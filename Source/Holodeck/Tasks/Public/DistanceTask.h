@@ -8,7 +8,7 @@
 
 /**
 * UDistanceTask
-* Inherits from the HolodeckTask class.
+* Inherits from the TaskSensor class.
 * Calculates a distance based reward.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -28,7 +28,7 @@ public:
 	*/
 	virtual void InitializeSensor() override;
 
-	// Distance to next reward
+	// Distance to next reward (if not UseDistanceReward)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Interval;
 
@@ -40,6 +40,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool UseDistanceReward;
 
+	// Goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* GoalObject;
 
