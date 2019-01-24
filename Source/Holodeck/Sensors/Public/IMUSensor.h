@@ -66,7 +66,6 @@ private:
 
 	UWorld* World;
 	AWorldSettings* WorldSettings;
-	float WorldToMetersRatio;
 	float WorldGravity;
 
 	FVector VelocityThen;
