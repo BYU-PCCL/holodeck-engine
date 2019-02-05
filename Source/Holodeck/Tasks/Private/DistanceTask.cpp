@@ -20,7 +20,7 @@ void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 	}
 
 	// Call TaskSensor's Tick to store Reward and Terminal
-	Super::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
+	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
 // Sets the reward if UseDistanceReward is false
@@ -28,7 +28,7 @@ void UDistanceTask::SetUnitReward() {
 	float Distance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size();
 	if (Distance < NextDistance) {
 		Reward = 1;
-		NextDistance -= Interval;
+		NextDistance = Distance - Interval;
 	} else {
 		Reward = -1;
 	}
