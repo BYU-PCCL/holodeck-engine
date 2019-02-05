@@ -35,7 +35,7 @@ public:
 
 protected:
 	// See HolodeckSensor.h for the documentation of these overridden functions.
-	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	// Child tasks should not need to override these three methods
 	FString GetDataKey() override { return "TaskSensor"; };
 	int GetNumItems() override { return 2; };

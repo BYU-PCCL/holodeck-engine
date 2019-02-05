@@ -20,11 +20,15 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 		
 		// Get Trace to target
 		FVector EndVec = (TargetLocation + FVector(0, 0, TargetHeight) - AgentLocation) * 2 + AgentLocation;
-		FHitResult Hit = FHitResult();
-		bool TraceResult = Parent->ActorLineTraceSingle(Hit, AgentLocation, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
+		TArray<FHitResult> Hits = TArray<FHitResult>();
+		bool TraceResult = GetWorld()->LineTraceMultiByChannel(Hits, AgentLocation, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
+		int32 HitParent = Hits.FindLastByPredicate([&](FHitResult R) { return R.Actor == Parent; });
+		if (HitParent != INDEX_NONE) {
+			Hits.RemoveAt(HitParent);
+		}
 
 		// If agent is facing target and in line of sight
-		if (TargetAngle < FOVRadians && Hit.Actor == ToFollow)
+		if (TargetAngle < FOVRadians && Hits.Num() > 0 && Hits.Pop().Actor == ToFollow)
 			Reward = MaxScore * (MinDistance - Distance) / MinDistance;
 		else
 			Reward = 0;
