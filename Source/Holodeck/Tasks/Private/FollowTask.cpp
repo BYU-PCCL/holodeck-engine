@@ -19,16 +19,20 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 		float TargetAngle = FGenericPlatformMath::Acos(FVector::DotProduct(DistanceVec / Distance, Parent->GetActorForwardVector()));
 		
 		// Get Trace to target
-		FVector EndVec = (TargetLocation + FVector(0, 0, TargetHeight) - AgentLocation) * 2 + AgentLocation;
-		TArray<FHitResult> Hits = TArray<FHitResult>();
-		bool TraceResult = GetWorld()->LineTraceMultiByChannel(Hits, AgentLocation, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
-		int32 HitParent = Hits.FindLastByPredicate([&](FHitResult R) { return R.Actor == Parent; });
-		if (HitParent != INDEX_NONE) {
-			Hits.RemoveAt(HitParent);
+		FVector SocketLocation = AgentLocation;
+		UStaticMeshComponent* Mesh = (UStaticMeshComponent*)Parent->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
+		if (Mesh && Mesh->DoesSocketExist("CameraSocket")) {
+			SocketLocation = Mesh->GetSocketLocation("CameraSocket");
 		}
 
-		// If agent is facing target and in line of sight
-		if (TargetAngle < FOVRadians && Hits.Num() > 0 && Hits.Pop().Actor == ToFollow)
+		FVector StartVec = (TargetLocation + FVector(0, 0, TargetHeight) - SocketLocation) * .1 + SocketLocation;
+		FVector EndVec = (TargetLocation + FVector(0, 0, TargetHeight) - SocketLocation) * 2 + SocketLocation;
+
+		FHitResult Hit = FHitResult();
+		bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
+
+		// Eval
+		if (TargetAngle < FOVRadians && Hit.Actor == ToFollow)
 			Reward = MaxScore * (MinDistance - Distance) / MinDistance;
 		else
 			Reward = 0;
@@ -38,5 +42,5 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 	}
 
 	// Call TaskSensor's Tick to store Reward and Terminal
-	Super::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
+	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }
