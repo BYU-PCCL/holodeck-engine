@@ -56,17 +56,6 @@ void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	ControlSchemes[index]->Execute(ControlledAgent->GetRawActionBuffer(), ActionBuffer, DeltaSeconds);
 }
 
-void* AHolodeckPawnController::Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
-	UpdateServerInfo();
-	UE_LOG(LogHolodeck, Log, TEXT("Subscribing sensor %s for %s"), *SensorName, *AgentName);
-	if (Server == nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("Sensor could not find server..."));
-		return nullptr;
-	} else {
-		return Server->Malloc(UHolodeckServer::MakeKey(AgentName, SensorName), NumItems * ItemSize);
-	}
-}
-
 void AHolodeckPawnController::UpdateServerInfo() {
 	if (Server != nullptr) return;
 	UHolodeckGameInstance* Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
@@ -164,4 +153,8 @@ bool AHolodeckPawnController::CheckBoolBuffer(void* Buffer) {
 
 void AHolodeckPawnController::SetServer(UHolodeckServer* const ServerParam) {
 	this->Server = ServerParam;
+}
+
+UHolodeckServer* AHolodeckPawnController::GetServer() {
+	return this->Server;
 }

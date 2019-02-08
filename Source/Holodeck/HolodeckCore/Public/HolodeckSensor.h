@@ -106,4 +106,6 @@ protected:
 
 	AHolodeckPawnControllerInterface* Controller;
 	void* Buffer;
+
+	const FString SensorDataKey = "_sensor_data";
 };
