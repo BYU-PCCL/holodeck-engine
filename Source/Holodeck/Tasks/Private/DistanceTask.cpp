@@ -7,7 +7,7 @@ void UDistanceTask::InitializeSensor() {
 
 	StartDistance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size();
 	NextDistance = StartDistance - Interval;
-	LastDistance = 1;
+	LastDistance = StartDistance;
 }
 
 // Called every frame
@@ -19,7 +19,7 @@ void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 			SetUnitReward();
 	}
 
-	// Call TaskSensor's Tick to store Reward and Terminal
+	// Call TaskSensor's Tick to store Reward and Terminal in sensor buffer
 	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
@@ -39,6 +39,6 @@ void UDistanceTask::SetUnitReward() {
 void UDistanceTask::SetDistanceReward() {
 	float Distance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size() / StartDistance;
 	Reward = LastDistance - Distance;
-	LastDistance = Distance;
 	Terminal = Distance < GoalDistance;
+	LastDistance = Distance;
 }

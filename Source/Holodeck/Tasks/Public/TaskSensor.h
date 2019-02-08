@@ -1,4 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 #pragma once
 
 #include "Holodeck.h"
@@ -35,17 +34,19 @@ public:
 
 protected:
 	// See HolodeckSensor.h for the documentation of these overridden functions.
+	// Must be overriden by child task.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
 	// Child tasks should not need to override these three methods
 	FString GetDataKey() override { return "TaskSensor"; };
 	int GetNumItems() override { return 2; };
 	int GetItemSize() override { return sizeof(float); };
 
-	/*
-	 * Parent
-	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
-	 */
+
+	// After initialization, Parent contains a pointer to whatever the sensor is attached to.
 	AActor* Parent;
+
+	// Members to be set by child tasks each tick
 	float Reward;
 	bool Terminal;
 
