@@ -20,7 +20,7 @@ public:
 	/**
 	* Default Constructor
 	*/
-	UFollowTask() : MaxScore(100) {}
+	UFollowTask() {}
 
 	/**
 	* InitializeSensor
@@ -54,5 +54,5 @@ protected:
 
 private:
 	// Scales score between 0-1 to 0-100
-	int MaxScore;
+	const int MaxScore = 100;
 };

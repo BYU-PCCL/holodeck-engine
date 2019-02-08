@@ -18,20 +18,20 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 		// Get angle to target
 		float TargetAngle = FGenericPlatformMath::Acos(FVector::DotProduct(DistanceVec / Distance, Parent->GetActorForwardVector()));
 		
-		// Get Trace to target
+		// Get trace to target
 		FVector SocketLocation = AgentLocation;
 		UStaticMeshComponent* Mesh = (UStaticMeshComponent*)Parent->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
 		if (Mesh && Mesh->DoesSocketExist("CameraSocket")) {
 			SocketLocation = Mesh->GetSocketLocation("CameraSocket");
 		}
 
-		FVector StartVec = (TargetLocation + FVector(0, 0, TargetHeight) - SocketLocation) * .1 + SocketLocation;
+		FVector StartVec = (TargetLocation - SocketLocation) * .1 + SocketLocation;
 		FVector EndVec = (TargetLocation + FVector(0, 0, TargetHeight) - SocketLocation) * 2 + SocketLocation;
 
 		FHitResult Hit = FHitResult();
 		bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
 
-		// Eval
+		// Evaluate
 		if (TargetAngle < FOVRadians && Hit.Actor == ToFollow)
 			Reward = MaxScore * (MinDistance - Distance) / MinDistance;
 		else

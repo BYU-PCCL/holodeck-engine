@@ -20,7 +20,7 @@ public:
 	/**
 	* Default Constructor
 	*/
-	UDistanceTask() : UseDistanceReward(true), Interval(1), GoalDistance(.1) {}
+	UDistanceTask() {}
 
 	/**
 	* InitializeSensor
@@ -56,7 +56,7 @@ private:
 	void SetUnitReward();
 
 	/**
-	* SetUnitReward
+	* SetDistanceReward
 	* Sets the reward if UseDistanceReward is true.
 	*/
 	void SetDistanceReward();
