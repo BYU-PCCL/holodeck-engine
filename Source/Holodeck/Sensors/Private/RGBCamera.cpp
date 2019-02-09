@@ -2,6 +2,7 @@
 #include "RGBCamera.h"
 
 URGBCamera::URGBCamera() {
+	SensorName = "RGBCamera";
 }
 
 

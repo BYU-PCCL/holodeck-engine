@@ -4,6 +4,22 @@
 UCollisionSensor::UCollisionSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
 	bWantsInitializeComponent = true;
+	SensorName = "CollisionSensor";
+}
+
+void UCollisionSensor::InitializeComponent() {
+	Super::InitializeComponent();
+
+	Parent = this->GetOwner();
+	//Set up the hit delegate, then give it to the parent. The parent will then call OnHit whenever it collides. 
+	FScriptDelegate HitDelegate;
+	HitDelegate.BindUFunction(this, TEXT("OnHit"));
+	if (Parent) {
+		Parent->OnActorHit.AddUnique(HitDelegate);
+	}
+	else {
+		UE_LOG(LogHolodeck, Warning, TEXT("UCollisionSensor::Parent was never initialized. Cannot add HitDelegate"));
+	}
 }
 
 void UCollisionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
@@ -17,17 +33,4 @@ void UCollisionSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType,
 
 void UCollisionSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector NormalImpulse, const FHitResult& Hit) {
 	bIsColliding = true;
-}
- 
-void UCollisionSensor::InitializeComponent() {
-	Super::InitializeComponent();
-	Parent = this->GetOwner();
-	//Set up the hit delegate, then give it to the parent. The parent will then call OnHit whenever it collides. 
-	FScriptDelegate HitDelegate;
-	HitDelegate.BindUFunction(this, TEXT("OnHit"));
-	if (Parent) {
-		Parent->OnActorHit.AddUnique(HitDelegate);
-	} else {
-		UE_LOG(LogHolodeck, Warning, TEXT("UCollisionSensor::Parent was never initialized. Cannot add HitDelegate"));
-	}
 }
