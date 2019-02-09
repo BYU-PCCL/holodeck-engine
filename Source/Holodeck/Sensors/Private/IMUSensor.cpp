@@ -5,6 +5,7 @@
 
 UIMUSensor::UIMUSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "IMUSensor";
 }
 
 void UIMUSensor::InitializeSensor() {

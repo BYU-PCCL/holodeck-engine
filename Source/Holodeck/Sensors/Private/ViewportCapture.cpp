@@ -6,11 +6,13 @@
 // Sets default values for this component's properties
 UViewportCapture::UViewportCapture(){
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "ViewportCapture";
 }
 
 void UViewportCapture::InitializeSensor() {
 	UE_LOG(LogHolodeck, Log, TEXT("UViewportCapture::InitializeSensor"));
 	Super::InitializeSensor();
+
 	// This must come first, since the HolodeckSensor parent class will
 	// call GetNumItems, which needs the ViewportClient.
 	ViewportClient = Cast<UHolodeckViewportClient>(GEngine->GameViewport);

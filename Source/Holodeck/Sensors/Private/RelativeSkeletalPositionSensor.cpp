@@ -5,6 +5,7 @@
 
 URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "RelativeSkeletalPositionSensor";
 }
 
 void URelativeSkeletalPositionSensor::InitializeSensor() {

@@ -27,7 +27,6 @@ public:
 	
 protected:
 	// See HolodeckSensor for documentation for these overridden functions.
-	FString GetDataKey() override { return "ViewportCapture"; };
 	int GetNumItems() override { return Width * Height; };
 	int GetItemSize() override { return sizeof(FColor); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

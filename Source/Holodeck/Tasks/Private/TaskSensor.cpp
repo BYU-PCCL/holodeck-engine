@@ -5,6 +5,7 @@
 // Sets default values
 UTaskSensor::UTaskSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "TaskSensor";
 }
 
 // Initialize and get Parent
