@@ -10,7 +10,7 @@
   * UTaskSensor
   * A base class for tasks within Holodeck.
   * This class is a Holodeck Sensor.
-  * This class chooses a HolodeckAgent which is trying to perform the task.
+  * This class assigns a reward to the HolodeckAgent it's attached to.
   * The task logic then sets the reward and terminal each tick.
   * The child class must remember to call the parent tick class at the end of
   * setting the reward and terminal. This allows the parent class to set those

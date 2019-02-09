@@ -10,6 +10,10 @@
 * UDistanceTask
 * Inherits from the TaskSensor class.
 * Calculates a distance based reward.
+* If UseDistanceReward is true, the reward is the change in distance to the goal.
+* If UseDistanceReward is false, the reward is 1 if the agent reaches its next distance goal
+* defined by the interval and -1 otherwise. 
+* Terminal is set to true when the agent is within its GoalDistance.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UDistanceTask : public UTaskSensor

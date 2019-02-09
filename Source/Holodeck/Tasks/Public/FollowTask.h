@@ -10,6 +10,13 @@
 * UFollowTask
 * Inherits from the TaskSensor class.
 * Calculates follow reward based on distance and line of sight.
+* If OnlyWithinSight is true, the reward is set to the percent distance covered 
+* from the MinDistance to the ToFollow Target if the angle from the agent to the Target
+* is less than FOVRadians and is there is nothing blocking the agent's line of sight, 
+* otherwise the reward is 0.
+* If OnlywithinSight is false, the reward is set to the percent distance covered 
+* from the MinDistance to the ToFollow Actor.
+* Terminal is always false.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UFollowTask : public UTaskSensor
