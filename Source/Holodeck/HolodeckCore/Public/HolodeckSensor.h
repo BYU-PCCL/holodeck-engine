@@ -66,6 +66,10 @@ public:
 	FString AgentName;
 	FString SensorName;
 
+	// Allows you to turn the sensor on and off in the editor
+	UPROPERTY(EditAnywhere)
+	bool bOn;
+
 protected:
 
 	/**
@@ -100,10 +104,8 @@ protected:
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) { 
 		check(0 && "You must override TickSensorComponent"); };
 
-	// Allows you to turn the sensor on and off in the editor
-	UPROPERTY(EditAnywhere)
-	bool bOn;
-
 	AHolodeckPawnControllerInterface* Controller;
 	void* Buffer;
+
+	const FString SensorDataKey = "_sensor_data";
 };
