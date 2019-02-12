@@ -7,6 +7,14 @@
 #include "TurtleAgent.generated.h"
 
 UCLASS()
+/**
+* ATurtleAgent
+* Inherits from the HolodeckAgent class
+* On any tick this object will:
+*     Calculate the forces to apply using PID controllers, desired values, and current values.
+*     Apply the given forces.
+* Desired values must be set by a controller.
+*/
 class HOLODECK_API ATurtleAgent : public AHolodeckAgent
 {
 	GENERATED_BODY()
@@ -45,5 +53,9 @@ public:
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
 private:
+	/**
+	* 0: ThrustToApply
+	* 1: YawTorqueToApply
+	*/
 	float CommandArray[2];
 };

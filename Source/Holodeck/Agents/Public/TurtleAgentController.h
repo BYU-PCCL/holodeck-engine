@@ -10,7 +10,7 @@
 #include "TurtleAgentController.generated.h"
 
 /**
-* A Holodeck Sphere Robot Controller
+* A Holodeck Turtle Agent Controller
 */
 UCLASS()
 class HOLODECK_API ATurtleAgentController : public AHolodeckPawnController

@@ -23,13 +23,15 @@ void ATurtleAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	ForwardForce = CommandArray[0];
 	RotForce = CommandArray[1];
+	float maxThrust = 15.0f;
+	float maxYaw = 15.0f;
 
 	//TODO make numbers not magic
-	float ThrustToApply = FMath::Clamp(ForwardForce, -10.0f, 10.0f);
-	float YawTorqueToApply = FMath::Clamp(RotForce, -15.0f, 15.0f);
+	float ThrustToApply = FMath::Clamp(ForwardForce, -maxThrust, maxThrust);
+	float YawTorqueToApply = FMath::Clamp(RotForce, -maxYaw, maxYaw);
 
 	FVector LocalThrust = FVector(ThrustToApply * 1000, 0, 0);
-	FVector LocalTorque = FVector(0, 0, YawTorqueToApply*1000);
+	FVector LocalTorque = FVector(0, 0, YawTorqueToApply * 1000);
 
 	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
