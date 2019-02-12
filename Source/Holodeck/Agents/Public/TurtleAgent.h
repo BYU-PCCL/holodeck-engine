@@ -2,10 +2,8 @@
 
 #pragma once
 
-#include "Holodeck.h"
-
+#include "GameFramework/Pawn.h"
 #include "HolodeckAgent.h"
-
 #include "TurtleAgent.generated.h"
 
 UCLASS()
