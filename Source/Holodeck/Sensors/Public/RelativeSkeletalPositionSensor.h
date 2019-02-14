@@ -27,7 +27,6 @@ public:
 	
 protected:
 	// See HolodeckSensor for documentation on these functions.
-	FString GetDataKey() override { return "RelativeSkeletalPositionSensor"; };
 	int GetNumItems() override { return 67 * 4; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

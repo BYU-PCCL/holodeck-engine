@@ -3,6 +3,7 @@
 
 UJointRotationSensor::UJointRotationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "JointRotationSensor";
 }
 
 void UJointRotationSensor::InitializeSensor() {

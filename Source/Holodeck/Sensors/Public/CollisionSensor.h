@@ -36,7 +36,6 @@ public:
 
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
-	FString GetDataKey() override { return "CollisionSensor"; };
 	int GetNumItems() override { return 1; };
 	int GetItemSize() override { return sizeof(bool); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

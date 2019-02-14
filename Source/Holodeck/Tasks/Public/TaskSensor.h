@@ -38,7 +38,6 @@ protected:
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	// Child tasks should not need to override these three methods
-	FString GetDataKey() override { return "TaskSensor"; };
 	int GetNumItems() override { return 2; };
 	int GetItemSize() override { return sizeof(float); };
 
