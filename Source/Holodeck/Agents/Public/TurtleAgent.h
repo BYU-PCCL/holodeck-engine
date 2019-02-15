@@ -34,18 +34,6 @@ public:
 	*/
 	void Tick(float DeltaSeconds) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float ForwardForce;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float RotForce;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float ForwardSensitivity;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float RotSensitivity;
-
 	UPROPERTY(BlueprintReadWrite, Category = UAVMesh)
 		UStaticMeshComponent* RootMesh;
 
