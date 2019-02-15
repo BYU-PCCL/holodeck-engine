@@ -22,6 +22,13 @@ public:
 	  */
 	float FixupDeltaSeconds(float DeltaSeconds, float RealDeltaSeconds) override;
 
+	AHolodeckWorldSettings() {
+		int TicksPerSec;
+		if (FParse::Value(FCommandLine::Get(), TEXT("TicksPerSec="), TicksPerSec)) {
+			ConstantTimeDeltaBetweenTicks = 1.0 / TicksPerSec;
+		}
+	};
+
 	/**
 	  * GetConstantTimeDeltaBetweenTicks
 	  * Gets the time between ticks.

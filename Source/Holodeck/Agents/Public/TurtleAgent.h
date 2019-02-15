@@ -11,7 +11,6 @@ UCLASS()
 * ATurtleAgent
 * Inherits from the HolodeckAgent class
 * On any tick this object will:
-*     Calculate the forces to apply using PID controllers, desired values, and current values.
 *     Apply the given forces.
 * Desired values must be set by a controller.
 */

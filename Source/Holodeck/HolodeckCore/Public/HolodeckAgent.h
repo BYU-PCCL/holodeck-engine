@@ -10,6 +10,9 @@
 #include "HolodeckGameInstance.h"
 #include "HolodeckAgent.generated.h"
 
+const float UEUnitsPerMeter = 100.0;
+const float UEUnitsPerMeterSquared = 10000;
+
 /* Forward declare Holodeck Sensor Class. */
 class UHolodeckSensor;
 
@@ -53,20 +56,6 @@ public:
 	virtual void Tick(float DeltaSeconds) override;
 
 	/**
-	  * SetReward
-	  * Sets the reward in the server for this agent.
-	  * @param Reward the value of the reward.
-	  */
-	void SetReward(float Reward) override;
-
-	/**
-	  * SetTerminal
-	  * Sets the terminal in the server for this agent.
-	  * @param Terminal the value of the terminal signal.
-	  */
-	void SetTerminal(bool bTerminal) override;
-
-	/**
 	  * Teleport
 	  * Instantly moves the agent to target location, with the orientation that was given
 	  * If no orientation was given, orientation remains unchanged (see overloaded function)
@@ -84,6 +73,17 @@ public:
 	  * @return Bool if the teleport was successful.
 	  */
 	bool Teleport(const FVector& NewLocation) override;
+
+	/**
+	* SetState
+	* Sets the state of the agent (pos,rot,vel,ang_vel)
+	* @param NewLocation The location to move to
+	* @param NewRotation The rotation that the object will take on
+	* @param NewVelocity The new linear velocity
+	* @param NewAngVelocity The new angular velocity
+	* @return Bool if the teleport was successful.
+	*/
+	bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) override;
 
 	/**
 	* InitializeController
@@ -117,8 +117,6 @@ public:
 private:
 
 	UHolodeckGameInstance* Instance;
-	float* RewardPtr;
-	bool* TerminalPtr;
 	AHolodeckPawnControllerInterface* HolodeckController;
 	UHolodeckServer* Server;
 };

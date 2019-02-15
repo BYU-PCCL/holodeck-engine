@@ -36,21 +36,17 @@ public:
 	virtual void Tick(float DeltaSeconds) override { Super::Tick(DeltaSeconds); };
 
 	/**
-	* SetReward
-	* Sets the reward in the server for this agent.
-	* @param Reward the value of the reward.
+	* SetState
+	* Sets the state of the agent (pos, rot, vel, ang_vel)
+	* @param NewLocation The location to move to
+	* @param NewRotation The rotation that the object will take on
+	* @param NewVelocity The new linear velocity
+	* @param NewAngVelocity The new angular velocity
+	* @return Bool if the teleport was successful.
 	*/
-	virtual void SetReward(float Reward) {
-		check(0 && "You must override SetReward");
-	};
-
-	/**
-	* SetTerminal
-	* Sets the terminal in the server for this agent.
-	* @param Terminal the value of the terminal signal.
-	*/
-	virtual void SetTerminal(bool bTerminal) {
-		check(0 && "You must override SetTerminal");
+	virtual bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity){
+		check(0 && "You must override SetState");
+		return false;
 	};
 
 	/**
@@ -77,7 +73,6 @@ public:
 		check(0 && "You must override Teleport");
 		return false;
 	};
-
 
 	/**
 	* InitializeController

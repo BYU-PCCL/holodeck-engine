@@ -68,17 +68,6 @@ public:
 	void UnPossess() override;
 
 	/**
-	  * Subscribe
-	  * Subscribes a sensor on the HolodeckServer.
-	  * @param AgentName the name of the agent the sensor is being registered for.
-	  * @param SensorName the name of the sensor to register.
-	  * @param NumItems the number of items in the data buffer.
-	  * @param ItemSize the size of each item in the data buffer.
-	  * @return a pointer to the data buffer.
-	  */
-	void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) override;
-
-	/**
 	  * GetActionBuffer
 	  * Gets the action buffer for this agent.
 	  * @param AgentName the name of the agent to subscribe an action buffer for.
@@ -95,17 +84,28 @@ public:
 	virtual void ExecuteTeleport() override;
 
 	/**
+	* ExecuteSetState
+	* Sets a new state for the controlled agent
+	*/
+	virtual void ExecuteSetState() override;
+
+	/**
 	* SetServer
 	* Sets the server object within this object.
 	*/
 	virtual void SetServer(UHolodeckServer* const ServerParam) override;
 
+	/**
+	* GetServer
+	* Sets the server object within this object.
+	*/
+	virtual UHolodeckServer* GetServer() override;
+
 protected:
 	void* ActionBuffer;
 	uint8* ControlSchemeIdBuffer;
 	float* TeleportBuffer;
-	float* RotationBuffer;
-	uint8* ShouldTeleportBuffer;
+	uint8* ShouldChangeStateBuffer;
 
 	UPROPERTY()
 	TArray<UHolodeckControlScheme*> ControlSchemes;
@@ -125,9 +125,7 @@ private:
 	  */
 	bool CheckBoolBuffer(void* Buffer);
 
-	UHolodeckServer* Server;
 	const int SINGLE_BOOL = 1;
-	const int TELEPORT_COMMAND_SIZE = 3;
-	const int ROTATE_COMMAND_SIZE = 3;
-
+	const int TELEPORT_COMMAND_SIZE = 12;
+	UHolodeckServer* Server;
 };

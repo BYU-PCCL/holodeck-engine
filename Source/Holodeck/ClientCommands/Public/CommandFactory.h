@@ -12,9 +12,12 @@
 #include "DayCycleCommand.h"
 #include "SetWeatherCommand.h"
 #include "TeleportCameraCommand.h"
+#include "RGBCameraRateCommand.h"
 #include "DebugDrawCommand.h"
 #include "RenderViewportCommand.h"
 #include "AdjustRenderQualityCommand.h"
+#include "CustomCommand.h"
+#include "SetSensorEnabledCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;
