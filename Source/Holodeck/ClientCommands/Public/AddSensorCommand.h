@@ -2,7 +2,6 @@
 
 #include "Holodeck.h"
 
-#include "HolodeckSensor.h"
 #include "Command.h"
 #include "AddSensorCommand.generated.h"
 
@@ -10,7 +9,7 @@
 * AddSensorCommand
 * Command used to add a sensor to an agent
 *
-* StringParameters expect two arguments, the agent and sensor name.
+* StringParameters expect four arguments, the agent name, the socket name, sensor name, and sensor class.
 */
 UCLASS()
 class HOLODECK_API UAddSensorCommand : public UCommand
@@ -20,4 +19,5 @@ class HOLODECK_API UAddSensorCommand : public UCommand
 public:
 	//See UCommand for the documentation of this overridden function.
 	void Execute() override;
+
 };
