@@ -45,16 +45,17 @@ void UAddSensorCommand::Execute() {
 	FString TypeName = StringParams[3].c_str();
 	AHolodeckAgent* Agent = GetAgent(AgentName);
 
-	UHolodeckSensor* Sensor = NewObject<UHolodeckSensor>(Agent, SensorMap[TypeName]);
+	UHolodeckSensor* Sensor = NewObject<UHolodeckSensor>(Agent->GetRootComponent(), SensorMap[TypeName]);
 	Sensor->SensorName = SensorName;
 
 	if (Sensor && Agent)
 	{
+		Sensor->RegisterComponent();
 		if (SocketName.IsEmpty()) {
-			Sensor->AttachToComponent(Cast<USceneComponent>(Agent), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
+			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
 		}
 		else {
-			Sensor->AttachToComponent(Cast<USceneComponent>(Agent), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName(*SocketName));
+			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true), FName(*SocketName));
 		}
 
 		Sensor->SetAgentAndController(Agent->HolodeckController, AgentName);
