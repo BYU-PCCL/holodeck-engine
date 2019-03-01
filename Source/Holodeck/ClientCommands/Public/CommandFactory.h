@@ -18,6 +18,8 @@
 #include "AdjustRenderQualityCommand.h"
 #include "CustomCommand.h"
 #include "SetSensorEnabledCommand.h"
+#include "AddSensorCommand.h"
+#include "RemoveSensorCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;

@@ -7,7 +7,7 @@
 void URemoveSensorCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("v::Remove sensor"));
 
-	if (StringParams.size() != 2 || NumberParams.size() != 1) {
+	if (StringParams.size() != 2 || NumberParams.size() != 0) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in v. Command not executed."));
 		return;
 	}
@@ -33,6 +33,5 @@ void URemoveSensorCommand::Execute() {
 	{
 		Agent->SensorMap.Remove(Sensor->SensorName);
 		Sensor->UnregisterComponent();
-		delete Sensor;
 	}
 }

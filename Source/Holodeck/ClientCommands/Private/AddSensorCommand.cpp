@@ -3,25 +3,12 @@
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
 #include "AddSensorCommand.h"
-#include "CollisionSensor.h"
-#include "HolodeckCamera.h"
-#include "IMUSensor.h"
-#include "JointRotationSensor.h"
-#include "LocationSensor.h"
-#include "OrientationSensor.h"
-#include "PressureSensor.h"
-#include "RelativeSkeletalPositionSensor.h"
-#include "RGBCamera.h"
-#include "RotationSensor.h"
-#include "VelocitySensor.h"
-#include "ViewportCapture.h"
-#include "DistanceTask.h"
-#include "FollowTask.h"
+#include "HolodeckSensor.h"
 
 void UAddSensorCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("v::Add sensor"));
 
-	if (StringParams.size() != 2 || NumberParams.size() != 1) {
+	if (StringParams.size() != 4 || NumberParams.size() != 0) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in v. Command not executed."));
 		return;
 	}
@@ -38,59 +25,31 @@ void UAddSensorCommand::Execute() {
 		return;
 	}
 
+	static USensorMapType SensorMap = { { "CollisionSensor", UCollisionSensor::StaticClass() },
+										{ "IMUSensor", UIMUSensor::StaticClass() },
+										{ "JointRotationSensor", UJointRotationSensor::StaticClass() },
+										{ "LocationSensor", ULocationSensor::StaticClass() },
+										{ "OrientationSensor", UOrientationSensor::StaticClass() },
+										{ "PressureSensor", UPressureSensor::StaticClass() },
+										{ "RelativeSkeletalPositionSensor", URelativeSkeletalPositionSensor::StaticClass() },
+										{ "RGBCamera", URGBCamera::StaticClass() },
+										{ "RotationSensor", URotationSensor::StaticClass() },
+										{ "VelocitySensor", UVelocitySensor::StaticClass() },
+										{ "ViewportCapture", UViewportCapture::StaticClass() },
+										{ "DistanceTask", UDistanceTask::StaticClass() },
+										{ "FollowTask", UFollowTask::StaticClass() } };
+
 	FString AgentName = StringParams[0].c_str();
 	FString SocketName = StringParams[1].c_str();
 	FString SensorName = StringParams[2].c_str();
 	FString TypeName = StringParams[3].c_str();
 	AHolodeckAgent* Agent = GetAgent(AgentName);
 
-	UHolodeckSensor* Sensor = nullptr;
-	if (TypeName == "CollisionSensor") {
-		Sensor = NewObject<UCollisionSensor>();
-	}
-	else if (TypeName == "HolodeckCamera") {
-		Sensor = NewObject<UHolodeckCamera>();
-	}
-	else if (TypeName == "IMUSensor") {
-		Sensor = NewObject<UIMUSensor>();
-	}
-	else if (TypeName == "JointRotationSensor") {
-		Sensor = NewObject<UJointRotationSensor>();
-	}
-	else if (TypeName == "LocationSensor") {
-		Sensor = NewObject<ULocationSensor>();
-	}
-	else if (TypeName == "OrientationSensor") {
-		Sensor = NewObject<UOrientationSensor>();
-	}
-	else if (TypeName == "PressureSensor") {
-		Sensor = NewObject<UPressureSensor>();
-	}
-	else if (TypeName == "RelativeSkeletalPositionSensor") {
-		Sensor = NewObject<URelativeSkeletalPositionSensor>();
-	}
-	else if (TypeName == "RGBCamera") {
-		Sensor = NewObject<URGBCamera>();
-	}
-	else if (TypeName == "RotationSensor") {
-		Sensor = NewObject<URotationSensor>();
-	}
-	else if (TypeName == "VelocitySensor") {
-		Sensor = NewObject<UVelocitySensor>();
-	}
-	else if (TypeName == "ViewportCapture") {
-		Sensor = NewObject<UViewportCapture>();
-	}
-	else if (TypeName == "DistanceTask") {
-		Sensor = NewObject<UDistanceTask>();
-	}
-	else if (TypeName == "FollowTask") {
-		Sensor = NewObject<UFollowTask>();
-	}
+	UHolodeckSensor* Sensor = NewObject<UHolodeckSensor>(Agent, SensorMap[TypeName]);
+	Sensor->SensorName = SensorName;
 
 	if (Sensor && Agent)
 	{
-		Sensor->RegisterComponent();
 		if (SocketName.IsEmpty()) {
 			Sensor->AttachToComponent(Cast<USceneComponent>(Agent), FAttachmentTransformRules(EAttachmentRule::SnapToTarget, true));
 		}

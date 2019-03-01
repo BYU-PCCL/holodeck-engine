@@ -2,6 +2,21 @@
 
 #include "Holodeck.h"
 
+#include <map>
+#include "CollisionSensor.h"
+#include "IMUSensor.h"
+#include "JointRotationSensor.h"
+#include "LocationSensor.h"
+#include "OrientationSensor.h"
+#include "PressureSensor.h"
+#include "RelativeSkeletalPositionSensor.h"
+#include "RGBCamera.h"
+#include "RotationSensor.h"
+#include "VelocitySensor.h"
+#include "ViewportCapture.h"
+#include "DistanceTask.h"
+#include "FollowTask.h"
+
 #include "Command.h"
 #include "AddSensorCommand.generated.h"
 
@@ -15,6 +30,8 @@ UCLASS()
 class HOLODECK_API UAddSensorCommand : public UCommand
 {
 	GENERATED_BODY()
+
+	typedef std::map<FString, UClass*> USensorMapType;
 
 public:
 	//See UCommand for the documentation of this overridden function.
