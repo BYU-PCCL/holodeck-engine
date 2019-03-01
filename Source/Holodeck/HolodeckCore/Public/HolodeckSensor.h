@@ -5,6 +5,7 @@
 #include "HolodeckAgent.h"
 #include "HolodeckPawnControllerInterface.h"
 #include "Components/SceneComponent.h"
+#include "Conversion.h"
 #include "HolodeckSensor.generated.h"
 
 /**

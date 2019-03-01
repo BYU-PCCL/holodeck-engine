@@ -8,10 +8,9 @@
 #include "HolodeckAgentInterface.h"
 #include "HolodeckPawnControllerInterface.h"
 #include "HolodeckGameInstance.h"
+#include "Conversion.h"
 #include "HolodeckAgent.generated.h"
 
-const float UEUnitsPerMeter = 100.0;
-const float UEUnitsPerMeterSquared = 10000;
 
 /* Forward declare Holodeck Sensor Class. */
 class UHolodeckSensor;
