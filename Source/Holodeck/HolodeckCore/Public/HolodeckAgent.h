@@ -10,6 +10,9 @@
 #include "HolodeckGameInstance.h"
 #include "HolodeckAgent.generated.h"
 
+const float UEUnitsPerMeter = 100.0;
+const float UEUnitsPerMeterSquared = 10000;
+
 /* Forward declare Holodeck Sensor Class. */
 class UHolodeckSensor;
 
@@ -51,20 +54,6 @@ public:
 	  * @param DeltaSeconds the time since the last tick.
 	  */
 	virtual void Tick(float DeltaSeconds) override;
-
-	/**
-	  * SetReward
-	  * Sets the reward in the server for this agent.
-	  * @param Reward the value of the reward.
-	  */
-	void SetReward(float Reward) override;
-
-	/**
-	  * SetTerminal
-	  * Sets the terminal in the server for this agent.
-	  * @param Terminal the value of the terminal signal.
-	  */
-	void SetTerminal(bool bTerminal) override;
 
 	/**
 	  * Teleport
@@ -128,8 +117,6 @@ public:
 private:
 
 	UHolodeckGameInstance* Instance;
-	float* RewardPtr;
-	bool* TerminalPtr;
 	AHolodeckPawnControllerInterface* HolodeckController;
 	UHolodeckServer* Server;
 };

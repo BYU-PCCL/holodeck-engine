@@ -64,20 +64,17 @@ public:
 	virtual FString GetAgentName() { return this->AgentName; }
 
 	FString AgentName;
-	FString SensorName;
+
+	// Allows you to modify the sensor name in the editor to allow for duplicate sensors on an agent
+	// Default SensorName should be set in child before calling Super::InitializeSensor 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString SensorName = "";
 
 	// Allows you to turn the sensor on and off in the editor
 	UPROPERTY(EditAnywhere)
 	bool bOn;
 
 protected:
-
-	/**
-	  * Must be overridden by subclass
-	  * Set the name for the data
-	  * e.g. return "MyNewSensor"
-	  */
-	virtual FString GetDataKey() { check(0 && "You must override GetDataKey"); return ""; };
 
 	/**
 	  * Must be overridden by subclass
@@ -106,4 +103,6 @@ protected:
 
 	AHolodeckPawnControllerInterface* Controller;
 	void* Buffer;
+
+	const FString SensorDataKey = "_sensor_data";
 };

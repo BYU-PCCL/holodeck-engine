@@ -34,7 +34,6 @@ public:
 	
 protected:
 	// See HolodeckSensor for documentation on these classes.
-	FString GetDataKey() override { return "OrientationSensor"; };
 	int GetNumItems() override { return 9; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

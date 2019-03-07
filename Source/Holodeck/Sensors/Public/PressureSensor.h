@@ -42,8 +42,6 @@ private:
 	float PrivateData[NUM_PRESSURE_ITEMS];
 
 protected:
-	FString GetDataKey() override { return "PressureSensor"; };
-
 	// 94 DOF each with 2 length 3 vectors containing impulse normal info and hit location
 	int GetNumItems() override { return NUM_PRESSURE_ITEMS; };
 	int GetItemSize() override { return sizeof(float); };

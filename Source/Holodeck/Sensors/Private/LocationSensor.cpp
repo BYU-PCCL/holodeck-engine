@@ -3,14 +3,14 @@
 
 ULocationSensor::ULocationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "LocationSensor";
 }
 
 void ULocationSensor::InitializeSensor() {
 	Super::InitializeSensor();
+
 	//You need to get the pointer to the object you are attached to. 
 	Parent = this->GetAttachParent();
-
-	UnitsPerMeter = GetWorld()->GetWorldSettings()->WorldToMeters;
 }
 
 void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
@@ -18,8 +18,8 @@ void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, 
 	if (Parent != nullptr && bOn) {
 		FVector Location = Parent->GetComponentLocation();
 		float* FloatBuffer = static_cast<float*>(Buffer);
-		FloatBuffer[0] = Location.X / UnitsPerMeter;
-		FloatBuffer[1] = Location.Y / UnitsPerMeter;
-		FloatBuffer[2] = Location.Z / UnitsPerMeter;
+		FloatBuffer[0] = Location.X / UEUnitsPerMeter;
+		FloatBuffer[1] = Location.Y / UEUnitsPerMeter;
+		FloatBuffer[2] = Location.Z / UEUnitsPerMeter;
 	}
 }

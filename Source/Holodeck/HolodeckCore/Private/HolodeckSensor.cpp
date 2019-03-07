@@ -20,7 +20,7 @@ void UHolodeckSensor::InitializeSensor() {
 
 	if (bOn && Controller != nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Getting buffer of size %d"), GetNumItems() * GetItemSize());
-		Buffer = Controller->Subscribe(AgentName, SensorName, GetNumItems(), GetItemSize());
+		Buffer = Controller->GetServer()->Malloc(UHolodeckServer::MakeKey(AgentName, SensorName + SensorDataKey), GetNumItems() * GetItemSize());
 	} else {
 		UE_LOG(LogTemp, Warning, TEXT("Getting Controller Failed. Sensor not "));
 	}
@@ -28,7 +28,6 @@ void UHolodeckSensor::InitializeSensor() {
 
 void UHolodeckSensor::BeginPlay() {
 	Super::BeginPlay();
-	SensorName = GetDataKey();
 }
 
 void UHolodeckSensor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {

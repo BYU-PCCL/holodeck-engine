@@ -73,20 +73,6 @@ public:
 	};
 
 	/**
-	  * Subscribe
-	  * Subscribes a sensor on the HolodeckServer.
-	  * @param AgentName the name of the agent the sensor is being registered for.
-	  * @param SensorName the name of the sensor to register.
-	  * @param NumItems the number of items in the data buffer.
-	  * @param ItemSize the size of each item in the data buffer.
-	  * @return a pointer to the data buffer.
-	  */
-	virtual void* Subscribe(const FString& AgentName, const FString& SensorName, int NumItems, int ItemSize) {
-		check(0 && "You must override Subscribe");
-		return nullptr;
-	};
-
-	/**
 	  * GetActionBuffer
 	  * Gets the action buffer for this agent.
 	  * @param AgentName the name of the agent to subscribe an action buffer for.
@@ -122,5 +108,14 @@ public:
 	*/
 	virtual void SetServer(UHolodeckServer* const ServerParam) {
 		check(0 && "You must override SetServer");
+	};
+
+	/**
+	* GetServer
+	* gets the server object within this object.
+	*/
+	virtual UHolodeckServer* GetServer() {
+		check(0 && "You must override SetServer");
+		return nullptr;
 	};
 };

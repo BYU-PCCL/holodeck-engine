@@ -27,7 +27,6 @@ public:
 
 protected:
 	// See HolodeckSensor for information on these classes.
-	virtual FString GetDataKey() override { return "JointRotationSensor"; };
 	virtual int GetNumItems() override { return 94; };
 	virtual int GetItemSize() override { return sizeof(float); };
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
