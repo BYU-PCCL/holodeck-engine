@@ -5,6 +5,7 @@
 
 UOrientationSensor::UOrientationSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "OrientationSensor";
 }
 
 void UOrientationSensor::InitializeSensor() {
