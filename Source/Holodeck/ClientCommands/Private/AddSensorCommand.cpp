@@ -6,7 +6,7 @@
 #include "HolodeckSensor.h"
 
 void UAddSensorCommand::Execute() {
-	UE_LOG(LogHolodeck, Log, TEXT("v::Add sensor"));
+	UE_LOG(LogHolodeck, Log, TEXT("UAddSensorCommand::Add sensor"));
 
 	if (StringParams.size() != 4 || NumberParams.size() != 0) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in v. Command not executed."));

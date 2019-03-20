@@ -5,7 +5,7 @@
 #include "RemoveSensorCommand.h"
 
 void URemoveSensorCommand::Execute() {
-	UE_LOG(LogHolodeck, Log, TEXT("v::Remove sensor"));
+	UE_LOG(LogHolodeck, Log, TEXT("URemoveSensorCommand::Remove sensor"));
 
 	if (StringParams.size() != 2 || NumberParams.size() != 0) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in v. Command not executed."));

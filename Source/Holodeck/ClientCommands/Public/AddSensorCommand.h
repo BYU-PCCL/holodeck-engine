@@ -23,6 +23,8 @@
 /**
 * AddSensorCommand
 * Command used to add a sensor to an agent
+* Warning: This command is meant for initialization. Adding a sensor with the same name as a previously 
+* removed sensor may cause problems. Use SetSensorEnabledCommand when possible. 
 *
 * StringParameters expect four arguments, the agent name, the socket name, sensor name, and sensor class.
 */
