@@ -39,6 +39,8 @@ Binaries/*
 
 # Builds
 Build/*
+# Keep the build scripts folder
+!Build/ContinuousIntegration
 
 # Don't ignore icon files in Build
 !Build/**/*.ico
