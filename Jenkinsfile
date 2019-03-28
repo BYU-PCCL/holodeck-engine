@@ -56,11 +56,12 @@ pipeline
 						]
 					])
 				}
-
+				// Need to get permissions to move the holodeck-worlds repo
+				sh 'chmod 777 .'				
 				// Impersonate the user, configure ue4 and build the project
 				sh 'su ue4 Build/ContinuousIntegration/package_project.sh'
 								
-				// Pull down the latest build of holodec-worlds
+				// Pull down the latest build of holodeck-worlds
 				echo "The pull request was successfully packaged"
 			}
 			post
