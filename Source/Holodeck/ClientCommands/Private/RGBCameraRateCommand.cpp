@@ -27,6 +27,12 @@ void URGBCameraRateCommand::Execute() {
 	int ticksPerCapture = NumberParams[0];
 
 	AHolodeckAgent* Agent = GetAgent(AgentName);
+
+	if (!Agent->SensorMap.Contains("RGBCamera")) {
+		UE_LOG(LogHolodeck, Warning, TEXT("RGBCameraRateCommand::Execute No camera found on agent."));
+		return;
+	}
+
 	URGBCamera* Camera = (URGBCamera*)Agent->SensorMap["RGBCamera"];
 	Camera->TicksPerCapture = ticksPerCapture;
 }
