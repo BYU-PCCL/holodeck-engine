@@ -19,4 +19,4 @@ ue4 setroot /home/ue4/UnrealEngine
 ue4 clean
 
 # Package it up
-ue4 package
+ue4 package Development
