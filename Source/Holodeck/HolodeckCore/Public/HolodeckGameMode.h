@@ -7,7 +7,6 @@
 #include "GameFramework/GameMode.h"
 #include "HolodeckGameInstance.h"
 #include "CommandCenter.h"
-#include "WeatherMaster.h"
 #include "HolodeckGameMode.generated.h"
 
 /**
@@ -59,9 +58,6 @@ public:
 	void TeleportCamera(const FVector& Location, const FVector& Rotation);
 	UFUNCTION(BlueprintImplementableEvent)
 	void ExecuteCustomCommand(const FString& Name, const TArray<float>& NumberParameters, const TArray<FString>& StringParameters);
-
-	UPROPERTY(BlueprintReadWrite)
-	AWeatherMaster* WeatherMaster;
 
 private:
 	/**

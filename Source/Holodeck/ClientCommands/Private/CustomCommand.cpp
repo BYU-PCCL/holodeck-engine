@@ -2,7 +2,6 @@
 
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
-#include "SetWeatherCommand.h"
 
 void UCustomCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("Executing CustomCommand."));
