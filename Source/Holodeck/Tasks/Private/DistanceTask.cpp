@@ -1,5 +1,6 @@
 #include "Holodeck.h"
 #include "DistanceTask.h"
+#include "Json.h"
 
 // Set default values
 void UDistanceTask::InitializeSensor() {
@@ -8,6 +9,39 @@ void UDistanceTask::InitializeSensor() {
 	StartDistance = (GoalObject->GetActorLocation() - Parent->GetActorLocation()).Size();
 	NextDistance = StartDistance - Interval;
 	LastDistance = StartDistance;
+}
+
+// Allows sensor parameters to be set programmatically from client.
+void UDistanceTask::ParseSensorParms(FString ParmsJson) {
+	Super::ParseSensorParms(ParmsJson);
+
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
+
+		if (JsonParsed->HasTypedField<EJson::String>("GoalObject")) {
+			FString ActorName = JsonParsed->GetStringField("GoalObject");
+			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+			{
+				if (ActorItr->GetName() == ActorName) {
+					GoalObject = *ActorItr;
+					break;
+				}
+			}
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("UseDistanceReward")) {
+			UseDistanceReward = JsonParsed->GetBoolField("UseDistanceReward");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("Interval")) {
+			Interval = JsonParsed->GetNumberField("Interval");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("GoalDistance")) {
+			GoalDistance = JsonParsed->GetNumberField("GoalDistance");
+		}
+	}
 }
 
 // Called every frame
