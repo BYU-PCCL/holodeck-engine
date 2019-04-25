@@ -23,7 +23,9 @@ void UDebugDrawCommand::Execute() {
 		NumberParams[10] is the size
 	*/
 	FVector Vec1 = FVector(NumberParams[1], NumberParams[2], NumberParams[3]);
+	Vec1 = ConvertLinearVector(Vec1, ClientToUE);
 	FVector Vec2 = FVector(NumberParams[4], NumberParams[5], NumberParams[6]);
+	Vec2 = ConvertLinearVector(Vec2, ClientToUE);
 	FColor Color = FColor(NumberParams[7], NumberParams[8], NumberParams[9]);
 
 	// Draw debug line

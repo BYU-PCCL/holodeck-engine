@@ -67,8 +67,8 @@ void AAndroid::ApplyTorques() {
 			}
 		}
 		// Convert torque from m/rhs to cm/lhs
-		RotationVector = ConvertTorque(RotationVector);
-		SkeletalMesh->AddTorque(RotQuat.RotateVector(RotationVector), JointName, false);
+		RotationVector = ConvertTorque(RotationVector, ClientToUE);
+		SkeletalMesh->AddTorqueInRadians(RotQuat.RotateVector(RotationVector), JointName, false);
 	}
 }
 

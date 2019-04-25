@@ -56,8 +56,8 @@ float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation,
 
 	int JointInd = JointMap[BoneName] * 4;
 
-	HitBoneLocation = ConvertLinearVector(HitBoneLocation);
-	NormalImpulse = ConvertLinearVector(NormalImpulse);
+	HitBoneLocation = ConvertLinearVector(HitBoneLocation, UEToClient);
+	NormalImpulse = ConvertLinearVector(NormalImpulse, UEToClient);
 
 	Data[JointInd] = HitBoneLocation.X;
 	Data[JointInd+1] = HitBoneLocation.Y;

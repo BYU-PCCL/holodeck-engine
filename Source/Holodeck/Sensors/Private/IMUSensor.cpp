@@ -33,10 +33,12 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 		float* FloatBuffer = static_cast<float*>(Buffer);
 
 		// Convert before sending to user side.
-		LinearAccelerationVector = ConvertLinearVector(LinearAccelerationVector);
-		AngularVelocityVector = ConvertAngularVector(AngularVelocityVector);
+		LinearAccelerationVector = ConvertLinearVector(LinearAccelerationVector, UEToClient);
+		AngularVelocityVector = ConvertAngularVector(AngularVelocityVector, UEToClient);
+
 		FloatBuffer[0] = LinearAccelerationVector.X;
 		FloatBuffer[1] = LinearAccelerationVector.Y;
+		FloatBuffer[2] = LinearAccelerationVector.Z;
 		FloatBuffer[2] = LinearAccelerationVector.Z;
 		FloatBuffer[3] = AngularVelocityVector.X;
 		FloatBuffer[4] = AngularVelocityVector.Y;

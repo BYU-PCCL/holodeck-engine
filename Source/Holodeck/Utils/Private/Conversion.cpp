@@ -1,6 +1,6 @@
 #include "Conversion.h"
 
-FVector& ConvertLinearVector(FVector& Vector, ConvertType Type = UEToClient) {
+FVector ConvertLinearVector(FVector Vector, ConvertType Type) {
 
 	float ScaleFactor = 1.0;
 	if (Type == UEToClient)
@@ -14,7 +14,7 @@ FVector& ConvertLinearVector(FVector& Vector, ConvertType Type = UEToClient) {
 	return Vector;
 }
 
-FVector& ConvertAngularVector(FVector& Vector, ConvertType Type = UEToClient) {
+FVector ConvertAngularVector(FVector Vector, ConvertType Type) {
 
 	float ScaleFactor = 1.0;
 	if (Type == UEToClient)
@@ -28,27 +28,20 @@ FVector& ConvertAngularVector(FVector& Vector, ConvertType Type = UEToClient) {
 	return Vector;
 }
 
-FVector& ConvertAngularVector(FVector& Vector, ConvertType Type = UEToClient) {
 
-	float ScaleFactor = 1.0;
-	if (Type == UEToClient)
-		ScaleFactor /= UEUnitsPerMeter;
-	else if (Type == ClientToUE)
-		ScaleFactor *= UEUnitsPerMeter;
-
-	Vector.X *= -ScaleFactor;
-	Vector.Y *= ScaleFactor;
-	Vector.Z *= -ScaleFactor;
-	return Vector;
+FRotator ConvertAngularVector(FRotator Rotator, ConvertType Type) {
+	FVector Vec = Rotator.Vector();
+	FRotator Rot = ConvertAngularVector(Vec, Type).Rotation();
+	return Rot;
 }
 
-FVector& ConvertTorque(FVector& Vector, ConvertType Type = UEToClient) {
+FVector ConvertTorque(FVector Vector, ConvertType Type) {
 
 	float ScaleFactor = 1.0;
 	if (Type == UEToClient)
-		ScaleFactor /= UEUnitsPerMeter;
+		ScaleFactor /= UEUnitsPerMeterSquared;
 	else if (Type == ClientToUE)
-		ScaleFactor *= UEUnitsPerMeter;
+		ScaleFactor *= UEUnitsPerMeterSquared;
 
 	Vector.X *= -ScaleFactor;
 	Vector.Y *= ScaleFactor;
