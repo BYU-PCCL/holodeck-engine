@@ -53,7 +53,7 @@ void UUavControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* c
 	FRotator CurrentRotator = Uav->GetActorRotation();
 	FVector EulerRotation = RotatorToEulerInZYX(CurrentRotator);  // Get these in local coords in (Z, Y, X) order - CurrentRotator.Euler() provides (X, Y, Z)
 	FVector CurrentGlobalVelocity = Uav->GetVelocity();
-	FVector LocalAngularVelocity = CurrentRotator.UnrotateVector(Uav->RootMesh->GetPhysicsAngularVelocity());
+	FVector LocalAngularVelocity = CurrentRotator.UnrotateVector(Uav->RootMesh->GetPhysicsAngularVelocityInDegrees());
 
 	float CurrentRoll = EulerRotation.X;
 	float CurrentPitch = EulerRotation.Y;

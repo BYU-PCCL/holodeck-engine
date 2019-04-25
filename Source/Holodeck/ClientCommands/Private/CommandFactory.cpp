@@ -6,16 +6,14 @@ const static std::string SPAWN_AGENT = "SpawnAgent";
 
 UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vector<float>& NumberParameters, const std::vector<std::string>& StringParameters, AActor* ParameterGameMode) {
 	static UCommandMapType CommandMap = { { "SpawnAgent", &CreateInstance<USpawnAgentCommand>},
-										  { "ChangeFogDensity", &CreateInstance<UChangeFogDensityCommand> },
-										  { "DayTime", &CreateInstance<UDayTimeCommand> },
-										  { "SetWeather", &CreateInstance<USetWeatherCommand> },
-										  { "DayCycle", &CreateInstance<UDayCycleCommand> },
 										  { "TeleportCamera", &CreateInstance<UTeleportCameraCommand> },
 										  { "RGBCameraRate", &CreateInstance<URGBCameraRateCommand> },
 										  { "AdjustRenderQuality", &CreateInstance<UAdjustRenderQualityCommand> },
 										  { "DebugDraw", &CreateInstance<UDebugDrawCommand> },
 										  { "RenderViewport", &CreateInstance<URenderViewportCommand> },
 										  { "SetSensorEnabled", &CreateInstance<USetSensorEnabledCommand> },
+										  { "AddSensor", &CreateInstance<UAddSensorCommand> },
+										  { "RemoveSensor", &CreateInstance<URemoveSensorCommand> },
 										  { "CustomCommand", &CreateInstance<UCustomCommand> } };
 
 	UCommand*(*CreateCommandFunction)()  = CommandMap[Name];

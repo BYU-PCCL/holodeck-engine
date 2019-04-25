@@ -6,6 +6,7 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
+#include "HolodeckPawnController.h"
 #include "HolodeckPawnControllerInterface.h"
 #include "HolodeckGameInstance.h"
 #include "Conversion.h"
@@ -112,10 +113,10 @@ public:
 
 	/* Stores pointers to all the sensors on the agent. */
 	TMap<FString, UHolodeckSensor*> SensorMap;
+	AHolodeckPawnControllerInterface* HolodeckController;
 
 private:
 
 	UHolodeckGameInstance* Instance;
-	AHolodeckPawnControllerInterface* HolodeckController;
 	UHolodeckServer* Server;
 };

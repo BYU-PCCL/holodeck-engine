@@ -1,4 +1,5 @@
 # HOLODECK
+![Build Status](https://jenkins.holodeck.ml/buildStatus/icon?job=holodeck-engine%2Fdevelop)
 
 ## About
 Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.21, with bindings for python to communicate with the agents in the environments. For best results, use windows.

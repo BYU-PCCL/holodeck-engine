@@ -7,10 +7,6 @@
 
 #include "Command.h"
 #include "SpawnAgentCommand.h"
-#include "ChangeFogDensityCommand.h"
-#include "DayTimeCommand.h"
-#include "DayCycleCommand.h"
-#include "SetWeatherCommand.h"
 #include "TeleportCameraCommand.h"
 #include "RGBCameraRateCommand.h"
 #include "DebugDrawCommand.h"
@@ -18,6 +14,8 @@
 #include "AdjustRenderQualityCommand.h"
 #include "CustomCommand.h"
 #include "SetSensorEnabledCommand.h"
+#include "AddSensorCommand.h"
+#include "RemoveSensorCommand.h"
 #include "CommandFactory.generated.h"
 
 class AHolodeckGameMode;

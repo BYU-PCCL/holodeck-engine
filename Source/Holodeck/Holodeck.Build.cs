@@ -6,6 +6,7 @@ public class Holodeck : ModuleRules
 {
 	public Holodeck(ReadOnlyTargetRules Target) : base(Target)
 	{
+        PrivatePCHHeaderFile = "Holodeck.h";
         PrivateIncludePaths.AddRange(new [] {
              "Holodeck/Agents/Public",
              "Holodeck/General/Public",
