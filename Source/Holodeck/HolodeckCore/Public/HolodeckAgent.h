@@ -6,10 +6,10 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
+#include "Conversion.h"
 #include "HolodeckPawnController.h"
 #include "HolodeckPawnControllerInterface.h"
 #include "HolodeckGameInstance.h"
-#include "Conversion.h"
 #include "HolodeckAgent.generated.h"
 
 

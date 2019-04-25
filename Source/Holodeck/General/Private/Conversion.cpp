@@ -1,3 +1,4 @@
+#include "Holodeck.h"
 #include "Conversion.h"
 
 FVector ConvertLinearVector(FVector Vector, ConvertType Type) {
