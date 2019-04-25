@@ -1,6 +1,5 @@
 #include "Holodeck.h"
 #include "SpawnAgentCommand.h"
-#include "HolodeckGameMode.h"
 
 void USpawnAgentCommand::Execute() {
 
