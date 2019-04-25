@@ -44,39 +44,24 @@ void AAndroid::ApplyTorques() {
 
 		// Apply Swing 1 Torque if non zero
 		if (CommandArray[ComInd] != 0) {
-<<<<<<< HEAD
 			float RotForce = CommandArray[ComInd];
 			RotationVector.Z = RotForce;
-=======
-			float RotForce = CommandArray[ComInd] * UEUnitsPerMeterSquared;
-			SkeletalMesh->AddTorqueInRadians(RotQuat.RotateVector(FVector(0.0f, 0.0f, RotForce)), JointName, false);
->>>>>>> develop
 		}
 		ComInd++;
 
 		// Apply Swing 2 if Torque non zero and is 2 or 3 axis joint
 		if (JointInd < (NUM_2_PLUS_3_AXIS_JOINTS)) {
 			if (CommandArray[ComInd] != 0) {
-<<<<<<< HEAD
 				float RotForce = CommandArray[ComInd];
 				RotationVector.Y = RotForce;
-=======
-				float RotForce = CommandArray[ComInd] * UEUnitsPerMeterSquared;
-				SkeletalMesh->AddTorqueInRadians(RotQuat.RotateVector(FVector(0.0f, RotForce, 0.0f)), JointName, false);
->>>>>>> develop
 			}
 			ComInd++;
 
 			// Apply Twist if Torque non zero and is 3 axis joint
 			if (JointInd < NUM_3_AXIS_JOINTS) {
 				if (CommandArray[ComInd] != 0) {
-<<<<<<< HEAD
 					float RotForce = CommandArray[ComInd];
 					RotationVector.X = RotForce;
-=======
-					float RotForce = CommandArray[ComInd] * UEUnitsPerMeterSquared;
-					SkeletalMesh->AddTorqueInRadians(RotQuat.RotateVector(FVector(RotForce, 0.0f, 0.0f)), JointName, false);
->>>>>>> develop
 				}
 				ComInd++;
 			}
