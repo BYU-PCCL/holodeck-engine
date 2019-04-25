@@ -39,12 +39,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float RotSpeed;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float ForwardSensitivity;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float RotSensitivity;
-
 	unsigned int GetRawActionSizeInBytes() const override { return 2 * sizeof(float); };
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
