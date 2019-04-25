@@ -48,6 +48,6 @@ void AUav::ApplyForces() {
 	LocalTorque *= UEUnitsPerMeterSquared;
 
 	// Apply torques and forces in global coordinates
-	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));
+	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
 }

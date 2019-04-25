@@ -95,7 +95,7 @@ bool AHolodeckAgent::SetState(const FVector& NewLocation, const FRotator& NewRot
 	UPrimitiveComponent* RootComponent = (UPrimitiveComponent*)this->GetRootComponent();
 
 	RootComponent->SetAllPhysicsLinearVelocity(NewVelocity, false);
-	RootComponent->SetAllPhysicsAngularVelocity(NewAngVelocity, false);
+	RootComponent->SetAllPhysicsAngularVelocityInDegrees(NewAngVelocity, false);
 
 	return bWasSuccessful;
 }
