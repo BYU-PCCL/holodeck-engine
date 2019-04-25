@@ -2,8 +2,6 @@
 
 #include "Holodeck.h"
 #include "HolodeckPawnController.h"
-#include "HolodeckAgent.h"
-#include "RawControlScheme.h"
 
 const FString CONTROL_SCHEME_KEY = "control_scheme";
 const FString TELEPORT_BOOL_KEY = "teleport_flag";
