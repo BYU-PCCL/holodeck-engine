@@ -8,7 +8,7 @@
 void UAddSensorCommand::Execute() {
 	UE_LOG(LogHolodeck, Log, TEXT("UAddSensorCommand::Add sensor"));
 
-	if (StringParams.size() != 4 || NumberParams.size() != 0) {
+	if (StringParams.size() != 5 || NumberParams.size() != 6) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in v. Command not executed."));
 		return;
 	}
@@ -43,6 +43,7 @@ void UAddSensorCommand::Execute() {
 	FString SensorName = StringParams[1].c_str();
 	FString TypeName = StringParams[2].c_str();
 	FString ParmsJson = StringParams[3].c_str();
+	FString SocketName = StringParams[4].c_str();
 	int LocationX = NumberParams[0];
 	int LocationY = NumberParams[1];
 	int LocationZ = NumberParams[2];
@@ -61,7 +62,13 @@ void UAddSensorCommand::Execute() {
 	if (Sensor && Agent)
 	{
 		Sensor->RegisterComponent();
-		Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
+
+		if (SocketName.IsEmpty()) {
+			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
+		}
+		else {
+			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), FName(*SocketName));
+		}
 
 		Sensor->SetAgentAndController(Agent->HolodeckController, AgentName);
 		Sensor->InitializeSensor();
