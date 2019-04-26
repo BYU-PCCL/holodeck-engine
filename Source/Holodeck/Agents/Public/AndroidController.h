@@ -4,6 +4,7 @@
 
 #include "Android.h"
 #include "HolodeckPawnController.h"
+#include "AndroidControlSchemeMaxTorque.h"
 #include "PhysicsEngine/ConstraintInstance.h"
 
 #include "AndroidController.generated.h"
@@ -31,9 +32,11 @@ public:
 	*/
 	void Possess(APawn* Pawn) override;
 
-	void AddControlSchemes() override {
-		// No other control schemes
-	};
+	void AddControlSchemes() {
+		UAndroidControlSchemeMaxTorque* ControlScheme = NewObject<UAndroidControlSchemeMaxTorque>();
+		ControlScheme->SetController(this);
+		ControlSchemes.Add(ControlScheme);
+	}
 
 private:
 
