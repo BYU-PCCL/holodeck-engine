@@ -24,6 +24,11 @@ public:
 	* Sets up the class
 	*/
 	virtual void InitializeSensor() override;
+
+	/**
+	* Allows parameters to be set dynamically
+	*/
+	virtual void ParseSensorParms(FString ParmsJson) override;
 	
 protected:
 	// See HolodeckSensor for documentation for these overridden functions.

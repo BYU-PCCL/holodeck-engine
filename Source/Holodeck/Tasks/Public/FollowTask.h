@@ -35,6 +35,11 @@ public:
 	*/
 	virtual void InitializeSensor() override;
 
+	/**
+	* Allows parameters to be set dynamically
+	*/
+	virtual void ParseSensorParms(FString ParmsJson) override;
+
 	// Actor to follow
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* ToFollow;

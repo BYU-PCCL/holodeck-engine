@@ -18,6 +18,11 @@ public:
 	*/
 	virtual void InitializeSensor() override;
 
+	/**
+	* Allows parameters to be set dynamically
+	*/
+	virtual void ParseSensorParms(FString ParmsJson) override;
+
 	UPROPERTY(EditAnywhere)
 	int TicksPerCapture = 1;
 

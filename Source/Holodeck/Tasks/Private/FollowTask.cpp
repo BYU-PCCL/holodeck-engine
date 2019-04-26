@@ -1,9 +1,47 @@
 #include "Holodeck.h"
 #include "FollowTask.h"
+#include "Json.h"
 
 // Set default values
 void UFollowTask::InitializeSensor() {
 	Super::InitializeSensor();
+}
+
+// Allows sensor parameters to be set programmatically from client.
+void UFollowTask::ParseSensorParms(FString ParmsJson) {
+	Super::ParseSensorParms(ParmsJson);
+
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
+
+		if (JsonParsed->HasTypedField<EJson::String>("ToFollow")) {
+			FString ActorName = JsonParsed->GetStringField("ToFollow");
+			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
+			{
+				if (ActorItr->ActorHasTag(FName(*ActorName))) {
+					ToFollow = *ActorItr;
+					break;
+				}
+			}
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("OnlyWithinSight")) {
+			OnlyWithinSight = JsonParsed->GetBoolField("OnlyWithinSight");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("FOVRadians")) {
+			FOVRadians = JsonParsed->GetNumberField("FOVRadians");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("MinDistance")) {
+			MinDistance = JsonParsed->GetNumberField("MinDistance");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("TargetHeight")) {
+			TargetHeight = JsonParsed->GetNumberField("TargetHeight");
+		}
+	}
 }
 
 // Called every frame
