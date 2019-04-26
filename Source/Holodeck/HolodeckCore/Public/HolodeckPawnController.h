@@ -8,6 +8,7 @@
 #include "HolodeckPawnControllerInterface.h"
 #include "HolodeckAgentInterface.h"
 #include "HolodeckControlScheme.h"
+#include "RawControlScheme.h"
 #include "HolodeckGameInstance.h"
 #include "HolodeckServer.h"
 

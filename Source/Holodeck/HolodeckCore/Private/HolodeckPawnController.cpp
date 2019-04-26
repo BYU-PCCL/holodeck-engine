@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Holodeck.h"
+#include "HolodeckAgent.h"
 #include "HolodeckPawnController.h"
 
 const FString CONTROL_SCHEME_KEY = "control_scheme";
-const FString TELEPORT_BOOL_KEY = "teleport_flag";
+const FString TELEPORT_FLAG_KEY = "teleport_flag";
 const FString TELEPORT_COMMAND_KEY = "teleport_command";
 
 
@@ -87,8 +88,8 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 											   sizeof(uint8));
 		ControlSchemeIdBuffer = static_cast<uint8*>(TempBuffer);
 
-		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_BOOL_KEY),
-											  SINGLE_BOOL * sizeof(bool));
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_FLAG_KEY),
+											 sizeof(uint8));
 		ShouldChangeStateBuffer = static_cast<uint8*>(TempBuffer);
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_COMMAND_KEY),
