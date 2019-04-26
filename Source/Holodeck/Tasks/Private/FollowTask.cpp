@@ -19,7 +19,7 @@ void UFollowTask::ParseSensorParms(FString ParmsJson) {
 			FString ActorName = JsonParsed->GetStringField("ToFollow");
 			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 			{
-				if (ActorItr->GetName() == ActorName) {
+				if (ActorItr->ActorHasTag(FName(*ActorName))) {
 					ToFollow = *ActorItr;
 					break;
 				}

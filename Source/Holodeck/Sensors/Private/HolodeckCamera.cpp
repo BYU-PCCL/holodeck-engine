@@ -16,9 +16,6 @@ UHolodeckCamera::UHolodeckCamera() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
 	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
-
-	SceneCapture = this->CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCap"); // Try NewObject
-	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Allows sensor parameters to be set programmatically from client.
@@ -42,6 +39,10 @@ void UHolodeckCamera::ParseSensorParms(FString ParmsJson) {
 void UHolodeckCamera::InitializeSensor() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::InitializeSensor"));
 	Super::InitializeSensor();
+
+	SceneCapture = NewObject<USceneCaptureComponent2D>(this, "SceneCap");
+	SceneCapture->RegisterComponent();
+	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	
 	TargetTexture = NewObject<UTextureRenderTarget2D>(this);
 

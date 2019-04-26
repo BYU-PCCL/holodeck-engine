@@ -23,7 +23,7 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 			FString ActorName = JsonParsed->GetStringField("GoalObject");
 			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 			{
-				if (ActorItr->GetName() == ActorName) {
+				if (ActorItr->ActorHasTag(FName(*ActorName))) {
 					GoalObject = *ActorItr;
 					break;
 				}

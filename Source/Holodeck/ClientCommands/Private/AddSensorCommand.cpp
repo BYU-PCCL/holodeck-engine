@@ -64,10 +64,10 @@ void UAddSensorCommand::Execute() {
 		Sensor->RegisterComponent();
 
 		if (SocketName.IsEmpty()) {
-			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true));
+			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform);
 		}
 		else {
-			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules(EAttachmentRule::KeepRelative, true), FName(*SocketName));
+			Sensor->AttachToComponent(Agent->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform, FName(*SocketName));
 		}
 
 		Sensor->SetAgentAndController(Agent->HolodeckController, AgentName);
