@@ -60,6 +60,11 @@ public:
 	  * TickSensorComponent is called from this
 	  */
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+	
+	/**
+	* Override this function if sensor has parameters to initialize.
+	*/
+	virtual void ParseSensorParms(FString ParmsJson) {}
 
 	virtual FString GetAgentName() { return this->AgentName; }
 

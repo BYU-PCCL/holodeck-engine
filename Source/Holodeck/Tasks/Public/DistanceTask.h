@@ -32,6 +32,11 @@ public:
 	*/
 	virtual void InitializeSensor() override;
 
+	/**
+	* Allows parameters to be set dynamically
+	*/
+	virtual void ParseSensorParms(FString ParmsJson) override;
+
 	// Distance to next reward (if not UseDistanceReward)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float Interval;

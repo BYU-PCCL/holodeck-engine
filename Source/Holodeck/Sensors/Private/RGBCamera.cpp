@@ -1,10 +1,24 @@
 #include "Holodeck.h"
 #include "RGBCamera.h"
+#include "Json.h"
 
 URGBCamera::URGBCamera() {
 	SensorName = "RGBCamera";
 }
 
+// Allows sensor parameters to be set programmatically from client.
+void URGBCamera::ParseSensorParms(FString ParmsJson) {
+	Super::ParseSensorParms(ParmsJson);
+
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
+		
+		if (JsonParsed->HasTypedField<EJson::Number>("TicksPerCapture")) {
+			TicksPerCapture = JsonParsed->GetIntegerField("TicksPerCapture");
+		}
+	}
+}
 
 void URGBCamera::InitializeSensor() {
 	Super::InitializeSensor();

@@ -45,6 +45,7 @@ public:
 	* InitializeAgent
 	* All agent initialization code should go in here. 
 	*/
+	UFUNCTION(BlueprintCallable)
 	virtual void InitializeAgent();
 
 	/**
