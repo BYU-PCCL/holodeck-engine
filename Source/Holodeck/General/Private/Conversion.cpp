@@ -1,6 +1,8 @@
 #include "Holodeck.h"
 #include "Conversion.h"
 
+const bool USE_RHS = false;
+
 FVector ConvertLinearVector(FVector Vector, ConvertType Type) {
 
 	float ScaleFactor = 1.0;
@@ -10,8 +12,12 @@ FVector ConvertLinearVector(FVector Vector, ConvertType Type) {
 		ScaleFactor *= UEUnitsPerMeter;
 
 	Vector.X *= ScaleFactor;
-	Vector.Y *= -ScaleFactor; // Negative accounts for left handed coordinate system to right handed coordinate system change
+	Vector.Y *= ScaleFactor;
 	Vector.Z *= ScaleFactor;
+
+	if(USE_RHS)
+		Vector.Y *= -1;
+
 	return Vector;
 }
 
@@ -23,9 +29,15 @@ FVector ConvertAngularVector(FVector Vector, ConvertType Type) {
 	else if (Type == ClientToUE)
 		ScaleFactor *= UEUnitsPerMeter;
 
-	Vector.X *= -ScaleFactor;
+	Vector.X *= ScaleFactor;
 	Vector.Y *= ScaleFactor;
-	Vector.Z *= -ScaleFactor;
+	Vector.Z *= ScaleFactor;
+
+	if (USE_RHS) {
+		Vector.X *= -1;
+		Vector.Z *= -1;
+	}
+
 	return Vector;
 }
 
@@ -44,9 +56,15 @@ FVector ConvertTorque(FVector Vector, ConvertType Type) {
 	else if (Type == ClientToUE)
 		ScaleFactor *= UEUnitsPerMeterSquared;
 
-	Vector.X *= -ScaleFactor;
+	Vector.X *= ScaleFactor;
 	Vector.Y *= ScaleFactor;
-	Vector.Z *= -ScaleFactor;
+	Vector.Z *= ScaleFactor;
+
+	if (USE_RHS) {
+		Vector.X *= -1;
+		Vector.Z *= -1;
+	}
+
 	return Vector;
 }
 
