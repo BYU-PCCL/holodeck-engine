@@ -39,7 +39,6 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 		FloatBuffer[0] = LinearAccelerationVector.X;
 		FloatBuffer[1] = LinearAccelerationVector.Y;
 		FloatBuffer[2] = LinearAccelerationVector.Z;
-		FloatBuffer[2] = LinearAccelerationVector.Z;
 		FloatBuffer[3] = AngularVelocityVector.X;
 		FloatBuffer[4] = AngularVelocityVector.Y;
 		FloatBuffer[5] = AngularVelocityVector.Z;
