@@ -1,25 +1,14 @@
 #include "Holodeck.h"
-#include "DistanceTask.h"
+#include "LocationTask.h"
 #include "Json.h"
 
 // Set default values
-void UDistanceTask::InitializeSensor() {
+void ULocationTask::InitializeSensor() {
 	Super::InitializeSensor();
-
-	if (DistanceActor) 
-		StartDistance = (DistanceActor->GetActorLocation() - this->GetComponentLocation()).Size();
-	else 
-		StartDistance = (DistanceLocation - this->GetComponentLocation()).Size();
-
-	if (MaximizeDistance)
-		NextDistance = StartDistance + Interval;
-	else
-		NextDistance = StartDistance - Interval;
-	LastDistance = StartDistance;
 }
 
 // Allows sensor parameters to be set programmatically from client.
-void UDistanceTask::ParseSensorParms(FString ParmsJson) {
+void ULocationTask::ParseSensorParms(FString ParmsJson) {
 	Super::ParseSensorParms(ParmsJson);
 
 	TSharedPtr<FJsonObject> JsonParsed;
@@ -48,10 +37,6 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 			}
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Number>("Interval")) {
-			Interval = JsonParsed->GetNumberField("Interval");
-		}
-
 		if (JsonParsed->HasTypedField<EJson::Number>("GoalDistance")) {
 			GoalDistance = JsonParsed->GetNumberField("GoalDistance");
 		}
@@ -59,31 +44,19 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 }
 
 // Called every frame
-void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+void ULocationTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	if (IsValid(Parent)) {
 		float Distance = (DistanceLocation - this->GetComponentLocation()).Size();
 		if (DistanceActor)
 			Distance = (DistanceActor->GetActorLocation() - Parent->GetActorLocation()).Size();
 
-		if (MaximizeDistance) {
-			if (Distance > NextDistance) {
-				Reward = 1;
-				NextDistance = Distance + Interval;
-			}
-			else {
-				Reward = 0;
-			}
-			Terminal = Distance > GoalDistance;
-		}
-		else {
-			if (Distance < NextDistance) {
-				Reward = 1;
-				NextDistance = Distance - Interval;
-			}
-			else {
-				Reward = 0;
-			}
-			Terminal = Distance < GoalDistance;
+		if ((Distance > GoalDistance && MaximizeDistance) ||
+				(Distance < GoalDistance && !MaximizeDistance)) {
+			Reward = 1;
+			Terminal = true;
+		} else {
+			Reward = 0;
+			Terminal = false;
 		}
 	}
 
