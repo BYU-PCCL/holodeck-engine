@@ -7,11 +7,11 @@ void UDistanceTask::InitializeSensor() {
 	Super::InitializeSensor();
 
 	if (GoalObject) 
-		StartDistance = (DistanceActor->GetActorLocation() - this->GetComponentLocation()).Size();
+		StartDistance = (ProximityActor->GetActorLocation() - this->GetComponentLocation()).Size();
 	else 
-		StartDistance = (DistanceLocation - this->GetComponentLocation()).Size();
+		StartDistance = (ProximityLocation - this->GetComponentLocation()).Size();
 
-	NextDistance = StartDistance + Interval;
+	NextDistance = StartDistance - Interval;
 	LastDistance = StartDistance;
 }
 
@@ -23,19 +23,19 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
 
-		if (JsonParsed->HasTypedField<EJson::String>("DistanceActor")) {
-			FString ActorName = JsonParsed->GetStringField("DistanceActor");
+		if (JsonParsed->HasTypedField<EJson::String>("ProximityActor")) {
+			FString ActorName = JsonParsed->GetStringField("ProximityActor");
 			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
 			{
 				if (ActorItr->ActorHasTag(FName(*ActorName))) {
-					DistanceActor = *ActorItr;
+					ProximityActor = *ActorItr;
 					break;
 				}
 			}
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Array>("DistanceLocation")) {
-			DistanceLocation = JsonParsed->GetBoolField("DistanceLocation");
+		if (JsonParsed->HasTypedField<EJson::Array>("ProximityLocation")) {
+			ProximityLocation = JsonParsed->GetBoolField("ProximityLocation");
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("UseSparseReward")) {
@@ -67,27 +67,27 @@ void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 
 // Sets the reward if UseDistanceReward is false
 void UDistanceTask::SetDenseReward() {
-	float Distance = (DistanceLocation - this->GetComponentLocation()).Size();
+	float Distance = (ProximityLocation - this->GetComponentLocation()).Size();
 	if (GoalObject)
-		Distance = (DistanceActor->GetActorLocation() - Parent->GetActorLocation()).Size();
+		Distance = (ProximityActor->GetActorLocation() - Parent->GetActorLocation()).Size();
 
-	if (Distance > NextDistance) {
+	if (Distance < NextDistance) {
 		Reward = 1;
-		NextDistance = Distance + Interval;
+		NextDistance = Distance - Interval;
 	} else {
 		Reward = 0;
 	}
 
-	Terminal = Distance > GoalDistance;
+	Terminal = Distance < GoalDistance;
 }
 
 // Sets the reward if UseDistanceReward is true
 void UDistanceTask::SetSparseReward() {
-	float Distance = (DistanceLocation - this->GetComponentLocation()).Size();
+	float Distance = (ProximityLocation - this->GetComponentLocation()).Size();
 	if (GoalObject)
-		Distance = (DistanceActor->GetActorLocation() - Parent->GetActorLocation()).Size();
+		Distance = (ProximityActor->GetActorLocation() - Parent->GetActorLocation()).Size();
 
-	if (Distance > GoalDistance) {
+	if (Distance < GoalDistance) {
 		Reward = 1;
 		Terminal = true;
 	} else {

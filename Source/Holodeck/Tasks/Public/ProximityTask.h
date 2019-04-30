@@ -25,7 +25,7 @@ public:
 	* Default Constructor
 	*/
 	UDistanceTask() : UseSparseReward(true), Interval(1), GoalDistance(1), 
-		DistanceActor(nullptr), DistanceLocation(this->GetComponentLocation()) {}
+		ProximityActor(nullptr), ProximityLocation(this->GetComponentLocation()) {}
 
 	/**
 	* InitializeSensor
@@ -52,11 +52,11 @@ public:
 
 	// Goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* DistanceActor;
+		AActor* ProximityActor;
 
 	// Goal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector DistanceLocation;
+		FVector ProximityLocation;
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
