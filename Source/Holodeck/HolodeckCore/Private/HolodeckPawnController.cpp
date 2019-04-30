@@ -111,6 +111,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	FVector TeleportLocation;
 	if (*ShouldChangeStateBuffer & 0x1) {
 		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+		TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
 	} else {
 		TeleportLocation = PawnVar->GetActorLocation();
 	}
@@ -118,6 +119,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	FRotator NewRotation;
 	if (*ShouldChangeStateBuffer & 0x2) {
 		NewRotation = FRotator(FloatPtr[3], FloatPtr[4], FloatPtr[5]);
+		NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
 	} else {
 		NewRotation = PawnVar->GetActorRotation();
 	}
@@ -138,6 +140,12 @@ void AHolodeckPawnController::ExecuteSetState() {
 	FRotator NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
 	FVector NewVelocity = FVector(FloatPtr[6], FloatPtr[7], FloatPtr[8]);
 	FVector NewAngVelocity = FVector(FloatPtr[9], FloatPtr[10], FloatPtr[11]);
+
+	// Perform conversion
+	TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
+	NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
+	NewVelocity = ConvertLinearVector(NewVelocity, ClientToUE);
+	NewAngVelocity = ConvertAngularVector(NewAngVelocity, ClientToUE);
 
 	PawnVar->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
 	*ShouldChangeStateBuffer = 0;

@@ -49,7 +49,7 @@ protected:
 	// Called every frame
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, float force, float* Data);
+	float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, FVector NormalImpulse, float* Data);
 
 	AAndroid* Android;
 

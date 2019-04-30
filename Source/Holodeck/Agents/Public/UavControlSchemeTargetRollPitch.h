@@ -31,8 +31,6 @@ public:
 private:
 	FVector RotatorToEulerInZYX(const FRotator& Rotator) const;
 
-	float UEUnitsToMeters(float ValueInUnrealUnits) const;
-
 	AHolodeckPawnController* UavController;
 	AUav* Uav;
 

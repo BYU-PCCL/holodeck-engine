@@ -46,20 +46,23 @@ void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norma
 	FRotator HitWorldRotation = SkeletalMeshComponent->GetSocketRotation(Hit.BoneName);
 
 	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, HitWorldLocation, HitWorldRotation, HitBoneLocation, HitBoneRotation);
-	float force = NormalImpulse.Size();
+	
 
 	if(JointMap.Contains(Hit.BoneName.ToString()))
-		AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, force, PrivateData);
+		AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, NormalImpulse, PrivateData);
 }
 
-float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation, float force, float* Data) {
+float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation, FVector NormalImpulse, float* Data) {
 
 	int JointInd = JointMap[BoneName] * 4;
+
+	HitBoneLocation = ConvertLinearVector(HitBoneLocation, UEToClient);
+	NormalImpulse = ConvertLinearVector(NormalImpulse, UEToClient);
 
 	Data[JointInd] = HitBoneLocation.X;
 	Data[JointInd+1] = HitBoneLocation.Y;
 	Data[JointInd+2] = HitBoneLocation.Z;
-	Data[JointInd+3] = force;
+	Data[JointInd+3] = NormalImpulse.Size();
 
 	return Data;
 }

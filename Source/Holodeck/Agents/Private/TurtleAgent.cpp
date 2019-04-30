@@ -29,8 +29,11 @@ void ATurtleAgent::Tick(float DeltaSeconds) {
 	float ThrustToApply = FMath::Clamp(ForwardForce, -maxThrust, maxThrust);
 	float YawTorqueToApply = FMath::Clamp(RotForce, -maxYaw, maxYaw);
 
-	FVector LocalThrust = FVector(ThrustToApply * 100, 0, 0);
-	FVector LocalTorque = FVector(0, 0, YawTorqueToApply * 1000);
+	FVector LocalThrust = FVector(ThrustToApply, 0, 0);
+	LocalThrust = ConvertLinearVector(LocalThrust, ClientToUE);
+
+	FVector LocalTorque = FVector(0, 0, YawTorqueToApply);
+	LocalTorque = ConvertTorque(LocalTorque, ClientToUE);
 
 	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));

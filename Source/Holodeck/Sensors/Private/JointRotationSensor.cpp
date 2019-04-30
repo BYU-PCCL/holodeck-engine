@@ -44,6 +44,7 @@ void UJointRotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickT
 
 float* UJointRotationSensor::AddJointRotationToBuffer(FString JointName, bool Swing1, bool Swing2, bool Twist, float* Data) {
 	FConstraintInstance* Constraint = SkeletalMeshComponent->FindConstraintInstance(FName(*JointName));
+
 	if (Swing1) {
 		*Data = Constraint->GetCurrentSwing1();
 		Data += 1;

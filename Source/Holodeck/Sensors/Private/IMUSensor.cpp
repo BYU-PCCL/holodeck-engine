@@ -32,10 +32,13 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 
 		float* FloatBuffer = static_cast<float*>(Buffer);
 
-		//Some negative values are given so they obey Unreal's coordinate frame. 
-		FloatBuffer[0] = -LinearAccelerationVector.X / UEUnitsPerMeter;
-		FloatBuffer[1] = -LinearAccelerationVector.Y / UEUnitsPerMeter;
-		FloatBuffer[2] = LinearAccelerationVector.Z / UEUnitsPerMeter;
+		// Convert before sending to user side.
+		LinearAccelerationVector = ConvertLinearVector(LinearAccelerationVector, UEToClient);
+		AngularVelocityVector = ConvertAngularVector(AngularVelocityVector, UEToClient);
+
+		FloatBuffer[0] = LinearAccelerationVector.X;
+		FloatBuffer[1] = LinearAccelerationVector.Y;
+		FloatBuffer[2] = LinearAccelerationVector.Z;
 		FloatBuffer[3] = AngularVelocityVector.X;
 		FloatBuffer[4] = AngularVelocityVector.Y;
 		FloatBuffer[5] = AngularVelocityVector.Z;
@@ -58,8 +61,8 @@ void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
 void UIMUSensor::CalculateAngularVelocityVector() {
 	AngularVelocityVector = Parent->GetPhysicsAngularVelocityInDegrees();
 
-	AngularVelocityVector.X = -FMath::DegreesToRadians(AngularVelocityVector.X);
-	AngularVelocityVector.Y = -FMath::DegreesToRadians(AngularVelocityVector.Y);
+	AngularVelocityVector.X = FMath::DegreesToRadians(AngularVelocityVector.X);
+	AngularVelocityVector.Y = FMath::DegreesToRadians(AngularVelocityVector.Y);
 	AngularVelocityVector.Z = FMath::DegreesToRadians(AngularVelocityVector.Z);
 
 	AngularVelocityVector = RotationNow.UnrotateVector(AngularVelocityVector); //Rotate from world angles to local angles.

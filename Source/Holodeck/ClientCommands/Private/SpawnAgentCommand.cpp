@@ -1,4 +1,5 @@
 #include "Holodeck.h"
+#include "HolodeckGameMode.h"
 #include "SpawnAgentCommand.h"
 
 void USpawnAgentCommand::Execute() {
@@ -23,8 +24,8 @@ void USpawnAgentCommand::Execute() {
 	}
 
 	FString AgentType = StringParams[0].c_str();
-	float UnitsPerMeter = World->GetWorldSettings()->WorldToMeters;
-	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]) * UnitsPerMeter;
+	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
+	Location = ConvertLinearVector(Location, ClientToUE);
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
 	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
@@ -35,7 +36,7 @@ void USpawnAgentCommand::Execute() {
 		SpawnedAgent->SpawnDefaultController();
 		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
-		SpawnedAgent->InitializeController();
+		//SpawnedAgent->InitializeController();
 		SpawnedAgent->InitializeAgent();
 		
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
