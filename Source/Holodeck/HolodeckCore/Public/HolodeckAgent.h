@@ -6,13 +6,12 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
+#include "Conversion.h"
 #include "HolodeckPawnController.h"
 #include "HolodeckPawnControllerInterface.h"
 #include "HolodeckGameInstance.h"
 #include "HolodeckAgent.generated.h"
 
-const float UEUnitsPerMeter = 100.0;
-const float UEUnitsPerMeterSquared = 10000;
 
 /* Forward declare Holodeck Sensor Class. */
 class UHolodeckSensor;
@@ -46,6 +45,7 @@ public:
 	* InitializeAgent
 	* All agent initialization code should go in here. 
 	*/
+	UFUNCTION(BlueprintCallable)
 	virtual void InitializeAgent();
 
 	/**

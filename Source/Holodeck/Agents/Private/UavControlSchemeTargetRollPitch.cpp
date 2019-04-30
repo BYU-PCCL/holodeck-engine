@@ -47,33 +47,27 @@ void UUavControlSchemeTargetRollPitch::Execute(void* const CommandArray, void* c
 	float DesiredAltitude = InputCommandFloat[3];
 
 	// Update forces and movements function
-	float CurrentPositionZ = UEUnitsToMeters(Uav->GetActorLocation().Z);
+	float CurrentPositionZ = Uav->GetActorLocation().Z;
 
 	// Get the rotator to get state and transform from world to local coordinates
-	FRotator CurrentRotator = Uav->GetActorRotation();
+	FRotator CurrentRotator = ConvertAngularVector(Uav->GetActorRotation(), UEToClient);
 	FVector EulerRotation = RotatorToEulerInZYX(CurrentRotator);  // Get these in local coords in (Z, Y, X) order - CurrentRotator.Euler() provides (X, Y, Z)
-	FVector CurrentGlobalVelocity = Uav->GetVelocity();
+	FVector CurrentGlobalVelocity = ConvertLinearVector(Uav->GetVelocity(), UEToClient);
 	FVector LocalAngularVelocity = CurrentRotator.UnrotateVector(Uav->RootMesh->GetPhysicsAngularVelocityInDegrees());
 
 	float CurrentRoll = EulerRotation.X;
 	float CurrentPitch = EulerRotation.Y;
-	float CurrentGlobalVelocityZ = UEUnitsToMeters(CurrentGlobalVelocity.Z);
+	float CurrentGlobalVelocityZ = CurrentGlobalVelocity.Z;
 
 	float CurrentRollRate = FMath::DegreesToRadians(LocalAngularVelocity.X);
 	float CurrentPitchRate = FMath::DegreesToRadians(LocalAngularVelocity.Y);
 	float CurrentYawRate = FMath::DegreesToRadians(LocalAngularVelocity.Z);
 
-	// Convert to proper coordinate frame (we want to respect Unreal's coordinate frame)
-	CurrentRoll *= -1;
-	CurrentPitch *= -1;
-	CurrentRollRate *= -1;
-	CurrentPitchRate *= -1;
-
 	// Calculate the force and torques from the PID controller
 	float RollTorqueToApply = RollController.ComputePIDDirect(DesiredRoll, CurrentRoll, CurrentRollRate, DeltaSeconds);
 	float PitchTorqueToApply = PitchController.ComputePIDDirect(DesiredPitch, CurrentPitch, CurrentPitchRate, DeltaSeconds);
 	float YawTorqueToApply = YawController.ComputePID(DesiredYawRate, CurrentYawRate, DeltaSeconds);
-	float HoverThrust = (Uav->RootMesh->GetMass() * -UEUnitsToMeters(GWorld->GetGravityZ())) / (cos(DesiredRoll) * cos(DesiredPitch));
+	float HoverThrust = (Uav->RootMesh->GetMass() * GWorld->GetGravityZ()) / (cos(DesiredRoll) * cos(DesiredPitch));
 	float ThrustToApply = AltitudeController.ComputePIDDirect(DesiredAltitude, CurrentPositionZ, CurrentGlobalVelocityZ, DeltaSeconds) + HoverThrust;
 
 	// Calculate first-order filter
@@ -98,8 +92,4 @@ FVector UUavControlSchemeTargetRollPitch::RotatorToEulerInZYX(const FRotator& Ro
 	float Pitch = asin(2.0 * (Quaternion.W * Quaternion.Y - Quaternion.Z * Quaternion.X));
 	float Yaw = atan2(2.0 * (Quaternion.W * Quaternion.Z + Quaternion.X * Quaternion.Y), 1.0 - 2.0 * (Quaternion.Y * Quaternion.Z + Quaternion.Z * Quaternion.Z));
 	return FVector(Roll, Pitch, Yaw);
-}
-
-float UUavControlSchemeTargetRollPitch::UEUnitsToMeters(float ValueInUnrealUnits) const {
-	return ValueInUnrealUnits / UEUnitsPerMeter;
 }

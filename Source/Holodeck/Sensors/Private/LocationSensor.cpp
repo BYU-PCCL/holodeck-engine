@@ -18,8 +18,9 @@ void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, 
 	if (Parent != nullptr && bOn) {
 		FVector Location = Parent->GetComponentLocation();
 		float* FloatBuffer = static_cast<float*>(Buffer);
-		FloatBuffer[0] = Location.X / UEUnitsPerMeter;
-		FloatBuffer[1] = Location.Y / UEUnitsPerMeter;
-		FloatBuffer[2] = Location.Z / UEUnitsPerMeter;
+		Location = ConvertLinearVector(Location, UEToClient);
+		FloatBuffer[0] = Location.X;
+		FloatBuffer[1] = Location.Y;
+		FloatBuffer[2] = Location.Z;
 	}
 }

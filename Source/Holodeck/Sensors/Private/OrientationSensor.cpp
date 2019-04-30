@@ -26,12 +26,16 @@ void UOrientationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickTyp
 		FVector Up = RootMesh->GetUpVector();
 
 		float* FloatBuffer = static_cast<float*>(Buffer);
+		Forward = ConvertLinearVector(Forward, NoScale);
+		FVector Left = ConvertLinearVector(Right, NoScale);
+		Up = ConvertLinearVector(Up, NoScale);
+
 		FloatBuffer[0] = Forward.X;
 		FloatBuffer[1] = Forward.Y;
 		FloatBuffer[2] = Forward.Z;
-		FloatBuffer[3] = Right.X;
-		FloatBuffer[4] = Right.Y;
-		FloatBuffer[5] = Right.Z;
+		FloatBuffer[3] = Left.X;
+		FloatBuffer[4] = Left.Y;
+		FloatBuffer[5] = Left.Z;
 		FloatBuffer[6] = Up.X;
 		FloatBuffer[7] = Up.Y;
 		FloatBuffer[8] = Up.Z;

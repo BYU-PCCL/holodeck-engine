@@ -2,11 +2,34 @@
 
 #include "Holodeck.h"
 #include "ViewportCapture.h"
+#include "Json.h"
 
 // Sets default values for this component's properties
 UViewportCapture::UViewportCapture(){
 	PrimaryComponentTick.bCanEverTick = true;
 	SensorName = "ViewportCapture";
+}
+
+// Allows sensor parameters to be set programmatically from client.
+void UViewportCapture::ParseSensorParms(FString ParmsJson) {
+	Super::ParseSensorParms(ParmsJson);
+
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("bGrayScale")) {
+			bGrayScale = JsonParsed->GetBoolField("bGrayScale");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("Width")) {
+			Width = JsonParsed->GetIntegerField("Width");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("Height")) {
+			Height = JsonParsed->GetIntegerField("Height");
+		}
+	}
 }
 
 void UViewportCapture::InitializeSensor() {

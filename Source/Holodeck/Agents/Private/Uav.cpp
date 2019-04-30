@@ -43,9 +43,9 @@ void AUav::ApplyForces() {
 	float ThrustToApply = FMath::Clamp(GetThrustToApply(), -UAV_MAX_FORCE, UAV_MAX_FORCE);
 
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
+	LocalThrust = ConvertLinearVector(LocalThrust, ClientToUE);
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply);
-	LocalThrust *= UEUnitsPerMeter;
-	LocalTorque *= UEUnitsPerMeterSquared;
+	LocalTorque = ConvertTorque(LocalTorque, ClientToUE);
 
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));

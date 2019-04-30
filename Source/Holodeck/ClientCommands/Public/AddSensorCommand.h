@@ -26,7 +26,8 @@
 * Warning: This command is meant for initialization. Adding a sensor with the same name as a previously 
 * removed sensor may cause problems. Use SetSensorEnabledCommand when possible. 
 *
-* StringParameters expect four arguments, the agent name, the socket name, sensor name, and sensor class.
+* StringParameters expects five arguments: the agent name, sensor name, sensor class, sensor parameters, and socket.
+* NumberParameters expects six arguments: locations x, y, and z and rotations pitch, yaw, and roll.
 */
 UCLASS()
 class HOLODECK_API UAddSensorCommand : public UCommand

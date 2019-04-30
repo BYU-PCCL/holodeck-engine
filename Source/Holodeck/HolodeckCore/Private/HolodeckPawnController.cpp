@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Holodeck.h"
+#include "HolodeckAgent.h"
 #include "HolodeckPawnController.h"
 
 const FString CONTROL_SCHEME_KEY = "control_scheme";
-const FString TELEPORT_BOOL_KEY = "teleport_flag";
+const FString TELEPORT_FLAG_KEY = "teleport_flag";
 const FString TELEPORT_COMMAND_KEY = "teleport_command";
 
 
@@ -87,8 +88,8 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 											   sizeof(uint8));
 		ControlSchemeIdBuffer = static_cast<uint8*>(TempBuffer);
 
-		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_BOOL_KEY),
-											  SINGLE_BOOL * sizeof(bool));
+		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_FLAG_KEY),
+											 sizeof(uint8));
 		ShouldChangeStateBuffer = static_cast<uint8*>(TempBuffer);
 
 		TempBuffer = Server->Malloc(UHolodeckServer::MakeKey(AgentName, TELEPORT_COMMAND_KEY),
@@ -110,6 +111,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	FVector TeleportLocation;
 	if (*ShouldChangeStateBuffer & 0x1) {
 		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
+		TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
 	} else {
 		TeleportLocation = PawnVar->GetActorLocation();
 	}
@@ -117,6 +119,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 	FRotator NewRotation;
 	if (*ShouldChangeStateBuffer & 0x2) {
 		NewRotation = FRotator(FloatPtr[3], FloatPtr[4], FloatPtr[5]);
+		NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
 	} else {
 		NewRotation = PawnVar->GetActorRotation();
 	}
@@ -137,6 +140,12 @@ void AHolodeckPawnController::ExecuteSetState() {
 	FRotator NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
 	FVector NewVelocity = FVector(FloatPtr[6], FloatPtr[7], FloatPtr[8]);
 	FVector NewAngVelocity = FVector(FloatPtr[9], FloatPtr[10], FloatPtr[11]);
+
+	// Perform conversion
+	TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
+	NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
+	NewVelocity = ConvertLinearVector(NewVelocity, ClientToUE);
+	NewAngVelocity = ConvertAngularVector(NewAngVelocity, ClientToUE);
 
 	PawnVar->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
 	*ShouldChangeStateBuffer = 0;
