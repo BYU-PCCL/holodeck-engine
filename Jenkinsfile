@@ -70,6 +70,9 @@ pipeline
 					sh "tar -zcvf holodeck-engine.tar.gz dist/"
 					archiveArtifacts artifacts:'holodeck-engine.tar.gz', fingerprint: true
 				}
+				cleaup {
+					cleanupWs()
+				}
 			}
 		}
 	}
