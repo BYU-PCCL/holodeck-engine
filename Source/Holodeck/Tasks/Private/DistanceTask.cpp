@@ -6,15 +6,17 @@
 void UDistanceTask::InitializeSensor() {
 	Super::InitializeSensor();
 
-	if (DistanceActor) 
+	if (DistanceActor) {
 		StartDistance = (DistanceActor->GetActorLocation() - this->GetComponentLocation()).Size();
-	else 
+	} else {
 		StartDistance = (DistanceLocation - this->GetComponentLocation()).Size();
+	}
 
-	if (MaximizeDistance)
+	if (MaximizeDistance) {
 		NextDistance = StartDistance + Interval;
-	else
+	} else {
 		NextDistance = StartDistance - Interval;
+	}
 	LastDistance = StartDistance;
 }
 
@@ -40,9 +42,7 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Array>("DistanceLocation")) {
 			TArray<TSharedPtr<FJsonValue>> LocationArray = JsonParsed->GetArrayField("DistanceLocation");
 			if (LocationArray.Num() == 3) {
-				double X;
-				double Y;
-				double Z;
+				double X, Y, Z;
 				if (LocationArray[0]->TryGetNumber(X) && LocationArray[1]->TryGetNumber(Y) && LocationArray[2]->TryGetNumber(Z))
 					DistanceLocation = FVector(X, Y, Z);
 			}
@@ -59,6 +59,8 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
 			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
 		}
+	} else {
+		UE_LOG(LogHolodeck, Warning, TEXT("UDistanceTask::ParseSensorParms:: Unable to parse json."));
 	}
 }
 
@@ -66,8 +68,9 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	if (IsValid(Parent)) {
 		float Distance = (DistanceLocation - this->GetComponentLocation()).Size();
-		if (DistanceActor)
+		if (DistanceActor) {
 			Distance = (DistanceActor->GetActorLocation() - Parent->GetActorLocation()).Size();
+		}
 
 		if (MaximizeDistance) {
 			if (Distance > NextDistance) {
