@@ -15,6 +15,7 @@
 #include "VelocitySensor.h"
 #include "ViewportCapture.h"
 #include "DistanceTask.h"
+#include "LocationTask.h"
 #include "FollowTask.h"
 
 #include "Command.h"

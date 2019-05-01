@@ -40,6 +40,10 @@ void ULocationTask::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Number>("GoalDistance")) {
 			GoalDistance = JsonParsed->GetNumberField("GoalDistance");
 		}
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
+			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
+		}
 	}
 }
 
