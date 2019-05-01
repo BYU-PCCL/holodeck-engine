@@ -37,6 +37,7 @@ void UAddSensorCommand::Execute() {
 										{ "VelocitySensor", UVelocitySensor::StaticClass() },
 										{ "ViewportCapture", UViewportCapture::StaticClass() },
 										{ "DistanceTask", UDistanceTask::StaticClass() },
+										{ "LocationTask", ULocationTask::StaticClass() },
 										{ "FollowTask", UFollowTask::StaticClass() } };
 
 	FString AgentName = StringParams[0].c_str();

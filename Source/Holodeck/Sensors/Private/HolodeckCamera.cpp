@@ -33,6 +33,8 @@ void UHolodeckCamera::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Number>("CaptureHeight")) {
 			CaptureHeight = JsonParsed->GetIntegerField("CaptureHeight");
 		}
+	} else {
+		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::ParseSensorParms:: Unable to parse json."));
 	}
 }
 
