@@ -24,15 +24,16 @@ void USpawnAgentCommand::Execute() {
 	}
 
 	FString AgentType = StringParams[0].c_str();
+	FString AgentName = StringParams[1].c_str();
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
 	Location = ConvertLinearVector(Location, ClientToUE);
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
-	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location);
+	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, AgentName);
 	AHolodeckPawnController* SpawnedController = nullptr;
 
 	if (SpawnedAgent) {
-		SpawnedAgent->AgentName = StringParams[1].c_str();
+		SpawnedAgent->AgentName = AgentName;
 		SpawnedAgent->SpawnDefaultController();
 		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
