@@ -46,7 +46,7 @@ void AHolodeckPawnController::UnPossess() {
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 
-	if (ShouldChangeStateBuffer && *ShouldChangeStateBuffer & 0xF) {
+	if (ShouldChangeStateBuffer && *ShouldChangeStateBuffer & 0x4) {
 		ExecuteSetState();
 	}
 	else if (ShouldChangeStateBuffer && *ShouldChangeStateBuffer) {
