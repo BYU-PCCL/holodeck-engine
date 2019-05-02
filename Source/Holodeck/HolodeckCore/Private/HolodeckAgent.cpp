@@ -12,7 +12,6 @@ AHolodeckAgent::AHolodeckAgent() {
 
 void AHolodeckAgent::BeginPlay(){
 	Super::BeginPlay();
-	//InitializeAgent();
 }
 
 void AHolodeckAgent::InitializeAgent() {
