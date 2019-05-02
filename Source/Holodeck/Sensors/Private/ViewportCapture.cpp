@@ -34,7 +34,6 @@ void UViewportCapture::ParseSensorParms(FString ParmsJson) {
 
 void UViewportCapture::InitializeSensor() {
 	UE_LOG(LogHolodeck, Log, TEXT("UViewportCapture::InitializeSensor"));
-	Super::InitializeSensor();
 
 	// This must come first, since the HolodeckSensor parent class will
 	// call GetNumItems, which needs the ViewportClient.
@@ -43,8 +42,11 @@ void UViewportCapture::InitializeSensor() {
 		const FVector2D ViewportSize = FVector2D(ViewportClient->Viewport->GetSizeXY());
 		Width = ViewportSize.X;
 		Height = ViewportSize.Y;
-		ViewportClient->SetBuffer(Buffer);
 	}
+
+	// Buffers must be set after width and height are retrieved.
+	Super::InitializeSensor();
+	ViewportClient->SetBuffer(Buffer);
 }
 
 void UViewportCapture::TickSensorComponent(float DeltaTime,
