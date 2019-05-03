@@ -1,4 +1,5 @@
 #include "Holodeck.h"
+#include "Conversion.h"
 #include "RotationSensor.h"
 
 URotationSensor::URotationSensor() {
@@ -16,6 +17,7 @@ void URotationSensor::InitializeSensor() {
 void URotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	if (Parent != nullptr && bOn) {
 		FRotator Rotation = Parent->GetActorRotation();
+		Rotation = ConvertAngularVector(Rotation, NoScale);
 		float* FloatBuffer = static_cast<float*>(Buffer);
 		FloatBuffer[0] = Rotation.Roll;
 		FloatBuffer[1] = Rotation.Pitch;

@@ -93,8 +93,11 @@ bool AHolodeckAgent::SetState(const FVector& NewLocation, const FRotator& NewRot
 
 	UPrimitiveComponent* RootComp = (UPrimitiveComponent*)this->GetRootComponent();
 
+	FRotator RotationNow = RootComp->GetComponentRotation();
+	FVector AngularVelocityVector = RotationNow.RotateVector(NewAngVelocity); //Rotate from world angles to local angles.
+
 	RootComp->SetAllPhysicsLinearVelocity(NewVelocity, false);
-	RootComp->SetAllPhysicsAngularVelocityInDegrees(NewAngVelocity, false);
+	RootComp->SetAllPhysicsAngularVelocityInDegrees(AngularVelocityVector, false);
 
 	return bWasSuccessful;
 }
