@@ -118,7 +118,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 
 	FRotator NewRotation;
 	if (*ShouldChangeStateBuffer & 0x2) {
-		NewRotation = FRotator(FloatPtr[3], FloatPtr[4], FloatPtr[5]);
+		NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
 		NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
 	} else {
 		NewRotation = PawnVar->GetActorRotation();
