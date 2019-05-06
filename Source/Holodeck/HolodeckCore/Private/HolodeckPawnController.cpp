@@ -143,9 +143,9 @@ void AHolodeckPawnController::ExecuteSetState() {
 
 	// Perform conversion
 	TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
-	NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
+	NewRotation = ConvertAngularVector(NewRotation, NoScale);
 	NewVelocity = ConvertLinearVector(NewVelocity, ClientToUE);
-	NewAngVelocity = ConvertAngularVector(NewAngVelocity, ClientToUE);
+	NewAngVelocity = ConvertAngularVector(NewAngVelocity, NoScale);
 
 	PawnVar->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
 	*ShouldChangeStateBuffer = 0;
