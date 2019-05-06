@@ -4,7 +4,7 @@
 # TODO: Update this script to handle multiple worlds
 
 # Copy configuration files into the output directory
-cp holodeck-configs/DefaultWorlds/* dist/*
+cp holodeck-configs/DefaultWorlds/*.json dist/*
 
 # Create the zip file
 cd dist

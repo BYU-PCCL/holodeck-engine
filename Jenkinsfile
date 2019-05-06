@@ -23,7 +23,7 @@ pipeline
 			steps
 			{
 				// The UnrealEditorTool refuses to run as root, even in a docker container.
-				// 
+
 				sh 'chmod 777 .'
 
 				sh 'su ue4 Build/ContinuousIntegration/build_project.sh'

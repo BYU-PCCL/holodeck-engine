@@ -15,7 +15,7 @@
 # them all. For loop over root dirs of holodeck-worlds?
 
 # Move the worlds from holodeck-worlds to this project
-# mv holodeck-worlds/DefaultWorlds/Content/Worlds Content/
+mv holodeck-worlds/DefaultWorlds/Content/Worlds Content/
 
 ue4 setroot /home/ue4/UnrealEngine 
 
