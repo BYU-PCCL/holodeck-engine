@@ -36,10 +36,7 @@ pipeline
 		{
 			steps
 			{
-				echo "Cloning holodeck-worlds..."
-
 				dir('holodeck-worlds') {
-
 					checkout ([
 						userRemoteConfigs: [[
 							url: 'https://github.com/BYU-PCCL/holodeck-worlds',
@@ -56,10 +53,28 @@ pipeline
 						]
 					])
 				}
+
+				dir('holodeck-configs') {
+					checkout ([
+						userRemoteConfigs: [[
+							url: 'https://github.com/BYU-PCCL/holodeck-configs',
+							credentialsId: 'github'
+						]],
+						$class: 'GitSCM',
+						branches: [[name: '*/master']],
+						extensions: [[$class: 'CloneOption',
+                    					depth: 0,
+                    					noTags: false,
+                    					shallow: true,
+                    					timeout: 120]
+						]
+					])
+
+				}
 				// Need to get permissions to move the holodeck-worlds repo
 				sh 'chmod 777 -R .'				
 				// Impersonate the user, configure ue4 and build the project
-				sh 'su ue4 Build/ContinuousIntegration/package_project.sh'
+				sh 'su ue4 Build/ContinuousIntegration/package_ue4_project.sh'
 								
 				// Pull down the latest build of holodeck-worlds
 				echo "The pull request was successfully packaged"
@@ -67,8 +82,8 @@ pipeline
 			post
 			{
 				success {
-					sh "tar -zcvf holodeck-engine.tar.gz dist/"
-					archiveArtifacts artifacts:'holodeck-engine.tar.gz', fingerprint: true
+					sh 'su ue4 Build/ContinuousIntegration/create_package_zip.sh'
+					archiveArtifacts artifacts:'*.zip', fingerprint: true
 				}
 			}
 		}
