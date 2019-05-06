@@ -85,6 +85,9 @@ pipeline
 					sh 'su ue4 Build/ContinuousIntegration/create_package_zip.sh'
 					archiveArtifacts artifacts:'*.zip', fingerprint: true
 				}
+				cleanup {
+					cleanWs()
+				}
 			}
 		}
 	}
