@@ -71,7 +71,7 @@ pipeline
 					archiveArtifacts artifacts:'holodeck-engine.tar.gz', fingerprint: true
 				}
 				cleanup {
-					cleanupWs()
+					cleanWs()
 				}
 			}
 		}
