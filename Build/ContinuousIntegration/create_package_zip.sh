@@ -7,6 +7,10 @@
 cp holodeck-configs/DefaultWorlds/* dist/*
 
 # Create the zip file
-zip -r DefaultWorlds.zip dist/*
+cd dist
+
+zip -r DefaultWorlds.zip *
+
+mv DefaultWorlds.zip ..
 
 # Done!
