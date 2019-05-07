@@ -11,6 +11,9 @@
 # part of the build, and then just copy those .pak files in to the build output of 
 # holodeck-engine
 
+# TODO: Update this script to work with multiple different packages and package
+# them all. For loop over root dirs of holodeck-worlds?
+
 # Move the worlds from holodeck-worlds to this project
 mv holodeck-worlds/DefaultWorlds/Content/Worlds Content/
 
