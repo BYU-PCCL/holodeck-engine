@@ -34,7 +34,7 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 
 		// Convert before sending to user side.
 		LinearAccelerationVector = ConvertLinearVector(LinearAccelerationVector, UEToClient);
-		AngularVelocityVector = ConvertAngularVector(AngularVelocityVector, UEToClient);
+		AngularVelocityVector = ConvertAngularVector(AngularVelocityVector, NoScale);
 
 		FloatBuffer[0] = LinearAccelerationVector.X;
 		FloatBuffer[1] = LinearAccelerationVector.Y;
@@ -55,17 +55,19 @@ void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
 	LinearAccelerationVector /= DeltaTime;
 
 	LinearAccelerationVector += FVector(0.0, 0.0, -WorldGravity);
+
 	LinearAccelerationVector = RotationNow.UnrotateVector(LinearAccelerationVector); //changes world axis to local axis
 }
 
 void UIMUSensor::CalculateAngularVelocityVector() {
 	AngularVelocityVector = Parent->GetPhysicsAngularVelocityInDegrees();
 
-	AngularVelocityVector.X = FMath::DegreesToRadians(AngularVelocityVector.X);
-	AngularVelocityVector.Y = FMath::DegreesToRadians(AngularVelocityVector.Y);
-	AngularVelocityVector.Z = FMath::DegreesToRadians(AngularVelocityVector.Z);
+	AngularVelocityVector.X = AngularVelocityVector.X;
+	AngularVelocityVector.Y = AngularVelocityVector.Y;
+	AngularVelocityVector.Z = AngularVelocityVector.Z;
 
 	AngularVelocityVector = RotationNow.UnrotateVector(AngularVelocityVector); //Rotate from world angles to local angles.
+
 }
 
 FVector UIMUSensor::GetAccelerationVector() {
