@@ -44,6 +44,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* ToFollow;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString ToFollowTag;
+
 	// Only give reward if target is in sight
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool OnlyWithinSight;
@@ -67,4 +70,5 @@ protected:
 private:
 	// Scales score between 0-1 to 0-100
 	const int MaxScore = 100;
+	void FindToFollow(FString tag);
 };

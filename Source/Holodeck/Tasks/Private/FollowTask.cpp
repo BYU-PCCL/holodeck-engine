@@ -1,5 +1,6 @@
 #include "Holodeck.h"
 #include "FollowTask.h"
+#include "HolodeckGameMode.h"
 #include "Json.h"
 
 // Set default values
@@ -16,14 +17,7 @@ void UFollowTask::ParseSensorParms(FString ParmsJson) {
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
 
 		if (JsonParsed->HasTypedField<EJson::String>("ToFollow")) {
-			FString ActorName = JsonParsed->GetStringField("ToFollow");
-			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-			{
-				if (ActorItr->ActorHasTag(FName(*ActorName))) {
-					ToFollow = *ActorItr;
-					break;
-				}
-			}
+			ToFollowTag = JsonParsed->GetStringField("ToFollow");
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("OnlyWithinSight")) {
@@ -46,6 +40,11 @@ void UFollowTask::ParseSensorParms(FString ParmsJson) {
 
 // Called every frame
 void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	if (ToFollow == nullptr) {
+		FindToFollow(ToFollowTag);
+		return;
+	}
+	
 	// Get location and distance
 	FVector AgentLocation = Parent->GetActorLocation();
 	FVector TargetLocation = ToFollow->GetActorLocation();
@@ -69,8 +68,8 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 		FHitResult Hit = FHitResult();
 		bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
 
-		// Evaluate
-		if (TargetAngle < FOVRadians && Hit.Actor == ToFollow)
+		// Evaluate - if the actor is in our field of view and either the ray trace has intersected with the target or there is nothing between ourself and the target
+		if (TargetAngle < FOVRadians && ( Hit.Actor == ToFollow || Hit.Actor == nullptr))
 			Reward = MaxScore * (MinDistance - Distance) / MinDistance;
 		else
 			Reward = 0;
@@ -81,4 +80,9 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 
 	// Call TaskSensor's Tick to store Reward and Terminal
 	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+void UFollowTask::FindToFollow(FString tag) {
+	AHolodeckGameMode* GameTarget = (AHolodeckGameMode*)GetWorld()->GetAuthGameMode();
+	ToFollow = GameTarget->FindActorWithTag(tag);
 }

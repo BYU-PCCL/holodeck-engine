@@ -58,6 +58,8 @@ public:
 	void TeleportCamera(const FVector& Location, const FVector& Rotation);
 	UFUNCTION(BlueprintImplementableEvent)
 	void ExecuteCustomCommand(const FString& Name, const TArray<float>& NumberParameters, const TArray<FString>& StringParameters);
+	UFUNCTION(BlueprintImplementableEvent)
+	AActor* FindActorWithTag(const FString& Tag);
 
 private:
 	/**
