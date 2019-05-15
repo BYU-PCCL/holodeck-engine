@@ -3,7 +3,7 @@
 #include "Holodeck.h"
 
 #include <vector>
-
+#include "HolodeckAgent.h"
 #include "GameFramework/Actor.h"
 #include "Command.generated.h"
 
@@ -45,8 +45,14 @@ public:
 	*/
 	virtual void Init(const std::vector<float>& NumberParameters, const std::vector<std::string>& StringParameters, AActor* const TargetParameter);
 
-protected:
+	/**
+	* GetAgent
+	* This returns a pointer to a HolodeckAgent from the HolodeckServer given an AgentName
+	* @param AgentName The FString name of the agent to grab
+	*/
+	AHolodeckAgent* GetAgent(FString AgentName);
 
+protected:
 	std::vector<float> NumberParams;
 	std::vector<std::string> StringParams;
 	AActor* Target;

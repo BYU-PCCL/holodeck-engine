@@ -25,8 +25,11 @@ public:
 	// Sets default values for this component's properties
 	UPressureSensor();
 
-	// Called when the game starts
-	virtual void BeginPlay() override;
+	/**
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 	
 	/**
 	 * Callback function that is called whenever part of the actor is hit. 
@@ -39,8 +42,6 @@ private:
 	float PrivateData[NUM_PRESSURE_ITEMS];
 
 protected:
-	FString GetDataKey() override { return "PressureSensor"; };
-
 	// 94 DOF each with 2 length 3 vectors containing impulse normal info and hit location
 	int GetNumItems() override { return NUM_PRESSURE_ITEMS; };
 	int GetItemSize() override { return sizeof(float); };
@@ -48,7 +49,7 @@ protected:
 	// Called every frame
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, float force, float* Data);
+	float* AddHitToBuffer(FString BoneName, FVector HitBoneLocation, FVector NormalImpulse, float* Data);
 
 	AAndroid* Android;
 

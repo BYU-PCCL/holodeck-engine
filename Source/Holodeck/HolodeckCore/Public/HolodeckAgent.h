@@ -6,9 +6,15 @@
 
 #include "GameFramework/Pawn.h"
 #include "HolodeckAgentInterface.h"
+#include "Conversion.h"
+#include "HolodeckPawnController.h"
 #include "HolodeckPawnControllerInterface.h"
-
+#include "HolodeckGameInstance.h"
 #include "HolodeckAgent.generated.h"
+
+
+/* Forward declare Holodeck Sensor Class. */
+class UHolodeckSensor;
 
 /**
 * AHolodeckAgent
@@ -30,9 +36,17 @@ public:
 
 	/**
 	  * BeginPlay
-	  * Called when the game starts.
+	  * Should only call Super() and InitializeAgent() all other initialization 
+	  * code should be called from within that function
 	  */
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() final;
+
+	/**
+	* InitializeAgent
+	* All agent initialization code should go in here. 
+	*/
+	UFUNCTION(BlueprintCallable)
+	virtual void InitializeAgent();
 
 	/**
 	  * Tick
@@ -41,20 +55,6 @@ public:
 	  * @param DeltaSeconds the time since the last tick.
 	  */
 	virtual void Tick(float DeltaSeconds) override;
-
-	/**
-	  * SetReward
-	  * Sets the reward in the server for this agent.
-	  * @param Reward the value of the reward.
-	  */
-	void SetReward(float Reward) override;
-
-	/**
-	  * SetTerminal
-	  * Sets the terminal in the server for this agent.
-	  * @param Terminal the value of the terminal signal.
-	  */
-	void SetTerminal(bool bTerminal) override;
 
 	/**
 	  * Teleport
@@ -74,6 +74,17 @@ public:
 	  * @return Bool if the teleport was successful.
 	  */
 	bool Teleport(const FVector& NewLocation) override;
+
+	/**
+	* SetState
+	* Sets the state of the agent (pos,rot,vel,ang_vel)
+	* @param NewLocation The location to move to
+	* @param NewRotation The rotation that the object will take on
+	* @param NewVelocity The new linear velocity
+	* @param NewAngVelocity The new angular velocity
+	* @return Bool if the teleport was successful.
+	*/
+	bool SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) override;
 
 	/**
 	* InitializeController
@@ -101,8 +112,12 @@ public:
 		return nullptr;
 	};
 
-private:
-	float* RewardPtr;
-	bool* TerminalPtr;
+	/* Stores pointers to all the sensors on the agent. */
+	TMap<FString, UHolodeckSensor*> SensorMap;
 	AHolodeckPawnControllerInterface* HolodeckController;
+
+private:
+
+	UHolodeckGameInstance* Instance;
+	UHolodeckServer* Server;
 };

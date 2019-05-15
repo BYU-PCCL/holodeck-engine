@@ -22,10 +22,10 @@ public:
 	UIMUSensor();
 
 	/**
-	  * BeginPlay
-	  * Called at the start of the game.
-	  */
-	void BeginPlay() override;
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 
 	/**
 	  * GetAccelerationVector
@@ -43,7 +43,6 @@ public:
 
 protected:
 	// See HolodeckSensor for more information on these overridden functions.
-	FString GetDataKey() override { return "IMUSensor"; };
 	int GetNumItems() override { return 6; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -66,7 +65,6 @@ private:
 
 	UWorld* World;
 	AWorldSettings* WorldSettings;
-	float WorldToMetersRatio;
 	float WorldGravity;
 
 	FVector VelocityThen;

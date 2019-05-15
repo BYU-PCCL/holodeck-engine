@@ -5,18 +5,18 @@
 
 UIMUSensor::UIMUSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "IMUSensor";
 }
 
-void UIMUSensor::BeginPlay() {
-	Super::BeginPlay();
+void UIMUSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	// Cache important variables
 	Parent = Cast<UPrimitiveComponent>(this->GetAttachParent());
 
 	World = Parent->GetWorld();
 	WorldSettings = World->GetWorldSettings(false, false);
-	WorldToMetersRatio = WorldSettings->WorldToMeters;
-	WorldGravity = WorldSettings->GetGravityZ() / WorldToMetersRatio;
+	WorldGravity = WorldSettings->GetGravityZ();
 
 	VelocityThen = FVector();
 	VelocityNow = FVector();
@@ -32,9 +32,12 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 
 		float* FloatBuffer = static_cast<float*>(Buffer);
 
-		//Some negative values are given so they obey Unreal's coordinate frame. 
-		FloatBuffer[0] = -LinearAccelerationVector.X;
-		FloatBuffer[1] = -LinearAccelerationVector.Y;
+		// Convert before sending to user side.
+		LinearAccelerationVector = ConvertLinearVector(LinearAccelerationVector, UEToClient);
+		AngularVelocityVector = ConvertAngularVector(AngularVelocityVector, NoScale);
+
+		FloatBuffer[0] = LinearAccelerationVector.X;
+		FloatBuffer[1] = LinearAccelerationVector.Y;
 		FloatBuffer[2] = LinearAccelerationVector.Z;
 		FloatBuffer[3] = AngularVelocityVector.X;
 		FloatBuffer[4] = AngularVelocityVector.Y;
@@ -44,26 +47,27 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
 	VelocityThen = VelocityNow;
-	VelocityNow = Parent->GetPhysicsLinearVelocity();
+	VelocityNow = Parent->GetPhysicsAngularVelocityInDegrees();
 
 	RotationNow = this->GetAttachParent()->GetComponentRotation();
 
 	LinearAccelerationVector = VelocityNow - VelocityThen;
 	LinearAccelerationVector /= DeltaTime;
 
-	LinearAccelerationVector += FVector(0.0, 0.0, -WorldGravity * WorldToMetersRatio);
+	LinearAccelerationVector += FVector(0.0, 0.0, -WorldGravity);
+
 	LinearAccelerationVector = RotationNow.UnrotateVector(LinearAccelerationVector); //changes world axis to local axis
-	LinearAccelerationVector /= WorldToMetersRatio;
 }
 
 void UIMUSensor::CalculateAngularVelocityVector() {
-	AngularVelocityVector = Parent->GetPhysicsAngularVelocity();
+	AngularVelocityVector = Parent->GetPhysicsAngularVelocityInDegrees();
 
-	AngularVelocityVector.X = -FMath::DegreesToRadians(AngularVelocityVector.X);
-	AngularVelocityVector.Y = -FMath::DegreesToRadians(AngularVelocityVector.Y);
-	AngularVelocityVector.Z = FMath::DegreesToRadians(AngularVelocityVector.Z);
+	AngularVelocityVector.X = AngularVelocityVector.X;
+	AngularVelocityVector.Y = AngularVelocityVector.Y;
+	AngularVelocityVector.Z = AngularVelocityVector.Z;
 
 	AngularVelocityVector = RotationNow.UnrotateVector(AngularVelocityVector); //Rotate from world angles to local angles.
+
 }
 
 FVector UIMUSensor::GetAccelerationVector() {

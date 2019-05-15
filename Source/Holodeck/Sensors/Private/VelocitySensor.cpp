@@ -3,23 +3,24 @@
 
 UVelocitySensor::UVelocitySensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "VelocitySensor";
 }
 
-void UVelocitySensor::BeginPlay() {
-	Super::BeginPlay();
+void UVelocitySensor::InitializeSensor() {
+	Super::InitializeSensor();
+
 	//You need to get the pointer to the object the sensor is attached to. 
 	Parent = this->GetAttachmentRootActor();
-
-	UnitsPerMeter = GetWorld()->GetWorldSettings()->WorldToMeters;
 }
 
 void UVelocitySensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	//check if your parent pointer is valid, and if the sensor is on. Then get the velocity and buffer, then send the data to it. 
 	if (Parent != nullptr && bOn) {
 		FVector Velocity = Parent->GetVelocity();
+		Velocity = ConvertLinearVector(Velocity, UEToClient);
 		float* FloatBuffer = static_cast<float*>(Buffer);
-		FloatBuffer[0] = Velocity.X / UnitsPerMeter;
-		FloatBuffer[1] = Velocity.Y / UnitsPerMeter;
-		FloatBuffer[2] = Velocity.Z / UnitsPerMeter;
+		FloatBuffer[0] = Velocity.X;
+		FloatBuffer[1] = Velocity.Y;
+		FloatBuffer[2] = Velocity.Z;
 	}
 }

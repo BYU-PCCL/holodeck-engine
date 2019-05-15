@@ -2,11 +2,7 @@
 
 #include "Holodeck.h"
 #include "HolodeckAgent.h"
-
-const char REWARD_KEY[] = "Reward";
-const int REWARD_SIZE = 1;
-const char TERMINAL_KEY[] = "Terminal";
-const int TERMINAL_SIZE = 1;
+#include "HolodeckSensor.h"
 
 AHolodeckAgent::AHolodeckAgent() {
 	PrimaryActorTick.bCanEverTick = true;
@@ -14,11 +10,14 @@ AHolodeckAgent::AHolodeckAgent() {
 	AddTickPrerequisiteActor(GetController()); //The agent's controller will always tick before the agent.
 }
 
-void AHolodeckAgent::BeginPlay() {
-	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent"));
+void AHolodeckAgent::BeginPlay(){
 	Super::BeginPlay();
+}
 
-	if(!InitializeController())
+void AHolodeckAgent::InitializeAgent() {
+
+	UE_LOG(LogHolodeck, Log, TEXT("Initializing HolodeckAgent %s"), *AgentName);
+	if (!InitializeController())
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't initialize HolodeckPawnController for HolodeckAgent."));
 
 	//Need to initialize this so that collision events will work (OnActorHit won't be called without it)
@@ -29,24 +28,31 @@ void AHolodeckAgent::BeginPlay() {
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckAgent unable to get UPrimitiveComponent. Collision events disabled."));
 	}
+
+	Instance = static_cast<UHolodeckGameInstance*>(GetGameInstance());
+	Server = Instance->GetServer();
+
+	UE_LOG(LogHolodeck, Log, TEXT("Adding Agent %s to Server"), *AgentName);
+	if (Server == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("Agent could not find server..."));
+	} else {
+		Server->AgentMap.Add(*AgentName, this);
+	}
+
+	// Initialize Sensors
+	TArray<UActorComponent*> Sensors;
+	Sensors = this->GetComponentsByClass(UHolodeckSensor::StaticClass());
+
+	for (auto& ActorSensor : Sensors) {
+		UHolodeckSensor* Sensor = Cast<UHolodeckSensor>(ActorSensor);
+		Sensor->SetAgentAndController(HolodeckController, AgentName);
+		Sensor->InitializeSensor();
+		this->SensorMap.Add(Sensor->SensorName, Sensor);
+	}
 }
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-}
-
-void AHolodeckAgent::SetReward(float Reward) {
-	if (RewardPtr != nullptr)
-		*RewardPtr = Reward;
-	else
-		UE_LOG(LogHolodeck, Warning, TEXT("Trying to set reward for HolodeckAgent without a HolodeckController"));
-}
-
-void AHolodeckAgent::SetTerminal(bool bTerminal) {
-	if (TerminalPtr != nullptr)
-		*TerminalPtr = bTerminal;
-	else
-		UE_LOG(LogHolodeck, Warning, TEXT("Trying to set terminal for HolodeckAgent without a HolodeckController"));
 }
 
 bool AHolodeckAgent::Teleport(const FVector& NewLocation, const FRotator& NewRotation) {
@@ -74,6 +80,28 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation){
 	return Teleport(NewLocation, DefaultRotation);
 }
 
+bool AHolodeckAgent::SetState(const FVector& NewLocation, const FRotator& NewRotation, const FVector& NewVelocity, const FVector& NewAngVelocity) {
+
+	FHitResult HitResult;
+	bool bWasSuccessful = this->K2_SetActorLocationAndRotation(
+		NewLocation,
+		NewRotation,
+		true, // will sweep and be blocked by an object in the path
+		HitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
+		false 
+	);
+
+	UPrimitiveComponent* RootComp = (UPrimitiveComponent*)this->GetRootComponent();
+
+	FRotator RotationNow = RootComp->GetComponentRotation();
+	FVector AngularVelocityVector = RotationNow.RotateVector(NewAngVelocity); //Rotate from local angles to world angles
+
+	RootComp->SetAllPhysicsLinearVelocity(NewVelocity, false);
+	RootComp->SetAllPhysicsAngularVelocityInDegrees(AngularVelocityVector, false);
+
+	return bWasSuccessful;
+}
+
 bool AHolodeckAgent::InitializeController() {
 	UE_LOG(LogHolodeck, Log, TEXT("Attempting to initialize controller for HolodeckAgent"));
 
@@ -89,13 +117,6 @@ bool AHolodeckAgent::InitializeController() {
 		return false;
 	} else {
 		// We found the controller, so tell it to set up the action buffers.
-		// Also, open up the channels for the reward pointer and terminal pointer.
-		RewardPtr = static_cast<float*>(HolodeckController->Subscribe(AgentName, REWARD_KEY, REWARD_SIZE, sizeof(float)));
-		TerminalPtr = static_cast<bool*>(HolodeckController->Subscribe(AgentName, TERMINAL_KEY, TERMINAL_SIZE, sizeof(bool)));
-		if (RewardPtr != nullptr)
-			*RewardPtr = 0.0;
-		if (TerminalPtr != nullptr)
-			*TerminalPtr = false;
 		HolodeckController->AllocateBuffers(AgentName);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent controller setup was successful"));
 		return true;

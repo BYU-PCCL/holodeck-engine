@@ -24,14 +24,13 @@ public:
 	UVelocitySensor();
 
 	/**
-	  * BeginPlay
-  	  * Called at the start of the game.
-	  */
-	void BeginPlay() override;
+	* InitializeSensor
+	* Sets up the class
+	*/
+	virtual void InitializeSensor() override;
 
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
-	FString GetDataKey() override { return "VelocitySensor"; };
 	int GetNumItems() override { return 3; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -43,5 +42,4 @@ private:
 	  * Not owned.
 	  */
 	AActor* Parent;
-	float UnitsPerMeter;
 };

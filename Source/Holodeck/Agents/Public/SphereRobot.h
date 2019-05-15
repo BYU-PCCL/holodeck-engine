@@ -24,7 +24,7 @@ public:
 	* Called when the game starts.
 	* Registers the reward and terminal signals.
 	*/
-	void BeginPlay() override;
+	void InitializeAgent() override;
 	
 	/**
 	  * Tick
@@ -38,12 +38,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float RotSpeed;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float ForwardSensitivity;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float RotSensitivity;
 
 	unsigned int GetRawActionSizeInBytes() const override { return 2 * sizeof(float); };
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };

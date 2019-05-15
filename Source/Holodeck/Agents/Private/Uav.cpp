@@ -26,8 +26,8 @@ AUav::AUav() {
 	// OnCalculateCustomPhysics.BindUObject(this, &AUav::SubstepTick);
 }
 
-void AUav::BeginPlay() {
-	Super::BeginPlay();
+void AUav::InitializeAgent() {
+	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
 }
 
@@ -43,11 +43,11 @@ void AUav::ApplyForces() {
 	float ThrustToApply = FMath::Clamp(GetThrustToApply(), -UAV_MAX_FORCE, UAV_MAX_FORCE);
 
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
+	LocalThrust = ConvertLinearVector(LocalThrust, ClientToUE);
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply);
-	LocalThrust *= 100;
-	LocalTorque *= 10000;
+	LocalTorque = ConvertTorque(LocalTorque, ClientToUE);
 
 	// Apply torques and forces in global coordinates
-	RootMesh->AddTorque(GetActorRotation().RotateVector(LocalTorque));
+	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
 }

@@ -1,5 +1,6 @@
 #include "Holodeck.h"
 #include "HolodeckCamera.h"
+#include "Json.h"
 
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
@@ -15,14 +16,35 @@ UHolodeckCamera::UHolodeckCamera() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
 	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
-
-	SceneCapture = this->CreateDefaultSubobject<USceneCaptureComponent2D>("SceneCap");
-	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
-void UHolodeckCamera::BeginPlay() {
-	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::BeginPlay"));
-	Super::BeginPlay();
+// Allows sensor parameters to be set programmatically from client.
+void UHolodeckCamera::ParseSensorParms(FString ParmsJson) {
+	Super::ParseSensorParms(ParmsJson);
+
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
+
+		if (JsonParsed->HasTypedField<EJson::Number>("CaptureWidth")) {
+			CaptureWidth = JsonParsed->GetIntegerField("CaptureWidth");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Number>("CaptureHeight")) {
+			CaptureHeight = JsonParsed->GetIntegerField("CaptureHeight");
+		}
+	} else {
+		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::ParseSensorParms:: Unable to parse json."));
+	}
+}
+
+void UHolodeckCamera::InitializeSensor() {
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::InitializeSensor"));
+	Super::InitializeSensor();
+
+	SceneCapture = NewObject<USceneCaptureComponent2D>(this, "SceneCap");
+	SceneCapture->RegisterComponent();
+	SceneCapture->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);
 	
 	TargetTexture = NewObject<UTextureRenderTarget2D>(this);
 

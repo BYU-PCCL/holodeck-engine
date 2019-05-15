@@ -6,16 +6,18 @@ public class Holodeck : ModuleRules
 {
 	public Holodeck(ReadOnlyTargetRules Target) : base(Target)
 	{
+        PrivatePCHHeaderFile = "Holodeck.h";
         PrivateIncludePaths.AddRange(new [] {
              "Holodeck/Agents/Public",
              "Holodeck/General/Public",
              "Holodeck/Sensors/Public",
              "Holodeck/Utils/Public",
              "Holodeck/HolodeckCore/Public",
-             "Holodeck/ClientCommands/Public"
+             "Holodeck/ClientCommands/Public",
+             "Holodeck/Tasks/Public"
          });
 
-        PublicDependencyModuleNames.AddRange(new [] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "JsonUtilities", "RenderCore", "RHI" });
+        PublicDependencyModuleNames.AddRange(new [] {"ApplicationCore", "Core", "CoreUObject", "Engine", "InputCore", "AIModule", "SlateCore", "Slate", "PhysX", "APEX", "Json", "JsonUtilities", "RenderCore", "RHI" });
 
 #if PLATFORM_LINUX
         PublicDependencyModuleNames.AddRange(new [] { "rt", "pthread" };

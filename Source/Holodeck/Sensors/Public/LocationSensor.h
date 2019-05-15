@@ -23,15 +23,14 @@ public:
 	*/
 	ULocationSensor();
 
-	/*
-	* BeginPlay
-	* Called at the start of the game.
+	/**
+	* InitializeSensor
+	* Sets up the class
 	*/
-	void BeginPlay() override;
+	virtual void InitializeSensor() override;
 
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
-	FString GetDataKey() override { return "LocationSensor"; };
 	int GetNumItems() override { return 3; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -42,5 +41,4 @@ private:
 	 * After initialization, Parent contains a pointer to whatever the sensor is attached to.
 	 */
 	USceneComponent* Parent;
-	float UnitsPerMeter;
 };

@@ -5,10 +5,11 @@
 
 URelativeSkeletalPositionSensor::URelativeSkeletalPositionSensor() {
 	PrimaryComponentTick.bCanEverTick = true;
+	SensorName = "RelativeSkeletalPositionSensor";
 }
 
-void URelativeSkeletalPositionSensor::BeginPlay() {
-	Super::BeginPlay();
+void URelativeSkeletalPositionSensor::InitializeSensor() {
+	Super::InitializeSensor();
 
 	AActor* Android = this->GetOwner();
 	TArray<USkeletalMeshComponent*> Components;

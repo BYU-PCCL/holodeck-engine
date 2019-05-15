@@ -20,14 +20,13 @@ public:
 	UJointRotationSensor();
 
 	/**
-	* BeginPlay
-	* Called when the games starts.
+	* InitializeSensor
+	* Sets up the class
 	*/
-	void BeginPlay() override;
+	virtual void InitializeSensor() override;
 
 protected:
 	// See HolodeckSensor for information on these classes.
-	virtual FString GetDataKey() override { return "JointRotationSensor"; };
 	virtual int GetNumItems() override { return 94; };
 	virtual int GetItemSize() override { return sizeof(float); };
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

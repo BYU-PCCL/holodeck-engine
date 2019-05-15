@@ -25,15 +25,21 @@ public:
 	UHolodeckCamera();
 
 	/**
-	* BeginPlay
-	* Sets up the class, and gives a reference of itself to the viewport client.
-	* Subclasses must call Super::BeginPlay()
+	* InitializeSensor
+	* Sets up the class
 	*/
-	virtual void BeginPlay() override;
+	virtual void InitializeSensor() override;
+
+	/**
+	* Allows parameters to be set dynamically
+	*/
+	virtual void ParseSensorParms(FString ParmsJson) override;
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction);
+	FColor* Buffer;
+	FRenderRequest RenderRequest;
 
 	UPROPERTY()
 	UTextureRenderTarget2D* TargetTexture;
@@ -51,6 +57,4 @@ private:
 
 	bool bPointerGivenToViewport = false;
 	UHolodeckViewportClient* ViewportClient;
-	FColor* Buffer;
-	FRenderRequest RenderRequest;
 };
