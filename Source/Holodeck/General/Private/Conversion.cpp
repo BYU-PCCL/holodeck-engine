@@ -1,7 +1,7 @@
 #include "Holodeck.h"
 #include "Conversion.h"
 
-const bool USE_RHS = true;
+const bool USE_RHS = false;
 
 FVector ConvertLinearVector(FVector Vector, ConvertType Type) {
 
