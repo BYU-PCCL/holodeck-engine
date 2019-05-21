@@ -5,17 +5,6 @@
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
 
-	int CameraWidth;
-	int CameraHeight;
-	if(FParse::Value(FCommandLine::Get(), TEXT("CamResX="), CameraWidth)) {
-		CaptureWidth = CameraWidth;
-	}
-	if (FParse::Value(FCommandLine::Get(), TEXT("CamResY="), CameraHeight)) {
-		CaptureHeight = CameraHeight;
-	}
-
-	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
-	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
 }
 
 // Allows sensor parameters to be set programmatically from client.
@@ -36,6 +25,10 @@ void UHolodeckCamera::ParseSensorParms(FString ParmsJson) {
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::ParseSensorParms:: Unable to parse json."));
 	}
+
+	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
+	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
+
 }
 
 void UHolodeckCamera::InitializeSensor() {
