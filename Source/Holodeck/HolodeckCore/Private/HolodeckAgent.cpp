@@ -63,7 +63,7 @@ bool AHolodeckAgent::Teleport(const FVector& NewLocation, const FRotator& NewRot
 		NewRotation,
 		false, //will not be blocked by object in between current and new location. 
 		DummyHitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
-		false //the object will not retain its momentum.
+		true //the object will retain its momentum(otherwise the android could not be teleported).
 	);
 
 	if (bWasSuccessful) {
