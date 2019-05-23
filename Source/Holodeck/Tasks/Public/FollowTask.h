@@ -27,7 +27,8 @@ public:
 	/**
 	* Default Constructor
 	*/
-	UFollowTask() {}
+	UFollowTask() : ToFollow(nullptr), ToFollowTag(""), OnlyWithinSight(true), FOVRadians(1.5),
+		MinDistance(100), TargetHeight(1) {}
 
 	/**
 	* InitializeSensor
@@ -43,9 +44,6 @@ public:
 	// Actor to follow
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* ToFollow;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString ToFollowTag;
 
 	// Only give reward if target is in sight
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -70,5 +68,6 @@ protected:
 private:
 	// Scales score between 0-1 to 0-100
 	const int MaxScore = 100;
-	void FindToFollow(FString tag);
+
+	FString ToFollowTag;
 };

@@ -23,8 +23,9 @@ public:
 	/**
 	* Default Constructor
 	*/
-	UDistanceTask() : MaximizeDistance(false), Interval(1), GoalDistance(1), DistanceActor(nullptr), 
-		DistanceLocation(this->GetComponentLocation()) {}
+	UDistanceTask() : MaximizeDistance(false), Interval(1), GoalDistance(1), GoalActor(nullptr),
+		GoalLocation(this->GetComponentLocation()), DistanceActor(nullptr),
+		DistanceActorTag(""), GoalActorTag("") {}
 
 	/**
 	* InitializeSensor
@@ -49,13 +50,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float GoalDistance;
 
-	// Goal actor
+	// Actor to reach goal (if null component location is used)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* DistanceActor;
 
+	// Goal actor
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* GoalActor;
+
 	// Location (Used if actor is null) 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector DistanceLocation;
+		FVector GoalLocation;
 
 protected:
 	// Checkout HolodeckSensor.h for the documentation for this overridden function.
@@ -63,7 +68,8 @@ protected:
 
 private:
 
+	float CalcDistance();
 	float NextDistance;
-	float StartDistance;
-	float LastDistance;
+	FString DistanceActorTag;
+	FString GoalActorTag;
 };
