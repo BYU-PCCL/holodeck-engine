@@ -6,18 +6,13 @@
 void UDistanceTask::InitializeSensor() {
 	Super::InitializeSensor();
 
-	if (DistanceActor) {
-		StartDistance = (DistanceActor->GetActorLocation() - this->GetComponentLocation()).Size();
-	} else {
-		StartDistance = (DistanceLocation - this->GetComponentLocation()).Size();
-	}
+	float Distance = CalcDistance();
 
 	if (MaximizeDistance) {
-		NextDistance = StartDistance + Interval;
+		NextDistance = Distance + Interval;
 	} else {
-		NextDistance = StartDistance - Interval;
+		NextDistance = Distance - Interval;
 	}
-	LastDistance = StartDistance;
 }
 
 // Allows sensor parameters to be set programmatically from client.
@@ -29,22 +24,19 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
 
 		if (JsonParsed->HasTypedField<EJson::String>("DistanceActor")) {
-			FString ActorName = JsonParsed->GetStringField("DistanceActor");
-			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-			{
-				if (ActorItr->ActorHasTag(FName(*ActorName))) {
-					DistanceActor = *ActorItr;
-					break;
-				}
-			}
+			DistanceActorTag = JsonParsed->GetStringField("DistanceActor");
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Array>("DistanceLocation")) {
-			TArray<TSharedPtr<FJsonValue>> LocationArray = JsonParsed->GetArrayField("DistanceLocation");
+		if (JsonParsed->HasTypedField<EJson::String>("GoalActor")) {
+			GoalActorTag = JsonParsed->GetStringField("GoalActor");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Array>("GoalLocation")) {
+			TArray<TSharedPtr<FJsonValue>> LocationArray = JsonParsed->GetArrayField("GoalLocation");
 			if (LocationArray.Num() == 3) {
 				double X, Y, Z;
 				if (LocationArray[0]->TryGetNumber(X) && LocationArray[1]->TryGetNumber(Y) && LocationArray[2]->TryGetNumber(Z))
-					DistanceLocation = FVector(X, Y, Z);
+					GoalLocation = FVector(X, Y, Z);
 			}
 		}
 
@@ -66,11 +58,13 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 
 // Called every frame
 void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	if (IsValid(Parent)) {
-		float Distance = (DistanceLocation - this->GetComponentLocation()).Size();
-		if (DistanceActor) {
-			Distance = (DistanceActor->GetActorLocation() - Parent->GetActorLocation()).Size();
-		}
+	if (DistanceActor == nullptr && DistanceActorTag != "")
+		DistanceActor = FindActorWithTag(DistanceActorTag);
+	if (GoalActor == nullptr && GoalActorTag != "")
+		GoalActor = FindActorWithTag(GoalActorTag);
+
+	if ((DistanceActor || DistanceActorTag == "") && (GoalActor || GoalActorTag == "")) {
+		float Distance = CalcDistance();
 
 		if (MaximizeDistance) {
 			if (Distance > NextDistance) {
@@ -96,4 +90,19 @@ void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 
 	// Call TaskSensor's Tick to store Reward and Terminal in sensor buffer
 	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+// Get Distance
+float UDistanceTask::CalcDistance() {
+	FVector FromLocation = this->GetComponentLocation();
+	if (DistanceActor) {
+		FromLocation = DistanceActor->GetActorLocation();
+	}
+
+	FVector ToLocation = GoalLocation;
+	if (GoalActor) {
+		ToLocation = GoalActor->GetActorLocation();
+	}
+
+	return (ToLocation - FromLocation).Size();
 }

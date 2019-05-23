@@ -15,23 +15,20 @@ void ULocationTask::ParseSensorParms(FString ParmsJson) {
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
 
-		if (JsonParsed->HasTypedField<EJson::String>("DistanceActor")) {
-			FString ActorName = JsonParsed->GetStringField("DistanceActor");
-			for (TActorIterator<AStaticMeshActor> ActorItr(GetWorld()); ActorItr; ++ActorItr)
-			{
-				if (ActorItr->ActorHasTag(FName(*ActorName))) {
-					DistanceActor = *ActorItr;
-					break;
-				}
-			}
+		if (JsonParsed->HasTypedField<EJson::String>("LocationActor")) {
+			LocationActorTag = JsonParsed->GetStringField("LocationActor");
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Array>("DistanceLocation")) {
-			TArray<TSharedPtr<FJsonValue>> LocationArray = JsonParsed->GetArrayField("DistanceLocation");
+		if (JsonParsed->HasTypedField<EJson::String>("GoalActor")) {
+			GoalActorTag = JsonParsed->GetStringField("GoalActor");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Array>("GoalLocation")) {
+			TArray<TSharedPtr<FJsonValue>> LocationArray = JsonParsed->GetArrayField("GoalLocation");
 			if (LocationArray.Num() == 3) {
 				double X, Y, Z;
 				if (LocationArray[0]->TryGetNumber(X) && LocationArray[1]->TryGetNumber(Y) && LocationArray[2]->TryGetNumber(Z))
-					DistanceLocation = FVector(X, Y, Z);
+					GoalLocation = FVector(X, Y, Z);
 			}
 		}
 
@@ -42,6 +39,10 @@ void ULocationTask::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
 			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
 		}
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("HasTerminal")) {
+			HasTerminal = JsonParsed->GetBoolField("HasTerminal");
+		}
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("ULocationTask::ParseSensorParms:: Unable to parse json."));
 	}
@@ -49,17 +50,23 @@ void ULocationTask::ParseSensorParms(FString ParmsJson) {
 
 // Called every frame
 void ULocationTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	if (IsValid(Parent)) {
-		float Distance = (DistanceLocation - this->GetComponentLocation()).Size();
-		if (DistanceActor) {
-			Distance = (DistanceActor->GetActorLocation() - Parent->GetActorLocation()).Size();
-		}
+	if (LocationActor == nullptr && LocationActorTag != "")
+		LocationActor = FindActorWithTag(LocationActorTag);
+	if (GoalActor == nullptr && GoalActorTag != "")
+		GoalActor = FindActorWithTag(GoalActorTag);
+
+	if ((LocationActor || LocationActorTag == "") && (GoalActor || GoalActorTag == "")) {
+		float Distance = CalcDistance();
 
 		if ((Distance > GoalDistance && MaximizeDistance) ||
-				(Distance < GoalDistance && !MaximizeDistance)) {
+			(Distance < GoalDistance && !MaximizeDistance)) {
 			Reward = 1;
-			Terminal = true;
-		} else {
+
+			if (HasTerminal)
+				Terminal = true;
+
+		}
+		else {
 			Reward = 0;
 			Terminal = false;
 		}
@@ -67,4 +74,19 @@ void ULocationTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 
 	// Call TaskSensor's Tick to store Reward and Terminal in sensor buffer
 	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
+}
+
+// Get Distance
+float ULocationTask::CalcDistance() {
+	FVector FromLocation = this->GetComponentLocation();
+	if (LocationActor) {
+		FromLocation = LocationActor->GetActorLocation();
+	}
+
+	FVector ToLocation = GoalLocation;
+	if (GoalActor) {
+		ToLocation = GoalActor->GetActorLocation();
+	}
+
+	return (ToLocation - FromLocation).Size();
 }
