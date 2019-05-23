@@ -44,9 +44,19 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 
 	if (ToFollow) {
 		// Get location and distance
-		FVector AgentLocation = Parent->GetActorLocation();
-		FVector TargetLocation = ToFollow->GetActorLocation();
-		FVector DistanceVec = TargetLocation - AgentLocation;
+		FVector StartVec = Parent->GetActorLocation();
+		UStaticMeshComponent* Mesh = (UStaticMeshComponent*)Parent->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
+		if (Mesh && Mesh->DoesSocketExist("CameraSocket")) {
+			StartVec = Mesh->GetSocketLocation("CameraSocket");
+		}
+
+		FVector EndVec = ToFollow->GetActorLocation();
+		Mesh = (UStaticMeshComponent*)ToFollow->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
+		if (Mesh && Mesh->DoesSocketExist(FName(*FollowSocket))) {
+			EndVec = Mesh->GetSocketLocation(FName(*FollowSocket));
+		}
+
+		FVector DistanceVec = EndVec - StartVec;
 		float Distance = DistanceVec.Size();
 
 		if (OnlyWithinSight) {
@@ -54,18 +64,6 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 			float TargetAngle = FGenericPlatformMath::Acos(FVector::DotProduct(DistanceVec / Distance, Parent->GetActorForwardVector()));
 
 			// Get trace to target
-			FVector StartVec = AgentLocation;
-			UStaticMeshComponent* Mesh = (UStaticMeshComponent*)Parent->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
-			if (Mesh && Mesh->DoesSocketExist("CameraSocket")) {
-				StartVec = Mesh->GetSocketLocation("CameraSocket");
-			}
-
-			FVector EndVec = TargetLocation;
-			Mesh = (UStaticMeshComponent*)ToFollow->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
-			if (Mesh && Mesh->DoesSocketExist(FName(*FollowSocket))) {
-				EndVec = Mesh->GetSocketLocation(FName(*FollowSocket));
-			}
-
 			FCollisionQueryParams QueryParams = FCollisionQueryParams();
 			QueryParams.AddIgnoredActor(Parent);
 			FHitResult Hit = FHitResult();
