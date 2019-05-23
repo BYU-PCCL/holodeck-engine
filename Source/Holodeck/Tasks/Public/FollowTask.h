@@ -27,8 +27,8 @@ public:
 	/**
 	* Default Constructor
 	*/
-	UFollowTask() : ToFollow(nullptr), ToFollowTag(""), OnlyWithinSight(true), FOVRadians(1.5),
-		MinDistance(100), TargetHeight(1) {}
+	UFollowTask() : ToFollow(nullptr), ToFollowTag(""), FollowSocket(""), OnlyWithinSight(true),
+		FOVRadians(1.5), MinDistance(100) {}
 
 	/**
 	* InitializeSensor
@@ -45,6 +45,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* ToFollow;
 
+	// Socket on Follow actor for ray trace
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString FollowSocket;
+
 	// Only give reward if target is in sight
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool OnlyWithinSight;
@@ -56,10 +60,6 @@ public:
 	// Defines the minimum distance to recieve positive reward
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MinDistance;
-
-	// Defines the target's height
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		float TargetHeight;
 	
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.

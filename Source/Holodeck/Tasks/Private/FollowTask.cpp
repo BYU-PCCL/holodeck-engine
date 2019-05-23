@@ -19,6 +19,10 @@ void UFollowTask::ParseSensorParms(FString ParmsJson) {
 			ToFollowTag = JsonParsed->GetStringField("ToFollow");
 		}
 
+		if (JsonParsed->HasTypedField<EJson::String>("FollowSocket")) {
+			FollowSocket = JsonParsed->GetStringField("FollowSocket");
+		}
+
 		if (JsonParsed->HasTypedField<EJson::Boolean>("OnlyWithinSight")) {
 			OnlyWithinSight = JsonParsed->GetBoolField("OnlyWithinSight");
 		}
@@ -29,10 +33,6 @@ void UFollowTask::ParseSensorParms(FString ParmsJson) {
 
 		if (JsonParsed->HasTypedField<EJson::Number>("MinDistance")) {
 			MinDistance = JsonParsed->GetNumberField("MinDistance");
-		}
-
-		if (JsonParsed->HasTypedField<EJson::Number>("TargetHeight")) {
-			TargetHeight = JsonParsed->GetNumberField("TargetHeight");
 		}
 	}
 }
@@ -54,27 +54,36 @@ void UFollowTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 			float TargetAngle = FGenericPlatformMath::Acos(FVector::DotProduct(DistanceVec / Distance, Parent->GetActorForwardVector()));
 
 			// Get trace to target
-			FVector SocketLocation = AgentLocation;
+			FVector StartVec = AgentLocation;
 			UStaticMeshComponent* Mesh = (UStaticMeshComponent*)Parent->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
 			if (Mesh && Mesh->DoesSocketExist("CameraSocket")) {
-				SocketLocation = Mesh->GetSocketLocation("CameraSocket");
+				StartVec = Mesh->GetSocketLocation("CameraSocket");
 			}
 
-			FVector StartVec = (TargetLocation - SocketLocation) * .1 + SocketLocation;
-			FVector EndVec = (TargetLocation + FVector(0, 0, TargetHeight) - SocketLocation) * 2 + SocketLocation;
+			FVector EndVec = TargetLocation;
+			Mesh = (UStaticMeshComponent*)ToFollow->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
+			if (Mesh && Mesh->DoesSocketExist(FName(*FollowSocket))) {
+				EndVec = Mesh->GetSocketLocation(FName(*FollowSocket));
+			}
 
+			FCollisionQueryParams QueryParams = FCollisionQueryParams();
+			QueryParams.AddIgnoredActor(Parent);
 			FHitResult Hit = FHitResult();
-			bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, FCollisionQueryParams());
+			bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, QueryParams);
 
 			// Evaluate - if the actor is in our field of view and either the ray trace has intersected with the target or there is nothing between ourself and the target
-			if (TargetAngle < FOVRadians && (Hit.Actor == ToFollow || Hit.Actor == nullptr))
+			if (TargetAngle < FOVRadians && (Hit.Actor == ToFollow || Hit.Actor == nullptr) && Distance < MinDistance) {
 				Reward = MaxScore * (MinDistance - Distance) / MinDistance;
-			else
+			} else {
 				Reward = 0;
-
+			}
 		}
 		else {
-			Reward = MaxScore * (MinDistance - Distance) / MinDistance;
+			if (Distance < MinDistance) {
+				Reward = MaxScore * (MinDistance - Distance) / MinDistance;
+			} else {
+				Reward = 0;
+			}
 		}
 	}
 
