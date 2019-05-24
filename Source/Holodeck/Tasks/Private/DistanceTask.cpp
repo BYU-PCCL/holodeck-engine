@@ -58,7 +58,7 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
-			MaximizeDistance = ConvertClientDistanceToUnreal(JsonParsed->GetBoolField("MaximizeDistance"));
+			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
 		}
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UDistanceTask::ParseSensorParms:: Unable to parse json."));
