@@ -44,20 +44,21 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 			if (LocationArray.Num() == 3) {
 				double X, Y, Z;
 				if (LocationArray[0]->TryGetNumber(X) && LocationArray[1]->TryGetNumber(Y) && LocationArray[2]->TryGetNumber(Z))
-					DistanceLocation = FVector(X, Y, Z);
+					DistanceLocation = ConvertLinearVector(FVector(X, Y, Z), ClientToUE);
 			}
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("Interval")) {
-			Interval = JsonParsed->GetNumberField("Interval");
+			Interval = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("Interval"));
+
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("GoalDistance")) {
-			GoalDistance = JsonParsed->GetNumberField("GoalDistance");
+			GoalDistance = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("GoalDistance"));
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
-			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
+			MaximizeDistance = ConvertClientDistanceToUnreal(JsonParsed->GetBoolField("MaximizeDistance"));
 		}
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UDistanceTask::ParseSensorParms:: Unable to parse json."));

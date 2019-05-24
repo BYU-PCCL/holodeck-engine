@@ -17,4 +17,6 @@ FRotator ConvertAngularVector(FRotator Rotator, ConvertType);
 
 FVector ConvertTorque(FVector Vector, ConvertType Type);
 
+float ConvertClientDistanceToUnreal(float client);
 
+float ConvertUnrealDistanceToClient(float unreal);
