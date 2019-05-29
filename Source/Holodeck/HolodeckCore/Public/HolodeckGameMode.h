@@ -53,7 +53,7 @@ public:
 
 	// These functions allow the Holodeck to do things which cannot normally be done from pure c++ code
 	UFUNCTION(BlueprintImplementableEvent)
-	AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location, const FString& Name);
+	AHolodeckAgent* SpawnAgent(const FString& Type, const FVector& Location, const FRotator& Rotation, const FString& Name);
 	UFUNCTION(BlueprintImplementableEvent)
 	void TeleportCamera(const FVector& Location, const FVector& Rotation);
 	UFUNCTION(BlueprintImplementableEvent)
