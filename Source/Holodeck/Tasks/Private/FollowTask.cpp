@@ -29,11 +29,11 @@ void UFollowTask::ParseSensorParms(FString ParmsJson) {
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("MinDistance")) {
-			MinDistance = JsonParsed->GetNumberField("MinDistance");
+			MinDistance = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("MinDistance"));
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("TargetHeight")) {
-			TargetHeight = JsonParsed->GetNumberField("TargetHeight");
+			TargetHeight = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("TargetHeight"));
 		}
 	}
 }
