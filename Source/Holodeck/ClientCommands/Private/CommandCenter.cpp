@@ -18,7 +18,7 @@ UCommandCenter::UCommandCenter() {
 }
 
 void UCommandCenter::Tick(float DeltaTime) {
-	if (ShouldReadBufferPtr && *ShouldReadBufferPtr == true) {
+	if (ShouldReadBufferPtr && *ShouldReadBufferPtr == true && Buffer != nullptr) {
 		ReadCommandBuffer();
 		*ShouldReadBufferPtr = false;
 	}
