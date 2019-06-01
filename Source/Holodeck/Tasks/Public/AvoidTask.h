@@ -28,7 +28,7 @@ public:
 	* Default Constructor
 	*/
 	UAvoidTask() : ToAvoid(nullptr), ToAvoidTag(""), StartSocket(""), EndSocket(""),
-		OnlyWithinSight(true), FOVRadians(1.5), MinDistance(100) {}
+		OnlyWithinSight(true), FOVRadians(1.5), MinDistance(10000) {}
 
 	/**
 	* InitializeSensor

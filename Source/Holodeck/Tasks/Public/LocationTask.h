@@ -23,7 +23,7 @@ public:
 	/**
 	* Default Constructor
 	*/
-	ULocationTask() : MaximizeDistance(false), HasTerminal(true), GoalDistance(1),
+	ULocationTask() : MaximizeDistance(false), HasTerminal(true), GoalDistance(100),
 		GoalActor(nullptr), GoalLocation(this->GetComponentLocation()), LocationActor(nullptr),
 		LocationActorTag(""), GoalActorTag("") {}
 
@@ -42,7 +42,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool MaximizeDistance;
 
-	// Set to true to maximize instead of minimize distance
+	// Set to true to return a terminal and reward once the goal location is reached
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		bool HasTerminal;
 

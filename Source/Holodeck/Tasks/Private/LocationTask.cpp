@@ -58,9 +58,13 @@ void ULocationTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 	if ((LocationActor || LocationActorTag == "") && (GoalActor || GoalActorTag == "")) {
 		float Distance = CalcDistance();
 
-		if ((Distance > GoalDistance && MaximizeDistance) ||
-			(Distance < GoalDistance && !MaximizeDistance)) {
-			Reward = 1;
+		if (Distance > GoalDistance) {
+			if (!MaximizeDistance) {
+				Reward = 1;
+			}
+			else {
+				Reward = -1;
+			}
 
 			if (HasTerminal)
 				Terminal = true;

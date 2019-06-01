@@ -28,7 +28,7 @@ public:
 	* Default Constructor
 	*/
 	UFollowTask() : ToFollow(nullptr), ToFollowTag(""), FollowSocket(""), OnlyWithinSight(true),
-		FOVRadians(1.5), MinDistance(100) {}
+		FOVRadians(1.5), MinDistance(10000) {}
 
 	/**
 	* InitializeSensor
