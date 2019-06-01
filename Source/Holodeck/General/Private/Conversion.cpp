@@ -66,4 +66,10 @@ FVector ConvertTorque(FVector Vector, ConvertType Type) {
 	return Vector;
 }
 
+float ConvertClientDistanceToUnreal(float client) {
+	return client * UEUnitsPerMeter;
+}
 
+float ConvertUnrealDistanceToClient(float unreal) {
+	return unreal / UEUnitsPerMeter;
+}

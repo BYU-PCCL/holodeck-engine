@@ -6,7 +6,7 @@ void USpawnAgentCommand::Execute() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
 	//Program should throw an error if any of these params aren't the correct size. They should always be this size.
-	if (StringParams.size() != 2 || NumberParams.size() != 3) {
+	if (StringParams.size() != 2 || NumberParams.size() != 6) {
 		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in USpawnAgentCommand. Agent not spawned."));
 		return;
 	}
@@ -26,10 +26,11 @@ void USpawnAgentCommand::Execute() {
 	FString AgentType = StringParams[0].c_str();
 	FString AgentName = StringParams[1].c_str();
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
+	FRotator Rotation = FRotator(NumberParams[3], NumberParams[4], NumberParams[5]);
 	Location = ConvertLinearVector(Location, ClientToUE);
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
-	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, AgentName);
+	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, Rotation, AgentName);
 	AHolodeckPawnController* SpawnedController = nullptr;
 
 	if (SpawnedAgent) {

@@ -36,16 +36,17 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 			if (LocationArray.Num() == 3) {
 				double X, Y, Z;
 				if (LocationArray[0]->TryGetNumber(X) && LocationArray[1]->TryGetNumber(Y) && LocationArray[2]->TryGetNumber(Z))
-					GoalLocation = FVector(X, Y, Z);
+					GoalLocation = ConvertLinearVector(FVector(X, Y, Z), ClientToUE);
 			}
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("Interval")) {
-			Interval = JsonParsed->GetNumberField("Interval");
+			Interval = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("Interval"));
+
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("GoalDistance")) {
-			GoalDistance = JsonParsed->GetNumberField("GoalDistance");
+			GoalDistance = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("GoalDistance"));
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
