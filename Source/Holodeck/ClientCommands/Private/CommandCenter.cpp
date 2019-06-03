@@ -18,7 +18,7 @@ UCommandCenter::UCommandCenter() {
 }
 
 void UCommandCenter::Tick(float DeltaTime) {
-	if (ShouldReadBufferPtr && *ShouldReadBufferPtr == true && Buffer != nullptr) {
+	if (ShouldReadBufferPtr && *ShouldReadBufferPtr == true) {
 		ReadCommandBuffer();
 		*ShouldReadBufferPtr = false;
 	}
@@ -33,6 +33,11 @@ void UCommandCenter::GetCommandBuffer() {
 		UE_LOG(LogHolodeck, Warning, TEXT("CommandCenter could not find server..."));
 	} else {
 		Buffer = static_cast<char*>(Server->Malloc(TCHAR_TO_UTF8(*BUFFER_NAME), BUFFER_SIZE * BYTE_SIZE));
+
+		if (!Buffer) {
+			UE_LOG(LogHolodeck, Fatal, TEXT("CommandCenter::GetCommandBuffer: Failed to allocate shared memory for buffer!"));
+		}
+
 		ShouldReadBufferPtr = static_cast<bool*>(Server->Malloc(TCHAR_TO_UTF8(*BUFFER_SHOULD_READ_NAME), BUFFER_SHOULD_READ_SIZE * sizeof(bool)));
 		if (ShouldReadBufferPtr != nullptr)
 			*ShouldReadBufferPtr = false;
