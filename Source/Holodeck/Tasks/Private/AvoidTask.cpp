@@ -38,6 +38,8 @@ void UAvoidTask::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Number>("MinDistance")) {
 			MinDistance = JsonParsed->GetNumberField("MinDistance");
 		}
+	} else {
+		UE_LOG(LogHolodeck, Warning, TEXT("UAvoidTask::ParseSensorParms:: Unable to parse json."));
 	}
 }
 
@@ -48,33 +50,26 @@ void UAvoidTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 
 	if (ToAvoid) {
 		// Get location and distance
-		FVector StartVec = ToAvoid->GetActorLocation();
-		UStaticMeshComponent* Mesh = (UStaticMeshComponent*)ToAvoid->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
-		if (Mesh && Mesh->DoesSocketExist(FName(*StartSocket))) {
-			StartVec = Mesh->GetSocketLocation(FName(*StartSocket));
-		}
-
-		FVector EndVec = Parent->GetActorLocation();
-		Mesh = (UStaticMeshComponent*)Parent->GetComponentByClass(TSubclassOf<UStaticMeshComponent>());
-		if (Mesh && Mesh->DoesSocketExist(FName(*EndSocket))) {
-			EndVec = Mesh->GetSocketLocation(FName(*EndSocket));
-		}
-
+		FVector StartVec = GetActorSocketLocation(ToAvoid, StartSocket); // Parent->GetActorLocation();
+		FVector EndVec = GetActorSocketLocation(Parent, EndSocket);
 		FVector DistanceVec = EndVec - StartVec;
 		float Distance = DistanceVec.Size();
-
+		
 		if (OnlyWithinSight) {
-			// Get angle to target
-			float TargetAngle = FGenericPlatformMath::Acos(FVector::DotProduct(DistanceVec / Distance, ToAvoid->GetActorForwardVector()));
+			//// Get angle to target
+			//float TargetAngle = FGenericPlatformMath::Acos(FVector::DotProduct(DistanceVec / Distance, ToAvoid->GetActorForwardVector()));
 
-			// Get trace to target
-			FCollisionQueryParams QueryParams = FCollisionQueryParams();
-			QueryParams.AddIgnoredActor(ToAvoid);
-			FHitResult Hit = FHitResult();
-			bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, QueryParams);
+			//// Get trace to target
+			//FCollisionQueryParams QueryParams = FCollisionQueryParams();
+			//QueryParams.AddIgnoredActor(ToAvoid);
+			//FHitResult Hit = FHitResult();
+			//bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, StartVec, EndVec, ECollisionChannel::ECC_Visibility, QueryParams);
 
 			// Evaluate - if the actor is in our field of view and either the ray trace has intersected with the target or there is nothing between ourself and the target
-			if (TargetAngle < FOVRadians && (Hit.Actor == Parent || Hit.Actor == nullptr) && Distance < MinDistance) {
+			
+			bool can_see = IsInSight(ToAvoid, Parent, StartVec, EndVec, FOVRadians, DistanceVec, Distance);
+			
+			if (can_see && Distance < MinDistance) {
 				Reward = MaxScore * Distance / MinDistance;
 			}
 			else {

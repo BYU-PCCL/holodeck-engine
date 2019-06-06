@@ -60,7 +60,7 @@ public:
 	// Defines the minimum distance to recieve positive reward
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float MinDistance;
-	
+
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

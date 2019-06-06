@@ -4,6 +4,8 @@
 
 #include "HolodeckSensor.h"
 
+#include "TaskHelper.h"
+
 #include "TaskSensor.generated.h"
 
 /**

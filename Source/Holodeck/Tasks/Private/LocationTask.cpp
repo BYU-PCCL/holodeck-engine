@@ -36,8 +36,8 @@ void ULocationTask::ParseSensorParms(FString ParmsJson) {
 			GoalDistance = ConvertClientDistanceToUnreal(JsonParsed->GetNumberField("GoalDistance"));
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
-			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
+		if (JsonParsed->HasTypedField<EJson::Boolean>("NegativeReward")) {
+			NegativeReward = JsonParsed->GetBoolField("NegativeReward");
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("HasTerminal")) {
@@ -59,7 +59,7 @@ void ULocationTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 		float Distance = CalcDistance();
 
 		if (Distance > GoalDistance) {
-			if (!MaximizeDistance) {
+			if (!NegativeReward) {
 				Reward = 1;
 			}
 			else {
