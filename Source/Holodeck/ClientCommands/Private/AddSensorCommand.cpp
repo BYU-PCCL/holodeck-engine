@@ -57,7 +57,7 @@ void UAddSensorCommand::Execute() {
 	UHolodeckSensor* Sensor = NewObject<UHolodeckSensor>(Agent->GetRootComponent(), SensorMap[TypeName]);
 	Sensor->SensorName = SensorName;
 	Sensor->ParseSensorParms(ParmsJson);
-	Sensor->SetRelativeLocation(FVector(LocationX, LocationY, LocationZ));
+	Sensor->SetRelativeLocation(ConvertLinearVector(FVector(LocationX, LocationY, LocationZ), ClientToUE));
 	Sensor->SetRelativeRotation(FRotator(RotationPitch, RotationYaw, RotationRoll));
 
 	if (Sensor && Agent)
