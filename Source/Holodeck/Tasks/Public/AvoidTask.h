@@ -4,22 +4,22 @@
 
 #include "TaskSensor.h"
 
-#include "FollowTask.generated.h"
+#include "AvoidTask.generated.h"
 
 /**
-* UFollowTask
+* UAvoidTask
 * Inherits from the TaskSensor class.
-* Calculates follow reward based on distance and line of sight.
-* If OnlyWithinSight is true, the reward is set to the percent distance covered 
-* from the MinDistance to the ToFollow Target if the angle from the agent to the Target
-* is less than FOVRadians and is there is nothing blocking the agent's line of sight, 
+* Calculates Avoid reward based on distance and line of sight.
+* If OnlyWithinSight is true, the reward is set to the percent distance covered
+* from the MinDistance to the ToAvoid Target if the angle from the agent to the Target
+* is less than FOVRadians and is there is nothing blocking the agent's line of sight,
 * otherwise the reward is 0.
-* If OnlywithinSight is false, the reward is set to the percent distance covered 
-* from the MinDistance to the ToFollow Actor.
+* If OnlywithinSight is false, the reward is set to the percent distance covered
+* from the MinDistance to the ToAvoid Actor.
 * Terminal is always false.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HOLODECK_API UFollowTask : public UTaskSensor
+class HOLODECK_API UAvoidTask : public UTaskSensor
 {
 	GENERATED_BODY()
 
@@ -27,8 +27,8 @@ public:
 	/**
 	* Default Constructor
 	*/
-	UFollowTask() : ToFollow(nullptr), ToFollowTag(""), FollowSocket(""), OnlyWithinSight(true),
-		FOVRadians(1.5), MinDistance(10000) {}
+	UAvoidTask() : ToAvoid(nullptr), ToAvoidTag(""), StartSocket(""), EndSocket(""),
+		OnlyWithinSight(true), FOVRadians(1.5), MinDistance(10000) {}
 
 	/**
 	* InitializeSensor
@@ -41,13 +41,17 @@ public:
 	*/
 	virtual void ParseSensorParms(FString ParmsJson) override;
 
-	// Actor to follow
+	// Actor to Avoid
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* ToFollow;
+		AActor* ToAvoid;
 
-	// Socket on Follow actor for ray trace
+	// Socket on Avoid actor for ray trace
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FString FollowSocket;
+		FString StartSocket;
+
+	// Socket on Avoid actor for ray trace
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		FString EndSocket;
 
 	// Only give reward if target is in sight
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -69,5 +73,5 @@ private:
 	// Scales score between 0-1 to 0-100
 	const int MaxScore = 100;
 
-	FString ToFollowTag;
+	FString ToAvoidTag;
 };

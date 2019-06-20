@@ -23,8 +23,9 @@ public:
 	/**
 	* Default Constructor
 	*/
-	ULocationTask() : MaximizeDistance(false), GoalDistance(1), DistanceActor(nullptr), 
-		DistanceLocation(this->GetComponentLocation()) {}
+	ULocationTask() : NegativeReward(false), HasTerminal(true), GoalDistance(100),
+		GoalActor(nullptr), GoalLocation(this->GetComponentLocation()), LocationActor(nullptr),
+		LocationActorTag(""), GoalActorTag("") {}
 
 	/**
 	* InitializeSensor
@@ -39,22 +40,36 @@ public:
 
 	// Set to true to maximize instead of minimize distance
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool MaximizeDistance;
+		bool NegativeReward;
+
+	// Set to true to return a terminal and reward once the goal location is reached
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool HasTerminal;
 
 	// Required proximity for terminal
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float GoalDistance;
 
+	// Location actor (if null component location is used)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* LocationActor;
+
 	// Goal actor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* DistanceActor;
+		AActor* GoalActor;
 
-	// Location (used if actor is null)
+	// Location (used if goal actor is null)
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		FVector DistanceLocation;
+		FVector GoalLocation;
 
 protected:
 	//Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+private:
+
+	float CalcDistance();
+
+	FString LocationActorTag;
+	FString GoalActorTag;
 };
