@@ -5,17 +5,6 @@
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
 
-	int CameraWidth;
-	int CameraHeight;
-	if(FParse::Value(FCommandLine::Get(), TEXT("CamResX="), CameraWidth)) {
-		CaptureWidth = CameraWidth;
-	}
-	if (FParse::Value(FCommandLine::Get(), TEXT("CamResY="), CameraHeight)) {
-		CaptureHeight = CameraHeight;
-	}
-
-	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
-	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
 }
 
 // Allows sensor parameters to be set programmatically from client.
@@ -36,6 +25,10 @@ void UHolodeckCamera::ParseSensorParms(FString ParmsJson) {
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UHolodeckCamera::ParseSensorParms:: Unable to parse json."));
 	}
+
+	UE_LOG(LogHolodeck, Log, TEXT("CaptureHeight is %d"), CaptureHeight);
+	UE_LOG(LogHolodeck, Log, TEXT("CaptureWidth is %d"), CaptureWidth);
+
 }
 
 void UHolodeckCamera::InitializeSensor() {
@@ -66,7 +59,8 @@ void UHolodeckCamera::InitializeSensor() {
 	SceneCapture->PostProcessSettings.bOverride_AutoExposureBias = 1;
 
 	// Higher = brighter captured image. Lower = darker
-	SceneCapture->PostProcessSettings.AutoExposureBias = 2.5;
+	// This is a magic number that has been fine tuned to the default worlds. Do not edit without thourough testing.
+	SceneCapture->PostProcessSettings.AutoExposureBias = 4;
 
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
 	this->Buffer = static_cast<FColor*>(Super::Buffer);

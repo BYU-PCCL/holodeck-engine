@@ -36,11 +36,14 @@ SourceArt/**/*.tga
 
 # Binary Files
 Binaries/*
+Content/Worlds
+dist/
 
 # Builds
 Build/*
 # Keep the build scripts folder
 !Build/ContinuousIntegration
+dist/*
 
 # Don't ignore icon files in Build
 !Build/**/*.ico

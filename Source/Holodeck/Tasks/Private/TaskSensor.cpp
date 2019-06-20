@@ -1,6 +1,7 @@
-#include "Holodeck.h"
-#include "TaskSensor.h"
+#include "Holodeck.h" 
 
+#include "TaskSensor.h"
+#include "HolodeckGameMode.h"
 
 // Sets default values
 UTaskSensor::UTaskSensor() {
@@ -24,4 +25,9 @@ void UTaskSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAct
 		FloatBuffer[0] = Reward;
 		FloatBuffer[1] = Terminal;
 	}
+}
+
+AActor* UTaskSensor::FindActorWithTag(FString tag) {
+	AHolodeckGameMode* GameTarget = (AHolodeckGameMode*)GetWorld()->GetAuthGameMode();
+	return GameTarget->FindActorWithTag(tag);
 }

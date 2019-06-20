@@ -4,6 +4,8 @@
 
 #include "HolodeckSensor.h"
 
+#include "TaskHelper.h"
+
 #include "TaskSensor.generated.h"
 
 /**
@@ -41,6 +43,8 @@ protected:
 	int GetNumItems() override { return 2; };
 	int GetItemSize() override { return sizeof(float); };
 
+	// Find actor with tag
+	AActor* FindActorWithTag(FString tag);
 
 	// After initialization, Parent contains a pointer to whatever the sensor is attached to.
 	AActor* Parent;
@@ -48,5 +52,4 @@ protected:
 	// Members to be set by child tasks each tick
 	float Reward;
 	bool Terminal;
-
 };
