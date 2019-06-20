@@ -67,7 +67,7 @@ protected:
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-
+	float ComputeNextDistance();
 	float CalcDistance();
 	float NextDistance;
 	FString DistanceActorTag;

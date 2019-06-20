@@ -6,12 +6,20 @@
 void UDistanceTask::InitializeSensor() {
 	Super::InitializeSensor();
 
+
+	NextDistance = this->ComputeNextDistance();
+
+}
+
+float UDistanceTask::ComputeNextDistance() {
+	
 	float Distance = CalcDistance();
 
 	if (MaximizeDistance) {
-		NextDistance = Distance + Interval;
-	} else {
-		NextDistance = Distance - Interval;
+		return Distance + Interval;
+	}
+	else {
+		return Distance - Interval;
 	}
 }
 
@@ -59,10 +67,23 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 
 // Called every frame
 void UDistanceTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	if (DistanceActor == nullptr && DistanceActorTag != "")
+	if (DistanceActor == nullptr && DistanceActorTag != "") {
 		DistanceActor = FindActorWithTag(DistanceActorTag);
-	if (GoalActor == nullptr && GoalActorTag != "")
+
+		if (DistanceActor) {
+			NextDistance = ComputeNextDistance();
+		}
+
+	}
+
+	if (GoalActor == nullptr && GoalActorTag != "") {
 		GoalActor = FindActorWithTag(GoalActorTag);
+
+		if (GoalActor) {
+			NextDistance = ComputeNextDistance();
+		}
+
+	}
 
 	if ((DistanceActor || DistanceActorTag == "") && (GoalActor || GoalActorTag == "")) {
 		float Distance = CalcDistance();
