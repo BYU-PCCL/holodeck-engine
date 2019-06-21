@@ -1,6 +1,7 @@
 #include "Holodeck.h"
 #include "HolodeckCamera.h"
 #include "Json.h"
+//#include "FReadSurfaceDataFlags.h"
 
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
@@ -59,7 +60,7 @@ void UHolodeckCamera::InitializeSensor() {
 	SceneCapture->PostProcessSettings.bOverride_AutoExposureBias = 1;
 
 	// Higher = brighter captured image. Lower = darker
-	SceneCapture->PostProcessSettings.AutoExposureBias = 2.5;
+	SceneCapture->PostProcessSettings.AutoExposureBias = 4;
 
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
 	this->Buffer = static_cast<FColor*>(Super::Buffer);
@@ -67,5 +68,7 @@ void UHolodeckCamera::InitializeSensor() {
 }
 
 void UHolodeckCamera::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
+	FReadSurfaceDataFlags ReadSurfaceDataFlags;
+	ReadSurfaceDataFlags.SetLinearToGamma(false);
 	RenderRequest.RetrievePixels(Buffer, TargetTexture);
 }
