@@ -60,6 +60,7 @@ void UHolodeckCamera::InitializeSensor() {
 	SceneCapture->PostProcessSettings.bOverride_AutoExposureBias = 1;
 
 	// Higher = brighter captured image. Lower = darker
+	// This is a magic number that has been fine tuned to the default worlds. Do not edit without thourough testing.
 	SceneCapture->PostProcessSettings.AutoExposureBias = 4;
 
 	//The buffer has got to be an FColor pointer so you can export the pixel data to it. 
