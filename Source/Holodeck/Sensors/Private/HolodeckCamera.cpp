@@ -1,7 +1,6 @@
 #include "Holodeck.h"
 #include "HolodeckCamera.h"
 #include "Json.h"
-//#include "FReadSurfaceDataFlags.h"
 
 UHolodeckCamera::UHolodeckCamera() {
 	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
@@ -69,7 +68,5 @@ void UHolodeckCamera::InitializeSensor() {
 }
 
 void UHolodeckCamera::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	FReadSurfaceDataFlags ReadSurfaceDataFlags;
-	ReadSurfaceDataFlags.SetLinearToGamma(false);
 	RenderRequest.RetrievePixels(Buffer, TargetTexture);
 }
