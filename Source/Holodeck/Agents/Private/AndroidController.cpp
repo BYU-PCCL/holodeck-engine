@@ -9,7 +9,7 @@ AAndroidController::AAndroidController(const FObjectInitializer& ObjectInitializ
 
 AAndroidController::~AAndroidController() {}
 
-void AAndroidController::Possess(APawn* PawnParam) {
+void AAndroidController::OnPossess(APawn* PawnParam) {
 	Super::Possess(PawnParam);
 	UE_LOG(LogHolodeck, Log, TEXT("Android Controller possessing pawn"));
 

@@ -22,7 +22,7 @@ void AHolodeckPawnController::BeginPlay() {
 	AddTickPrerequisiteActor(GetWorld()->GetAuthGameMode());
 }
 
-void AHolodeckPawnController::Possess(APawn* InPawn) {
+void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 	Super::Possess(InPawn);
 	ControlledAgent = static_cast<AHolodeckAgentInterface*>(InPawn);
 	if (ControlledAgent == nullptr)
@@ -39,7 +39,7 @@ void AHolodeckPawnController::Possess(APawn* InPawn) {
 	AddControlSchemes();
 }
 
-void AHolodeckPawnController::UnPossess() {
+void AHolodeckPawnController::OnUnPossess() {
 	Super::UnPossess();
 }
 

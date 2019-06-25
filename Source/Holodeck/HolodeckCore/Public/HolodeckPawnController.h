@@ -57,16 +57,16 @@ public:
 	void Tick(float DeltaSeconds) override;
 	
 	/**
-	  * Possess
+	  * OnPossess
 	  * Called to Possess a pawn.
 	  */
-	void Possess(APawn* InPawn) override;
+	void OnPossess(APawn* InPawn) override;
 
 	/**
-	  * UnPossess
+	  * OnUnPossess
 	  * Called to Unpossess a pawn
 	  */
-	void UnPossess() override;
+	void OnUnPossess() override;
 
 	/**
 	  * GetActionBuffer

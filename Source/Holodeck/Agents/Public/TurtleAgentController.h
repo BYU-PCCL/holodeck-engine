@@ -29,11 +29,11 @@ public:
 	~ATurtleAgentController();
 
 	/**
-	* Possess
+	* OnPossess
 	* Possesses a pawn.
 	* @param Pawn the pawn to possess.
 	*/
-	void Possess(APawn* Pawn);
+	void OnPossess(APawn* Pawn);
 
 	void AddControlSchemes() override {
 		// No control schemes
