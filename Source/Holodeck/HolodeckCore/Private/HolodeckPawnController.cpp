@@ -23,11 +23,12 @@ void AHolodeckPawnController::BeginPlay() {
 }
 
 void AHolodeckPawnController::OnPossess(APawn* InPawn) {
-	Super::Possess(InPawn);
+	//Super::OnPossess(InPawn);
 	ControlledAgent = static_cast<AHolodeckAgentInterface*>(InPawn);
 	if (ControlledAgent == nullptr)
 		UE_LOG(LogHolodeck, Error, TEXT("HolodeckPawnController attached to non-HolodeckAgent!"));
 
+	ControlledAgent->Controller = this;
 	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	UpdateServerInfo();
 	if (Server == nullptr)
@@ -37,10 +38,6 @@ void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 	RawControlScheme->Agent = ControlledAgent;
 	ControlSchemes.Add(RawControlScheme);
 	AddControlSchemes();
-}
-
-void AHolodeckPawnController::OnUnPossess() {
-	Super::UnPossess();
 }
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {

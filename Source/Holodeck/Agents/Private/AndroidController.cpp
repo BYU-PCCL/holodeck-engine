@@ -10,7 +10,7 @@ AAndroidController::AAndroidController(const FObjectInitializer& ObjectInitializ
 AAndroidController::~AAndroidController() {}
 
 void AAndroidController::OnPossess(APawn* PawnParam) {
-	Super::Possess(PawnParam);
+	Super::OnPossess(PawnParam);
 	UE_LOG(LogHolodeck, Log, TEXT("Android Controller possessing pawn"));
 
 	TArray<USkeletalMeshComponent*> Components;

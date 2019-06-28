@@ -63,12 +63,6 @@ public:
 	void OnPossess(APawn* InPawn) override;
 
 	/**
-	  * OnUnPossess
-	  * Called to Unpossess a pawn
-	  */
-	void OnUnPossess() override;
-
-	/**
 	  * GetActionBuffer
 	  * Gets the action buffer for this agent.
 	  * @param AgentName the name of the agent to subscribe an action buffer for.

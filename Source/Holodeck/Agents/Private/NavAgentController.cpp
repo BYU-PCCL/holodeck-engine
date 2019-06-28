@@ -9,7 +9,3 @@ ANavAgentController::ANavAgentController(const FObjectInitializer& ObjectInitial
 }
 
 ANavAgentController::~ANavAgentController() {}
-
-void ANavAgentController::OnPossess(APawn* PawnParam) {
-	Super::Possess(PawnParam);
-}

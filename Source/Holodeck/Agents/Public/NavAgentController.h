@@ -28,13 +28,6 @@ public:
 	*/
 	~ANavAgentController();
 
-	/**
-	* OnPossess
-	* Possesses a pawn.
-	* @param Pawn the pawn to possess.
-	*/
-	void OnPossess(APawn* Pawn);
-
 	void AddControlSchemes() override {
 		// No Extra Control Schemes
 	}

@@ -60,7 +60,7 @@ public:
 	  * OnPossess
 	  * Called to Possess a pawn.
 	  */
-	virtual void OnPossess(APawn* InPawn) override {
+	virtual void OnPossess(APawn* InPawn) {
 		Super::Possess(InPawn);
 	};
 
@@ -68,7 +68,7 @@ public:
 	  * OnUnPossess
 	  * Called to Unpossess a pawn
 	  */
-	virtual void OnUnPossess() override {
+	virtual void OnUnPossess() {
 		Super::UnPossess();
 	};
 
