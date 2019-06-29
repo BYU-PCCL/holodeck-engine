@@ -23,7 +23,6 @@ void AHolodeckPawnController::BeginPlay() {
 }
 
 void AHolodeckPawnController::OnPossess(APawn* InPawn) {
-	//Super::OnPossess(InPawn);
 	ControlledAgent = static_cast<AHolodeckAgentInterface*>(InPawn);
 	if (ControlledAgent == nullptr)
 		UE_LOG(LogHolodeck, Error, TEXT("HolodeckPawnController attached to non-HolodeckAgent!"));
@@ -97,7 +96,6 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 
 void AHolodeckPawnController::ExecuteTeleport() {
 	UE_LOG(LogHolodeck, Log, TEXT("Executing teleport"));
-	//AHolodeckAgent* PawnVar = ControlledAgent; //Cast<AHolodeckAgent>(this->GetPawn());
 	if (ControlledAgent == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
 		return;
