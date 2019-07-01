@@ -1,5 +1,6 @@
 #include "Holodeck.h"
 #include "Command.h"
+#include "HolodeckGameMode.h"
 
 UCommand::UCommand() {
 	

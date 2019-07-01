@@ -2,7 +2,7 @@
 ![Build Status](https://jenkins.holodeck.ml/buildStatus/icon?job=holodeck-engine%2Fdevelop)
 
 ## About
-Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.21, with bindings for python to communicate with the agents in the environments. For best results, use windows.
+Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.22, with bindings for python to communicate with the agents in the environments. For best results, use windows.
 
 ## Usage
 This repository contains everything you need to build environments in the Unreal Engine for Holodeck. If you want to use worlds that have already been built that you can communicate with in python, look at the [holodeck repo](https://github.com/byu-pccl/holodeck).
@@ -14,7 +14,7 @@ This repository contains everything you need to build environments in the Unreal
 ## Requirements
 * [Install Unreal Engine 4.21](https://www.unrealengine.com/en-US/download)
     * After starting the Epic Games Launcher click on the Unreal Engine tab, then the Library option
-    * Select add a new engine version and then version 4.21 and install
+    * Select add a new engine version and then version 4.22 and install
 * [Install Git LFS](https://git-lfs.github.com/)
 * Visual Studio 2017 including "Game development with C++" and "Unreal Engine installer" modules as outlined [here.](https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)
 
@@ -22,7 +22,7 @@ This repository contains everything you need to build environments in the Unreal
 * Clone the repository:
 `git clone https://github.com/byu-pccl/holodeck-engine`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
-* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.21
+* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.22
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
 
 ## Building For Linux

@@ -26,11 +26,11 @@ public:
 	~AAndroidController();
 
 	/**
-	* Possess
+	* OnPossess
 	* Called when the controller possesses the pawn.
 	* @param Pawn the pawn being possessed.
 	*/
-	void Possess(APawn* Pawn) override;
+	void OnPossess(APawn* Pawn) override;
 
 	void AddControlSchemes() {
 		UAndroidControlSchemeMaxTorque* ControlScheme = NewObject<UAndroidControlSchemeMaxTorque>();

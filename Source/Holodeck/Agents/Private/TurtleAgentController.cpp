@@ -9,7 +9,3 @@ ATurtleAgentController::ATurtleAgentController(const FObjectInitializer& ObjectI
 }
 
 ATurtleAgentController::~ATurtleAgentController() {}
-
-void ATurtleAgentController::Possess(APawn* PawnParam) {
-	Super::Possess(PawnParam);
-}

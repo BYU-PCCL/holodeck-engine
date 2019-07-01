@@ -28,13 +28,6 @@ public:
 	  */
 	~ASphereRobotController();
 
-	/**
-	  * Possess
-	  * Possesses a pawn.
-	  * @param Pawn the pawn to possess.
-	  */
-	void Possess(APawn* Pawn);
-
 	void AddControlSchemes() override {
 		// No control schemes
 	}

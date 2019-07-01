@@ -9,7 +9,3 @@ ASphereRobotController::ASphereRobotController(const FObjectInitializer& ObjectI
 }
 
 ASphereRobotController::~ASphereRobotController() {}
-
-void ASphereRobotController::Possess(APawn* PawnParam) {
-	Super::Possess(PawnParam);
-}

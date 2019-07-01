@@ -22,12 +22,12 @@ void AHolodeckPawnController::BeginPlay() {
 	AddTickPrerequisiteActor(GetWorld()->GetAuthGameMode());
 }
 
-void AHolodeckPawnController::Possess(APawn* InPawn) {
-	Super::Possess(InPawn);
+void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 	ControlledAgent = static_cast<AHolodeckAgentInterface*>(InPawn);
 	if (ControlledAgent == nullptr)
 		UE_LOG(LogHolodeck, Error, TEXT("HolodeckPawnController attached to non-HolodeckAgent!"));
 
+	ControlledAgent->Controller = this;
 	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	UpdateServerInfo();
 	if (Server == nullptr)
@@ -37,10 +37,6 @@ void AHolodeckPawnController::Possess(APawn* InPawn) {
 	RawControlScheme->Agent = ControlledAgent;
 	ControlSchemes.Add(RawControlScheme);
 	AddControlSchemes();
-}
-
-void AHolodeckPawnController::UnPossess() {
-	Super::UnPossess();
 }
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
@@ -100,8 +96,7 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 
 void AHolodeckPawnController::ExecuteTeleport() {
 	UE_LOG(LogHolodeck, Log, TEXT("Executing teleport"));
-	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
-	if (PawnVar == nullptr) {
+	if (ControlledAgent == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
 		return;
 	}
@@ -113,7 +108,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 		TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
 	} else {
-		TeleportLocation = PawnVar->GetActorLocation();
+		TeleportLocation = ControlledAgent->GetActorLocation();
 	}
 
 	FRotator NewRotation;
@@ -121,10 +116,10 @@ void AHolodeckPawnController::ExecuteTeleport() {
 		NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
 		NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
 	} else {
-		NewRotation = PawnVar->GetActorRotation();
+		NewRotation = ControlledAgent->GetActorRotation();
 	}
 
-	PawnVar->Teleport(TeleportLocation, NewRotation);
+	ControlledAgent->Teleport(TeleportLocation, NewRotation);
 	*ShouldChangeStateBuffer = 0;
 }
 
