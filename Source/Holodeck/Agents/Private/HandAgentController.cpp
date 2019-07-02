@@ -17,15 +17,12 @@ void AHandAgentController::AddControlSchemes() {
 		AHandAgent::NUM_2_AXIS_JOINTS,
 		AHandAgent::NUM_1_AXIS_JOINTS);
 
-	// Note that the ControlScheme is not fully initialized until it has been provided
-	// a skeletal mesh in ::Possess
-	
 	ControlSchemes.Add(ControlScheme);
 }
 
 void AHandAgentController::Possess(APawn* PawnParam) {
 	Super::Possess(PawnParam);
-	UE_LOG(LogHolodeck, Log, TEXT("Android Controller possessing pawn"));
+	UE_LOG(LogHolodeck, Log, TEXT("HandAgent Controller possessing pawn"));
 
 	TArray<USkeletalMeshComponent*> Components;
 	PawnParam->GetComponents<USkeletalMeshComponent>(Components);
@@ -35,8 +32,8 @@ void AHandAgentController::Possess(APawn* PawnParam) {
 	}
 
 	SkeletalMeshComponent = Components[0];
-	this->ControlScheme->SetSkeletalMesh(SkeletalMeshComponent, AHandAgent::Joints);
 
+	this->ControlScheme->SetSkeletalMesh(SkeletalMeshComponent, const_cast<FName*>(AHandAgent::Joints));
 
 	ActionBufferFloatPtr = static_cast<float*>(ActionBuffer);
 }

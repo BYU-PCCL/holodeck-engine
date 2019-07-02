@@ -13,9 +13,9 @@ void UJointMaxTorqueControlScheme::SetControlSchemeSizeInBytes(int size) {
 	this->ControlSchemeSizeBytes = size;
 }
 
-void UJointMaxTorqueControlScheme::SetSkeletalMesh(USkeletalMeshComponent* Skeletal, const FName Joints[]) {
+void UJointMaxTorqueControlScheme::SetSkeletalMesh(USkeletalMeshComponent* Skeletal, FName Joints[]) {
 	this->SkeletalMesh = Skeletal;
-	this->JointNames = JointNames;
+	this->JointNames = Joints;
 }
 
 void UJointMaxTorqueControlScheme::SetJointSizes(int ThreeAxis, int TwoAxis, int OneAxis) {

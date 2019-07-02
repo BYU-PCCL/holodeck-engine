@@ -31,7 +31,7 @@ public:
 	/**
 	 * Must call this method to give a reference to SkeletalMesh and an array of indexed joint names
 	 */
-	void SetSkeletalMesh(USkeletalMeshComponent* SkeletalMesh, const FName Joints[]);
+	void SetSkeletalMesh(USkeletalMeshComponent* SkeletalMesh, FName Joints[]);
 
 	/**
 	 * Fingers are less powerful than joints, after this index we will use TorqueScalarFingers
