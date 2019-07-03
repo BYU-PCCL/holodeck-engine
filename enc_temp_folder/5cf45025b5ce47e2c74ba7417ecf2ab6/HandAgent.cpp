@@ -21,6 +21,7 @@ void AHandAgent::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	ApplyTorques();
 	ApplyLevitation();
+	// TODO: Levitate and stuff based off the CommandArray
 }
 
 void AHandAgent::ApplyTorques() {

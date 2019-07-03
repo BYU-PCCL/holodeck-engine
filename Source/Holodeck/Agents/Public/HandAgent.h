@@ -23,28 +23,33 @@ public:
 	static constexpr int NUM_2_AXIS_JOINTS = 5;
 	static constexpr int NUM_1_AXIS_JOINTS = 10;
 	static constexpr int NUM_2_PLUS_3_AXIS_JOINTS = NUM_3_AXIS_JOINTS + NUM_2_AXIS_JOINTS;
-	static constexpr int TOTAL_DOF = NUM_3_AXIS_JOINTS * 3 + NUM_2_AXIS_JOINTS * 2 + NUM_1_AXIS_JOINTS;
+	static constexpr int NUM_FLOAT_DIRECTIONS = 3;
+	static constexpr int TOTAL_JOINT_DOF = NUM_3_AXIS_JOINTS * 3 +
+										   NUM_2_AXIS_JOINTS * 2 +
+										   NUM_1_AXIS_JOINTS;
+
+	static constexpr int TOTAL_DOF = TOTAL_JOINT_DOF + NUM_FLOAT_DIRECTIONS;
 
 	const static FName Joints[];
 
 	/**
-	* Called when the game starts.
-	*/
+	 * Called when the game starts.
+	 */
 	virtual void InitializeAgent() override;
 
 	/**
-	* Tick
-	* Called every frame.
-	* @param DeltaSeconds the time since the last tick.
-	*/
+	 * Tick
+	 * Called every frame.
+	 * @param DeltaSeconds the time since the last tick.
+	 */
 	void Tick(float DeltaSeconds) override;
 
 
 	/**
-	* GetJoints
-	* Gets pointer to constant array of FName joints
-	* @return array of FName corresponding to android joint names
-	*/
+	 * GetJoints
+	 * Gets pointer to constant array of FName joints
+	 * @return array of FName corresponding to android joint names
+	 */
 	const FName* GetJoints();
 
 
@@ -62,10 +67,17 @@ public:
 private:
 
 	/**
-	* ApplyTorques
-	* Applies torques for that tick on each joint with a force/direction
-	* corresponding to the values in the command array
-	*/
+	 * ApplyTorques
+	 * Applies torques for that tick on each joint with a force/direction
+	 * corresponding to the values in the command array
+	 */
 	void ApplyTorques();
+
+	/**
+	 * ApplyLevitation
+	 * Makes the HandAgent fly around. Used with the HandAgentMaxTorqueFloat control scheme
+	 */
+	void ApplyLevitation();
+
 	float CommandArray[TOTAL_DOF];
 };

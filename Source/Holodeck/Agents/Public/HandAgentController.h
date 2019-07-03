@@ -8,6 +8,7 @@
 #include "HolodeckPawnController.h"
 #include "JointMaxTorqueControlScheme.h"
 #include "PhysicsEngine/ConstraintInstance.h"
+#include "HandAgentMaxTorqueFloat.h"
 
 #include "HandAgentController.generated.h"
 
@@ -40,5 +41,6 @@ private:
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
 	float* ActionBufferFloatPtr;
-	UJointMaxTorqueControlScheme* ControlScheme;
+	UJointMaxTorqueControlScheme* JointTorqueControlScheme;
+	UHandAgentMaxTorqueFloat* HandAgentFloatControlScheme;
 };

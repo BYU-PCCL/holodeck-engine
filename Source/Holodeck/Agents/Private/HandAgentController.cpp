@@ -8,16 +8,22 @@ AHandAgentController::AHandAgentController(const FObjectInitializer& ObjectIniti
 }
 
 void AHandAgentController::AddControlSchemes() {
-	this->ControlScheme = NewObject<UJointMaxTorqueControlScheme>();
-	this->ControlScheme->SetController(this);
-	this->ControlScheme->SetControlSchemeSizeInBytes(AHandAgent::TOTAL_DOF);
+	this->JointTorqueControlScheme = NewObject<UJointMaxTorqueControlScheme>();
+	this->JointTorqueControlScheme->SetController(this);
+	this->JointTorqueControlScheme->SetControlSchemeSizeInBytes(AHandAgent::TOTAL_DOF);
 
-	this->ControlScheme->SetJointSizes(
+	this->JointTorqueControlScheme->SetJointSizes(
 		AHandAgent::NUM_3_AXIS_JOINTS,
 		AHandAgent::NUM_2_AXIS_JOINTS,
 		AHandAgent::NUM_1_AXIS_JOINTS);
 
-	ControlSchemes.Add(ControlScheme);
+	// Create the floating control scheme too
+	this->HandAgentFloatControlScheme = NewObject<UHandAgentMaxTorqueFloat>();
+	this->HandAgentFloatControlScheme->SetTorqueControlScheme(this->JointTorqueControlScheme);
+
+	ControlSchemes.Add(this->JointTorqueControlScheme);
+	ControlSchemes.Add(this->HandAgentFloatControlScheme);
+
 }
 
 void AHandAgentController::Possess(APawn* PawnParam) {
@@ -33,7 +39,7 @@ void AHandAgentController::Possess(APawn* PawnParam) {
 
 	SkeletalMeshComponent = Components[0];
 
-	this->ControlScheme->SetSkeletalMesh(SkeletalMeshComponent, const_cast<FName*>(AHandAgent::Joints));
+	this->JointTorqueControlScheme->SetSkeletalMesh(SkeletalMeshComponent, const_cast<FName*>(AHandAgent::Joints));
 
 	ActionBufferFloatPtr = static_cast<float*>(ActionBuffer);
 }
