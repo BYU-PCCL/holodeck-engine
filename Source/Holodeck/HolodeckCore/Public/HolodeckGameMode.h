@@ -65,13 +65,13 @@ public:
 	AActor* FindActorWithTag(const FString& Tag);
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	float GetWorldNum(const FString& Tag);
+	float GetWorldNum(const FString& Key);
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	FString GetWorldString(const FString& Tag);
+	FString GetWorldString(const FString& Key);
 	
 	UFUNCTION(BlueprintImplementableEvent)
-	bool GetWorldBool(const FString& Tag);
+	bool GetWorldBool(const FString& Key);
 
 private:
 	/**
