@@ -13,7 +13,7 @@
 #include "RGBCamera.h"
 #include "RotationSensor.h"
 #include "VelocitySensor.h"
-#include "BallCupSensor.h"
+#include "WorldNumSensor.h"
 #include "ViewportCapture.h"
 #include "DistanceTask.h"
 #include "LocationTask.h"

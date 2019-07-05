@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "HolodeckCore/Public/HolodeckSensor.h"
-#include "BallCupSensor.generated.h"
+#include "WorldNumSensor.generated.h"
 
 /**
 * LocationSensor
@@ -13,14 +13,14 @@
 * Reports the XYZ coordinate of the parent agent.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
-class HOLODECK_API UBallCupSensor : public UHolodeckSensor {
+class HOLODECK_API UWorldNumSensor : public UHolodeckSensor {
 	GENERATED_BODY()
 
 public:
 	/*
 	* Default Constructor
 	*/
-	UBallCupSensor();
+	UWorldNumSensor();
 
 	/**
 	* InitializeSensor
@@ -28,10 +28,14 @@ public:
 	*/
 	virtual void InitializeSensor() override;
 
+	virtual void ParseSensorParms(FString ParmsJson) override;
+
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
 	int GetNumItems() override { return 1; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+private:
+	FString Key = "";
 };
