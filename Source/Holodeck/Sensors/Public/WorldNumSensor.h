@@ -7,10 +7,10 @@
 #include "WorldNumSensor.generated.h"
 
 /**
-* LocationSensor
+* WorldNumSensor
 * Inherits from the HolodeckSensor class
 * Check out the parent class for documentation on all of the overridden functions.
-* Reports the XYZ coordinate of the parent agent.
+* Reports a specific number value (int or float) corresponding to a string key.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UWorldNumSensor : public UHolodeckSensor {

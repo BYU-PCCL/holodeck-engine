@@ -6,6 +6,13 @@
 #include "TaskSensor.h"
 #include "CupGameTask.generated.h"
 
+/**
+* UCupGameTask
+* Inherits from the TaskSensor class.
+* Initializes the cup game in the world and calculates reward based off of which cup is selected
+* Cup selection occurs when the 
+* Terminal is always false.
+*/
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UCupGameTask : public UTaskSensor
 {

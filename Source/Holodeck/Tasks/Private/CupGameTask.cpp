@@ -42,6 +42,7 @@ void UCupGameTask::ParseSensorParms(FString ParmsJson) {
 		nums.Add(UseSeed);
 		nums.Add(Seed);
 		TArray<FString> strs;
+		strs.Add(AgentName);
 		AActor* Target = GetWorld()->GetAuthGameMode();
 		AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
 		Game->ExecuteCustomCommand("CupGameConfig", nums, strs);
@@ -53,9 +54,21 @@ void UCupGameTask::ParseSensorParms(FString ParmsJson) {
 }
 
 void UCupGameTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	Reward = 10;
 	AActor* Target = GetWorld()->GetAuthGameMode();
 	AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
-	int32 BallLocation = (int32)Game->GetWorldNum("BallLocation");
+	bool BallTouched = Game->GetWorldBool("BallTouched");
+	bool CorrectCupTouched = Game->GetWorldBool("CorrectCupTouched");
+	bool WrongCupTouched = Game->GetWorldBool("WrongCupTouched");
+
+	if (BallTouched && !WrongCupTouched) {
+		Reward = 100;
+		Terminal = 1;
+	}
+	else if (CorrectCupTouched && !WrongCupTouched){
+		Reward = 50;
+	}
+	else {
+		Reward = 0;
+	}
 
 }
