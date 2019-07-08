@@ -70,5 +70,6 @@ void UCupGameTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAc
 	else {
 		Reward = 0;
 	}
-
+	
+	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }

@@ -19,10 +19,6 @@ class HOLODECK_API UCupGameTask : public UTaskSensor
 	GENERATED_BODY()
 
 public:
-	/**
-	* Default Constructor
-	*/
-	UCupGameTask() : BallLocation(0) {}
 
 	/**
 	* InitializeSensor
@@ -34,10 +30,6 @@ public:
 	* Allows parameters to be set dynamically
 	*/
 	virtual void ParseSensorParms(FString ParmsJson) override;
-
-	// location of the ball under the cup (0-2)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		int32 BallLocation;
 
 protected:
 	// Checkout HolodeckSensor.h for the documentation for this overridden function.
