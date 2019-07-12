@@ -7,38 +7,50 @@ UJointRotationSensor::UJointRotationSensor() {
 }
 
 void UJointRotationSensor::InitializeSensor() {
-	Super::InitializeSensor();
 
-	Android = Cast<AAndroid>(this->GetOwner());
-	TArray<USkeletalMeshComponent*> Components;
-	Android->GetComponents<USkeletalMeshComponent>(Components);
-	SkeletalMeshComponent = Components[0];
+	this->Parent = this->GetOwner();
 
-	Bones = SkeletalMeshComponent->GetAllSocketNames();
-	ParentBones.Reserve(Bones.Num());
-	for (int i = 0; i < Bones.Num(); i++) {
-		ParentBones.Insert(SkeletalMeshComponent->GetParentBone(Bones[i]), i);
+	if (this->Parent->IsA(AAndroid::StaticClass())) {
+		this->Joints.Append(AAndroid::Joints, AAndroid::NUM_JOINTS);
+
+		this->TotalDof = AAndroid::TOTAL_DOF;
+		this->Num3AxisJoints = AAndroid::NUM_3_AXIS_JOINTS;
+		this->Num2AxisJoints = AAndroid::NUM_2_AXIS_JOINTS;
 	}
+	else if (this->Parent->IsA(AHandAgent::StaticClass())) {
+		this->Joints.Append(AHandAgent::Joints, AHandAgent::NUM_JOINTS);
+
+		this->TotalDof = AHandAgent::TOTAL_JOINT_DOF;
+		this->Num3AxisJoints = AHandAgent::NUM_3_AXIS_JOINTS;
+		this->Num2AxisJoints = AHandAgent::NUM_2_AXIS_JOINTS;
+
+	}
+	else {
+		UE_LOG(LogHolodeck, Fatal, TEXT("Error: Tried to use UJointRotationSensor with unknown agent type."));
+	}
+
+	TArray<USkeletalMeshComponent*> Components;
+	this->Parent->GetComponents<USkeletalMeshComponent>(Components);
+	this->SkeletalMeshComponent = Components[0];
+
+	Super::InitializeSensor();
+}
+
+int UJointRotationSensor::GetNumItems() {
+	return this->TotalDof;
 }
 
 void UJointRotationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	float* FloatBuffer = static_cast<float*>(Buffer);
 
-	const FName* Joints = Android->Joints;
-
-	for (int JointInd = 0; JointInd < Android->NUM_JOINTS; JointInd++) {
+	for (int JointInd = 0; JointInd < this->Joints.Num(); JointInd++) {
 
 		FString JointName = Joints[JointInd].ToString();
 
-		if (JointInd < Android->NUM_3_AXIS_JOINTS) {
-			FloatBuffer = AddJointRotationToBuffer(JointName, true, true, true, FloatBuffer);
-		}
-		else if (JointInd < (Android->NUM_2_PLUS_3_AXIS_JOINTS)) {
-			FloatBuffer = AddJointRotationToBuffer(JointName, true, true, false, FloatBuffer);
-		}
-		else {
-			FloatBuffer = AddJointRotationToBuffer(JointName, true, false, false, FloatBuffer);
-		}
+		FloatBuffer = AddJointRotationToBuffer(JointName, true, 
+														  JointInd < this->Num2AxisJoints + this->Num3AxisJoints, 
+														  JointInd < this->Num3AxisJoints, 
+			                                              FloatBuffer);
 	}
 }
 
@@ -47,14 +59,14 @@ float* UJointRotationSensor::AddJointRotationToBuffer(FString JointName, bool Sw
 
 	if (Swing1) {
 		*Data = Constraint->GetCurrentSwing1();
+		Data += 1; // pointer arithmetic, fun
+	}
+	if (Swing2) {
+		*Data = Constraint->GetCurrentSwing2();
 		Data += 1;
 	}
 	if (Twist) {
 		*Data = Constraint->GetCurrentTwist();
-		Data += 1;
-	}
-	if (Swing2) {
-		*Data = Constraint->GetCurrentSwing2();
 		Data += 1;
 	}
 

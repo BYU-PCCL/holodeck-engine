@@ -10,12 +10,14 @@ AHandAgentController::AHandAgentController(const FObjectInitializer& ObjectIniti
 void AHandAgentController::AddControlSchemes() {
 	this->JointTorqueControlScheme = NewObject<UJointMaxTorqueControlScheme>();
 	this->JointTorqueControlScheme->SetController(this);
-	this->JointTorqueControlScheme->SetControlSchemeSizeInBytes(AHandAgent::TOTAL_DOF);
+	this->JointTorqueControlScheme->SetControlSchemeSizeInBytes(AHandAgent::TOTAL_JOINT_DOF);
 
 	this->JointTorqueControlScheme->SetJointSizes(
 		AHandAgent::NUM_3_AXIS_JOINTS,
 		AHandAgent::NUM_2_AXIS_JOINTS,
 		AHandAgent::NUM_1_AXIS_JOINTS);
+
+	this->JointTorqueControlScheme->SetFingerStartIndex(AHandAgent::NUM_3_AXIS_JOINTS * 3 - 1);
 
 	// Create the floating control scheme too
 	this->HandAgentFloatControlScheme = NewObject<UHandAgentMaxTorqueFloat>();

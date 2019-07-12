@@ -2,6 +2,7 @@
 
 #include "Holodeck.h"
 #include "Android.h"
+#include "HandAgent.h"
 
 #include "HolodeckPawnController.h"
 #include "HolodeckSensor.h"
@@ -27,16 +28,17 @@ public:
 
 protected:
 	// See HolodeckSensor for information on these classes.
-	virtual int GetNumItems() override { return 94; };
+	virtual int GetNumItems() override;
 	virtual int GetItemSize() override { return sizeof(float); };
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	TArray<FName> Bones;
+	TArray<FName> Joints;
 	TArray<FName> ParentBones;
 	USkeletalMeshComponent* SkeletalMeshComponent;
-	AAndroid* Android;
+	AActor* Parent;
 
+	int TotalDof, Num3AxisJoints, Num2AxisJoints;
 	/**
 	* AddJointRotationToBuffer
 	* Adds a certain joint rotation to the buffer.

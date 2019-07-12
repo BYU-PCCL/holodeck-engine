@@ -31,6 +31,8 @@ public:
 	static constexpr int TOTAL_DOF = TOTAL_JOINT_DOF + NUM_FLOAT_DIRECTIONS;
 
 	const static FName Joints[];
+	const static FName BoneNames[];
+	const static int NumBones;
 
 	/**
 	 * Called when the game starts.

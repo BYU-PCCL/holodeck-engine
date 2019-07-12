@@ -47,8 +47,8 @@ private:
 	USkeletalMeshComponent* SkeletalMesh;
 	FName* JointNames;
 
-	const float TorqueScalarMuscles = 2.0f; // Muscles can apply more torque than fingers
-	const float TorqueScalarFingers = 0.9f;
+	const float TorqueScalarMuscles = 5.0f; // Muscles can apply more torque than fingers
+	const float TorqueScalarFingers = 1.2f;
 	const float MinCommand = -1.0f;
 	const float MaxCommand = 1.0f;
 

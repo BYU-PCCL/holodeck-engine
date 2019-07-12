@@ -28,6 +28,8 @@ public:
 	static constexpr int TOTAL_DOF = NUM_3_AXIS_JOINTS * 3 + NUM_2_AXIS_JOINTS * 2 + NUM_1_AXIS_JOINTS; // 94 DOF in total
 
 	const static FName Joints[];
+	const static FName BoneNames[];
+	const static int NumBones;
 
 	/**
 	* Called when the game starts.

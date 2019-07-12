@@ -103,3 +103,27 @@ const FName AHandAgent::Joints[] = {
 	FName(TEXT("ring_03_r")),
 	FName(TEXT("pinky_03_r")),
 };
+
+// Don't forget to update AHandAgent::NumBones after changing this array!
+const FName AHandAgent::BoneNames[] = {
+	FName(TEXT("lowerarm_r")),
+	FName(TEXT("hand_r")),
+	FName(TEXT("index_01_r")),
+	FName(TEXT("index_02_r")),
+	FName(TEXT("index_03_r")),
+	FName(TEXT("middle_01_r")),
+	FName(TEXT("middle_02_r")),
+	FName(TEXT("middle_03_r")),
+	FName(TEXT("pinky_01_r")),
+	FName(TEXT("pinky_02_r")),
+	FName(TEXT("pinky_03_r")),
+	FName(TEXT("ring_01_r")),
+	FName(TEXT("ring_02_r")),
+	FName(TEXT("ring_03_r")),
+	FName(TEXT("thumb_01_r")),
+	FName(TEXT("thumb_02_r")),
+	FName(TEXT("thumb_03_r"))
+};
+
+// If you change this number, change the corresponding number in RelativeSkeletalPositionSensor.__init__
+const int AHandAgent::NumBones = 17;
