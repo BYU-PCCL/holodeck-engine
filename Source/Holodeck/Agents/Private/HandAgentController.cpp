@@ -28,8 +28,8 @@ void AHandAgentController::AddControlSchemes() {
 
 }
 
-void AHandAgentController::Possess(APawn* PawnParam) {
-	Super::Possess(PawnParam);
+void AHandAgentController::OnPossess(APawn* PawnParam) {
+	Super::OnPossess(PawnParam);
 	UE_LOG(LogHolodeck, Log, TEXT("HandAgent Controller possessing pawn"));
 
 	TArray<USkeletalMeshComponent*> Components;

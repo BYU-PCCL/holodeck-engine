@@ -42,6 +42,6 @@ void USpawnAgentCommand::Execute() {
 		
 		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
 	} else {
-		UE_LOG(LogHolodeck, Warning, TEXT("SpawnAgentCommand did not spawn a new Agent."));
+		UE_LOG(LogHolodeck, Fatal, TEXT("SpawnAgentCommand did not spawn a new Agent."));
 	}
 }
