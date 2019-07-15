@@ -66,9 +66,9 @@ void AHandAgent::ApplyTorques() {
 }
 
 void AHandAgent::ApplyLevitation() {
-	float deltaX = CommandArray[AHandAgent::TOTAL_JOINT_DOF];
-	float deltaY = CommandArray[AHandAgent::TOTAL_JOINT_DOF + 1];
-	float deltaZ = CommandArray[AHandAgent::TOTAL_JOINT_DOF + 2];
+	float deltaX = std::min(CommandArray[AHandAgent::TOTAL_JOINT_DOF], MAX_MOVEMENT_METERS);
+	float deltaY = std::min(CommandArray[AHandAgent::TOTAL_JOINT_DOF + 1], MAX_MOVEMENT_METERS);
+	float deltaZ = std::min(CommandArray[AHandAgent::TOTAL_JOINT_DOF + 2], MAX_MOVEMENT_METERS);
 
 	FVector DeltaLocation = FVector(deltaX, deltaY, deltaZ);
 

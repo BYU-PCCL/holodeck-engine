@@ -1,5 +1,7 @@
 #pragma once
 
+#include <algorithm>
+
 #include "Holodeck.h"
 
 #include "GameFramework/Pawn.h"
@@ -29,6 +31,7 @@ public:
 										   NUM_1_AXIS_JOINTS;
 
 	static constexpr int TOTAL_DOF = TOTAL_JOINT_DOF + NUM_FLOAT_DIRECTIONS;
+	static constexpr float MAX_MOVEMENT_METERS = 0.5;
 
 	const static FName Joints[];
 	const static FName BoneNames[];
