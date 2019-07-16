@@ -70,5 +70,5 @@ void UJointMaxTorqueControlScheme::Execute(void* const CommandArray, void* const
 
 float UJointMaxTorqueControlScheme::CalculateTorque(float CommandValue, float BoneMass, float TorqueScalar) {
 	CommandValue = FMath::Clamp(CommandValue, MinCommand, MaxCommand);
-	return CommandValue * (BoneMass * TorqueScalar); // See function declaration for explaination of equation
+	return CommandValue * (BoneMass * TorqueScalar); // See function declaration for explanation of equation
 }
