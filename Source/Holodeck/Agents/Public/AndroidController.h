@@ -6,7 +6,7 @@
 #include "HolodeckPawnController.h"
 #include "AndroidControlSchemeMaxTorque.h"
 #include "PhysicsEngine/ConstraintInstance.h"
-
+#include "JointMaxTorqueControlScheme.h"
 #include "AndroidController.generated.h"
 
 UCLASS()
@@ -32,15 +32,13 @@ public:
 	*/
 	void OnPossess(APawn* Pawn) override;
 
-	void AddControlSchemes() {
-		UAndroidControlSchemeMaxTorque* ControlScheme = NewObject<UAndroidControlSchemeMaxTorque>();
-		ControlScheme->SetController(this);
-		ControlSchemes.Add(ControlScheme);
-	}
+	void AddControlSchemes();
 
 private:
 
 	USkeletalMeshComponent* SkeletalMeshComponent;
 	float* ActionBufferFloatPtr;
 	AHolodeckAgent* ControlledAndroid;
+	UJointMaxTorqueControlScheme* ControlScheme;
+
 };
