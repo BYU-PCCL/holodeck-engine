@@ -104,6 +104,6 @@ public:
 	};
 
 	// Must be set in the editor.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 		FString AgentName;
 };
