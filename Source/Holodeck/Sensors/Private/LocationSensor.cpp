@@ -16,7 +16,7 @@ void ULocationSensor::InitializeSensor() {
 void ULocationSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	//check if your parent pointer is valid, and if the sensor is on. Then get the location and buffer, then send the location to the buffer. 
 	if (Parent != nullptr && bOn) {
-		FVector Location = Parent->GetComponentLocation();
+		FVector Location = this->GetComponentLocation();
 		float* FloatBuffer = static_cast<float*>(Buffer);
 		Location = ConvertLinearVector(Location, UEToClient);
 		FloatBuffer[0] = Location.X;
