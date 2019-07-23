@@ -18,9 +18,10 @@ void URotateSensorCommand::Execute() {
 	AHolodeckAgent* Agent = GetAgent(AgentName);
 	UHolodeckSensor* Sensor = Agent->SensorMap[SensorName];
 
-	float RotationPitch = NumberParams[0];
-	float RotationYaw = NumberParams[1];
-	float RotationRoll = NumberParams[2];
+	// Coordinates from the python side come in roll (x), pitch (y), yaw, (z) order
+	float RotationRoll = NumberParams[3];
+	float RotationPitch = NumberParams[4];
+	float RotationYaw = NumberParams[5];
 
 	Sensor->SetRelativeRotation(FRotator(RotationPitch, RotationYaw, RotationRoll));
     
