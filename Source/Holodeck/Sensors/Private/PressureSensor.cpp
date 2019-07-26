@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "PressureSensor.h"
@@ -14,10 +14,27 @@ UPressureSensor::UPressureSensor() {
 
 // Called when the game starts
 void UPressureSensor::InitializeSensor() {
-	Super::InitializeSensor();
 
-	Android = Cast<AAndroid>(this->GetOwner());
+	this->Parent = this->GetOwner();
+	
+	if (this->Parent->IsA(AAndroid::StaticClass())) {
+		this->NumJoints = AAndroid::NUM_JOINTS;
+		this->Joints = const_cast<FName*>(AAndroid::Joints);
+	}
+	else if (this->Parent->IsA(AHandAgent::StaticClass())) {
+		// is AHandAgent
+		this->NumJoints = AHandAgent::NUM_JOINTS;
+		this->Joints = const_cast<FName*>(AHandAgent::Joints);
+	}
+	else {
+		UE_LOG(LogHolodeck, Fatal, TEXT("Error: Tried to use UPressureSensor with unknown agent type."));
+	}
+
+
 	InitJointMap();
+
+	this->PrivateData = new float[this->GetNumItems() * sizeof(float)];
+	memset(PrivateData, 0, GetNumItems() * sizeof(float));
 
 	//set hit delegate
 	FScriptDelegate hitDelegate;
@@ -28,11 +45,25 @@ void UPressureSensor::InitializeSensor() {
 	TArray<USkeletalMeshComponent*> Components;
 	this->GetAttachmentRootActor()->GetComponents<USkeletalMeshComponent>(Components);
 	SkeletalMeshComponent = Components[0];
+
+	Super::InitializeSensor();
+}
+
+void UPressureSensor::BeginDestroy() {
+	Super::BeginDestroy();
+
+	delete this->PrivateData;
+}
+
+int UPressureSensor::GetNumItems() {
+	// 3 vectors containing impulse normal info and hit location
+	return this->NumJoints * (3 + 1);
 }
 
 // Called every frame
 void UPressureSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
 	float* FloatBuffer = static_cast<float*>(Buffer);
+
 	memcpy(FloatBuffer, PrivateData, GetNumItems() * sizeof(float));
 	memset(PrivateData, 0, GetNumItems() * sizeof(float));
 }
@@ -47,7 +78,6 @@ void UPressureSensor::OnHit(AActor* SelfActor, AActor* OtherActor, FVector Norma
 
 	SkeletalMeshComponent->TransformToBoneSpace(Hit.BoneName, HitWorldLocation, HitWorldRotation, HitBoneLocation, HitBoneRotation);
 	
-
 	if(JointMap.Contains(Hit.BoneName.ToString()))
 		AddHitToBuffer(Hit.BoneName.ToString(), HitBoneLocation, NormalImpulse, PrivateData);
 }
@@ -68,10 +98,9 @@ float* UPressureSensor::AddHitToBuffer(FString BoneName,FVector HitBoneLocation,
 }
 
 void UPressureSensor::InitJointMap() {
-	const FName* Joints = Android->Joints;
 
-	for (int JointInd = 0; JointInd < Android->NUM_JOINTS; JointInd++) {
-		FString Joint = Joints[JointInd].ToString();
+	for (int JointInd = 0; JointInd < this->NumJoints; JointInd++) {
+		FString Joint = this->Joints[JointInd].ToString();
 		JointMap.Add(Joint, JointInd);
 	}
 }

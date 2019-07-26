@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "AndroidController.h"
@@ -22,5 +22,25 @@ void AAndroidController::OnPossess(APawn* PawnParam) {
 		SkeletalMeshComponent = Components[0];
 	}
 
+	this->ControlScheme->SetSkeletalMesh(this->SkeletalMeshComponent, const_cast<FName*>(AAndroid::Joints));
+
 	ActionBufferFloatPtr = static_cast<float*>(ActionBuffer);
+}
+
+void AAndroidController::AddControlSchemes() {
+
+	ControlScheme = NewObject<UJointMaxTorqueControlScheme>();
+	ControlScheme->SetController(this);
+	ControlScheme->SetControlSchemeSizeInBytes(AAndroid::TOTAL_DOF);
+
+	ControlScheme->SetJointSizes(
+		AAndroid::NUM_3_AXIS_JOINTS,
+		AAndroid::NUM_2_AXIS_JOINTS,
+		AAndroid::NUM_1_AXIS_JOINTS
+	);
+
+	ControlScheme->SetFingerStartIndex(AAndroid::NUM_3_AXIS_JOINTS * 3 - 1);
+
+	ControlSchemes.Add(ControlScheme);
+
 }
