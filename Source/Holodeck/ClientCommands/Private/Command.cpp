@@ -19,7 +19,7 @@ AHolodeckAgent* UCommand::GetAgent(FString AgentName) {
 	if (Server->AgentMap.Contains(AgentName)) {
 		return Server->AgentMap[AgentName];
 	} else {
-		UE_LOG(LogHolodeck, Error, TEXT("Unable to parse command buffer as a json file"));
+		UE_LOG(LogHolodeck, Error, TEXT("Unable to find the agent %s"), *AgentName);
 		return nullptr;
 	}
 }
