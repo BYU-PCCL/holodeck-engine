@@ -16,9 +16,9 @@ void URotateSensorCommand::Execute() {
 	FString SensorName = StringParams[1].c_str();
 
 	AHolodeckAgent* Agent = GetAgent(AgentName);
-	verifyf(Agent, TEXT("%s: Could not find an agent with that name! %s"), TEXT(__FUNCTION__), *AgentName);
+	verifyf(Agent, TEXT("%s: Could not find an agent with that name! %s"), TEXT(__func__), *AgentName);
 
-	verifyf(Agent->SensorMap.Contains(SensorName), TEXT("%s: Could not find a sensor with that name! %s"), TEXT(__FUNCTION__), *SensorName);
+	verifyf(Agent->SensorMap.Contains(SensorName), TEXT("%s: Could not find a sensor with that name! %s"), TEXT(__func__), *SensorName);
 
 	UHolodeckSensor* Sensor = Agent->SensorMap[SensorName];
 
