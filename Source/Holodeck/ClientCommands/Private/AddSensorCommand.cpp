@@ -50,9 +50,11 @@ void UAddSensorCommand::Execute() {
 	int LocationX = NumberParams[0];
 	int LocationY = NumberParams[1];
 	int LocationZ = NumberParams[2];
-	int RotationPitch = NumberParams[3];
-	int RotationYaw = NumberParams[4];
-	int RotationRoll = NumberParams[5];
+
+	// Coordinates from the python side come in roll (x), pitch (y), yaw, (z) order
+	int RotationRoll = NumberParams[3];
+	int RotationPitch = NumberParams[4];
+	int RotationYaw = NumberParams[5];
 
 	AHolodeckAgent* Agent = GetAgent(AgentName);
 

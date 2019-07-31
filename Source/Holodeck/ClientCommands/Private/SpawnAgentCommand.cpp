@@ -26,7 +26,10 @@ void USpawnAgentCommand::Execute() {
 	FString AgentType = StringParams[0].c_str();
 	FString AgentName = StringParams[1].c_str();
 	FVector Location = FVector(NumberParams[0], NumberParams[1], NumberParams[2]);
-	FRotator Rotation = FRotator(NumberParams[3], NumberParams[4], NumberParams[5]);
+
+	// Note that we have to re-order the parameters since FRotator takes pitch, roll, yaw
+	// but the coordinates from the Python side com in roll, pitch, yaw order
+	FRotator Rotation = FRotator(NumberParams[4], NumberParams[3], NumberParams[5]);
 	Location = ConvertLinearVector(Location, ClientToUE);
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
