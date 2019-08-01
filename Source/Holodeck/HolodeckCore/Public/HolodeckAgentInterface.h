@@ -106,4 +106,7 @@ public:
 	// Must be set in the editor.
 	UPROPERTY(BlueprintReadWrite)
 		FString AgentName;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool MainAgent;
 };

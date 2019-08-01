@@ -5,11 +5,7 @@
 void USpawnAgentCommand::Execute() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
-	//Program should throw an error if any of these params aren't the correct size. They should always be this size.
-	if (StringParams.size() != 2 || NumberParams.size() != 6) {
-		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in USpawnAgentCommand. Agent not spawned."));
-		return;
-	}
+	verifyf(StringParams.size() == 2 && NumberParams.size() == 7, TEXT("%s: Bad Arguments"), *FString(__func__));
 
 	AHolodeckGameMode* GameTarget = static_cast<AHolodeckGameMode*>(Target);
 	if (GameTarget == nullptr) {
@@ -30,14 +26,17 @@ void USpawnAgentCommand::Execute() {
 	// Note that we have to re-order the parameters since FRotator takes pitch, roll, yaw
 	// but the coordinates from the Python side com in roll, pitch, yaw order
 	FRotator Rotation = FRotator(NumberParams[4], NumberParams[3], NumberParams[5]);
+	bool IsMainAgent = NumberParams[6];
+
 	Location = ConvertLinearVector(Location, ClientToUE);
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
-	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, Rotation, AgentName);
+	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, Rotation, AgentName, IsMainAgent);
 	AHolodeckPawnController* SpawnedController = nullptr;
 
 	if (SpawnedAgent) {
 		SpawnedAgent->AgentName = AgentName;
+		SpawnedAgent->MainAgent = IsMainAgent;
 		SpawnedAgent->SpawnDefaultController();
 		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
 		SpawnedController->SetServer(GameTarget->GetAssociatedServer());

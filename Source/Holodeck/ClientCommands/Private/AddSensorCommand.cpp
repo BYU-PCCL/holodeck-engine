@@ -56,6 +56,8 @@ void UAddSensorCommand::Execute() {
 
 	AHolodeckAgent* Agent = GetAgent(AgentName);
 
+	verifyf(Agent, TEXT("%s: Couldn't get Agent %s attaching sensor %s!"), *FString(__func__), *AgentName, *SensorName);
+
 	UHolodeckSensor* Sensor = NewObject<UHolodeckSensor>(Agent->GetRootComponent(), SensorMap[TypeName]);
 	Sensor->SensorName = SensorName;
 	Sensor->ParseSensorParms(ParmsJson);
