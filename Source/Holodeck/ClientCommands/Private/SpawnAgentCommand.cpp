@@ -32,18 +32,17 @@ void USpawnAgentCommand::Execute() {
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
 	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, Rotation, AgentName, IsMainAgent);
+	verifyf(SpawnedAgent, TEXT("%s SpawnAgentCommand did not spawn a new Agent."), *FString(__func__));
+
 	AHolodeckPawnController* SpawnedController = nullptr;
 
-	if (SpawnedAgent) {
-		SpawnedAgent->AgentName = AgentName;
-		SpawnedAgent->MainAgent = IsMainAgent;
-		SpawnedAgent->SpawnDefaultController();
-		SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
-		SpawnedController->SetServer(GameTarget->GetAssociatedServer());
-		SpawnedAgent->InitializeAgent();
-		
-		UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
-	} else {
-		UE_LOG(LogHolodeck, Fatal, TEXT("SpawnAgentCommand did not spawn a new Agent."));
-	}
+	SpawnedAgent->AgentName = AgentName;
+	SpawnedAgent->MainAgent = IsMainAgent;
+	SpawnedAgent->SpawnDefaultController();
+	SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
+	SpawnedController->SetServer(GameTarget->GetAssociatedServer());
+	SpawnedAgent->InitializeAgent();
+
+	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
+
 }
