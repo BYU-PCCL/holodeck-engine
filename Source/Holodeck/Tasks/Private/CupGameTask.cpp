@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
@@ -16,7 +16,8 @@ void UCupGameTask::ParseSensorParms(FString ParmsJson) {
 	TSharedPtr<FJsonObject> JsonParsed;
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
 
-	int32 Speed = 1;
+	bool HasConfiguration = false;
+	int32 Speed = -1;
 	int32 NumShuffles = 3;
 	bool UseSeed = false;
 	int32 Seed = 0;
@@ -24,29 +25,34 @@ void UCupGameTask::ParseSensorParms(FString ParmsJson) {
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
 
 		if (JsonParsed->HasTypedField<EJson::Number>("Speed")) {
+			HasConfiguration = true;
 			Speed = JsonParsed->GetNumberField("Speed");
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("NumShuffles")) {
+			HasConfiguration = true;
 			NumShuffles = JsonParsed->GetNumberField("NumShuffles");
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("Seed")) {
+			HasConfiguration = true;
 			UseSeed = true;
 			Seed = JsonParsed->GetNumberField("Seed");
 		}
 
-		TArray<float> nums;
-		nums.Add(Speed);
-		nums.Add(NumShuffles);
-		nums.Add(UseSeed);
-		nums.Add(Seed);
-		TArray<FString> strs;
-		strs.Add(AgentName);
-		AActor* Target = GetWorld()->GetAuthGameMode();
-		AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
-		Game->ExecuteCustomCommand("CupGameConfig", nums, strs);
-		Game->ExecuteCustomCommand("StartCupGame", nums, strs);
+		if (HasConfiguration){
+			TArray<float> nums;
+			nums.Add(Speed);
+			nums.Add(NumShuffles);
+			nums.Add(UseSeed);
+			nums.Add(Seed);
+			TArray<FString> strs;
+			strs.Add(AgentName);
+			AActor* Target = GetWorld()->GetAuthGameMode();
+			AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
+			Game->ExecuteCustomCommand("CupGameConfig", nums, strs);
+			Game->ExecuteCustomCommand("StartCupGame", nums, strs);
+		}
 	}
 	else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UCupGameTask::ParseSensorParms:: Unable to parse json."));
