@@ -13,10 +13,12 @@
 #include "RGBCamera.h"
 #include "RotationSensor.h"
 #include "VelocitySensor.h"
+#include "WorldNumSensor.h"
 #include "ViewportCapture.h"
 #include "DistanceTask.h"
 #include "LocationTask.h"
 #include "FollowTask.h"
+#include "CupGameTask.h"
 
 #include "Command.h"
 #include "AddSensorCommand.generated.h"

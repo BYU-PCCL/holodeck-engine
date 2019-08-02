@@ -29,6 +29,8 @@ void UViewportCapture::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Number>("Height")) {
 			Height = JsonParsed->GetIntegerField("Height");
 		}
+	} else {
+		UE_LOG(LogHolodeck, Fatal, TEXT("URGBCamera::ParseSensorParms:: Unable to parse json."));
 	}
 }
 
