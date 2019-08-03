@@ -55,7 +55,7 @@ void UCupGameTask::ParseSensorParms(FString ParmsJson) {
 		}
 	}
 	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("UCupGameTask::ParseSensorParms:: Unable to parse json."));
+		UE_LOG(LogHolodeck, Fatal, TEXT("UCupGameTask::ParseSensorParms:: Unable to parse json."));
 	}
 }
 
