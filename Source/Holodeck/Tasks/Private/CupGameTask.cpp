@@ -67,11 +67,11 @@ void UCupGameTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAc
 	bool WrongCupTouched = Game->GetWorldBool("WrongCupTouched");
 
 	if (BallTouched && !WrongCupTouched) {
-		Reward = 100;
+		Reward = 2;
 		Terminal = 1;
 	}
 	else if (CorrectCupTouched && !WrongCupTouched){
-		Reward = 50;
+		Reward = 1;
 	}
 	else {
 		Reward = 0;
