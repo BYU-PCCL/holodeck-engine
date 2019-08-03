@@ -70,12 +70,17 @@ void UCupGameTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAc
 		Reward = 2;
 		Terminal = 1;
 	}
-	else if (CorrectCupTouched && !WrongCupTouched){
+	else if (CorrectCupTouched && !WrongCupTouched && !MinRewardGiven){
 		Reward = 1;
+		MinRewardGiven = true; // Only give the min reward once
+	}
+	else if (WrongCupTouched) {
+		Reward = -1;
+		Terminal = 1;
 	}
 	else {
 		Reward = 0;
 	}
-	
+
 	UTaskSensor::TickSensorComponent(DeltaTime, TickType, ThisTickFunction);
 }

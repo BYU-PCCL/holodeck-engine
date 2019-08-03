@@ -34,4 +34,9 @@ public:
 protected:
 	// Checkout HolodeckSensor.h for the documentation for this overridden function.
 	virtual void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+private:
+
+	// Keeps task from giving constant reward when the correct cup is touched.
+	bool MinRewardGiven = false;
 };
