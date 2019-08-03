@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "WorldNumSensor.h"
@@ -25,7 +25,7 @@ void UWorldNumSensor::ParseSensorParms(FString ParmsJson) {
 		}
 	}
 	else {
-		UE_LOG(LogHolodeck, Warning, TEXT("UWorldNumSensor::ParseSensorParms:: Unable to parse json."));
+		UE_LOG(LogHolodeck, Warning, TEXT("%s Unable to parse json."), *FString(__func__));
 	}
 }
 

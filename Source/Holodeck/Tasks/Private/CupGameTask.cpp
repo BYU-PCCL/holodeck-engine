@@ -17,7 +17,7 @@ void UCupGameTask::ParseSensorParms(FString ParmsJson) {
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
 
 	bool HasConfiguration = false;
-	int32 Speed = -1;
+	int32 Speed = 2;
 	int32 NumShuffles = 3;
 	bool UseSeed = false;
 	int32 Seed = 0;

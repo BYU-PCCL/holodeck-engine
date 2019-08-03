@@ -18,7 +18,7 @@ void URGBCamera::ParseSensorParms(FString ParmsJson) {
 			TicksPerCapture = JsonParsed->GetIntegerField("TicksPerCapture");
 		}
 	} else {
-		UE_LOG(LogHolodeck, Warning, TEXT("URGBCamera::ParseSensorParms:: Unable to parse json."));
+		UE_LOG(LogHolodeck, Fatal, TEXT("URGBCamera::ParseSensorParms:: Unable to parse json."));
 	}
 }
 
