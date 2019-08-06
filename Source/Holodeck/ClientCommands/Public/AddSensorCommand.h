@@ -19,6 +19,7 @@
 #include "LocationTask.h"
 #include "FollowTask.h"
 #include "CupGameTask.h"
+#include "CleanUpTask.h"
 
 #include "Command.h"
 #include "AddSensorCommand.generated.h"

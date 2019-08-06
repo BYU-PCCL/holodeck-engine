@@ -10,6 +10,39 @@ void UCleanUpTask::InitializeSensor() {
 
 void UCleanUpTask::ParseSensorParms(FString ParmsJson) {
 	Super::ParseSensorParms(ParmsJson);
+
+	TSharedPtr<FJsonObject> JsonParsed;
+	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
+
+	bool HasConfiguration = false;
+	int NumTrash = 5;
+	bool UseTable = false;
+
+	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
+
+		if (JsonParsed->HasTypedField<EJson::Number>("NumTrash")) {
+			HasConfiguration = true;
+			NumTrash = JsonParsed->GetNumberField("NumTrash");
+		}
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("UseTable")) {
+			HasConfiguration = true;
+			UseTable = JsonParsed->GetBoolField("UseTable");
+		}
+
+		if (HasConfiguration) {
+			TArray<float> nums;
+			nums.Add(NumTrash);
+			nums.Add(UseTable);
+			TArray<FString> strs;
+			AActor* Target = GetWorld()->GetAuthGameMode();
+			AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);
+			Game->ExecuteCustomCommand("CleanUpConfig", nums, strs);
+		}
+	}
+	else {
+		UE_LOG(LogHolodeck, Fatal, TEXT("UCleanUpTask::ParseSensorParms:: Unable to parse json."));
+	}
 }
 
 void UCleanUpTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
@@ -25,8 +58,11 @@ void UCleanUpTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FAc
 	Reward = TrashInCan - PrevTick_TrashInCan;
 	PrevTick_TrashInCan = TrashInCan;
 
-	if (TrashInCan == TotalTrash) {
+	if (TrashInCan == TotalTrash && TotalTrash != 0) {
 		Terminal = 1;
+	}
+	else {
+		Terminal = 0;
 	}
 
 
