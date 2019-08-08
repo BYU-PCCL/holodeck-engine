@@ -60,7 +60,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 		bool DirectAttachMode;
 	UPROPERTY(BlueprintReadWrite)
-		int AttatchedAgentIndex;
+		int AttatchedAgentIndex = -1;
 
 	UPROPERTY(BlueprintReadWrite)
 		FTransform SpectatorTransform;
