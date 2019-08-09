@@ -30,6 +30,7 @@ void UCleanUpTask::ParseSensorParms(FString ParmsJson) {
 			UseTable = JsonParsed->GetBoolField("UseTable");
 		}
 
+		// If it does not have a configuration block, it must be set via world command
 		if (HasConfiguration) {
 			TArray<float> nums;
 			nums.Add(NumTrash);

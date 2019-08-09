@@ -11,9 +11,9 @@
 * Inherits from the TaskSensor class.
 * Initializes the clean up task in the world. This only works in the CleanUp world. 
 * The reward is based on the number of pieces of trash placed in the trash can. 
-* If the amount of trash in the trash can goes up, a reward is given by how much trash was added.
-* If it goes down, a corresponding negative reward is given.
-* If all the trash is in the trash can terminal is given.
+* For each piece of trash added to the can, a reward of 1 is given. For each piece
+* of trash removed, a reward of -1 is given. If all the trash is in the can, terminal
+* is given.
 */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UCleanUpTask : public UTaskSensor
