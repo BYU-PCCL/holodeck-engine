@@ -58,7 +58,7 @@ void ULocationTask::TickSensorComponent(float DeltaTime, ELevelTick TickType, FA
 	if ((LocationActor || LocationActorTag == "") && (GoalActor || GoalActorTag == "")) {
 		float Distance = CalcDistance();
 
-		if (Distance > GoalDistance) {
+		if (Distance < GoalDistance) {
 			if (!NegativeReward) {
 				Reward = 1;
 			}
