@@ -15,8 +15,7 @@ for packagepath in holodeck-worlds/*/; do
 
     # Copy everything in the worlds /Content directory into the UE4 projects
 
-    # todo: -f? need to overwrite
-    mv packagename/DefaultWorlds/Content/Worlds Content/
+    mv -f "$packagename/DefaultWorlds/Content" Content/
 
     # Package it up
     ue4 package Development
