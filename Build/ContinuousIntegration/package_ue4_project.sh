@@ -2,27 +2,51 @@
 
 # This script packages the entire project
 
-# Note - this is creating the combined binary by copying over the Worlds folder from
-# holodeck-worlds into the build directory of holodeck-engine. This will produce one
-# big .pak file. 
-#
-# In the future, when we want to have each world in a different pak file,
-# we will have to modify holodeck-worlds to generate .pak files, archive those .pak files as
-# part of the build, and then just copy those .pak files in to the build output of 
-# holodeck-engine
+ue4 setroot /home/ue4/UnrealEngine
 
-# TODO: Update this script to work with multiple different packages and package
-# them all. For loop over root dirs of holodeck-worlds?
+# Package each
+for packagepath in holodeck-worlds/*/; do
+    packagename=$(basename packagepath)
 
-# Move the worlds from holodeck-worlds to this project
-mv holodeck-worlds/DefaultWorlds/Content/Worlds Content/
+    echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
+    echo "⚠ Packaging $packagename..."
+    echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
+    
 
-ue4 setroot /home/ue4/UnrealEngine 
+    # Copy everything in the worlds /Content directory into the UE4 projects
 
-ue4 clean
+    # todo: -f? need to overwrite
+    mv packagename/DefaultWorlds/Content/Worlds Content/
 
-# Package it up
-ue4 package Development
+    # Package it up
+    ue4 package Development
+    
+    # Make sure it worked
+    code=$?
+    if [ code -ne 0]; then
+        echo "Packaging failed with code $code!"
+        exit $code
+    fi
 
-# Open up the permissions in the output generated files
-chmod 777 dist
+    # Open up the permissions in the output
+    chmod 777 dist
+
+    # Create the zip file
+    cd dist
+
+    # Copy configuration files into the output directory
+    cp "../holodeck-configs/$packagename/*.json" .
+
+    zip -r "$packagename.zip" *
+
+    mv "$packagename.zip" ..
+
+    rm *.json
+
+    cd ..
+
+    # Get it back to stock for next build
+    git reset --hard ~HEAD
+
+done
+
