@@ -4,6 +4,14 @@
 
 ue4 setroot /home/ue4/UnrealEngine
 
+# Use git to take a snapshot of the content directory
+
+git init Content
+cd Content
+git add .
+git commit -m "stock"
+cd ..
+
 # Package each
 for packagepath in holodeck-worlds/*/; do
     packagename=$(basename packagepath)
@@ -22,7 +30,7 @@ for packagepath in holodeck-worlds/*/; do
     
     # Make sure it worked
     code=$?
-    if [ code -ne 0]; then
+    if [ code -ne 0 ]; then
         echo "Packaging failed with code $code!"
         exit $code
     fi
@@ -45,7 +53,9 @@ for packagepath in holodeck-worlds/*/; do
     cd ..
 
     # Get it back to stock for next build
-    git reset --hard ~HEAD
+    cd Content
+    git clean -f
+    cd ..
 
 done
 
