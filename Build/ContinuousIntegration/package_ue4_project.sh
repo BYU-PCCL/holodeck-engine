@@ -14,7 +14,7 @@ cd ..
 
 # Package each
 for packagepath in holodeck-worlds/*/; do
-    packagename=$(basename packagepath)
+    packagename=$(basename $packagepath)
 
     echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
     echo "⚠ Packaging $packagename..."
