@@ -10,7 +10,8 @@ echo "👉 Initializing Git Repo..."
 git init Content
 cd Content
 git add .
-git config user.email "burrito@taco.com"
+git config user.email "jenkins@holodeck.ml"
+git config user.name "jenkins"
 git commit -m "stock"
 cd ..
 
@@ -45,7 +46,7 @@ for packagepath in holodeck-worlds/*/; do
 
     # Copy configuration files into the output directory
     echo "👉 Copying config files into output directory..."
-    cp "../holodeck-configs/$packagename/*.json" .
+    cp ../holodeck-configs/$packagename/*.json .
 
     echo "👉 Compressing contents into $packagename.zip..."
     zip -r "$packagename.zip" *
