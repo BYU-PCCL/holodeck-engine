@@ -25,7 +25,7 @@ for packagepath in holodeck-worlds/*/; do
 
     # Copy everything in the worlds /Content directory into the UE4 projects
     echo "👉 Copying content folder from $packagepath..."
-    mv -f "$packagename/DefaultWorlds/Content" Content/
+    mv -f "holodeck-worlds/$packagename/Content" Content/
 
     # Package it up
     ue4 package Development
