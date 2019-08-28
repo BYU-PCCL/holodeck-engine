@@ -4,16 +4,9 @@
 
 ue4 setroot /home/ue4/UnrealEngine
 
-# Use git to take a snapshot of the content directory
-
-echo "👉 Initializing Git Repo..."
-git init Content
-cd Content
-git add .
-git config user.email "jenkins@holodeck.ml"
-git config user.name "jenkins"
-git commit -m "stock"
-cd ..
+echo "👉 Backing up Content/ folder"
+# Make a backup copy of the Content/ folder
+cp -r Content/* Content-Backup
 
 # Package each
 for packagepath in holodeck-worlds/*/; do
@@ -51,7 +44,7 @@ for packagepath in holodeck-worlds/*/; do
     echo "👉 Compressing contents into $packagename.zip..."
     zip -r "$packagename.zip" *
 
-    echo "👉 Moving $packagename.zip out of dist/ folder...."
+    echo "👉 Moving $packagename.zip out of dist/ folder..."
     mv "$packagename.zip" ..
 
     echo "👉 Deleting config files for $packagename..."
@@ -60,10 +53,9 @@ for packagepath in holodeck-worlds/*/; do
     cd ..
 
     # Get it back to stock for next build
-    echo "👉 Cleaning up Content/ folder before next build..."
-    cd Content
-    git clean -f
-    cd ..
+    rm -r Content
+    mkdir Content
+    cp -r Content-Backup/* Content
 
     echo "👉 Done packaging package $packagename"
 done
