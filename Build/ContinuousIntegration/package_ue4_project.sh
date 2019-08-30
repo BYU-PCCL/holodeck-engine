@@ -8,6 +8,7 @@ echo "👉 Backing up Content/ folder"
 # Make a backup copy of the Content/ folder
 mkdir Content-Backup
 cp -r Content/* Content-Backup
+ls Content-Backup
 
 # Package each
 for packagepath in holodeck-worlds/*/; do
@@ -21,15 +22,19 @@ for packagepath in holodeck-worlds/*/; do
     # Copy everything in the worlds /Content directory into the UE4 projects
     # Delete the previous Content folder. This is so that we can mv the worlds quickly, and
     # then paste the Holodeck changes on top of it.
-    echo "👉 Deleting up Content/ folder..."
+    echo "👉 Deleting Content/ folder..."
     rm -r Content
-    echo "👉 Making up Content/ folder..."
+    ls Content
+    echo "👉 Making empty Content/ folder..."
     mkdir Content
-    echo "👉 Copying Holocdeck content folder from $packagepath..."
+    ls Content
+    echo "👉 Copying Holodeck content folder from $packagepath..."
     mv holodeck-worlds/$packagename/Content/* Content/
+    ls Content
 
     echo "👉 Applying Holodeck changes..."
     cp -r Content-Backup/* Content
+    ls Content
 
     # Package it up
     echo "👉 Starting Packaging Process..."
