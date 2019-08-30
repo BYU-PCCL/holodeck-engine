@@ -20,7 +20,7 @@ for packagepath in holodeck-worlds/*/; do
 
     # Copy everything in the worlds /Content directory into the UE4 projects
     echo "👉 Copying content folder from $packagepath..."
-    cp -rl holodeck-worlds/$packagename/Content/* Content/
+    cp -frl holodeck-worlds/$packagename/Content/* Content/
 
     # Package it up
     # ue4 package Development
@@ -32,10 +32,11 @@ for packagepath in holodeck-worlds/*/; do
         exit $code
     fi
 
+    mkdir dist
+
     # Open up the permissions in the output
     chmod 777 dist
 
-    mkdir dist
     # Create the zip file
     cd dist
 
@@ -58,7 +59,7 @@ for packagepath in holodeck-worlds/*/; do
     rm -r Content
     mkdir Content
     cp -r Content-Backup/* Content
-    
+
     echo "Peeky Time"
     sleep 120
 
