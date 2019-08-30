@@ -22,7 +22,7 @@ for packagepath in holodeck-worlds/*/; do
     cp -rl holodeck-worlds/$packagename/Content/* Content/
 
     # Package it up
-    ue4 package Development
+    # ue4 package Development
     
     # Make sure it worked
     code=$?
@@ -58,7 +58,7 @@ for packagepath in holodeck-worlds/*/; do
     cp -r Content-Backup/* Content
 
     if [ $packagename -eq "Dexterity" ]; then
-        
+
         sleep 900
     fi
 
