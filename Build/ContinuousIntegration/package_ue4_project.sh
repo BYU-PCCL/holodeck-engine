@@ -57,6 +57,11 @@ for packagepath in holodeck-worlds/*/; do
     mkdir Content
     cp -r Content-Backup/* Content
 
+    if [ $packagename -eq "Dexterity" ]; then
+        
+        sleep 900
+    fi
+
     echo "👉 Done packaging package $packagename"
 done
 
