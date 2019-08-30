@@ -6,6 +6,7 @@ ue4 setroot /home/ue4/UnrealEngine
 
 echo "👉 Backing up Content/ folder"
 # Make a backup copy of the Content/ folder
+mkdir Content-Backup
 cp -r Content/* Content-Backup
 
 # Package each
@@ -57,11 +58,9 @@ for packagepath in holodeck-worlds/*/; do
     rm -r Content
     mkdir Content
     cp -r Content-Backup/* Content
-
-    if [ $packagename -eq "Dexterity" ]; then
-
-        sleep 900
-    fi
+    
+    echo "Peeky Time"
+    sleep 120
 
     echo "👉 Done packaging package $packagename"
 done
