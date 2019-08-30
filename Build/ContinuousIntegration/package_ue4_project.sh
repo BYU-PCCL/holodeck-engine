@@ -24,21 +24,19 @@ for packagepath in holodeck-worlds/*/; do
     # then paste the Holodeck changes on top of it.
     echo "👉 Deleting Content/ folder..."
     rm -r Content
-    ls Content
+
     echo "👉 Making empty Content/ folder..."
     mkdir Content
-    ls Content
+
     echo "👉 Copying Holodeck content folder from $packagepath..."
     mv holodeck-worlds/$packagename/Content/* Content/
-    ls Content
 
     echo "👉 Applying Holodeck changes..."
     cp -r Content-Backup/* Content
-    ls Content
 
     # Package it up
     echo "👉 Starting Packaging Process..."
-    # ue4 package Development
+    ue4 package Development
     
     # Make sure it worked
     code=$?
@@ -69,14 +67,6 @@ for packagepath in holodeck-worlds/*/; do
     rm *.json
 
     cd ..
-
-    # Get it back to stock for next build
-    rm -r Content
-    mkdir Content
-    cp -r Content-Backup/* Content
-
-    echo "Peeky Time"
-    sleep 120
 
     echo "👉 Done packaging package $packagename"
 done
