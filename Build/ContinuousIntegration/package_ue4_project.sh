@@ -34,6 +34,7 @@ for packagepath in holodeck-worlds/*/; do
     # Open up the permissions in the output
     chmod 777 dist
 
+    mkdir dist
     # Create the zip file
     cd dist
 
