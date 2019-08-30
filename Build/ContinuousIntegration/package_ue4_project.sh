@@ -19,8 +19,14 @@ for packagepath in holodeck-worlds/*/; do
     
 
     # Copy everything in the worlds /Content directory into the UE4 projects
+    # Delete the previous Content folder. This is so that we can mv the worlds quickly, and
+    # then paste the Holodeck changes on top of it.
+    rm -r Content
+    mkdir Content
+    mv holodeck-worlds/$packagename/Content/* Content/
+
     echo "👉 Copying content folder from $packagepath..."
-    cp -frl holodeck-worlds/$packagename/Content/* Content/
+    cp -r Content-Backup/* Content
 
     # Package it up
     # ue4 package Development
