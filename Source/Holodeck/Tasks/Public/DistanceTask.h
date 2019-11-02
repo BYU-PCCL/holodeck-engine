@@ -50,10 +50,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		float GoalDistance;
 
-	// Actor to reach goal (if null component location is used)
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		AActor* DistanceActor;
-
 	// Goal actor
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		AActor* GoalActor;
@@ -61,6 +57,10 @@ public:
 	// Location (Used if actor is null) 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 		FVector GoalLocation;
+
+	// Actor to reach goal (if null component location is used)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		AActor* DistanceActor;
 
 protected:
 	// Checkout HolodeckSensor.h for the documentation for this overridden function.

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #pragma once
 
@@ -27,13 +27,6 @@ public:
 	* Default Destructor
 	*/
 	~ANavAgentController();
-
-	/**
-	* Possess
-	* Possesses a pawn.
-	* @param Pawn the pawn to possess.
-	*/
-	void Possess(APawn* Pawn);
 
 	void AddControlSchemes() override {
 		// No Extra Control Schemes

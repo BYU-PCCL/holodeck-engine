@@ -10,7 +10,7 @@ pipeline
 	{
 		docker 
 		{
-			image 'adamrehn/ue4-full:4.21.1'
+			image 'adamrehn/ue4-full:4.22.3'
 			// TODO: persist in volume? Does Jenkins use a bind mount?
 		}
 	}
@@ -82,7 +82,6 @@ pipeline
 			post
 			{
 				success {
-					sh 'su ue4 Build/ContinuousIntegration/create_package_zip.sh'
 					archiveArtifacts artifacts:'*.zip', fingerprint: true
 				}
 				cleanup {

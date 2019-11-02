@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #pragma once
 
@@ -57,16 +57,10 @@ public:
 	void Tick(float DeltaSeconds) override;
 	
 	/**
-	  * Possess
+	  * OnPossess
 	  * Called to Possess a pawn.
 	  */
-	void Possess(APawn* InPawn) override;
-
-	/**
-	  * UnPossess
-	  * Called to Unpossess a pawn
-	  */
-	void UnPossess() override;
+	void OnPossess(APawn* InPawn) override;
 
 	/**
 	  * GetActionBuffer

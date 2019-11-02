@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "HolodeckGameMode.h"
@@ -38,7 +38,10 @@ void UAddSensorCommand::Execute() {
 										{ "ViewportCapture", UViewportCapture::StaticClass() },
 										{ "DistanceTask", UDistanceTask::StaticClass() },
 										{ "LocationTask", ULocationTask::StaticClass() },
-										{ "FollowTask", UFollowTask::StaticClass() } };
+										{ "FollowTask", UFollowTask::StaticClass() },
+										{ "CupGameTask", UCupGameTask::StaticClass() },
+										{ "WorldNumSensor", UWorldNumSensor::StaticClass() }, 
+										{ "CleanUpTask", UCleanUpTask::StaticClass() }, };
 
 	FString AgentName = StringParams[0].c_str();
 	FString SensorName = StringParams[1].c_str();
@@ -48,11 +51,15 @@ void UAddSensorCommand::Execute() {
 	int LocationX = NumberParams[0];
 	int LocationY = NumberParams[1];
 	int LocationZ = NumberParams[2];
-	int RotationPitch = NumberParams[3];
-	int RotationYaw = NumberParams[4];
-	int RotationRoll = NumberParams[5];
+
+	// Coordinates from the python side come in roll (x), pitch (y), yaw, (z) order
+	int RotationRoll = NumberParams[3];
+	int RotationPitch = NumberParams[4];
+	int RotationYaw = NumberParams[5];
 
 	AHolodeckAgent* Agent = GetAgent(AgentName);
+
+	verifyf(Agent, TEXT("%s: Couldn't get Agent %s attaching sensor %s!"), *FString(__func__), *AgentName, *SensorName);
 
 	UHolodeckSensor* Sensor = NewObject<UHolodeckSensor>(Agent->GetRootComponent(), SensorMap[TypeName]);
 	Sensor->SensorName = SensorName;

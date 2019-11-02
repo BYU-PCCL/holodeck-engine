@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #pragma once
 
@@ -104,6 +104,9 @@ public:
 	};
 
 	// Must be set in the editor.
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 		FString AgentName;
+
+	UPROPERTY(BlueprintReadWrite)
+		bool MainAgent;
 };

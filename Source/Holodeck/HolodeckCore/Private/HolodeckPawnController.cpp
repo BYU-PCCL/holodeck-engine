@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "HolodeckAgent.h"
@@ -22,25 +22,26 @@ void AHolodeckPawnController::BeginPlay() {
 	AddTickPrerequisiteActor(GetWorld()->GetAuthGameMode());
 }
 
-void AHolodeckPawnController::Possess(APawn* InPawn) {
-	Super::Possess(InPawn);
+void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 	ControlledAgent = static_cast<AHolodeckAgentInterface*>(InPawn);
-	if (ControlledAgent == nullptr)
-		UE_LOG(LogHolodeck, Error, TEXT("HolodeckPawnController attached to non-HolodeckAgent!"));
+
+	if (ControlledAgent == nullptr) {
+		UE_LOG(LogHolodeck, Fatal, TEXT("HolodeckPawnController attached to non-HolodeckAgent!"));
+	}
+
+	ControlledAgent->Controller = this;
 
 	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	UpdateServerInfo();
-	if (Server == nullptr)
-		UE_LOG(LogHolodeck, Warning, TEXT("HolodeckPawnController couldn't find server..."));
+
+	if (Server == nullptr) {
+		UE_LOG(LogHolodeck, Fatal, TEXT("HolodeckPawnController couldn't find server..."));
+	}
 
 	URawControlScheme* RawControlScheme = NewObject<URawControlScheme>();
 	RawControlScheme->Agent = ControlledAgent;
 	ControlSchemes.Add(RawControlScheme);
 	AddControlSchemes();
-}
-
-void AHolodeckPawnController::UnPossess() {
-	Super::UnPossess();
 }
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
@@ -100,9 +101,8 @@ void AHolodeckPawnController::AllocateBuffers(const FString& AgentName) {
 
 void AHolodeckPawnController::ExecuteTeleport() {
 	UE_LOG(LogHolodeck, Log, TEXT("Executing teleport"));
-	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
-	if (PawnVar == nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
+	if (ControlledAgent == nullptr) {
+		UE_LOG(LogHolodeck, Warning, TEXT("AHolodeckPawnController::ExecuteTeleport: Couldn't get reference to controlled HolodeckAgent"));
 		return;
 	}
 
@@ -113,7 +113,7 @@ void AHolodeckPawnController::ExecuteTeleport() {
 		TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 		TeleportLocation = ConvertLinearVector(TeleportLocation, ClientToUE);
 	} else {
-		TeleportLocation = PawnVar->GetActorLocation();
+		TeleportLocation = ControlledAgent->GetActorLocation();
 	}
 
 	FRotator NewRotation;
@@ -121,20 +121,22 @@ void AHolodeckPawnController::ExecuteTeleport() {
 		NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
 		NewRotation = ConvertAngularVector(NewRotation, ClientToUE);
 	} else {
-		NewRotation = PawnVar->GetActorRotation();
+		NewRotation = ControlledAgent->GetActorRotation();
 	}
 
-	PawnVar->Teleport(TeleportLocation, NewRotation);
+	ControlledAgent->Teleport(TeleportLocation, NewRotation);
 	*ShouldChangeStateBuffer = 0;
 }
 
 
 void AHolodeckPawnController::ExecuteSetState() {
-	AHolodeckAgent* PawnVar = Cast<AHolodeckAgent>(this->GetPawn());
-	if (PawnVar == nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("Couldn't get reference to controlled HolodeckAgent"));
+	UE_LOG(LogHolodeck, Log, TEXT("AHolodeckPawnController::ExecuteSetState"));
+
+	if (ControlledAgent == nullptr) {
+		UE_LOG(LogHolodeck, Fatal, TEXT("AHolodeckPawnController::ExecuteSetState: Couldn't get reference to controlled HolodeckAgent"));
 		return;
 	}
+
 	float* FloatPtr = static_cast<float*>(TeleportBuffer);
 	FVector TeleportLocation = FVector(FloatPtr[0], FloatPtr[1], FloatPtr[2]);
 	FRotator NewRotation = FRotator(FloatPtr[4], FloatPtr[5], FloatPtr[3]);
@@ -147,7 +149,7 @@ void AHolodeckPawnController::ExecuteSetState() {
 	NewVelocity = ConvertLinearVector(NewVelocity, ClientToUE);
 	NewAngVelocity = ConvertAngularVector(NewAngVelocity, NoScale);
 
-	PawnVar->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
+	ControlledAgent->SetState(TeleportLocation, NewRotation, NewVelocity, NewAngVelocity);
 	*ShouldChangeStateBuffer = 0;
 }
 

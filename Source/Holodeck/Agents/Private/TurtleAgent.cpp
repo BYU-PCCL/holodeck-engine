@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "TurtleAgent.h"
@@ -23,8 +23,8 @@ void ATurtleAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	float ForwardForce = CommandArray[0];
 	float RotForce = CommandArray[1];
-	float maxThrust = 15.0f;
-	float maxYaw = 15.0f;
+	float maxThrust = 160.0f;
+	float maxYaw = 35.0f;
 
 	float ThrustToApply = FMath::Clamp(ForwardForce, -maxThrust, maxThrust);
 	float YawTorqueToApply = FMath::Clamp(RotForce, -maxYaw, maxYaw);

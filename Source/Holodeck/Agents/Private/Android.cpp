@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "Android.h"
@@ -132,3 +132,70 @@ const FName AAndroid::Joints[] = {
 	FName(TEXT("ring_03_r")),
 	FName(TEXT("pinky_03_r")),
 };
+
+// Don't forget to update AAndroid::NumBones after changing this array!
+const FName AAndroid::BoneNames[] = {
+	FName(TEXT("pelvis")),
+	FName(TEXT("spine_01")),
+	FName(TEXT("spine_02")),
+	FName(TEXT("spine_03")),
+	FName(TEXT("clavicle_l")),
+	FName(TEXT("upperarm_l")),
+	FName(TEXT("lowerarm_l")),
+	FName(TEXT("hand_l")),
+	FName(TEXT("index_01_l")),
+	FName(TEXT("index_02_l")),
+	FName(TEXT("index_03_l")),
+	FName(TEXT("middle_01_l")),
+	FName(TEXT("middle_02_l")),
+	FName(TEXT("middle_03_l")),
+	FName(TEXT("pinky_01_l")),
+	FName(TEXT("pinky_02_l")),
+	FName(TEXT("pinky_03_l")),
+	FName(TEXT("ring_01_l")),
+	FName(TEXT("ring_02_l")),
+	FName(TEXT("ring_03_l")),
+	FName(TEXT("thumb_01_l")),
+	FName(TEXT("thumb_02_l")),
+	FName(TEXT("thumb_03_l")),
+	FName(TEXT("lowerarm_twist_01_l")),
+	FName(TEXT("upperarm_twist_01_l")),
+	FName(TEXT("clavicle_r")),
+	FName(TEXT("upperarm_r")),
+	FName(TEXT("lowerarm_r")),
+	FName(TEXT("hand_r")),
+	FName(TEXT("index_01_r")),
+	FName(TEXT("index_02_r")),
+	FName(TEXT("index_03_r")),
+	FName(TEXT("middle_01_r")),
+	FName(TEXT("middle_02_r")),
+	FName(TEXT("middle_03_r")),
+	FName(TEXT("pinky_01_r")),
+	FName(TEXT("pinky_02_r")),
+	FName(TEXT("pinky_03_r")),
+	FName(TEXT("ring_01_r")),
+	FName(TEXT("ring_02_r")),
+	FName(TEXT("ring_03_r")),
+	FName(TEXT("thumb_01_r")),
+	FName(TEXT("thumb_02_r")),
+	FName(TEXT("thumb_03_r")),
+	FName(TEXT("lowerarm_twist_01_r")),
+	FName(TEXT("upperarm_twist_01_r")),
+	FName(TEXT("neck_01")),
+	FName(TEXT("head")),
+	FName(TEXT("thigh_l")),
+	FName(TEXT("calf_l")),
+	FName(TEXT("calf_twist_01_l")),
+	FName(TEXT("foot_l")),
+	FName(TEXT("ball_l")),
+	FName(TEXT("thigh_twist_01_l")),
+	FName(TEXT("thigh_r")),
+	FName(TEXT("calf_r")),
+	FName(TEXT("calf_twist_01_r")),
+	FName(TEXT("foot_r")),
+	FName(TEXT("ball_r")),
+	FName(TEXT("thigh_twist_01_r"))
+};
+
+// If you change this number, change the corresponding number in RelativeSkeletalPositionSensor.__init__
+const int AAndroid::NumBones = 60;

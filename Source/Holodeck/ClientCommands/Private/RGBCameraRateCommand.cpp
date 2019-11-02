@@ -1,38 +1,34 @@
 #include "Holodeck.h"
 #include "RGBCameraRateCommand.h"
 #include "RGBCamera.h"
+#include "HolodeckGameMode.h"
 
 void URGBCameraRateCommand::Execute() {
 
-	UE_LOG(LogHolodeck, Log, TEXT("RGBCameraRateCommand::Execute set camera capture rate"));
-	//Program should throw an error if any of these params aren't the correct size. They should always be this size.
-	if (StringParams.size() != 1 || NumberParams.size() != 1) {
-		UE_LOG(LogHolodeck, Error, TEXT("Unexpected argument length found in RGBCameraRateCommand. Camera Rate not adjusted."));
-		return;
-	}
+	UE_LOG(LogHolodeck, Log, TEXT("RGBCameraRateCommand::Execute"));
+
+	verifyf(StringParams.size() == 2 && NumberParams.size() == 1, TEXT("URGBCameraRateCommand::Execute: Invalid Arguments"));
 
 	AHolodeckGameMode* GameTarget = static_cast<AHolodeckGameMode*>(Target);
-	if (GameTarget == nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("UCommand::Target is not a UHolodeckGameMode*. RGBCameraRateCommand::Execute Camera Rate not adjusted."));
-		return;
-	}
+
+	verifyf(GameTarget != nullptr, TEXT("%s UCommand::Target is not a UHolodeckGameMode*."), *FString(__func__));
 
 	UWorld* World = Target->GetWorld();
-	if (World == nullptr) {
-		UE_LOG(LogHolodeck, Warning, TEXT("RGBCameraRateCommand::Execute found world as nullptr. Camera Rate not adjusted."));
-		return;
-	}
+	verify(World);
 
 	FString AgentName = StringParams[0].c_str();
 	int ticksPerCapture = NumberParams[0];
 
+	verifyf(ticksPerCapture > 0, TEXT("%s Invalid ticks per capture provided!"), *FString(__func__));
+
 	AHolodeckAgent* Agent = GetAgent(AgentName);
 
-	if (!Agent->SensorMap.Contains("RGBCamera")) {
-		UE_LOG(LogHolodeck, Warning, TEXT("RGBCameraRateCommand::Execute No camera found on agent."));
-		return;
-	}
+	verifyf(Agent, TEXT("%s Could not find agent %s"), *FString(__func__), *AgentName);
 
-	URGBCamera* Camera = (URGBCamera*)Agent->SensorMap["RGBCamera"];
+	FString SensorName = StringParams[1].c_str();
+
+	verifyf(Agent->SensorMap.Contains(SensorName), TEXT("%s Sensor %s not found on agent %s"), *FString(__func__), *SensorName, *AgentName);
+
+	URGBCamera* Camera = (URGBCamera*)Agent->SensorMap[SensorName];
 	Camera->TicksPerCapture = ticksPerCapture;
 }

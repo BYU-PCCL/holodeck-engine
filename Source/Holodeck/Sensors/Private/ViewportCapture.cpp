@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// MIT License (c) 2019 BYU PCCL see LICENSE file
 
 #include "Holodeck.h"
 #include "ViewportCapture.h"
@@ -29,6 +29,8 @@ void UViewportCapture::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Number>("Height")) {
 			Height = JsonParsed->GetIntegerField("Height");
 		}
+	} else {
+		UE_LOG(LogHolodeck, Fatal, TEXT("URGBCamera::ParseSensorParms:: Unable to parse json."));
 	}
 }
 

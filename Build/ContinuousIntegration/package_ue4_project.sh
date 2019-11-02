@@ -2,27 +2,73 @@
 
 # This script packages the entire project
 
-# Note - this is creating the combined binary by copying over the Worlds folder from
-# holodeck-worlds into the build directory of holodeck-engine. This will produce one
-# big .pak file. 
-#
-# In the future, when we want to have each world in a different pak file,
-# we will have to modify holodeck-worlds to generate .pak files, archive those .pak files as
-# part of the build, and then just copy those .pak files in to the build output of 
-# holodeck-engine
+ue4 setroot /home/ue4/UnrealEngine
 
-# TODO: Update this script to work with multiple different packages and package
-# them all. For loop over root dirs of holodeck-worlds?
+echo "👉 Backing up Content/ folder"
+# Make a backup copy of the Content/ folder
+mkdir Content-Backup
+cp -r Content/* Content-Backup
+ls Content-Backup
 
-# Move the worlds from holodeck-worlds to this project
-mv holodeck-worlds/DefaultWorlds/Content/Worlds Content/
+# Package each
+for packagepath in holodeck-worlds/*/; do
+    packagename=$(basename $packagepath)
 
-ue4 setroot /home/ue4/UnrealEngine 
+    echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
+    echo "⚠ Packaging $packagename..."
+    echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
+    
 
-ue4 clean
+    # Copy everything in the worlds /Content directory into the UE4 projects
+    # Delete the previous Content folder. This is so that we can mv the worlds quickly, and
+    # then paste the Holodeck changes on top of it.
+    echo "👉 Deleting Content/ folder..."
+    rm -r Content
 
-# Package it up
-ue4 package Development
+    echo "👉 Making empty Content/ folder..."
+    mkdir Content
 
-# Open up the permissions in the output generated files
-chmod 777 dist
+    echo "👉 Copying Holodeck content folder from $packagepath..."
+    mv holodeck-worlds/$packagename/Content/* Content/
+
+    echo "👉 Applying Holodeck changes..."
+    cp -r Content-Backup/* Content
+
+    # Package it up
+    echo "👉 Starting Packaging Process..."
+    ue4 package Development
+    
+    # Make sure it worked
+    code=$?
+    if [ code -ne 0 ]; then
+        >&2 echo "(╯°□°)╯︵ ┻━┻ Packaging $packagename failed with code $code!"
+        exit $code
+    fi
+
+    mkdir dist
+
+    # Open up the permissions in the output
+    chmod 777 dist
+
+    # Create the zip file
+    cd dist
+
+    # Copy configuration files into the output directory
+    echo "👉 Copying config files into output directory..."
+    cp ../holodeck-configs/$packagename/*.json .
+
+    echo "👉 Compressing contents into $packagename.zip..."
+    zip -r "$packagename.zip" *
+
+    echo "👉 Moving $packagename.zip out of dist/ folder..."
+    mv "$packagename.zip" ..
+
+    echo "👉 Deleting config files for $packagename..."
+    rm *.json
+
+    cd ..
+
+    echo "👉 Done packaging package $packagename"
+done
+
+echo "👉 Sucessfully packaged all the packages 🎉🎉"
