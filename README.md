@@ -24,7 +24,9 @@ This repository contains everything you need to build environments in the Unreal
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.22
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
-
+  - If you get a "ExampleLevel.umap appears to be an asset file" error you have not configured git-lfs correctly.
+    Try `git lfs pull`.
+    
 ## Building For Linux
 For a great tutorial, see the [wiki page](https://github.com/byu-pccl/holodeck-engine/wiki/Cross-Compiling-for-Linux)
 
