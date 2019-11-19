@@ -62,7 +62,7 @@ HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int
 
 	#elif PLATFORM_LINUX
 
-    MemFile = shm_open(MemPath.c_str(), O_CREAT | O_RDWR | O_TRUNC, 0777);
+    MemFile = shm_open(MemPath.c_str(), O_CREAT | O_RDWR, 0777);
     ftruncate(MemFile, this->MemSize);
     MemPointer = static_cast<void*>(mmap(nullptr, this->MemSize, PROT_READ | PROT_WRITE,
                                          MAP_SHARED, MemFile, 0));
