@@ -26,7 +26,7 @@ void USpawnAgentCommand::Execute() {
 	// Note that we have to re-order the parameters since FRotator takes pitch, roll, yaw
 	// but the coordinates from the Python side com in roll, pitch, yaw order
 	FRotator Rotation = FRotator(NumberParams[4], NumberParams[3], NumberParams[5]);
-	bool IsMainAgent = NumberParams[6];
+	bool IsMainAgent = (bool) NumberParams[6];
 
 	Location = ConvertLinearVector(Location, ClientToUE);
 
