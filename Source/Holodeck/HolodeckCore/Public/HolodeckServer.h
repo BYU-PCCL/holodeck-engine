@@ -6,6 +6,7 @@
 
 #include <map>
 #include <memory>
+#include <cstring>
 
 #include "HolodeckSharedMemory.h"
 #if PLATFORM_WINDOWS
@@ -22,6 +23,8 @@
 #include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
+#include <cerrno>
+
 #endif
 
 #include "HolodeckServer.generated.h"
@@ -128,5 +131,7 @@ private:
 	#elif PLATFORM_LINUX
 	sem_t* LockingSemaphore1;
 	sem_t* LockingSemaphore2;
-	#endif
+    #endif
+
+	void LogSystemError(const std::string &errorMessage);
 };

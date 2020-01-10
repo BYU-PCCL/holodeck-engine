@@ -29,14 +29,36 @@ void UHolodeckServer::Start() {
 	ReleaseSemaphore(LoadingSemaphore, 1, NULL);
 	this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, *(SEMAPHORE_PATH1 + UUID));
 	this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, *(SEMAPHORE_PATH2 + UUID));
-	#elif PLATFORM_LINUX
-	sem_unlink(SEMAPHORE_PATH1);
-	sem_unlink(SEMAPHORE_PATH2);
+    #elif PLATFORM_LINUX
+	errno = 0;
 	auto LoadingSemaphore = sem_open(TCHAR_TO_ANSI(*(LOADING_SEMAPHORE_PATH + UUID)), O_CREAT, 0777, 0);
+	if (errno == EACCES || errno == EEXIST || errno == EINVAL || errno == EMFILE || errno == ENFILE) {
+	    LogSystemError("Unable to open loading semaphore");
+	}
+
+    errno = 0;
 	sem_post(LoadingSemaphore);
+	if (errno == EINVAL) {
+	    LogSystemError("Unable to update loading semaphore");
+	}
+
+    errno = 0;
 	LockingSemaphore1 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH1 + UUID)), O_CREAT, 0777, 1);
+    if (errno == EACCES || errno == EEXIST || errno == EINVAL || errno == EMFILE || errno == ENFILE) {
+        LogSystemError("Unable to open server semaphore");
+    }
+
+    errno = 0;
 	LockingSemaphore2 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH2 + UUID)), O_CREAT, 0777, 0);
+    if (errno == EACCES || errno == EEXIST || errno == EINVAL || errno == EMFILE || errno == ENFILE) {
+        LogSystemError("Unable to open client semaphore");
+    }
+
+    errno = 0;
 	sem_unlink(LOADING_SEMAPHORE_PATH);
+    if (errno == EACCES || errno == ENOENT) {
+        LogSystemError("Unable to close loading semaphore");
+    }
 	#endif
 
 	bIsRunning = true;
@@ -52,9 +74,18 @@ void UHolodeckServer::Kill() {
 	#if PLATFORM_WINDOWS
 	CloseHandle(this->LockingSemaphore1);
 	CloseHandle(this->LockingSemaphore2);
-	#elif PLATFORM_LINUX
+    #elif PLATFORM_LINUX
+    errno = 0;
 	sem_unlink(SEMAPHORE_PATH1);
+    if (errno == EACCES || errno == ENOENT) {
+        LogSystemError("Unable to close server semaphore");
+    }
+
+    errno = 0;
 	sem_unlink(SEMAPHORE_PATH2);
+    if (errno == EACCES || errno == ENOENT) {
+        LogSystemError("Unable to close client semaphore");
+    }
 	#endif
 
 	bIsRunning = false;
@@ -74,8 +105,12 @@ void UHolodeckServer::Acquire() {
 	UE_LOG(LogHolodeck, VeryVerbose, TEXT("HolodeckServer Acquiring"));
 	#if PLATFORM_WINDOWS
 	WaitForSingleObject(this->LockingSemaphore1, INFINITE);
-	#elif PLATFORM_LINUX
+    #elif PLATFORM_LINUX
+    errno = 0;
 	sem_wait(LockingSemaphore1);
+    if (errno == EINTR || errno == EINVAL || errno == EAGAIN || errno == ETIMEDOUT) {
+        LogSystemError("Unable to wait for server semaphore");
+    }
 	#endif
 }
 
@@ -83,11 +118,20 @@ void UHolodeckServer::Release() {
 	UE_LOG(LogHolodeck, VeryVerbose, TEXT("HolodeckServer Releasing"));
 	#if PLATFORM_WINDOWS
 	ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
-	#elif PLATFORM_LINUX
+    #elif PLATFORM_LINUX
+    errno = 0;
 	sem_post(LockingSemaphore2);
+    if (errno == EINVAL) {
+        LogSystemError("Unable to update loading semaphore");
+    }
 	#endif
 }
 
 bool UHolodeckServer::IsRunning() const {
 	return bIsRunning;
+}
+
+void UHolodeckServer::LogSystemError(const std::string &errorMessage) {
+    std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
+    UE_LOG(LogHolodeck, Warning, TEXT(FString(errorMsg.c_str())));
 }
