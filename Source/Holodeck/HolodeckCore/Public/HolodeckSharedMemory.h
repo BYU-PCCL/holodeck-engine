@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <cstring>
 
 #if PLATFORM_WINDOWS
 #include "AllowWindowsPlatformTypes.h"

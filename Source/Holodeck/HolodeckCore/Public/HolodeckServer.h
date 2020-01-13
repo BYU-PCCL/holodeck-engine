@@ -6,6 +6,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 #include <cstring>
 
 #include "HolodeckSharedMemory.h"
@@ -28,6 +29,7 @@
 #endif
 
 #include "HolodeckServer.generated.h"
+
 
 /* Forward declare HolodeckAgent Class*/
 class AHolodeckAgent;

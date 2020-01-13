@@ -86,12 +86,14 @@ HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int
 
 HolodeckSharedMemory::~HolodeckSharedMemory() {
 	#if PLATFORM_WINDOWS
-	// TODO: Correctly close these files
+	CloseHandle(MemFile);
+	UnmapViewOfFile(MemPointer);
 	#elif PLATFORM_LINUX
+	munmap(Memfile);
 	#endif
 }
 
 void HolodeckSharedMemory::LogSystemError(const std::string &errorMessage) {
     std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
-    UE_LOG(LogHolodeck, Warning, TEXT(FString(errorMsg.c_str())));
+    UE_LOG(LogHolodeck, Warning, TEXT("%s"), ANSI_TO_TCHAR(errorMessage.c_str()));
 }

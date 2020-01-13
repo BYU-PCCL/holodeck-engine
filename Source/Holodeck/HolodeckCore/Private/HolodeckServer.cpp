@@ -131,7 +131,7 @@ bool UHolodeckServer::IsRunning() const {
 	return bIsRunning;
 }
 
-void UHolodeckServer::LogSystemError(const std::string &errorMessage) {
-    std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
-    UE_LOG(LogHolodeck, Warning, TEXT(FString(errorMsg.c_str())));
+void UHolodeckServer::LogSystemError(const std::string& errorMessage){
+	std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
+	UE_LOG(LogHolodeck, Warning, TEXT("%s"), ANSI_TO_TCHAR(errorMessage.c_str()));
 }
