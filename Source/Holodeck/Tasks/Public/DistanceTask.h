@@ -72,4 +72,5 @@ private:
 	float NextDistance;
 	FString DistanceActorTag;
 	FString GoalActorTag;
+	bool UseZ = false;
 };
