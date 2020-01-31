@@ -88,7 +88,10 @@ HolodeckSharedMemory::~HolodeckSharedMemory() {
 	#if PLATFORM_WINDOWS
 	CloseHandle(MemFile);
 	UnmapViewOfFile(MemPointer);
-	#elif PLATFORM_LINUX
+    #elif PLATFORM_LINUX
+	// the client still hangs on to this memory location. We need to figure out a
+	// better way to release it.
+	// munmap(MemPointer, MemSize);
 	#endif
 }
 
