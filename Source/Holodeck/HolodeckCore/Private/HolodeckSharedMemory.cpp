@@ -89,7 +89,6 @@ HolodeckSharedMemory::~HolodeckSharedMemory() {
 	CloseHandle(MemFile);
 	UnmapViewOfFile(MemPointer);
 	#elif PLATFORM_LINUX
-	munmap(Memfile);
 	#endif
 }
 
