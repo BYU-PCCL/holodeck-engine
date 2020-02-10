@@ -34,10 +34,6 @@ void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	UpdateServerInfo();
 
-	if (Server == nullptr) {
-		UE_LOG(LogHolodeck, Fatal, TEXT("HolodeckPawnController couldn't find server..."));
-	}
-
 	URawControlScheme* RawControlScheme = NewObject<URawControlScheme>();
 	RawControlScheme->Agent = ControlledAgent;
 	ControlSchemes.Add(RawControlScheme);
@@ -46,6 +42,10 @@ void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 
 void AHolodeckPawnController::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+
+	if (Server == nullptr) {
+		UE_LOG(LogHolodeck, Fatal, TEXT("HolodeckPawnController couldn't find server..."));
+	}
 
 	if (ShouldChangeStateBuffer && *ShouldChangeStateBuffer & 0x4) {
 		ExecuteSetState();
