@@ -60,6 +60,9 @@ void UDistanceTask::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Boolean>("MaximizeDistance")) {
 			MaximizeDistance = JsonParsed->GetBoolField("MaximizeDistance");
 		}
+		if (JsonParsed->HasTypedField<EJson::Boolean>("3dDistance")) {
+			UseZ = JsonParsed->GetBoolField("3dDistance");
+		}
 	} else {
 		UE_LOG(LogHolodeck, Warning, TEXT("UDistanceTask::ParseSensorParms:: Unable to parse json."));
 	}
@@ -124,6 +127,11 @@ float UDistanceTask::CalcDistance() {
 	FVector ToLocation = GoalLocation;
 	if (GoalActor) {
 		ToLocation = GoalActor->GetActorLocation();
+	}
+
+	if(!UseZ) {
+		ToLocation[2] = 0;
+		FromLocation[2] = 0;
 	}
 
 	return (ToLocation - FromLocation).Size();
