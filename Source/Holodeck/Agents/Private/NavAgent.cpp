@@ -19,7 +19,12 @@ void ANavAgent::InitializeAgent() {
 // Called every frame
 void ANavAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	Target = FVector(CommandArray[0], CommandArray[1], CommandArray[2]);
+
+	float x = FMath::Clamp(CommandArray[0], MIN_DISTANCE, MAX_DISTANCE);
+	float y = FMath::Clamp(CommandArray[1], MIN_DISTANCE, MAX_DISTANCE);
+	float z = FMath::Clamp(CommandArray[2], MIN_DISTANCE, MAX_DISTANCE);
+
+	Target = FVector(x, y, z);
 	Target = ConvertLinearVector(Target, ClientToUE);
 }
 

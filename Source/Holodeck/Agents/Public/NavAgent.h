@@ -9,6 +9,9 @@
 
 #include "NavAgent.generated.h"
 
+static float MAX_DISTANCE = 0.5;
+static float MIN_DISTANCE = -0.5;
+
 UCLASS()
 class HOLODECK_API ANavAgent : public AHolodeckAgent
 {
