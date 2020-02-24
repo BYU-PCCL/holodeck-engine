@@ -63,13 +63,12 @@ HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int
 	#elif PLATFORM_LINUX
 
     MemFile = shm_open(MemPath.c_str(), O_CREAT | O_RDWR, 0777);
-	if (MemFile < 0) {
+	if (MemFile == -1) {
 	    LogSystemError("Unable to create shared memory buffer");
 	}
 
-	errno = 0;
-    ftruncate(MemFile, this->MemSize);
-    if (errno != 0) { // too many possible error codes to check for all of them
+    int status = ftruncate(MemFile, this->MemSize);
+    if (status == -1) {
         LogSystemError("Failed to truncate file");
     }
 
@@ -97,5 +96,5 @@ HolodeckSharedMemory::~HolodeckSharedMemory() {
 
 void HolodeckSharedMemory::LogSystemError(const std::string &errorMessage) {
     std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
-    UE_LOG(LogHolodeck, Warning, TEXT("%s"), ANSI_TO_TCHAR(errorMessage.c_str()));
+    UE_LOG(LogHolodeck, Fatal, TEXT("%s"), ANSI_TO_TCHAR(errorMessage.c_str()));
 }
