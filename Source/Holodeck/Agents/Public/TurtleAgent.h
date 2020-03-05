@@ -38,10 +38,13 @@ public:
 	unsigned int GetRawActionSizeInBytes() const override { return 2 * sizeof(float); };
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
+	float GetAccelerationLimit() override { return 400; }
+
 private:
 	/**
 	* 0: ThrustToApply
 	* 1: YawTorqueToApply
 	*/
 	float CommandArray[2];
+
 };

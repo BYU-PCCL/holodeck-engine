@@ -37,6 +37,10 @@ void ATurtleAgent::Tick(float DeltaSeconds) {
 
 	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
+
+	if (this->GetActorUpVector().Z < -0.5) {
+		this->IsAbused = true;
+	}
 }
 
 

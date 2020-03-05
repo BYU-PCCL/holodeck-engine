@@ -78,6 +78,8 @@ public:
 		return (void*)CommandArray;
 	}
 
+	float GetAccelerationLimit() override { return 200; }
+
 private:
 	bool bCollisionsAreVisible;
 
@@ -88,4 +90,5 @@ private:
 	*/
 	void ApplyTorques();
 	float CommandArray[TOTAL_DOF];
+
 };

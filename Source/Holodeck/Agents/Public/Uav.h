@@ -45,6 +45,8 @@ public:
 	unsigned int GetRawActionSizeInBytes() const override { return 4 * sizeof(float); };
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
+	float GetAccelerationLimit() override { return 300; }
+
 protected:
 	//See HolodeckAgent.h for descriptions of these overriden functions
 
@@ -63,4 +65,5 @@ private:
 	  * InitializePIDControllers
 	  */
 	void InitializePIDControllers();
+
 };

@@ -35,6 +35,7 @@ void UAddSensorCommand::Execute() {
 										{ "RGBCamera", URGBCamera::StaticClass() },
 										{ "RotationSensor", URotationSensor::StaticClass() },
 										{ "VelocitySensor", UVelocitySensor::StaticClass() },
+										{ "AbuseSensor", UAbuseSensor::StaticClass() },
 										{ "ViewportCapture", UViewportCapture::StaticClass() },
 										{ "DistanceTask", UDistanceTask::StaticClass() },
 										{ "LocationTask", ULocationTask::StaticClass() },
