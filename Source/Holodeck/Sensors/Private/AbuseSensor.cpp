@@ -12,10 +12,6 @@ UAbuseSensor::UAbuseSensor() {
 
 void UAbuseSensor::InitializeSensor() {
 	Super::InitializeSensor();
-
-	/*if (!this->Agent->IsA(AHolodeckAgent::StaticClass())) {
-		UE_LOG(LogHolodeck, Fatal, TEXT("Error: Abuse Sensor failed to find attached agent."));
-	}*/
 }
 
 void UAbuseSensor::ParseSensorParms(FString ParmsJson) {
