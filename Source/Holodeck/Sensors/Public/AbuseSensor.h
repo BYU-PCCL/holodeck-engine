@@ -7,7 +7,10 @@
 #include "AbuseSensor.generated.h"
 
 /**
- * 
+ * AbuseSensor
+ * Inherits from the HolodeckSensor class
+ * Check out the parent class for documentation on all of the overridden functions.
+ * Returns true if the agent has been abused. 
  */
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class HOLODECK_API UAbuseSensor : public UHolodeckSensor {
