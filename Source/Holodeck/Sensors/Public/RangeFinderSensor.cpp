@@ -21,11 +21,11 @@ void URangeFinderSensor::ParseSensorParms(FString ParmsJson) {
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("LazerAngle")) {
-			LazerAngle = JsonParsed->GetIntegerField("LazerAngle");
+			LazerAngle = -JsonParsed->GetIntegerField("LazerAngle");  // in client positive angles point up
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Number>("LazerMaxDistance")) {
-			LazerMaxDistance = JsonParsed->GetIntegerField("LazerMaxDistance");
+			LazerMaxDistance = JsonParsed->GetIntegerField("LazerMaxDistance") * 100;  // meters to centimeters
 		}
 
 		if (JsonParsed->HasTypedField<EJson::Boolean>("LazerDebug")) {
@@ -65,10 +65,10 @@ void URangeFinderSensor::TickSensorComponent(float DeltaTime, ELevelTick TickTyp
 		FHitResult Hit = FHitResult();
 
 		bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, start, end, ECollisionChannel::ECC_Visibility, QueryParams);
-		FloatBuffer[i] = Hit.Distance != NULL ? Hit.Distance : LazerMaxDistance;
+		FloatBuffer[i] = (Hit.Distance != NULL ? Hit.Distance : LazerMaxDistance) / 100;  // centimeter to meters
 	
 		if (LazerDebug) {
-			DrawDebugLine(GetWorld(), start, end, FColor::Green, false, 1.f, ECC_WorldStatic, 1.f);
+			DrawDebugLine(GetWorld(), start, end, FColor::Green, false, .01, ECC_WorldStatic, 1.f);
 		}
 	}
 }

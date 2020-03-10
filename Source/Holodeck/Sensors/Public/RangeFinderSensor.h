@@ -13,7 +13,7 @@
  * the first collision in the agent's forward direction. Increasing LazerCount
  * will create an array of sensors evenly distributed 360 degrees in a plane 
  * around the agent. The LazerAngle offsets each of these and transforms the
- * plane into a cone. The default MaxDistance is 1000.
+ * plane into a cone. The default MaxDistance is 1000 cm.
  */
 UCLASS()
 class HOLODECK_API URangeFinderSensor : public UHolodeckSensor
