@@ -27,6 +27,10 @@ void URangeFinderSensor::ParseSensorParms(FString ParmsJson) {
 		if (JsonParsed->HasTypedField<EJson::Number>("LazerMaxDistance")) {
 			LazerMaxDistance = JsonParsed->GetIntegerField("LazerMaxDistance");
 		}
+
+		if (JsonParsed->HasTypedField<EJson::Boolean>("LazerDebug")) {
+			LazerDebug = JsonParsed->GetBoolField("LazerDebug");
+		}
 	}
 	else {
 		UE_LOG(LogHolodeck, Fatal, TEXT("URangeFinderSensor::ParseSensorParms:: Unable to parse json."));
@@ -45,13 +49,15 @@ void URangeFinderSensor::TickSensorComponent(float DeltaTime, ELevelTick TickTyp
 
 	for (int i = 0; i < LazerCount; i++) {
 
-		FVector start = GetForwardVector();
-		FVector right = GetRightVector();
-		start = start.RotateAngleAxis(360 * i / LazerCount, GetUpVector());
-		right = right.RotateAngleAxis(360 * i / LazerCount, GetUpVector());
-		start.RotateAngleAxis(LazerAngle, right);
+		FVector start = GetComponentLocation();
 
-		FVector end = start * LazerMaxDistance;
+		FVector end = GetForwardVector();
+		FVector right = GetRightVector();
+		end = end.RotateAngleAxis(360 * i / LazerCount, GetUpVector());
+		right = right.RotateAngleAxis(360 * i / LazerCount, GetUpVector());
+		end = end.RotateAngleAxis(LazerAngle, right);
+		end = end * LazerMaxDistance;
+		end = start + end;
 
 		FCollisionQueryParams QueryParams = FCollisionQueryParams();
 		QueryParams.AddIgnoredActor(Parent);
@@ -59,7 +65,10 @@ void URangeFinderSensor::TickSensorComponent(float DeltaTime, ELevelTick TickTyp
 		FHitResult Hit = FHitResult();
 
 		bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, start, end, ECollisionChannel::ECC_Visibility, QueryParams);
-
 		FloatBuffer[i] = Hit.Distance != NULL ? Hit.Distance : LazerMaxDistance;
+	
+		if (LazerDebug) {
+			DrawDebugLine(GetWorld(), start, end, FColor::Green, false, 1.f, ECC_WorldStatic, 1.f);
+		}
 	}
 }

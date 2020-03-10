@@ -10,10 +10,10 @@
  * URangeFinderSensor
  * The RangeFinderSensor gets distances to first collision.
  * By default the sensor retruns one number that represents the distance to
- * the first collision in the sensor's forward direction. Increasing LazerCount
+ * the first collision in the agent's forward direction. Increasing LazerCount
  * will create an array of sensors evenly distributed 360 degrees in a plane 
  * around the agent. The LazerAngle offsets each of these and transforms the
- * plane into a cone. The default MaxDistance is 100.
+ * plane into a cone. The default MaxDistance is 1000.
  */
 UCLASS()
 class HOLODECK_API URangeFinderSensor : public UHolodeckSensor
@@ -50,7 +50,10 @@ protected:
 	int LazerAngle = 0;
 
 	UPROPERTY(EditAnywhere)
-	int LazerMaxDistance = 100;
+	int LazerMaxDistance = 1000;
+
+	UPROPERTY(EditAnywhere)
+	bool LazerDebug = false;
 
 private:
 	/*
