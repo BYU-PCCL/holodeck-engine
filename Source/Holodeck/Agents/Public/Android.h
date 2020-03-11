@@ -78,6 +78,7 @@ public:
 		return (void*)CommandArray;
 	}
 
+	// Allows agent to fall up to ~10 meters
 	float GetAccelerationLimit() override { return 200; }
 
 private:

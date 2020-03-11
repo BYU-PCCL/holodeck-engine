@@ -38,6 +38,7 @@ public:
 	unsigned int GetRawActionSizeInBytes() const override { return 2 * sizeof(float); };
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
+	// Allows agent to fall up to ~8 meters
 	float GetAccelerationLimit() override { return 400; }
 
 private:
