@@ -73,6 +73,9 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	bool GetWorldBool(const FString& Key);
 
+	UFUNCTION(BlueprintCallable)
+	void LogFatalMessage(const FString& Message);
+
 private:
 	/**
 	  * RegisterSettings

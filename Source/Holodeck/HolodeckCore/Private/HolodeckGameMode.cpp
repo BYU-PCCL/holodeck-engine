@@ -63,3 +63,7 @@ void AHolodeckGameMode::RegisterSettings() {
 		UE_LOG(LogHolodeck, Log, TEXT("Reset signal registered"));
 	}
 }
+
+void AHolodeckGameMode::LogFatalMessage(const FString& Message) {
+	UE_LOG(LogHolodeck, Fatal, TEXT("%s"), *Message);
+}
