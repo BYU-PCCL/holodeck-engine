@@ -11,7 +11,6 @@ UCommand* UCommandFactory::MakeCommand(const std::string& Name, const std::vecto
 										  { "AdjustRenderQuality", &CreateInstance<UAdjustRenderQualityCommand> },
 										  { "DebugDraw", &CreateInstance<UDebugDrawCommand> },
 										  { "RenderViewport", &CreateInstance<URenderViewportCommand> },
-										  { "SetSensorEnabled", &CreateInstance<USetSensorEnabledCommand> },
 										  { "AddSensor", &CreateInstance<UAddSensorCommand> },
 										  { "RemoveSensor", &CreateInstance<URemoveSensorCommand> },
 										  { "RotateSensor", &CreateInstance<URotateSensorCommand> },

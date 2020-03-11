@@ -8,7 +8,7 @@
 /**
 * RemoveSensorCommand
 * Command used to remove a sensor from an agent
-* Use of this command should be infrequent. Use SetSensorEnabledCommand when possible.
+* Use of this command should be infrequent.
 *
 * StringParameters expect two arguments, the agent name, and sensor name.
 */
