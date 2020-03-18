@@ -9,10 +9,10 @@
 /**
  * URangeFinderSensor
  * The RangeFinderSensor gets distances to first collision.
- * By default the sensor retruns one number that represents the distance to
- * the first collision in the agent's forward direction. Increasing LazerCount
+ * By default the sensor returns one number that represents the distance to
+ * the first collision in the agent's forward direction. Increasing LaserCount
  * will create an array of sensors evenly distributed 360 degrees in a plane 
- * around the agent. The LazerAngle offsets each of these and transforms the
+ * around the agent. The LaserAngle offsets each of these and transforms the
  * plane into a cone. The default MaxDistance is 1000 cm.
  */
 UCLASS()
@@ -39,21 +39,21 @@ public:
 
 protected:
 	//See HolodeckSensor for the documentation of these overridden functions.
-	int GetNumItems() override { return LazerCount; };
+	int GetNumItems() override { return LaserCount; };
 	int GetItemSize() override { return sizeof(float); };
 	void TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UPROPERTY(EditAnywhere)
-	int LazerCount = 1;
+	int LaserCount = 1;
 
 	UPROPERTY(EditAnywhere)
-	int LazerAngle = 0;
+	int LaserAngle = 0;
 
 	UPROPERTY(EditAnywhere)
-	int LazerMaxDistance = 1000;
+	int LaserMaxDistance = 1000;
 
 	UPROPERTY(EditAnywhere)
-	bool LazerDebug = false;
+	bool LaserDebug = false;
 
 private:
 	/*

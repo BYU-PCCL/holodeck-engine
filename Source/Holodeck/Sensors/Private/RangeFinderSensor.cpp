@@ -16,20 +16,20 @@ void URangeFinderSensor::ParseSensorParms(FString ParmsJson) {
 	TSharedRef<TJsonReader<TCHAR>> JsonReader = TJsonReaderFactory<TCHAR>::Create(ParmsJson);
 	if (FJsonSerializer::Deserialize(JsonReader, JsonParsed)) {
 
-		if (JsonParsed->HasTypedField<EJson::Number>("LazerCount")) {
-			LazerCount = JsonParsed->GetIntegerField("LazerCount");
+		if (JsonParsed->HasTypedField<EJson::Number>("LaserCount")) {
+			LaserCount = JsonParsed->GetIntegerField("LaserCount");
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Number>("LazerAngle")) {
-			LazerAngle = -JsonParsed->GetIntegerField("LazerAngle");  // in client positive angles point up
+		if (JsonParsed->HasTypedField<EJson::Number>("LaserAngle")) {
+			LaserAngle = -JsonParsed->GetIntegerField("LaserAngle");  // in client positive angles point up
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Number>("LazerMaxDistance")) {
-			LazerMaxDistance = JsonParsed->GetIntegerField("LazerMaxDistance") * 100;  // meters to centimeters
+		if (JsonParsed->HasTypedField<EJson::Number>("LaserMaxDistance")) {
+			LaserMaxDistance = JsonParsed->GetIntegerField("LaserMaxDistance") * 100;  // meters to centimeters
 		}
 
-		if (JsonParsed->HasTypedField<EJson::Boolean>("LazerDebug")) {
-			LazerDebug = JsonParsed->GetBoolField("LazerDebug");
+		if (JsonParsed->HasTypedField<EJson::Boolean>("LaserDebug")) {
+			LaserDebug = JsonParsed->GetBoolField("LaserDebug");
 		}
 	}
 	else {
@@ -47,16 +47,16 @@ void URangeFinderSensor::TickSensorComponent(float DeltaTime, ELevelTick TickTyp
 
 	float* FloatBuffer = static_cast<float*>(Buffer);
 
-	for (int i = 0; i < LazerCount; i++) {
+	for (int i = 0; i < LaserCount; i++) {
 
 		FVector start = GetComponentLocation();
 
 		FVector end = GetForwardVector();
 		FVector right = GetRightVector();
-		end = end.RotateAngleAxis(360 * i / LazerCount, GetUpVector());
-		right = right.RotateAngleAxis(360 * i / LazerCount, GetUpVector());
-		end = end.RotateAngleAxis(LazerAngle, right);
-		end = end * LazerMaxDistance;
+		end = end.RotateAngleAxis(360 * i / LaserCount, GetUpVector());
+		right = right.RotateAngleAxis(360 * i / LaserCount, GetUpVector());
+		end = end.RotateAngleAxis(LaserAngle, right);
+		end = end * LaserMaxDistance;
 		end = start + end;
 
 		FCollisionQueryParams QueryParams = FCollisionQueryParams();
@@ -65,9 +65,9 @@ void URangeFinderSensor::TickSensorComponent(float DeltaTime, ELevelTick TickTyp
 		FHitResult Hit = FHitResult();
 
 		bool TraceResult = GetWorld()->LineTraceSingleByChannel(Hit, start, end, ECollisionChannel::ECC_Visibility, QueryParams);
-		FloatBuffer[i] = (Hit.Distance != NULL ? Hit.Distance : LazerMaxDistance) / 100;  // centimeter to meters
+		FloatBuffer[i] = (Hit.Distance != NULL ? Hit.Distance : LaserMaxDistance) / 100;  // centimeter to meters
 	
-		if (LazerDebug) {
+		if (LaserDebug) {
 			DrawDebugLine(GetWorld(), start, end, FColor::Green, false, .01, ECC_WorldStatic, 1.f);
 		}
 	}
