@@ -15,6 +15,7 @@
 #include "VelocitySensor.h"
 #include "WorldNumSensor.h"
 #include "AbuseSensor.h"
+#include "RangeFinderSensor.h"
 #include "ViewportCapture.h"
 #include "DistanceTask.h"
 #include "LocationTask.h"
