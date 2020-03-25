@@ -8,6 +8,11 @@
 #include <memory>
 #include <string>
 #include <cstring>
+#include <vector>
+#include <functional>
+#include <type_traits>
+#include <chrono>
+#include <fstream>
 
 #include "HolodeckSharedMemory.h"
 #if PLATFORM_WINDOWS
@@ -33,6 +38,8 @@
 
 /* Forward declare HolodeckAgent Class*/
 class AHolodeckAgent;
+
+static const std::string FUNCTION_CALL_LOG_FILE_NAME = "server_call_log.csv";
 
 /**
   * UHolodeckServer
@@ -136,4 +143,25 @@ private:
     #endif
 
 	void LogSystemError(const std::string &errorMessage);
+
+    struct FunctionCallInfo {
+        // UUID is added after the fact
+        // std:;string uuid:
+        std::string functionName;
+        long timestamp;
+        // TODO: Not clear how to easily get stacktrace
+        // std::string stacktrace;
+    };
+
+    bool bLogCalls;
+    std::vector<FunctionCallInfo> FunctionCalls;
+
+    void LogCallDebug(std::string functionName);
+    void ExportFunctionCallLog();
+
+    #define LOG_CALL(statement) \
+        if(bLogCalls) { \
+            LogCallDebug(#statement); \
+        } \
+        statement
 };
