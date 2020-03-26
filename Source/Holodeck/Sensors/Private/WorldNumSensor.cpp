@@ -30,7 +30,7 @@ void UWorldNumSensor::ParseSensorParms(FString ParmsJson) {
 }
 
 void UWorldNumSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) {
-	//Check if the sensor is on and if it is retrieve the ball location from the world state
+	//Check if the sensor is on and if it is retrieve value from the world state
 	if (bOn && Key != "") {
 		AActor* Target = GetWorld()->GetAuthGameMode();
 		AHolodeckGameMode* Game = static_cast<AHolodeckGameMode*>(Target);

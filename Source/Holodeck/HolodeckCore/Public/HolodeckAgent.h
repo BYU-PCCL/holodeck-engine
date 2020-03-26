@@ -112,6 +112,15 @@ public:
 		return nullptr;
 	};
 
+	/**
+	* GetAccelerationLimit
+	* @return Float The maximum acceleration the agent can endure before being abused. -1 means no limit.
+	*/
+	virtual float GetAccelerationLimit() { return -1; }
+
+	UPROPERTY(BlueprintReadWrite)
+	bool IsAbused;
+
 	/* Stores pointers to all the sensors on the agent. */
 	TMap<FString, UHolodeckSensor*> SensorMap;
 	AHolodeckPawnControllerInterface* HolodeckController;
