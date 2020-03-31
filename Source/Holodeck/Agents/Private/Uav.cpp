@@ -2,13 +2,6 @@
 #include "Holodeck.h"
 #include "Uav.h"
 
-//All in radians. (rad/s, rad/s^2, etc.)
-const float UAV_MASS = 3.856; //Kilograms
-const float UAV_MU = 1;
-const float UAV_MAX_ROLL = 6.5080;
-const float UAV_MAX_PITCH = 5.087;
-const float UAV_MAX_YAW_RATE = .8;
-const float UAV_MAX_FORCE = 59.844;
 
 AUav::AUav() {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.

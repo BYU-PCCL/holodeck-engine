@@ -6,6 +6,9 @@
 #include "HolodeckAgent.h"
 #include "TurtleAgent.generated.h"
 
+static constexpr  float MAX_THRUST = 160.0f;
+static constexpr  float MAX_YAW = 35.0f;
+
 UCLASS()
 /**
 * ATurtleAgent

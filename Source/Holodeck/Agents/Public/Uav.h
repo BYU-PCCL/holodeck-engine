@@ -5,6 +5,14 @@
 #include "HolodeckAgent.h"
 #include "Uav.generated.h"
 
+//All in radians. (rad/s, rad/s^2, etc.)
+const float UAV_MASS = 3.856; //Kilograms
+const float UAV_MU = 1;
+const float UAV_MAX_ROLL = 6.5080;
+const float UAV_MAX_PITCH = 5.087;
+const float UAV_MAX_YAW_RATE = .8;
+const float UAV_MAX_FORCE = 59.844;
+
 UCLASS()
 /**
 * AUav

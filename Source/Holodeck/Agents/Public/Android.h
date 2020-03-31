@@ -31,6 +31,8 @@ public:
 	const static FName BoneNames[];
 	const static int NumBones;
 
+	static constexpr float MAX_TORQUE = 30.0f;
+
 	/**
 	* Called when the game starts.
 	*/
