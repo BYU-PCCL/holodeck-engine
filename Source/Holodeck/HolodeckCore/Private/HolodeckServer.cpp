@@ -35,11 +35,6 @@ void UHolodeckServer::Start() {
         LogSystemError("Unable to open loading semaphore");
     }
 
-    int status = sem_post(LoadingSemaphore);
-    if (status == -1) {
-        LogSystemError("Unable to update loading semaphore");
-    }
-
     LockingSemaphore1 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH1 + UUID)), O_CREAT, 0777, 1);
     if (LockingSemaphore1 == SEM_FAILED) {
         LogSystemError("Unable to open server semaphore");
@@ -50,10 +45,12 @@ void UHolodeckServer::Start() {
         LogSystemError("Unable to open client semaphore");
     }
 
-    status = sem_unlink(LOADING_SEMAPHORE_PATH);
+	int status = sem_post(LoadingSemaphore);
     if (status == -1) {
-        LogSystemError("Unable to close loading semaphore");
+        LogSystemError("Unable to update loading semaphore");
     }
+
+    // Client unlinks LoadingSemaphore
 #endif
 
     bIsRunning = true;
@@ -125,6 +122,5 @@ bool UHolodeckServer::IsRunning() const {
 }
 
 void UHolodeckServer::LogSystemError(const std::string& errorMessage) {
-    std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
-    UE_LOG(LogHolodeck, Fatal, TEXT("%s"), ANSI_TO_TCHAR(errorMessage.c_str()));
+    UE_LOG(LogHolodeck, Fatal, TEXT("%s - Error code: %d=%s"), ANSI_TO_TCHAR(errorMessage.c_str()), errno, ANSI_TO_TCHAR(strerror(errno)));
 }
