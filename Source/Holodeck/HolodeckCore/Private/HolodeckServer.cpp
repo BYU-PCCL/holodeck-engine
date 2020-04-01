@@ -45,7 +45,7 @@ void UHolodeckServer::Start() {
         LogSystemError("Unable to open client semaphore");
     }
 
-	int status = sem_post(LoadingSemaphore);
+    int status = sem_post(LoadingSemaphore);
     if (status == -1) {
         LogSystemError("Unable to update loading semaphore");
     }
