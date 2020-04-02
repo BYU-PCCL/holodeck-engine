@@ -5,6 +5,7 @@
 #pragma once
 
 #include <string>
+#include <cstring>
 
 #if PLATFORM_WINDOWS
 #include "AllowWindowsPlatformTypes.h"
@@ -14,6 +15,7 @@
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
+#include <cerrno>
 #endif
 
 /**
@@ -61,5 +63,7 @@ private:
 	HANDLE MemFile;
 	#elif PLATFORM_LINUX
 	int MemFile;
-	#endif
+    #endif
+
+    void LogSystemError(const std::string &errorMessage);
 };

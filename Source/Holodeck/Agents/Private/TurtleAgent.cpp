@@ -23,11 +23,9 @@ void ATurtleAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
 	float ForwardForce = CommandArray[0];
 	float RotForce = CommandArray[1];
-	float maxThrust = 160.0f;
-	float maxYaw = 35.0f;
 
-	float ThrustToApply = FMath::Clamp(ForwardForce, -maxThrust, maxThrust);
-	float YawTorqueToApply = FMath::Clamp(RotForce, -maxYaw, maxYaw);
+	float ThrustToApply = FMath::Clamp(ForwardForce, -MAX_THRUST, MAX_THRUST);
+	float YawTorqueToApply = FMath::Clamp(RotForce, -MAX_YAW, MAX_YAW);
 
 	FVector LocalThrust = FVector(ThrustToApply, 0, 0);
 	LocalThrust = ConvertLinearVector(LocalThrust, ClientToUE);
@@ -37,6 +35,11 @@ void ATurtleAgent::Tick(float DeltaSeconds) {
 
 	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
+
+	// If the turtle is upside down it is abused
+	if (this->GetActorUpVector().Z < -0.5) {
+		this->IsAbused = true;
+	}
 }
 
 

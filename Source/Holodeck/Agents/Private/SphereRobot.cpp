@@ -20,8 +20,8 @@ void ASphereRobot::InitializeAgent() {
 // Called every frame
 void ASphereRobot::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
-	ForwardSpeed = CommandArray[0];
-	RotSpeed = CommandArray[1];
+	ForwardSpeed = FMath::Clamp(CommandArray[0], -MAX_FORWARD_SPEED, MAX_FORWARD_SPEED);
+	RotSpeed = FMath::Clamp(CommandArray[1], -MAX_ROTATION_SPEED, MAX_ROTATION_SPEED);
 
 	FVector DeltaLocation = GetActorForwardVector() * ForwardSpeed;
 	DeltaLocation = ConvertLinearVector(DeltaLocation, ClientToUE);

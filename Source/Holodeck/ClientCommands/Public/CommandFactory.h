@@ -13,7 +13,6 @@
 #include "RenderViewportCommand.h"
 #include "AdjustRenderQualityCommand.h"
 #include "CustomCommand.h"
-#include "SetSensorEnabledCommand.h"
 #include "AddSensorCommand.h"
 #include "RemoveSensorCommand.h"
 #include "RotateSensorCommand.h"

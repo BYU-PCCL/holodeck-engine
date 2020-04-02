@@ -32,6 +32,7 @@ public:
 
 	static constexpr int TOTAL_DOF = TOTAL_JOINT_DOF + NUM_FLOAT_DIRECTIONS;
 	static constexpr float MAX_MOVEMENT_METERS = 0.5;
+	static constexpr float MAX_TORQUE = 30;
 
 	const static FName Joints[];
 	const static FName BoneNames[];

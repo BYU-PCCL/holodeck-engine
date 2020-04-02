@@ -44,7 +44,7 @@ void AAndroid::ApplyTorques() {
 
 		// Apply Swing 1 Torque if non zero
 		if (CommandArray[ComInd] != 0) {
-			float RotForce = CommandArray[ComInd];
+			float RotForce = FMath::Clamp(CommandArray[ComInd], -MAX_TORQUE, MAX_TORQUE);
 			RotationVector.Z = RotForce;
 		}
 		ComInd++;
@@ -52,7 +52,7 @@ void AAndroid::ApplyTorques() {
 		// Apply Swing 2 if Torque non zero and is 2 or 3 axis joint
 		if (JointInd < (NUM_2_PLUS_3_AXIS_JOINTS)) {
 			if (CommandArray[ComInd] != 0) {
-				float RotForce = CommandArray[ComInd];
+				float RotForce = FMath::Clamp(CommandArray[ComInd], -MAX_TORQUE, MAX_TORQUE);
 				RotationVector.Y = RotForce;
 			}
 			ComInd++;
@@ -60,7 +60,7 @@ void AAndroid::ApplyTorques() {
 			// Apply Twist if Torque non zero and is 3 axis joint
 			if (JointInd < NUM_3_AXIS_JOINTS) {
 				if (CommandArray[ComInd] != 0) {
-					float RotForce = CommandArray[ComInd];
+					float RotForce = FMath::Clamp(CommandArray[ComInd], -MAX_TORQUE, MAX_TORQUE);
 					RotationVector.X = RotForce;
 				}
 				ComInd++;

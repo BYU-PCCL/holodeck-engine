@@ -62,18 +62,39 @@ HolodeckSharedMemory::HolodeckSharedMemory(const std::string& Name, unsigned int
 
 	#elif PLATFORM_LINUX
 
-    MemFile = shm_open(MemPath.c_str(), O_CREAT | O_RDWR | O_TRUNC, 0777);
-    ftruncate(MemFile, this->MemSize);
+    MemFile = shm_open(MemPath.c_str(), O_CREAT | O_RDWR, 0777);
+	if (MemFile == -1) {
+	    LogSystemError("Unable to create shared memory buffer");
+	}
+
+    int status = ftruncate(MemFile, this->MemSize);
+    if (status == -1) {
+        LogSystemError("Failed to truncate file");
+    }
+
     MemPointer = static_cast<void*>(mmap(nullptr, this->MemSize, PROT_READ | PROT_WRITE,
                                          MAP_SHARED, MemFile, 0));
+    if (MemPointer == MAP_FAILED) {
+        LogSystemError("Failed to map shared memory");
+    }
+
+    // Doesn't need to stay open
+    close(MemFile);
 	#endif
 }
 
 HolodeckSharedMemory::~HolodeckSharedMemory() {
 	#if PLATFORM_WINDOWS
-	// TODO: Correctly close these files
-	#elif PLATFORM_LINUX
-	// TODO: Correctly close these files
-	close(MemFile);
+	CloseHandle(MemFile);
+	UnmapViewOfFile(MemPointer);
+    #elif PLATFORM_LINUX
+	// the client still hangs on to this memory location. We need to figure out a
+	// better way to release it.
+	// munmap(MemPointer, MemSize);
 	#endif
+}
+
+void HolodeckSharedMemory::LogSystemError(const std::string &errorMessage) {
+    std::string errorMsg = errorMessage + " - Error code: " + std::to_string(errno) + " - " + std::string(strerror(errno));
+    UE_LOG(LogHolodeck, Fatal, TEXT("%s"), ANSI_TO_TCHAR(errorMessage.c_str()));
 }

@@ -31,6 +31,8 @@ public:
 	const static FName BoneNames[];
 	const static int NumBones;
 
+	static constexpr float MAX_TORQUE = 30.0f;
+
 	/**
 	* Called when the game starts.
 	*/
@@ -78,6 +80,9 @@ public:
 		return (void*)CommandArray;
 	}
 
+	// Allows agent to fall up to ~10 meters
+	float GetAccelerationLimit() override { return 200; }
+
 private:
 	bool bCollisionsAreVisible;
 
@@ -88,4 +93,5 @@ private:
 	*/
 	void ApplyTorques();
 	float CommandArray[TOTAL_DOF];
+
 };

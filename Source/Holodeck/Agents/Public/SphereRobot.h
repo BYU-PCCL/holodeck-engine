@@ -8,6 +8,9 @@
 
 #include "SphereRobot.generated.h"
 
+static float MAX_ROTATION_SPEED = 20;
+static float MAX_FORWARD_SPEED = 20;
+
 UCLASS()
 class HOLODECK_API ASphereRobot : public AHolodeckAgent
 {

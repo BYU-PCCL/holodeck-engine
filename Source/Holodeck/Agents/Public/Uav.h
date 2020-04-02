@@ -5,6 +5,14 @@
 #include "HolodeckAgent.h"
 #include "Uav.generated.h"
 
+//All in radians. (rad/s, rad/s^2, etc.)
+const float UAV_MASS = 3.856; //Kilograms
+const float UAV_MU = 1;
+const float UAV_MAX_ROLL = 6.5080;
+const float UAV_MAX_PITCH = 5.087;
+const float UAV_MAX_YAW_RATE = .8;
+const float UAV_MAX_FORCE = 59.844;
+
 UCLASS()
 /**
 * AUav
@@ -45,6 +53,9 @@ public:
 	unsigned int GetRawActionSizeInBytes() const override { return 4 * sizeof(float); };
 	void* GetRawActionBuffer() const override { return (void*)CommandArray; };
 
+	// Allows agent to fall up to ~9 meters
+	float GetAccelerationLimit() override { return 300; }
+
 protected:
 	//See HolodeckAgent.h for descriptions of these overriden functions
 
@@ -63,4 +74,5 @@ private:
 	  * InitializePIDControllers
 	  */
 	void InitializePIDControllers();
+
 };

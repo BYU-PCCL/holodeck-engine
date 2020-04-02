@@ -14,6 +14,8 @@
 #include "RotationSensor.h"
 #include "VelocitySensor.h"
 #include "WorldNumSensor.h"
+#include "AbuseSensor.h"
+#include "RangeFinderSensor.h"
 #include "ViewportCapture.h"
 #include "DistanceTask.h"
 #include "LocationTask.h"
@@ -28,7 +30,7 @@
 * AddSensorCommand
 * Command used to add a sensor to an agent
 * Warning: This command is meant for initialization. Adding a sensor with the same name as a previously 
-* removed sensor may cause problems. Use SetSensorEnabledCommand when possible. 
+* removed sensor may cause problems.
 *
 * StringParameters expects five arguments: the agent name, sensor name, sensor class, sensor parameters, and socket.
 * NumberParameters expects six arguments: locations x, y, and z and rotations pitch, yaw, and roll.

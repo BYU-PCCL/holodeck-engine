@@ -35,12 +35,14 @@ void UAddSensorCommand::Execute() {
 										{ "RGBCamera", URGBCamera::StaticClass() },
 										{ "RotationSensor", URotationSensor::StaticClass() },
 										{ "VelocitySensor", UVelocitySensor::StaticClass() },
+										{ "AbuseSensor", UAbuseSensor::StaticClass() },
 										{ "ViewportCapture", UViewportCapture::StaticClass() },
 										{ "DistanceTask", UDistanceTask::StaticClass() },
 										{ "LocationTask", ULocationTask::StaticClass() },
 										{ "FollowTask", UFollowTask::StaticClass() },
 										{ "CupGameTask", UCupGameTask::StaticClass() },
 										{ "WorldNumSensor", UWorldNumSensor::StaticClass() }, 
+										{ "RangeFinderSensor", URangeFinderSensor::StaticClass() },
 										{ "CleanUpTask", UCleanUpTask::StaticClass() }, };
 
 	FString AgentName = StringParams[0].c_str();
