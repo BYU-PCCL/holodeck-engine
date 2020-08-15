@@ -26,7 +26,7 @@ void AHolodeckGameMode::Tick(float DeltaSeconds) {
 		UGameplayStatics::OpenLevel(this->Instance, FName(*GetWorld()->GetName()), false);
 		*ResetSignal = false;
 	}
-
+	UE_LOG(LogHolodeck, Log, TEXT("HolodeckGameMode Tick() finished"));
 }
 
 void AHolodeckGameMode::StartPlay() {

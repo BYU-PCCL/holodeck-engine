@@ -21,27 +21,27 @@ void UHolodeckServer::Start() {
     }
 
     if (!FParse::Value(FCommandLine::Get(), TEXT("HolodeckUUID="), UUID))
-        UUID = "";
+        UUID = "holodeck_debug";
     UE_LOG(LogHolodeck, Log, TEXT("UUID: %s"), *UUID);
 
 #if PLATFORM_WINDOWS
     auto LoadingSemaphore = OpenSemaphore(EVENT_ALL_ACCESS, false, *(LOADING_SEMAPHORE_PATH + UUID));
     ReleaseSemaphore(LoadingSemaphore, 1, NULL);
-    this->LockingSemaphore1 = CreateSemaphore(NULL, 1, 1, *(SEMAPHORE_PATH1 + UUID));
-    this->LockingSemaphore2 = CreateSemaphore(NULL, 0, 1, *(SEMAPHORE_PATH2 + UUID));
+    this->ServerSemaphore = CreateSemaphore(NULL, 1, 1, *(SEMAPHORE_PATH1 + UUID));
+    this->ClientSemaphore = CreateSemaphore(NULL, 0, 1, *(SEMAPHORE_PATH2 + UUID));
 #elif PLATFORM_LINUX
     auto LoadingSemaphore = sem_open(TCHAR_TO_ANSI(*(LOADING_SEMAPHORE_PATH + UUID)), O_CREAT, 0777, 0);
     if (LoadingSemaphore == SEM_FAILED) {
         LogSystemError("Unable to open loading semaphore");
     }
 
-    LockingSemaphore1 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH1 + UUID)), O_CREAT, 0777, 1);
-    if (LockingSemaphore1 == SEM_FAILED) {
+    ServerSemaphore = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH1 + UUID)), O_CREAT, 0777, 1);
+    if (ServerSemaphore == SEM_FAILED) {
         LogSystemError("Unable to open server semaphore");
     }
 
-    LockingSemaphore2 = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH2 + UUID)), O_CREAT, 0777, 0);
-    if (LockingSemaphore2 == SEM_FAILED) {
+    ClientSemaphore = sem_open(TCHAR_TO_ANSI(*(SEMAPHORE_PATH2 + UUID)), O_CREAT, 0777, 0);
+    if (ClientSemaphore == SEM_FAILED) {
         LogSystemError("Unable to open client semaphore");
     }
 
@@ -64,8 +64,8 @@ void UHolodeckServer::Kill() {
     Memory.clear();
 
 #if PLATFORM_WINDOWS
-    CloseHandle(this->LockingSemaphore1);
-    CloseHandle(this->LockingSemaphore2);
+    CloseHandle(this->ServerSemaphore);
+    CloseHandle(this->ClientSemaphore);
 #elif PLATFORM_LINUX
     int status = sem_unlink(SEMAPHORE_PATH1);
     if (status == -1) {
@@ -94,10 +94,10 @@ void* UHolodeckServer::Malloc(const std::string& Key, unsigned int BufferSize) {
 void UHolodeckServer::Acquire() {
     UE_LOG(LogHolodeck, VeryVerbose, TEXT("HolodeckServer Acquiring"));
 #if PLATFORM_WINDOWS
-    WaitForSingleObject(this->LockingSemaphore1, INFINITE);
+    //WaitForSingleObject(this->ServerSemaphore, INFINITE);
 #elif PLATFORM_LINUX
 
-    int status = sem_wait(LockingSemaphore1);
+    int status = sem_wait(ServerSemaphore);
     if (status == -1) {
         LogSystemError("Unable to wait for server semaphore");
     }
@@ -107,10 +107,10 @@ void UHolodeckServer::Acquire() {
 void UHolodeckServer::Release() {
     UE_LOG(LogHolodeck, VeryVerbose, TEXT("HolodeckServer Releasing"));
 #if PLATFORM_WINDOWS
-    ReleaseSemaphore(this->LockingSemaphore2, 1, NULL);
+    //ReleaseSemaphore(this->ClientSemaphore, 1, NULL);
 #elif PLATFORM_LINUX
 
-    int status = sem_post(LockingSemaphore2);
+    int status = sem_post(ClientSemaphore);
     if (status == -1) {
         LogSystemError("Unable to update loading semaphore");
     }

@@ -128,11 +128,11 @@ private:
 	bool bIsRunning;
 
 	#if PLATFORM_WINDOWS
-	HANDLE LockingSemaphore1;
-	HANDLE LockingSemaphore2;
+	HANDLE ServerSemaphore;
+	HANDLE ClientSemaphore;
 	#elif PLATFORM_LINUX
-	sem_t* LockingSemaphore1;
-	sem_t* LockingSemaphore2;
+	sem_t* ServerSemaphore;
+	sem_t* ClientSemaphore;
     #endif
 
 	void LogSystemError(const std::string &errorMessage);
