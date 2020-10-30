@@ -125,6 +125,10 @@ public:
 	TMap<FString, UHolodeckSensor*> SensorMap;
 	AHolodeckPawnControllerInterface* HolodeckController;
 
+	float GetMaxHeight(); // Chris
+
+	float MaxHeight; // Chris
+
 private:
 
 	UHolodeckGameInstance* Instance;

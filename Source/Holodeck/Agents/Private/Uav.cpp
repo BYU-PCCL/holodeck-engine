@@ -17,11 +17,14 @@ AUav::AUav() {
 	// TODO: set deltaTick to 1/40th of a second
 	SetActorEnableCollision(true);
 	// OnCalculateCustomPhysics.BindUObject(this, &AUav::SubstepTick);
+
 }
 
 void AUav::InitializeAgent() {
 	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
+
+	SetMaxHeight(GetMaxHeight()); // Chris
 }
 
 void AUav::Tick(float DeltaTime) {
@@ -43,4 +46,28 @@ void AUav::ApplyForces() {
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
+
+	MaxHeightCeiling();
+	
+	// FVector MyCharacter = GetActorLocation();
+	
+
+	
+	
+}
+
+void AUav::SetMaxHeight(float _maxHeight) {
+	maxHeight = _maxHeight;
+}
+
+void AUav::MaxHeightCeiling() {
+	if (GetActorLocation().Z > maxHeight) {
+		FVector Position(
+			GetActorLocation().X,
+			GetActorLocation().Y,
+			maxHeight
+		);
+		Teleport(Position);
+	}
+	
 }

@@ -122,3 +122,7 @@ bool AHolodeckAgent::InitializeController() {
 		return true;
 	}
 }
+
+float AHolodeckAgent::GetMaxHeight() {
+	return MaxHeight;
+}

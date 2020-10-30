@@ -32,6 +32,8 @@ public:
 	void SubstepTick(float DeltaTime, FBodyInstance* BodyInstance);
 	void UpdateForcesAndMoments(float DeltaTime);
 	void ApplyForces();
+	void MaxHeightCeiling();
+	void SetMaxHeight(float _maxHeight);
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
 		float DesiredAltitude;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Desired)
@@ -56,6 +58,7 @@ public:
 	// Allows agent to fall up to ~9 meters
 	float GetAccelerationLimit() override { return 300; }
 
+
 protected:
 	//See HolodeckAgent.h for descriptions of these overriden functions
 
@@ -75,4 +78,5 @@ private:
 	  */
 	void InitializePIDControllers();
 
+	float maxHeight;
 };
