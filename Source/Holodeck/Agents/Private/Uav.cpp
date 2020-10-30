@@ -17,7 +17,6 @@ AUav::AUav() {
 	// TODO: set deltaTick to 1/40th of a second
 	SetActorEnableCollision(true);
 	// OnCalculateCustomPhysics.BindUObject(this, &AUav::SubstepTick);
-
 }
 
 void AUav::InitializeAgent() {
