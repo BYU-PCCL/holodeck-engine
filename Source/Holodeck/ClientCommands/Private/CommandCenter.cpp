@@ -65,7 +65,7 @@ int UCommandCenter::ReadCommandBuffer() {
 	return Status;
 }
 
-void UCommandCenter::ExtractCommandsFromJson(const JsonValue &Input){ // bp
+void UCommandCenter::ExtractCommandsFromJson(const JsonValue &Input){
 	if (Input.getTag() == JSON_OBJECT) {
 		JsonIterator Iter = begin(Input);
 		//check if this is actually the array of commands, and then extract the commands from it.
@@ -82,7 +82,7 @@ void UCommandCenter::ExtractCommandsFromJson(const JsonValue &Input){ // bp
 void UCommandCenter::GetCommand(const JsonValue &Input) {
 	JsonIterator Iter = begin(Input);
 	std::string CommandName = Iter->value.toString();
-	FString CommandFString = UTF8_TO_TCHAR(CommandName.c_str()); 
+	FString CommandFString = UTF8_TO_TCHAR(CommandName.c_str());
 	std::vector<std::string> StringParameters;
 	std::vector<float> FloatParameters;
 	Iter.p = Iter->next;

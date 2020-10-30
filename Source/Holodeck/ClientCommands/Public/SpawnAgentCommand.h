@@ -5,7 +5,6 @@
 #include "Command.h"
 #include "SpawnAgentCommand.generated.h"
 
-
 /**
   * SpawnAgentCommand
   * The command used to spawn agents in the world.

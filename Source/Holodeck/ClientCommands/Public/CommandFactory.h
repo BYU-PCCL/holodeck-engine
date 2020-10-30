@@ -18,7 +18,6 @@
 #include "RotateSensorCommand.h"
 #include "CommandFactory.generated.h"
 
-
 class AHolodeckGameMode;
 
 /**
