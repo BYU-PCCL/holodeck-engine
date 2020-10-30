@@ -24,7 +24,7 @@ void AUav::InitializeAgent() {
 	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
 
-	SetMaxHeight(GetMaxHeight()); // Chris
+	SetMaxHeight(GetMaxHeight());
 }
 
 void AUav::Tick(float DeltaTime) {
@@ -61,13 +61,16 @@ void AUav::SetMaxHeight(float _maxHeight) {
 }
 
 void AUav::MaxHeightCeiling() {
-	if (GetActorLocation().Z > maxHeight) {
+	if (GetActorLocation().Z > maxHeight-1) {
 		FVector Position(
 			GetActorLocation().X,
 			GetActorLocation().Y,
 			maxHeight
 		);
 		Teleport(Position);
+	}
+	else {
+		int test = 0;
 	}
 	
 }
