@@ -28,8 +28,6 @@ void USpawnAgentCommand::Execute() {
 	FRotator Rotation = FRotator(NumberParams[4], NumberParams[3], NumberParams[5]);
 	float MaxHeight = NumberParams[6];
 	bool IsMainAgent = (bool) NumberParams[7]; // used to be 6, now is 7
-	
-	
 
 	Location = ConvertLinearVector(Location, ClientToUE);
 
@@ -45,10 +43,7 @@ void USpawnAgentCommand::Execute() {
 	SpawnedAgent->SpawnDefaultController();
 	SpawnedController = static_cast<AHolodeckPawnController*>(SpawnedAgent->Controller);
 	SpawnedController->SetServer(GameTarget->GetAssociatedServer());
-	
-
 	SpawnedAgent->InitializeAgent();
-	
 
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand spawned a new Agent."));
 

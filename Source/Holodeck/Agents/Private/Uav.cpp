@@ -48,12 +48,6 @@ void AUav::ApplyForces() {
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
 
 	MaxHeightCeiling();
-	
-	// FVector MyCharacter = GetActorLocation();
-	
-
-	
-	
 }
 
 void AUav::SetMaxHeight(float _maxHeight) {

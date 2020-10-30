@@ -58,7 +58,6 @@ public:
 	// Allows agent to fall up to ~9 meters
 	float GetAccelerationLimit() override { return 300; }
 
-
 protected:
 	//See HolodeckAgent.h for descriptions of these overriden functions
 

@@ -76,7 +76,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void LogFatalMessage(const FString& Message);
 
-
 private:
 	/**
 	  * RegisterSettings
