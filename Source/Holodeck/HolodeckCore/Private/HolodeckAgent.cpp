@@ -128,7 +128,7 @@ void AHolodeckAgent::MaxHeightCeiling() {
 		FVector Position(
 			GetActorLocation().X,
 			GetActorLocation().Y,
-			MaxHeight
+			MaxHeight - 11.8283691
 		);
 		Teleport(Position);
 	}
