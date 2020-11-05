@@ -124,7 +124,7 @@ bool AHolodeckAgent::InitializeController() {
 }
 
 void AHolodeckAgent::MaxHeightCeiling() {
-	if (GetActorLocation().Z > MaxHeight - 1) {
+	if (GetActorLocation().Z > MaxHeight) {
 		FVector Position(
 			GetActorLocation().X,
 			GetActorLocation().Y,
