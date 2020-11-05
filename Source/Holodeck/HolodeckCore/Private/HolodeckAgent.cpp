@@ -123,6 +123,13 @@ bool AHolodeckAgent::InitializeController() {
 	}
 }
 
-float AHolodeckAgent::GetMaxHeight() {
-	return MaxHeight;
+void AHolodeckAgent::MaxHeightCeiling() {
+	if (GetActorLocation().Z > MaxHeight - 1) {
+		FVector Position(
+			GetActorLocation().X,
+			GetActorLocation().Y,
+			MaxHeight
+		);
+		Teleport(Position);
+	}
 }

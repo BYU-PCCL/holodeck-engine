@@ -126,9 +126,10 @@ public:
 	AHolodeckPawnControllerInterface* HolodeckController;
 
 
-	virtual float GetMaxHeight();
-
 	float MaxHeight;
+
+	void MaxHeightCeiling();
+
 
 private:
 

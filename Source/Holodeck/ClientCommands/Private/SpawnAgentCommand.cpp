@@ -5,7 +5,7 @@
 void USpawnAgentCommand::Execute() {
 
 	UE_LOG(LogHolodeck, Log, TEXT("SpawnAgentCommand::Execute spawning agent"));
-	verifyf(StringParams.size() == 2 && NumberParams.size() <= 8, TEXT("%s: Bad Arguments"), *FString(__func__)); // NumberParams.size() used to be == 7
+	verifyf(StringParams.size() == 2 && NumberParams.size() == 8, TEXT("%s: Bad Arguments"), *FString(__func__));
 
 	AHolodeckGameMode* GameTarget = static_cast<AHolodeckGameMode*>(Target);
 	if (GameTarget == nullptr) {
@@ -27,7 +27,7 @@ void USpawnAgentCommand::Execute() {
 	// but the coordinates from the Python side com in roll, pitch, yaw order
 	FRotator Rotation = FRotator(NumberParams[4], NumberParams[3], NumberParams[5]);
 	float MaxHeight = NumberParams[6];
-	bool IsMainAgent = (bool) NumberParams[7]; // used to be 6, now is 7
+	bool IsMainAgent = (bool) NumberParams[7];
 
 	Location = ConvertLinearVector(Location, ClientToUE);
 

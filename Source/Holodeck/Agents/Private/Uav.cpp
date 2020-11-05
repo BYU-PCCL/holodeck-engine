@@ -22,13 +22,12 @@ AUav::AUav() {
 void AUav::InitializeAgent() {
 	Super::InitializeAgent();
 	RootMesh = Cast<UStaticMeshComponent>(RootComponent);
-
-	SetMaxHeight(GetMaxHeight());
 }
 
 void AUav::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	ApplyForces();
+	MaxHeightCeiling();
 }
 
 void AUav::ApplyForces() {
@@ -45,25 +44,4 @@ void AUav::ApplyForces() {
 	// Apply torques and forces in global coordinates
 	RootMesh->AddTorqueInRadians(GetActorRotation().RotateVector(LocalTorque));
 	RootMesh->AddForce(GetActorRotation().RotateVector(LocalThrust));
-
-	MaxHeightCeiling();
-}
-
-void AUav::SetMaxHeight(float _maxHeight) {
-	maxHeight = _maxHeight;
-}
-
-void AUav::MaxHeightCeiling() {
-	if (GetActorLocation().Z > maxHeight-1) {
-		FVector Position(
-			GetActorLocation().X,
-			GetActorLocation().Y,
-			maxHeight
-		);
-		Teleport(Position);
-	}
-	else {
-		int test = 0;
-	}
-	
 }
