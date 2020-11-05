@@ -125,11 +125,8 @@ public:
 	TMap<FString, UHolodeckSensor*> SensorMap;
 	AHolodeckPawnControllerInterface* HolodeckController;
 
-
 	float MaxHeight;
-
 	void MaxHeightCeiling();
-
 
 private:
 
