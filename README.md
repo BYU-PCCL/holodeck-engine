@@ -1,10 +1,6 @@
 # HOLODECK
 ![Build Status](https://jenkins.holodeck.ml/buildStatus/icon?job=holodeck-engine%2Fdevelop)
 
-## Devloper Docs
-If you're here, you're probably interested in working on Holodeck instead of just using it. You might find
-it helpful to consult the [Developer Wiki](https://github.com/BYU-PCCL/holodeck/wiki/Holodeck-Onboarding)
-
 ## About
 Holodeck is an open source project built primarily for training reinforcement learning agents in the unreal engine. It is built for use with Unreal Engine 4.22, with bindings for python to communicate with the agents in the environments. For best results, use windows.
 
@@ -28,9 +24,7 @@ This repository contains everything you need to build environments in the Unreal
 * Navigate to the root folder and right click Holodeck.uproject -> Generate Visual Studio project files
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.22
 * Run Holodeck.uproject (It will ask you to rebuild, click yes)
-  - If you get a "ExampleLevel.umap appears to be an asset file" error you have not configured git-lfs correctly.
-    Try `git lfs pull`.
-    
+
 ## Building For Linux
 For a great tutorial, see the [wiki page](https://github.com/byu-pccl/holodeck-engine/wiki/Cross-Compiling-for-Linux)
 
