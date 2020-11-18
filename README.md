@@ -57,8 +57,8 @@ See [How to Debug](https://github.com/BYU-PCCL/holodeck/wiki/How-To-Debug).
 
 ## Disclaimer
 
-BYU is not licensed to distribute assets for Holodeck's default worlds, so we
-can only provide packaged binaries.
+BYU doesn't have a license to distribute assets for Holodeck's default worlds,
+so we can only provide packaged binaries.
 
 ## Troubleshooting
 
