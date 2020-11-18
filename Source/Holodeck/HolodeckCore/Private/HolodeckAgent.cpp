@@ -124,20 +124,12 @@ bool AHolodeckAgent::InitializeController() {
 }
 
 void AHolodeckAgent::MaxHeightCeiling() {
-	if (this->GetRootComponent()->GetComponentLocation().Z >= MaxHeight) {
+	if (GetActorLocation().Z >= MaxHeight) {
 		FVector Position(
-			this->GetRootComponent()->GetComponentLocation().X,
-			this->GetRootComponent()->GetComponentLocation().Y,
+			GetActorLocation().X,
+			GetActorLocation().Y,
 			MaxHeight
 		);
-		FHitResult DummyHitResult;
-		this->K2_SetActorLocation(
-			Position,
-			false, //will not be blocked by object in between current and new location. 
-			DummyHitResult, //this object is where the hit result is reported, if teleport can be blocked by objects in between.
-			true //the object will retain its momentum(otherwise the android could not be teleported).
-		);
-
-		// Teleport(Position);
+		Teleport(Position);
 	}
 }
