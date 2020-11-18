@@ -23,24 +23,24 @@ See https://holodeck.readthedocs.io.
 
 Setup and development is generally much smoother on Windows.
 
-* [Unreal Engine 4.22](https://www.unrealengine.com/en-US/download).
+* [Unreal Engine 4.22](https://www.unrealengine.com/en-US/download)
     * After starting the Epic Games Launcher, click "Unreal Engine", then click
-      "Library".
-    * Click the "+" button to add a new version, select version 4.22, and install.
-* [Git LFS](https://git-lfs.github.com/).
+      "Library"
+    * Click the "+" button to add a new version, select version 4.22, and install
+* [Git LFS](https://git-lfs.github.com/)
 * Visual Studio configured for Unreal Engine development (tutorial
-  [here](https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup)).
+  [here](https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup))
 
 ## Installation
 
 * Clone this repository:
 `git clone https://github.com/byu-pccl/holodeck-engine`
 * Navigate to the root folder and right click Holodeck.uproject -> Generate
-  Visual Studio project files.
-* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.22.
-* Run Holodeck.uproject (it will ask you to rebuild, click yes).
+  Visual Studio project files
+* Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.22
+* Run Holodeck.uproject (it will ask you to rebuild, click yes)
   - If you get a "ExampleLevel.umap appears to be an asset file" error, you have
-    not configured git-lfs correctly. Try `git lfs pull`.
+    not configured git-lfs correctly. Try `git lfs pull`
 
 ## Usage
 
