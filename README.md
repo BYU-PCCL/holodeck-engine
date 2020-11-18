@@ -40,7 +40,7 @@ Setup and development is generally much smoother on Windows.
 * Right click Holodeck.uproject -> Switch Unreal Engine Version -> 4.22
 * Run Holodeck.uproject (it will ask you to rebuild, click yes)
   - If you get a "ExampleLevel.umap appears to be an asset file" error, you have
-    not configured git-lfs correctly. Try `git lfs pull`
+    not configured git-lfs correctly. Try `git lfs pull`.
 
 ## Usage
 
