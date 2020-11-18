@@ -3,11 +3,12 @@
 Status](https://jenkins.holodeck.ml/buildStatus/icon?job=holodeck-engine%2Fdevelop)
 
 Holodeck is a simulator for training reinforcement learning agents in Unreal Engine.
-We currently support Unreal Engine 4.22.
 
 This repository contains everything you need to _build environments_ for
 Holodeck in Unreal Engine. If you want to use pre-built worlds, use the [Python
 client](https://github.com/byu-pccl/holodeck).
+
+We currently support Unreal Engine 4.22. For best results, use Windows.
 
 ## Contributing
 
@@ -20,8 +21,6 @@ wiki](https://github.com/BYU-PCCL/holodeck/wiki/Holodeck-Onboarding).
 See https://holodeck.readthedocs.io.
 
 ## Requirements
-
-Setup and development is generally much smoother on Windows.
 
 * [Unreal Engine 4.22](https://www.unrealengine.com/en-US/download)
     * After starting the Epic Games Launcher, click "Unreal Engine", then click
