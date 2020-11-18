@@ -28,8 +28,8 @@ Setup and development is generally much smoother on Windows.
       "Library"
     * Click the "+" button to add a new version, select version 4.22, and install
 * [Git LFS](https://git-lfs.github.com/)
-* Visual Studio configured for Unreal Engine development (tutorial
-  [here](https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup))
+* Visual Studio configured for Unreal Engine development
+  ([tutorial](https://docs.unrealengine.com/en-us/Programming/Development/VisualStudioSetup))
 
 ## Installation
 
