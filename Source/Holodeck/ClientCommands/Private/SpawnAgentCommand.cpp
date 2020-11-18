@@ -26,13 +26,13 @@ void USpawnAgentCommand::Execute() {
 	// Note that we have to re-order the parameters since FRotator takes pitch, roll, yaw
 	// but the coordinates from the Python side com in roll, pitch, yaw order
 	FRotator Rotation = FRotator(NumberParams[4], NumberParams[3], NumberParams[5]);
-	float MaxHeight = NumberParams[6];
+	float MaxHeight = (NumberParams[6] * 100);// -11.8283691; // *100 to convert to centimeters, and for whatever reason, subtracting 11.8... makes it more accurate. Could be height of 
 	bool IsMainAgent = (bool) NumberParams[7];
 
 	Location = ConvertLinearVector(Location, ClientToUE);
 
 	// SpawnAgent command is defined in the HolodeckGameMode blueprint class and can only be edited/seen in the blueprint
-	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, Rotation, AgentName, IsMainAgent, MaxHeight);
+	AHolodeckAgent* SpawnedAgent = GameTarget->SpawnAgent(AgentType, Location, Rotation, AgentName, IsMainAgent);
 	verifyf(SpawnedAgent, TEXT("%s SpawnAgentCommand did not spawn a new Agent."), *FString(__func__));
 
 	AHolodeckPawnController* SpawnedController = nullptr;
