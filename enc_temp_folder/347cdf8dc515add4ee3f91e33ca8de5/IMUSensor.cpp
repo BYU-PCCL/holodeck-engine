@@ -47,6 +47,7 @@ void UIMUSensor::TickSensorComponent(float DeltaTime, ELevelTick TickType, FActo
 
 void UIMUSensor::CalculateAccelerationVector(float DeltaTime) {
 	VelocityThen = VelocityNow;
+	//This is what I changed.
 	VelocityNow = Parent->GetPhysicsLinearVelocity();
 
 	RotationNow = this->GetAttachParent()->GetComponentRotation();
