@@ -53,6 +53,7 @@ void AHolodeckAgent::InitializeAgent() {
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+	MaxHeightCeiling();
 }
 
 bool AHolodeckAgent::Teleport(const FVector& NewLocation, const FRotator& NewRotation) {

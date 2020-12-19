@@ -27,7 +27,6 @@ void AUav::InitializeAgent() {
 void AUav::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	ApplyForces();
-	MaxHeightCeiling();
 }
 
 void AUav::ApplyForces() {
