@@ -35,6 +35,12 @@ void AUav::ApplyForces() {
 	float YawTorqueToApply = FMath::Clamp(GetYawTorqueToApply(), -UAV_MAX_YAW_RATE, UAV_MAX_YAW_RATE);
 	float ThrustToApply = FMath::Clamp(GetThrustToApply(), -UAV_MAX_FORCE, UAV_MAX_FORCE);
 
+	if (GetActorLocation().Z >= MaxHeight) {
+		if (ThrustToApply >= 0) {
+			ThrustToApply = 0;
+		}
+	}
+
 	FVector LocalThrust = FVector(0, 0, ThrustToApply);
 	LocalThrust = ConvertLinearVector(LocalThrust, ClientToUE);
 	FVector LocalTorque = FVector(RollTorqueToApply, PitchTorqueToApply, YawTorqueToApply);

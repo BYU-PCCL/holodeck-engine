@@ -131,6 +131,6 @@ void AHolodeckAgent::MaxHeightCeiling() {
 			GetActorLocation().Y,
 			MaxHeight
 		);
-		Teleport(Position);
+ 		Teleport(Position);
 	}
 }
