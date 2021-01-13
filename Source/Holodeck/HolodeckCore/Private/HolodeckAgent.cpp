@@ -125,11 +125,16 @@ bool AHolodeckAgent::InitializeController() {
 }
 
 void AHolodeckAgent::MaxHeightCeiling() {
-	if (GetActorLocation().Z >= MaxHeight) {
+	FVector origin, extent;
+	GetActorBounds(true, origin, extent);
+	double actorHeight = extent.Z * 2;
+	double actorMaxHeight = MaxHeight - actorHeight;
+
+	if (GetActorLocation().Z >= actorMaxHeight) {
 		FVector Position(
 			GetActorLocation().X,
 			GetActorLocation().Y,
-			MaxHeight
+			actorMaxHeight
 		);
 		Teleport(Position);
 	}
