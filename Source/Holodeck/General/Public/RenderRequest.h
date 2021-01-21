@@ -20,7 +20,7 @@ class FRenderRequest : public FRenderCommand
 		UTextureRenderTarget2D* TargetTexture;
 
 	public:
-		virtual ~FRenderRequest() final;
+		virtual ~FRenderRequest();
 
 		/**
 		* Retrieves the rendered texture from the GPU without flushing the GPU like ReadPixels() does.
