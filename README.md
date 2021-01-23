@@ -4,7 +4,7 @@ Status](https://jenkins.holodeck.ml/buildStatus/icon?job=holodeck-engine%2Fdevel
 
 Holodeck is a simulator for training reinforcement learning agents in Unreal Engine.
 
-This repository contains everything you need to _build environments_ for
+This repository contains everything you need to build environments for
 Holodeck in Unreal Engine. If you want to use pre-built worlds, use the [Python
 client](https://github.com/byu-pccl/holodeck).
 
