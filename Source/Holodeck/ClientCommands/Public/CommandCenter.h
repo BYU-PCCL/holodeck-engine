@@ -84,7 +84,6 @@ private:
 	const static FString BUFFER_SHOULD_READ_NAME;
 	const static int BUFFER_SHOULD_READ_SIZE;
 	const static int BUFFER_SIZE;
-	const static int BYTE_SIZE;
 
 	/**
 	  * ExctractCommandsFromJson
