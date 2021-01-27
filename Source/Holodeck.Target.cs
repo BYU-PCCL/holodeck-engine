@@ -9,6 +9,7 @@ public class HolodeckTarget : TargetRules
 	{
 		Type = TargetType.Game;
         // LaunchModuleName = "Holodeck";
+        CppStandard = CppStandardVersion.Cpp17;
         ExtraModuleNames.Add("Holodeck");
     }
 
