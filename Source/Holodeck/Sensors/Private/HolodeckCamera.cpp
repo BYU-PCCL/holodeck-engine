@@ -3,7 +3,7 @@
 #include "Json.h"
 
 UHolodeckCamera::UHolodeckCamera() {
-	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamer() initialization called."));
+	UE_LOG(LogHolodeck, Log, TEXT("UHolodeckCamera::UHolodeckCamera() initialization called."));
 
 }
 

@@ -30,6 +30,7 @@ void AHolodeckPawnController::OnPossess(APawn* InPawn) {
 	}
 
 	ControlledAgent->Controller = this;
+	SetPawn(InPawn);
 
 	UE_LOG(LogHolodeck, Log, TEXT("Pawn Possessed: %s, Controlled by: %s"), *InPawn->GetHumanReadableName(), *this->GetClass()->GetName());
 	UpdateServerInfo();
