@@ -41,10 +41,10 @@ We run Jenkins in a docker container, and use a Docker volume to persist data (i
    ```
    
    Then, run `docker build -t holodeck/blueocean-lfs .`
-2. Create a docker volume
+3. Create a docker volume
 
    `docker volume create jenkins-data`
-3. Copy this sample startup script somewhere
+4. Copy this sample startup script somewhere
 
    ```bash
    docker run \
@@ -66,7 +66,7 @@ We run Jenkins in a docker container, and use a Docker volume to persist data (i
 
       (we heard you liked docker so we put docker inside your docker so you can docker while you docker)
 
-4. Configure this script to be run on startup with a systemd unit file
+5. Configure this script to be run on startup with a systemd unit file
 
    In `/etc/systemd/system/jenkins.service`, place this file:
    
@@ -86,7 +86,7 @@ We run Jenkins in a docker container, and use a Docker volume to persist data (i
    WantedBy=multi-user.target
    ```
    
-5. Start the Jenkins systemd unit by running `sudo systemctl start jenkins.service`. You can check the logs with
+6. Start the Jenkins systemd unit by running `sudo systemctl start jenkins.service`. You can check the logs with
    `sudo journalctl -u jenkins.service` or the status with `sudo systemctl status jenkins.service`.
 
 ### Step 3: Configure Jenkins
