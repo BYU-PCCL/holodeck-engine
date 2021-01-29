@@ -6,7 +6,6 @@ const FString UCommandCenter::BUFFER_NAME = "command_buffer";
 const FString UCommandCenter::BUFFER_SHOULD_READ_NAME = "command_bool";
 const int UCommandCenter::BUFFER_SHOULD_READ_SIZE = 1;
 const int UCommandCenter::BUFFER_SIZE = 1048576; //one megabyte
-const int UCommandCenter::BYTE_SIZE = 8;
 
 void UCommandCenter::GiveCommand(UCommand * const Input) {
 	if (Input != nullptr)
@@ -32,7 +31,7 @@ void UCommandCenter::GetCommandBuffer() {
 	if (Server == nullptr) {
 		UE_LOG(LogHolodeck, Warning, TEXT("CommandCenter could not find server..."));
 	} else {
-		Buffer = static_cast<char*>(Server->Malloc(TCHAR_TO_UTF8(*BUFFER_NAME), BUFFER_SIZE * BYTE_SIZE));
+		Buffer = static_cast<char*>(Server->Malloc(TCHAR_TO_UTF8(*BUFFER_NAME), BUFFER_SIZE));
 
 		if (!Buffer) {
 			UE_LOG(LogHolodeck, Fatal, TEXT("CommandCenter::GetCommandBuffer: Failed to allocate shared memory for buffer!"));
