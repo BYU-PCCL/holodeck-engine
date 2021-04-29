@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 public class HolodeckTarget : TargetRules
 {
-	public HolodeckTarget(TargetInfo Target) : base(Target)
-	{
-		Type = TargetType.Game;
+    public HolodeckTarget(TargetInfo Target) : base(Target)
+    {
+	Type = TargetType.Game;
         // LaunchModuleName = "Holodeck";
         CppStandard = CppStandardVersion.Cpp17;
         ExtraModuleNames.Add("Holodeck");
