@@ -15,7 +15,7 @@ void UCustomCommand::Execute() {
 		nums.Add(f);
 	}
 	TArray<FString> strs;
-	for (int i = 1; i < StringParams.size(); i++) {
+	for (unsigned int i = 1; i < StringParams.size(); i++) {
 		std::string s = StringParams[i];
 		strs.Add(FString(s.c_str()));
 	}
