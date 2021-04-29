@@ -53,6 +53,7 @@ void AHolodeckAgent::InitializeAgent() {
 
 void AHolodeckAgent::Tick(float DeltaSeconds) {
 	Super::Tick(DeltaSeconds);
+	MaxHeightCeiling();
 }
 
 bool AHolodeckAgent::Teleport(const FVector& NewLocation, const FRotator& NewRotation) {
@@ -120,5 +121,21 @@ bool AHolodeckAgent::InitializeController() {
 		HolodeckController->AllocateBuffers(AgentName);
 		UE_LOG(LogHolodeck, Log, TEXT("HolodeckAgent controller setup was successful"));
 		return true;
+	}
+}
+
+void AHolodeckAgent::MaxHeightCeiling() {
+	FVector origin, extent;
+	GetActorBounds(true, origin, extent);
+	double actorHeight = extent.Z * 2;
+	double actorMaxHeight = MaxHeight - actorHeight;
+
+	if (GetActorLocation().Z >= actorMaxHeight) {
+		FVector Position(
+			GetActorLocation().X,
+			GetActorLocation().Y,
+			actorMaxHeight
+		);
+		Teleport(Position);
 	}
 }

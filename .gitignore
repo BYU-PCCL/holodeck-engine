@@ -65,3 +65,4 @@ DerivedDataCache/*
 # Visual Studio Artifacts
 .vs/
 Content/HolodeckContent/Bots/HuntingSpider/*
+enc_temp_folder/
