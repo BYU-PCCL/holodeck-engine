@@ -1,0 +1,35 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+resources:
+  repositories:
+    - repository: holodeck-worlds
+      type: github
+      endpoint: BYU-PCCL
+      name: BYU-PCCL/holodeck-worlds
+    - repository: holodeck-configs
+      type: github
+      endpoint: BYU-PCCL
+      name: BYU-PCCL/holodeck-configs
+
+trigger:
+- develop
+
+steps:
+- checkout: self
+  lfs: true
+- script: |
+    chmod 777 -R .
+    su ue4 Build/ContinuousIntegration/build_project.sh
+  displayName: Build editor
+- checkout: BYU-PCCL/holodeck-worlds
+  lfs: true
+- checkout: BYU-PCCL/holodeck-configs
+- script: |
+    chmod 777 -R .
+    su ue4 Build/ContinuousIntegration/package_ue4_project.sh
+# TODO: Update package_ue4_project.sh to dump artifact to /mnt/artifacts within the Docker image
+# TODO: We need an easy way to cull artifacts in whatever directory /mnt/artifacts maps to on the host.
+#  Just deleting the oldest artifact until the directory size is under 10GB might work
