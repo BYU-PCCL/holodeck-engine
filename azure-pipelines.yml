@@ -8,9 +8,11 @@ resources:
     - repository: holodeck-worlds
       type: github
       endpoint: BYU-PCCL
+      ref: master
     - repository: holodeck-configs
       type: github
       endpoint: BYU-PCCL
+      ref: master
 
 trigger:
 - develop
