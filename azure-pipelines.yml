@@ -17,6 +17,8 @@ resources:
 trigger:
 - develop
 
+pool: default
+
 steps:
 - checkout: self
   lfs: true
