@@ -24,7 +24,7 @@ steps:
   lfs: true
 - script: |
     chmod 777 -R .
-    sh '/bin/su ue4 Build/ContinuousIntegration/build_project.sh'
+    bash -c '/bin/su ue4 Build/ContinuousIntegration/build_project.sh'
   workingDirectory: $(Build.SourcesDirectory)/holodeck-engine
   displayName: Build editor
 - checkout: holodeck-worlds
@@ -32,7 +32,7 @@ steps:
 - checkout: holodeck-configs
 - script: |
     chmod 777 -R .
-    sh '/bin/su ue4 Build/ContinuousIntegration/package_ue4_project.sh'
+    bash -c '/bin/su ue4 Build/ContinuousIntegration/package_ue4_project.sh'
   workingDirectory: $(Build.SourcesDirectory)/holodeck-engine
 # TODO: Update package_ue4_project.sh to dump artifact to /mnt/artifacts within the Docker image
 # TODO: We need an easy way to cull artifacts in whatever directory /mnt/artifacts maps to on the host.
