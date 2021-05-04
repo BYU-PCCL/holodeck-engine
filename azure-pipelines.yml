@@ -24,14 +24,14 @@ steps:
   lfs: true
 - script: |
     chmod 777 -R .
-    sh 'su ue4 Build/ContinuousIntegration/build_project.sh'
+    sh 'su ue4 holodeck-engine/Build/ContinuousIntegration/build_project.sh'
   displayName: Build editor
 - checkout: holodeck-worlds
   lfs: true
 - checkout: holodeck-configs
 - script: |
     chmod 777 -R .
-    sh 'su ue4 Build/ContinuousIntegration/package_ue4_project.sh'
+    sh 'su ue4 holodeck-engine/Build/ContinuousIntegration/package_ue4_project.sh'
 # TODO: Update package_ue4_project.sh to dump artifact to /mnt/artifacts within the Docker image
 # TODO: We need an easy way to cull artifacts in whatever directory /mnt/artifacts maps to on the host.
 #  Just deleting the oldest artifact until the directory size is under 10GB might work
