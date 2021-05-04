@@ -24,9 +24,9 @@ steps:
     chmod 777 -R .
     su ue4 Build/ContinuousIntegration/build_project.sh
   displayName: Build editor
-- checkout: BYU-PCCL/holodeck-worlds
+- checkout: holodeck-worlds
   lfs: true
-- checkout: BYU-PCCL/holodeck-configs
+- checkout: holodeck-configs
 - script: |
     chmod 777 -R .
     su ue4 Build/ContinuousIntegration/package_ue4_project.sh
