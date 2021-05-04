@@ -8,11 +8,11 @@ resources:
     - repository: holodeck-worlds
       type: github
       endpoint: BYU-PCCL
-      ref: master
+      name: BYU-PCCL/holodeck-worlds
     - repository: holodeck-configs
       type: github
       endpoint: BYU-PCCL
-      ref: master
+      name: BYU-PCCL/holodeck-configs
 
 trigger:
 - develop
@@ -24,9 +24,9 @@ steps:
     chmod 777 -R .
     su ue4 Build/ContinuousIntegration/build_project.sh
   displayName: Build editor
-- checkout: holodeck-worlds
+- checkout: BYU-PCCL/holodeck-worlds
   lfs: true
-- checkout: holodeck-configs
+- checkout: BYU-PCCL/holodeck-configs
 - script: |
     chmod 777 -R .
     su ue4 Build/ContinuousIntegration/package_ue4_project.sh
