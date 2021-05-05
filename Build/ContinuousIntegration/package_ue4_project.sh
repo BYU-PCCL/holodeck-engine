@@ -57,7 +57,7 @@ for packagepath in ../holodeck-worlds/*/; do
 
     # Copy configuration files into the output directory
     echo "👉 Copying config files into output directory..."
-    cp ../holodeck-configs/$packagename/*.json .
+    cp ../../holodeck-configs/$packagename/*.json .
 
     echo "👉 Compressing contents into $packagename.zip..."
     zip -r "$packagename.zip" *
