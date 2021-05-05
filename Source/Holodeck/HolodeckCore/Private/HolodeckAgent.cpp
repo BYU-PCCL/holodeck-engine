@@ -41,7 +41,7 @@ void AHolodeckAgent::InitializeAgent() {
 
 	// Initialize Sensors
 	TArray<UActorComponent*> Sensors;
-	Sensors = this->GetComponentsByClass(UHolodeckSensor::StaticClass());
+	this->GetComponents(UHolodeckSensor::StaticClass(), Sensors, false);
 
 	for (auto& ActorSensor : Sensors) {
 		UHolodeckSensor* Sensor = Cast<UHolodeckSensor>(ActorSensor);

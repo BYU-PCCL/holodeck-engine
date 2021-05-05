@@ -10,14 +10,16 @@ mkdir Content-Backup
 cp -r Content/* Content-Backup
 ls Content-Backup
 
+# Create output dir
+mkdir -p /home/ue4/artifacts/$1
+
 # Package each
-for packagepath in holodeck-worlds/*/; do
+for packagepath in ../holodeck-worlds/*/; do
     packagename=$(basename $packagepath)
 
     echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
     echo "⚠ Packaging $packagename..."
     echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
-    
 
     # Copy everything in the worlds /Content directory into the UE4 projects
     # Delete the previous Content folder. This is so that we can mv the worlds quickly, and
@@ -29,7 +31,7 @@ for packagepath in holodeck-worlds/*/; do
     mkdir Content
 
     echo "👉 Copying Holodeck content folder from $packagepath..."
-    mv holodeck-worlds/$packagename/Content/* Content/
+    mv ../holodeck-worlds/$packagename/Content/* Content/
 
     echo "👉 Applying Holodeck changes..."
     cp -r Content-Backup/* Content
@@ -37,7 +39,7 @@ for packagepath in holodeck-worlds/*/; do
     # Package it up
     echo "👉 Starting Packaging Process..."
     ue4 package Development
-    
+
     # Make sure it worked
     code=$?
     if [ code -ne 0 ]; then
@@ -55,13 +57,14 @@ for packagepath in holodeck-worlds/*/; do
 
     # Copy configuration files into the output directory
     echo "👉 Copying config files into output directory..."
-    cp ../holodeck-configs/$packagename/*.json .
+    cp ../../holodeck-configs/$packagename/*.json .
 
     echo "👉 Compressing contents into $packagename.zip..."
     zip -r "$packagename.zip" *
 
-    echo "👉 Moving $packagename.zip out of dist/ folder..."
-    mv "$packagename.zip" ..
+    echo "👉 Moving $packagename.zip to artifacts directory..."
+    # $1 is Azure build ID
+    mv "$packagename.zip" /home/ue4/artifacts/$1
 
     echo "👉 Deleting config files for $packagename..."
     rm *.json
