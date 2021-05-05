@@ -10,9 +10,6 @@ mkdir Content-Backup
 cp -r Content/* Content-Backup
 ls Content-Backup
 
-# Create output dir
-mkdir -p /mnt/artifacts/$1
-
 # Package each
 for packagepath in ../holodeck-worlds/*/; do
     packagename=$(basename $packagepath)
