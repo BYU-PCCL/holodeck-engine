@@ -17,7 +17,6 @@ for packagepath in ../holodeck-worlds/*/; do
     echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
     echo "⚠ Packaging $packagename..."
     echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
-    
 
     # Copy everything in the worlds /Content directory into the UE4 projects
     # Delete the previous Content folder. This is so that we can mv the worlds quickly, and
@@ -37,7 +36,7 @@ for packagepath in ../holodeck-worlds/*/; do
     # Package it up
     echo "👉 Starting Packaging Process..."
     ue4 package Development
-    
+
     # Make sure it worked
     code=$?
     if [ code -ne 0 ]; then
