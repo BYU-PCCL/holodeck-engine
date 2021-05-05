@@ -10,6 +10,9 @@ mkdir Content-Backup
 cp -r Content/* Content-Backup
 ls Content-Backup
 
+# Create output dir
+mkdir -p /home/ue4/artifacts/$1
+
 # Package each
 for packagepath in ../holodeck-worlds/*/; do
     packagename=$(basename $packagepath)
