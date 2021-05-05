@@ -10,6 +10,9 @@ mkdir Content-Backup
 cp -r Content/* Content-Backup
 ls Content-Backup
 
+# Create output dir
+mkdir -p /mnt/artifacts/$1
+
 # Package each
 for packagepath in ../holodeck-worlds/*/; do
     packagename=$(basename $packagepath)
@@ -60,7 +63,8 @@ for packagepath in ../holodeck-worlds/*/; do
     zip -r "$packagename.zip" *
 
     echo "👉 Moving $packagename.zip out of dist/ folder..."
-    mv "$packagename.zip" ..
+    # $1 is Azure build ID
+    mv "$packagename.zip" /mnt/artifacts/$1
 
     echo "👉 Deleting config files for $packagename..."
     rm *.json
