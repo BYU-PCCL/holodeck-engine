@@ -11,7 +11,7 @@ cp -r Content/* Content-Backup
 ls Content-Backup
 
 # Package each
-for packagepath in holodeck-worlds/*/; do
+for packagepath in ../holodeck-worlds/*/; do
     packagename=$(basename $packagepath)
 
     echo "⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠⚠"
@@ -29,7 +29,7 @@ for packagepath in holodeck-worlds/*/; do
     mkdir Content
 
     echo "👉 Copying Holodeck content folder from $packagepath..."
-    mv holodeck-worlds/$packagename/Content/* Content/
+    mv ../holodeck-worlds/$packagename/Content/* Content/
 
     echo "👉 Applying Holodeck changes..."
     cp -r Content-Backup/* Content
