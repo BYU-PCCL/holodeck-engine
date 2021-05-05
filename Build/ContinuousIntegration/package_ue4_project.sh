@@ -62,9 +62,9 @@ for packagepath in ../holodeck-worlds/*/; do
     echo "👉 Compressing contents into $packagename.zip..."
     zip -r "$packagename.zip" *
 
-    echo "👉 Moving $packagename.zip out of dist/ folder..."
+    echo "👉 Moving $packagename.zip to artifacts directory..."
     # $1 is Azure build ID
-    mv "$packagename.zip" /mnt/artifacts/$1
+    mv "$packagename.zip" /home/ue4/artifacts/$1
 
     echo "👉 Deleting config files for $packagename..."
     rm *.json
