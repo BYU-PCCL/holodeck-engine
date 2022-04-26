@@ -8,7 +8,7 @@
 ASphereRobot::ASphereRobot() {
 	PrimaryActorTick.bCanEverTick = true;
 
-	// Set the defualt controller
+	// Set the default controller
 	AIControllerClass = LoadClass<AController>(NULL, TEXT("/Script/Holodeck.SphereRobotController"), NULL, LOAD_None, NULL);
 	AutoPossessAI = EAutoPossessAI::PlacedInWorld;
 }
